@@ -9,6 +9,20 @@ import { gql } from '@apollo/client';
 //         title
 //     }
 // }
+
+
+
+export const LOGIN = gql(`
+mutation AuthUser($pw_id:String!,$password:String!) {
+  login(data: { pw_id:$pw_id, password:$password}) {
+    accessToken
+    user{
+     createdAt
+     pw_id
+    }
+    refreshToken
+  }
+}`);
     
 export const SIGNUP = gql(`
 mutation AuthUser($pw_id:String!,$password:String!) {
@@ -21,3 +35,12 @@ mutation AuthUser($pw_id:String!,$password:String!) {
     refreshToken
   }
 }`);
+
+
+export const FORGETPASSWORD=gql(`
+mutation AuthUser($pw_id:String!){
+  passwordresetRequest(data:{pw_id:$pw_id}){
+    accessToken
+  }
+}
+`)

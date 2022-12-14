@@ -1,7 +1,7 @@
 
 
 const CONFIG = {
-    SERVER_URL:"http://192.46.210.85:3000/graphql"
+    SERVER_URL:"http://ramaera.tk:4000/graphql"
 }
 
 

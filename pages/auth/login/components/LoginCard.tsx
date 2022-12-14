@@ -7,20 +7,22 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
+import Link from 'next/link'
 
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@apollo/client';
-import { SIGNUP } from '@/apollo/queries/auth';
-
+import ForgotPasswordModal from "./ForgotPasswordModal"
+// import { SIGNUP } from '@/apollo/queries/auth';
+import { LOGIN } from '@/apollo/queries/auth';
 export default function LoginCard() {
   const router = useRouter();
 
   const [PWId, setPWId] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const [forgotPasswordShow,setForgotPasswordShow] = React.useState(false)
   const [isLoading, setLoading] = React.useState(false);
 
-  const [signup] = useMutation(SIGNUP);
+  const [login] = useMutation(LOGIN);
 
   const validateForm = () => {
     if (!PWId) {
@@ -44,14 +46,14 @@ export default function LoginCard() {
     setLoading(true);
     if (isValid) {
       try {
-        const resp = await signup({
+        const resp = await login({
           variables: {
             pw_id: PWId,
             password: password
           }
         });
 
-        const data = resp.data.signup;
+        const data = resp.data.login;
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
@@ -133,17 +135,22 @@ export default function LoginCard() {
           <Typography variant="body1" color="text.secondary" text-align="left">
             Don't Have An Account?
           </Typography>
-          {/* <Grid item xs>
+          <Grid item xs>
           <Link
             href="#"
-            underline="always"
-            variant="body2"
-            onClick={() => {
-              setForgotPasswordOpen(true);
-            }}
-          >   */}
-          {/* </Link> */}
-          {/* </Grid> */}
+            // underline="always"
+            
+          >  
+
+<a onClick={() => {
+
+console.log("clicke")
+setForgotPasswordShow(true);
+}}> Forgot Password</a>
+
+         
+          </Link>
+          </Grid>
 
           <Button
             onClick={() => {
@@ -156,6 +163,9 @@ export default function LoginCard() {
           >
             Register
           </Button>
+
+
+          <ForgotPasswordModal open={forgotPasswordShow} setOpen={setForgotPasswordShow}/>
         </Box>
       </Box>
 
