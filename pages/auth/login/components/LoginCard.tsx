@@ -1,56 +1,71 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ForgotPasswordModal from './ForgotPasswordModal';
-import { Radio, RadioGroup } from '@mui/material';
-import { useAuth } from 'pages/auth/auth';
+import { useRouter } from 'next/router';
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import toast, { Toaster } from 'react-hot-toast';
+import { useMutation } from '@apollo/client';
+import { SIGNUP } from '@/apollo/queries/auth';
 
-const theme = createTheme();
+export default function LoginCard() {
+  const router = useRouter();
 
-export default function SignInSide() {
-  const [pw_id,setPW_id]=React.useState('')
-  const [memberType,setMemberType]=React.useState(true)
-  const[password,setPassword]=React.useState('')
-  const [forgotPasswordOpen, setForgotPasswordOpen] = React.useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const [PWId, setPWId] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-    
+  const [isLoading, setLoading] = React.useState(false);
 
+  const [signup] = useMutation(SIGNUP);
+
+  const validateForm = () => {
+    if (!PWId) {
+      toast.error('PW ID is not valid!');
+
+      return;
+    }
+
+    if (!password || password.length < 8) {
+      toast.error('Password is not valid!');
+
+      return;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    const isValid = validateForm();
+
+    setLoading(true);
+    if (isValid) {
+      try {
+        const resp = await signup({
+          variables: {
+            pw_id: PWId,
+            password: password
+          }
+        });
+
+        const data = resp.data.signup;
+        for (let key of Object.keys(data)) {
+          localStorage.setItem(key, data[key]);
+        }
+
+        console.log({ resp });
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+
+    setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
     <Grid component={Paper} elevation={6} square>
       <Box
         sx={{
@@ -74,7 +89,7 @@ export default function SignInSide() {
         >
           For the purpose of industry regulation, your details are required.
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 0 }}>
+        <Box component="form" noValidate sx={{ mt: 0 }}>
           <TextField
             margin="normal"
             required
@@ -83,30 +98,19 @@ export default function SignInSide() {
             label="PlanetWay Refferal Id"
             name="referralId"
             autoFocus
+            onChange={(e) => {
+              setPWId(e.target.value);
+            }}
           />
-          <Typography
-            color="text.secondary"
-            textAlign="left"
-            fontWeight="normal"
-          >
-            Select Membership Type*:
-          </Typography>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <FormControlLabel value="basic" control={<Radio />} label="Basic" />
-            <FormControlLabel
-              value="Advance"
-              control={<Radio />}
-              label="Advance"
-            />
-          </RadioGroup>
+
+          
           <TextField
             margin="normal"
             required
             fullWidth
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             name="password"
             label="Password"
             type="password"
@@ -114,44 +118,48 @@ export default function SignInSide() {
             autoComplete="current-password"
           />
 
-          <Button
-          
+          <LoadingButton
+            loading={isLoading}
             fullWidth
+            onClick={() => {
+              handleSubmit();
+            }}
+            disabled={isLoading}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Login
-          </Button>
-          <Grid item xs>
-            <Link
-              href="#"
-              underline="always"
-              variant="body2"
-              onClick={() => {
-                setForgotPasswordOpen(true);
-              }}
-            >
-              Forgot password?
-            </Link>
-          </Grid>
+           Login
+          </LoadingButton>
+          <Typography variant="body1" color="text.secondary" text-align="left">
+            Don't Have An Account?
+          </Typography>
+          {/* <Grid item xs>
+          <Link
+            href="#"
+            underline="always"
+            variant="body2"
+            onClick={() => {
+              setForgotPasswordOpen(true);
+            }}
+          >   */}
+          {/* </Link> */}
+          {/* </Grid> */}
 
           <Button
-          onClick={() => {
-            window.location ="/auth/signup"
-          }}
+            onClick={() => {
+              router.push('/auth/signup');
+            }}
             fullWidth
             variant="outlined"
             sx={{ mt: 2, mb: 2 }}
+            href=""
           >
-            Create Account
+            Register
           </Button>
         </Box>
       </Box>
-      <ForgotPasswordModal
-        open={forgotPasswordOpen}
-        setOpen={setForgotPasswordOpen}
-      />
+
+      <Toaster />
     </Grid>
-    </form>
   );
 }

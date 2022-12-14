@@ -44,7 +44,7 @@ const TypographySecondary = styled(Typography)(
 `
 );
 
-function Status500() {
+function Login() {
   const [pending, setPending] = useState(false);
   function handleClick() {
     setPending(true);
@@ -116,8 +116,8 @@ function Status500() {
   );
 }
 
-export default Status500;
+export default Login;
 
-Status500.getLayout = function getLayout(page: ReactElement) {
+Login.getLayout = function getLayout(page: ReactElement) {
   return <BaseLayout>{page}</BaseLayout>;
 };

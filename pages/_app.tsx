@@ -13,20 +13,12 @@ import createEmotionCache from 'src/createEmotionCache';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import {ApolloProvider,ApolloClient,InMemoryCache,HttpLink} from '@apollo/client';
-import {AuthProvider} from "../pages/auth/auth";
+import {
+  ApolloProvider,
+  } from "@apollo/client";
+import { getApolloClient } from '@/apollo';
 
 
-function createApolloClient() {
-  const link = new HttpLink({
-    uri: 'http://localhost:8000/graphql',
-  })
-
-  return new ApolloClient({
-    link,
-    cache: new InMemoryCache(),
-  })
-}
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -39,6 +31,9 @@ interface TokyoAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 
+
+const client = getApolloClient();
+
 function TokyoApp(props: TokyoAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -48,7 +43,8 @@ function TokyoApp(props: TokyoAppProps) {
   Router.events.on('routeChangeComplete', nProgress.done);
 
   return (
-    <CacheProvider value={emotionCache}>
+    <ApolloProvider  client={client}>
+  <CacheProvider value={emotionCache}>
       <Head>
         <title>Tokyo Free Black NextJS Typescript Admin Dashboard</title>
         <meta
@@ -73,6 +69,8 @@ function TokyoApp(props: TokyoAppProps) {
         </ThemeProvider>
       </SidebarProvider>
     </CacheProvider>
+    </ApolloProvider>
+  
   );
 }
 

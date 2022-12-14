@@ -14,7 +14,7 @@ import BaseLayout from 'src/layouts/BaseLayout';
 import Head from 'next/head';
 import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
-import LoginCard from './components/SignupCard';
+import SignupCard from './components/SignupCard';
 
 const GridWrapper = styled(Grid)(
  
@@ -44,7 +44,7 @@ const TypographySecondary = styled(Typography)(
 `
 );
 
-function Status500() {
+function Signup() {
   const [pending, setPending] = useState(false);
   function handleClick() {
     setPending(true);
@@ -53,7 +53,7 @@ function Status500() {
   return (
     <>
       <Head>
-        <title>Status - 500</title>
+        <title>Ramaera :: Create Account</title>
       </Head>
       <MainContent>
         <Grid
@@ -106,7 +106,7 @@ function Status500() {
           >
             <Container maxWidth="sm">
               <Box textAlign="center">
-               <LoginCard/>
+               <SignupCard/>
               </Box>
             </Container>
           </Grid>
@@ -116,8 +116,8 @@ function Status500() {
   );
 }
 
-export default Status500;
+export default Signup;
 
-Status500.getLayout = function getLayout(page: ReactElement) {
+Signup.getLayout = function getLayout(page: ReactElement) {
   return <BaseLayout>{page}</BaseLayout>;
 };
