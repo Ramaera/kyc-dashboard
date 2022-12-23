@@ -9,6 +9,9 @@ import {
 } from '@mui/material';
 import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone';
 import AddAlertTwoToneIcon from '@mui/icons-material/AddAlertTwoTone';
+import { useQuery } from '@apollo/client';
+import { GetUser, UPDATEUSERDETAILS } from '@/apollo/queries/auth';
+import { useAppSelector } from '@/hooks';
 
 const AvatarPageTitle = styled(Avatar)(
   ({ theme }) => `
@@ -35,10 +38,9 @@ const AvatarPageTitle = styled(Avatar)(
 );
 
 function PageHeader() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+ 
+const user = useAppSelector(state=>state.user.data);
+
 
   return (
     <Box

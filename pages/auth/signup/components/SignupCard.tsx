@@ -9,7 +9,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Radio, RadioGroup } from '@mui/material';
 import { useRouter } from 'next/router';
-
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@apollo/client';
 import { SIGNUP } from '@/apollo/queries/auth';
@@ -34,16 +33,13 @@ export default function SignupCard() {
 
     if (!password || password.length < 8) {
       toast.error('Password is not valid!');
-
       return;
     }
-
     return true;
   };
 
   const handleSubmit = async () => {
     const isValid = validateForm();
-
     setLoading(true);
     if (isValid) {
       try {
@@ -58,16 +54,13 @@ export default function SignupCard() {
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
-
-        console.log({ resp });
+        router.reload()
       } catch (err) {
         toast.error(err.message);
       }
     }
-
     setLoading(false);
   };
-
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -78,18 +71,15 @@ export default function SignupCard() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}
-      >
+        }}>
         <Typography variant="h1" sx={{ my: 2 }}>
           Signup
         </Typography>
-
         <Typography
           variant="h4"
           color="text.secondary"
           fontWeight="normal"
-          sx={{ mb: 0 }}
-        >
+          sx={{ mb: 0 }}>
           For the purpose of industry regulation, your details are required.
         </Typography>
         <Box component="form" noValidate sx={{ mt: 0 }}>
@@ -158,18 +148,6 @@ export default function SignupCard() {
           <Typography variant="body1" color="text.secondary" text-align="left">
             Already have an account ?
           </Typography>
-          {/* <Grid item xs>
-          <Link
-            href="#"
-            underline="always"
-            variant="body2"
-            onClick={() => {
-              setForgotPasswordOpen(true);
-            }}
-          >   */}
-          {/* </Link> */}
-          {/* </Grid> */}
-
           <Button
             onClick={() => {
               router.push('/auth/login');

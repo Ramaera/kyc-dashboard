@@ -8,41 +8,30 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import Link from 'next/link'
-
 import toast, { Toaster } from 'react-hot-toast';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import ForgotPasswordModal from "./ForgotPasswordModal"
-// import { SIGNUP } from '@/apollo/queries/auth';
-import { LOGIN } from '@/apollo/queries/auth';
+import { GetUser, LOGIN } from '@/apollo/queries/auth';
 export default function LoginCard() {
   const router = useRouter();
-
   const [PWId, setPWId] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [forgotPasswordShow,setForgotPasswordShow] = React.useState(false)
   const [isLoading, setLoading] = React.useState(false);
-
   const [login] = useMutation(LOGIN);
-
   const validateForm = () => {
     if (!PWId) {
       toast.error('PW ID is not valid!');
-
       return;
     }
-
     if (!password || password.length < 8) {
       toast.error('Password is not valid!');
-
       return;
     }
-
     return true;
   };
-
   const handleSubmit = async () => {
     const isValid = validateForm();
-
     setLoading(true);
     if (isValid) {
       try {
@@ -52,13 +41,11 @@ export default function LoginCard() {
             password: password
           }
         });
-
         const data = resp.data.login;
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
-
-        console.log({ resp });
+        router.reload()
       } catch (err) {
         toast.error(err.message);
       }
@@ -66,7 +53,6 @@ export default function LoginCard() {
 
     setLoading(false);
   };
-
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -102,10 +88,7 @@ export default function LoginCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-            }}
-          />
-
-          
+            }}/>
           <TextField
             margin="normal"
             required
@@ -119,7 +102,6 @@ export default function LoginCard() {
             id="password"
             autoComplete="current-password"
           />
-
           <LoadingButton
             loading={isLoading}
             fullWidth
@@ -138,17 +120,10 @@ export default function LoginCard() {
           <Grid item xs>
           <Link
             href="#"
-            // underline="always"
-            
           >  
-
 <a onClick={() => {
-
-console.log("clicke")
 setForgotPasswordShow(true);
-}}> Forgot Password</a>
-
-         
+}}> Forgot Password</a>         
           </Link>
           </Grid>
 
@@ -159,16 +134,12 @@ setForgotPasswordShow(true);
             fullWidth
             variant="outlined"
             sx={{ mt: 2, mb: 2 }}
-            href=""
           >
             Register
           </Button>
-
-
           <ForgotPasswordModal open={forgotPasswordShow} setOpen={setForgotPasswordShow}/>
         </Box>
       </Box>
-
       <Toaster />
     </Grid>
   );

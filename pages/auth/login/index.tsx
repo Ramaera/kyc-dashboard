@@ -4,16 +4,12 @@ import {
   Typography,
   Hidden,
   Container,
-  Button,
   Grid,
   styled
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
-
 import Head from 'next/head';
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
-import LoadingButton from '@mui/lab/LoadingButton';
 import LoginCard from './components/LoginCard';
 
 const GridWrapper = styled(Grid)(

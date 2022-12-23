@@ -8,170 +8,150 @@ import {
   Typography,
   Badge
 } from '@mui/material';
-import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import 'primereact/resources/primereact.min.css'; //core css
 import 'primeicons/primeicons.css'; //icons
+import { LoadingButton } from '@mui/lab';
+import { useEffect, useState } from 'react';
+import { CREATEDOCUMENT, UPDATEDOCUMENT, UPSERTNOMINEE } from '@/apollo/queries/auth';
+import { useMutation, useQuery } from '@apollo/client';
+import { useAppSelector } from '@/hooks';
+import documentsConfig from '@/config/documentsConfig';
+import DocumentType from '@/state/types/document';
+import toast, { Toaster } from 'react-hot-toast';
 
-import TeamOverview from '@/content/Dashboards/Tasks/TeamOverview';
-import TasksAnalytics from '@/content/Dashboards/Tasks/TasksAnalytics';
-import Performance from '@/content/Dashboards/Tasks/Performance';
-import Projects from '@/content/Dashboards/Tasks/Projects';
-import Checklist from '@/content/Dashboards/Tasks/Checklist';
-import Profile from '@/content/Dashboards/Tasks/Profile';
-import { useState } from 'react';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  {
-    name: 'Passport Size Photo',
-    status: -1,
-    id: 'photo'
-  },
-  {
-    name: 'Aadhar Card',
-    status: -1,
-    id: 'aadhar',
-    twoSides: true
-  },
-  {
-    name: 'Pan Card',
-    status: -1,
-    id: 'pan'
-  }
-];
-
-const DocumentRow = ({ data }) => {
-  const [front, setFront] = useState();
-  const [back, setBack] = useState();
-
-  const getBadge = (status) => {
-    let msg = 'Upload';
-    if (status != -1) {
-      msg = 'Pending';
-    }
-    return <Badge badgeContent={msg} color="secondary"></Badge>;
-  };
-
-  const getActionCell = () => {
-    if (data.twoSides) {
-      return (
-        <>
-          <Button component="label">
-            Choose Front
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  setFront(URL.createObjectURL(f.target.files[0]));
-                }
-              }}
-            />
-          </Button>
-          <Button component="label">
-            Choose Back{' '}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  setBack(URL.createObjectURL(f.target.files[0]));
-                }
-              }}
-            />
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <Button component="label">
-          Choose{' '}
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={(f) => {
-              if (f.target.files.length > 0) {
-                setFront(URL.createObjectURL(f.target.files[0]));
-              }
-            }}
-          />
-        </Button>
-      );
-    }
-  };
-
-  const getPreview = () => {
-    const views: any = [];
-
-    if (front) {
-      views.push(<img src={front} height={100} width={100} />);
-    }
-
-    if (back) {
-      views.push(<img src={back} height={100} width={100} />);
-    }
-
-    if (views.length == 0) {
-      return <Typography variant="subtitle1">No Document</Typography>;
-    }
-
-    return views;
-  };
-
-  return (
-    <TableRow
-      key={data.name}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-    >
-      <TableCell component="th" scope="row">
-        {data.name}
-      </TableCell>
-
-      <TableCell>{getPreview()}</TableCell>
-
-      <TableCell>{getActionCell()}</TableCell>
-      <TableCell>
-        <Button
-          variant="contained"
-          disabled={!(data.twoSides ? front && back : front)}
-        >
-          Upload
-        </Button>
-      </TableCell>
-
-      <TableCell>{getBadge(data.status)}</TableCell>
-    </TableRow>
-  );
-};
 
 const NomineeTab = () => {
+  const user = useAppSelector(state => state.user.data);
+
+  const [nomineeName, setNomineeName] = useState('')
+  const [relationship, setRelationship] = useState('')
+  const [isLoading, setLoading] = useState(false);
+  const [createDocument] = useMutation(CREATEDOCUMENT)
+  const [updateDocument] = useMutation(UPDATEDOCUMENT)
+  const [createOrUpdateNominee] = useMutation(UPSERTNOMINEE)
   const theme = useTheme();
 
-  const [aadharFront, setAadharFront] = useState();
 
-  const [aadharBack, setAadharBack] = useState();
+  const [isFrontImageChanged, setFrontImageChanged] = useState(false)
+  const [isBackImageChanged, setBackImageChanged] = useState(false)
+  const [aadharFront, setAadharFront] = useState('');
+  const [aadharBack, setAadharBack] = useState('');
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
+  const [aadharFrontDocument, setAadharFrontDocument] = useState<DocumentType>();
+  const [aadharBackDocument, setAadharBackDocument] = useState<DocumentType>();
 
+  const handleImageUpload = async (img) => {
+    return "https://upload.wikimedia.org/wikipedia/en/thumb/8/86/Einstein_tongue.jpg/220px-Einstein_tongue.jpg"
+  }
+
+  const validateForm = () => {
+
+    if(!nomineeName){
+      alert("Please Enter Nominee Name")
+      return null
+    }
+
+    if(!relationship){
+      alert("Please Enter Nominee Relation")
+      return null
+    }
+
+
+    if(!aadharFrontDocument && !isFrontImageChanged){
+      alert("Please Select Nominee Aadhar Front")
+
+      return null
+    }
+
+    if(!aadharBackDocument && !isBackImageChanged){
+      alert("Please Select Nominee Aadhar Back")
+
+      return null
+    }
+    return true
+  }
+
+  const handleUpdateDocument = async (id: string, url: string, title: string) => {
+    const resp = await updateDocument({
+      variables: {
+        id,
+        title,
+        url, 
+      }
+    })
+    return resp
+  }
+
+  const handleCreateDocument = async (url:string, title:string) => {
+    const resp = await createDocument({
+      variables: {
+        title,
+        url
+      }
+    })
+    return resp
+  }
+  const handleDocuments = async (isFront: boolean) => {
+    const hasDocumentChanged = isFront ? isFrontImageChanged : isBackImageChanged
+    if (!hasDocumentChanged) {
+      return
+    }
+
+    const baseDocument = isFront ? aadharFrontDocument : aadharBackDocument;
+    const documentTitle = isFront ? documentsConfig.nominee_aadhar.items[0].id :documentsConfig.nominee_aadhar.items[1].id
+    let imgUrl = await handleImageUpload("front");
+    if (baseDocument) {
+      await handleUpdateDocument(baseDocument.id, imgUrl, documentTitle)
+    } else {
+      await handleCreateDocument(imgUrl, documentTitle)
+    }
+  }
+
+  const handleNomineeSubmit = async () => {
+    const isTextValid = validateForm()
+    if(!isTextValid){
+      return 
+    }
+    setLoading(true);
+    try {
+      await createOrUpdateNominee({
+        variables: {
+          name: nomineeName,
+          relationship: relationship
+        }
+      });
+
+      await handleDocuments(true)
+      await handleDocuments(false)
+      toast.success("Nominee Updated Succesfully")
+    } catch (err) {
+      console.log(err)
+    }
+    setLoading(false)
+  }
+  useEffect(() => {
+    if (user) {
+      if (user.nominee){
+      setNomineeName(user.nominee.name)
+      setRelationship(user.nominee.relationship)
+    }
+      if (user.documents && user.documents.length > 0) {
+
+        user.documents.find((document: DocumentType) => {
+          if (document.title.toLowerCase() === documentsConfig.nominee_aadhar.items[0].id) {
+            setAadharFrontDocument(document)
+            setAadharFront(document.url)
+          } else if (document.title.toLowerCase() === documentsConfig.nominee_aadhar.items[1].id) {
+            setAadharBack(document.url)
+            setAadharBackDocument(document)
+          }
+        })
+      }
+    }
+  }, [user])
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
@@ -184,16 +164,24 @@ const NomineeTab = () => {
             id="outlined"
             label="Full Name*"
             fullWidth
+            value={nomineeName}
             variant="outlined"
+            onChange={(e) => {
+              setNomineeName(e.target.value)
+            }}
           />
         </Grid>
         <Grid item xs={4}>
-          <TextField label="Relationship" variant="outlined" fullWidth />
+          <TextField label="Relationship"
+            variant="outlined"
+            fullWidth
+            value={relationship}
+            onChange={(e) => {
+              setRelationship(e.target.value)
+            }} />
         </Grid>
-
         <Grid item xs={4}></Grid>
       </Grid>
-
       <Grid container p={2} spacing={2}>
         <Grid item xs={4}>
           {aadharFront ? (
@@ -208,6 +196,7 @@ const NomineeTab = () => {
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharFront(URL.createObjectURL(f.target.files[0]));
+                  setFrontImageChanged(true)
                 }
               }}
             />
@@ -226,24 +215,28 @@ const NomineeTab = () => {
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharBack(URL.createObjectURL(f.target.files[0]));
+                  setBackImageChanged(true)
                 }
               }}
             />
           </Button>
-
-
-
         </Grid>
-
         <Grid item xs={4}></Grid>
+        <Divider />
+        <Box component="form" mt={2}>
+          <LoadingButton loading={isLoading}
+            variant="contained"
+            component="label"
+            // disabled={!isSubmitButtonEnalbed}
+            onClick={() => {
+              handleNomineeSubmit();
+            }}>
+            Submit</LoadingButton>
+            <Toaster 
+        position='bottom-center'
+        reverseOrder={false}/>
+        </Box>
       </Grid>
-
-
-<Divider/>
-    <Box mt={2}>
-    <Button variant="contained" component="label">
-          Submit</Button>
-    </Box>
     </>
   );
 };

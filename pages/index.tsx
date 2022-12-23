@@ -14,6 +14,8 @@ import Head from 'next/head';
 
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
+import { wrapper } from '@/state/store';
+import { setProfileData } from '@/state/profileSlice';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -82,8 +84,10 @@ function Overview() {
   );
 }
 
+
 export default Overview;
 
 Overview.getLayout = function getLayout(page: ReactElement) {
   return <BaseLayout>{page}</BaseLayout>;
 };
+
