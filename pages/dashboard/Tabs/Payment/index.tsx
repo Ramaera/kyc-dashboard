@@ -69,7 +69,6 @@ const InfoTab = () => {
     try {
       let imgUrl = ""
       if (isImageChanged) {
-        console.log("hjjj")
         imgUrl = await handleImageUpload(proofImage);
       } else {
         imgUrl = proofImage
@@ -80,7 +79,7 @@ const InfoTab = () => {
         console.log("checkpoint")
         await updateDocument({
           variables: {
-            name: documentsConfig.payment_proof.items[0].id,
+            title: documentsConfig.payment_proof.items[0].id,
             url: imgUrl,
             id: paymentDocument.id
           }
