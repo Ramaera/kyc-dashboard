@@ -30,9 +30,8 @@ export default {
         ]
     },
     pancard: {
-        name:"Pancard",
         
-
+        name:"Pancard",
         items: [
             {
                 id: "pancard",
@@ -52,6 +51,7 @@ export default {
         ]
     },
     voterId: {
+        id:"voterId",
         name:"Voter Id Card",
         
 
@@ -68,7 +68,8 @@ export default {
     },
     passbook: {
         name:"Passbook",
-        
+        id: "passbook",
+
         items: [
             {
                 id: "passbook",
@@ -79,7 +80,8 @@ export default {
     },
     payment_proof: {
         name:"Payment Proof",
-        
+        id: "payment_proof",
+
 
         items: [
             {
@@ -93,7 +95,7 @@ export default {
 
     driving_license: {
         name:"Driving License",
-        
+        id:"driving_license",
         items: [
             {
                 id: "driving_license_front",

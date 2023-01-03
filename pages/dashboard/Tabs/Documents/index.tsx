@@ -1,29 +1,30 @@
 import {
-  Grid,
-  useTheme,
-  Button,
-  Typography,
-  Badge
+  Badge, Button,
+  Typography
 } from '@mui/material';
-import { Dropdown } from "primereact/dropdown";
-import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
-import "primereact/resources/primereact.min.css";                  //core css
-import "primeicons/primeicons.css";                                //icons
+// import { Collapse, Text } from "@nextui-org/react";
+
+
+import "primeicons/primeicons.css"; //icons
+import "primereact/resources/primereact.min.css"; //core css
+import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import { useEffect, useState } from 'react';
 
+import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
+import documentsConfig from '@/config/documentsConfig';
+import { useAppSelector } from '@/hooks';
+import DocumentType from '@/state/types/document';
+import handleImageUpload from '@/utils/upload';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useMutation } from '@apollo/client';
-import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
-import { useAppSelector } from '@/hooks';
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
-import { LoadingButton } from '@mui/lab';
+import toast, { Toaster } from 'react-hot-toast';
 
 const rows = [
   {
@@ -38,7 +39,27 @@ const rows = [
     config: documentsConfig.pancard,
     status: -1,
   },
+  {
+    config: documentsConfig.passbook,
+    status: -1,
+    isOptional: true
+  }, {
+    config: documentsConfig.voterId,
+    status: -1,
+    isOptional: true
+
+  }, {
+    config: documentsConfig.driving_license,
+    status: -1,
+    isOptional: true
+
+  },
 ];
+
+
+
+
+
 
 const DocumentRow = ({ data, documents = [] }) => {
   const [images, setImages] = useState([]);
@@ -48,7 +69,6 @@ const DocumentRow = ({ data, documents = [] }) => {
   const [updateDocument] = useMutation(UPDATEDOCUMENT)
 
   const [isLoading, setLoading] = useState(false);
-
   useEffect(() => {
     const _imgs = []
     for (let _document of documents) {
@@ -65,9 +85,7 @@ const DocumentRow = ({ data, documents = [] }) => {
     }
     return <Badge badgeContent={msg} color="secondary"></Badge>;
   };
-  const handleImageUpload = async () => {
-    return "https://upload.wikimedia.org/wikipedia/en/thumb/8/86/Einstein_tongue.jpg/220px-Einstein_tongue.jpg"
-  }
+
 
   const handleCreateDocument = async (title: string, url: string) => {
     await createDocument({
@@ -89,13 +107,13 @@ const DocumentRow = ({ data, documents = [] }) => {
   }
 
 
-  const isValidToClick = ()=>{
-    const hasSomethingChanged = imagesChanged.find((img)=>{
-      if(img){
+  const isValidToClick = () => {
+    const hasSomethingChanged = imagesChanged.find((img) => {
+      if (img) {
         return true
       }
     })
-    if(images.length == data.config.items.length &&  hasSomethingChanged){
+    if (images.length == data.config.items.length && hasSomethingChanged) {
       return true
     }
   }
@@ -108,13 +126,16 @@ const DocumentRow = ({ data, documents = [] }) => {
 
     //handle upload 
 
-  
-    try{
+
+    try {
       for (let i = 0; i < imagesChanged.length; i++) {
         if (imagesChanged[i]) {
-          const imgUrl = await handleImageUpload();
+          console.log("images", documents)
+
           const documentTitle = data.config.items[i].id;
-  
+          const imgUrl = await handleImageUpload(images[i]);
+          toast.success(`${documentTitle} Updated`)
+
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true
@@ -123,26 +144,20 @@ const DocumentRow = ({ data, documents = [] }) => {
           if (_document) {
             //updateDocument
             await handleUpdateDocument(_document.id, documentTitle, imgUrl);
-  
           } else {
             //create document
             await handleCreateDocument(documentTitle, imgUrl);
           }
-  
-          console.log({ _document })
-  
         }
       }
-    }catch(err){
-      
+    } catch (err) {
+
     }
 
     setLoading(false)
   }
-
   const getActionCell = () => {
     const views = []
-
     const items = data.config.items
     for (let i = 0; i < items.length; i++) {
       views.push(<Button component="label">Choose {items[i].name}
@@ -153,7 +168,7 @@ const DocumentRow = ({ data, documents = [] }) => {
           onChange={(f) => {
             if (f.target.files.length > 0) {
               const _images = [...images];
-              _images[i] = URL.createObjectURL(f.target.files[0])
+              _images[i] = (f.target.files[0])
               setImages(_images);
               const _imagesChanged = [...imagesChanged]
               _imagesChanged[i] = true
@@ -166,15 +181,14 @@ const DocumentRow = ({ data, documents = [] }) => {
     return views
   };
   const getPreview = () => {
-
-
     const views: any = []
     const items = data.config.items
     for (let i = 0; i < items.length; i++) {
       const _img = images[i];
       if (_img) {
-        views.push(<img src={_img} height={100} width={100} />)
-
+        // views.push(<img src={_img} height={100} width={100} />)
+        views.push(<img src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img} height={100} width={100} />)
+        // {typeof aadharBack == 'object' ? URL.createObjectURL(aadharBack) : aadharBack
       }
 
     }
@@ -191,7 +205,7 @@ const DocumentRow = ({ data, documents = [] }) => {
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell component="th" scope="row">
-        {data.config.name}
+        {data.config.name} {data.isOptional ? "(Optional)" : ""}
       </TableCell>
 
       <TableCell>{getPreview()}</TableCell>
@@ -212,8 +226,11 @@ const DocumentRow = ({ data, documents = [] }) => {
   );
 };
 
+
+
 const DocumentTab = () => {
-  const theme = useTheme();
+
+
 
   const user = useAppSelector(state => state.user.data)
 
@@ -224,7 +241,8 @@ const DocumentTab = () => {
     if (user && user.documents) {
 
       for (let config of configs) {
-        const document = user.documents.find((doc) => {
+        const document = user.documents.find((doc:DocumentType) => {
+
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
             return true
           }
@@ -234,11 +252,10 @@ const DocumentTab = () => {
         }
       }
     }
-
-
     return documents;
-
   }
+
+
 
 
 
@@ -255,90 +272,26 @@ const DocumentTab = () => {
               <TableCell>Preview</TableCell>
               <TableCell>Action</TableCell>
               <TableCell>Upload Action</TableCell>
-
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <DocumentRow data={row} documents={getDocumentsByConfig(row.config.items)} />
-            ))}
+            {rows.map((row,index) => {
+              return <DocumentRow
+                data={row}
+                key={index}
+                documents={getDocumentsByConfig(row.config.items)} />
+            })}
           </TableBody>
+          <TableRow>
+          </TableRow>
         </Table>
+        <Toaster
+            position='bottom-center'
+            reverseOrder={false} />
       </TableContainer>
-
-      <AdditionalDocument />
-
     </>
   );
 };
-
-
-const AdditionalDocument = () => {
-  const [selectedAdditionalDocument, setSelectedAdditionalDocument] = useState()
-  const [selectedDocument, setSelectedDocument] = useState()
-  const additionalDocumentsList = [
-    { name: 'Voter Id Card', code: 'voterId' },
-    { name: 'Passbook', code: 'PB' },
-    { name: 'Driving License', code: 'DL' },
-  ];
-  const renderActionPanel = () => {
-    return <Grid mt={2}>
-      <Button
-        disabled={!selectedAdditionalDocument}
-        variant='contained'
-        component="label">Choose Document
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={(f) => {
-            if (f.target.files.length > 0) {
-              setSelectedDocument(URL.createObjectURL(f.target.files[0]));
-            }
-          }}
-        />
-      </Button>
-
-      {selectedDocument ? <Button
-        variant='contained'
-        style={{ marginLeft: 2 }}
-        component="label">Upload Document
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={(f) => {
-            if (f.target.files.length > 0) {
-              setFront(URL.createObjectURL(f.target.files[0]));
-            }
-          }}
-        />
-      </Button> : null}
-    </Grid>
-  }
-  return <>
-    <Typography variant="h4" sx={{ my: 2, mt: 2 }}>
-      Additional Document
-    </Typography>
-    <Dropdown
-      value={selectedAdditionalDocument}
-      options={additionalDocumentsList}
-      filter
-      showClear
-      onChange={(item) => {
-        setSelectedAdditionalDocument(item.value);
-      }}
-      optionLabel="name"
-      editable
-    />
-
-    {selectedDocument ? <img src={selectedDocument} height={200} width={200} />
-      : null}
-    {renderActionPanel()}
-
-  </>
-}
-
 export default DocumentTab;
 

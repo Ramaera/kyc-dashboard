@@ -2,7 +2,6 @@ import {
     createSlice,
     PayloadAction,
   } from '@reduxjs/toolkit';
-  import type { RootState } from '../store';
 import { UserType } from '../types';
   
   // declaring the types for our state

@@ -1,24 +1,23 @@
-import * as React from 'react';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { Radio, RadioGroup } from '@mui/material';
-import { useRouter } from 'next/router';
-import toast, { Toaster } from 'react-hot-toast';
-import { useMutation } from '@apollo/client';
 import { SIGNUP } from '@/apollo/queries/auth';
+import { useMutation } from '@apollo/client';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Radio, RadioGroup } from '@mui/material';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function SignupCard() {
   const router = useRouter();
 
   const [PWId, setPWId] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [membership, setMembership] = React.useState('basic');
+  const [membership, setMembership] = React.useState('BASIC');
 
   const [isLoading, setLoading] = React.useState(false);
 
@@ -46,6 +45,7 @@ export default function SignupCard() {
         const resp = await signup({
           variables: {
             pw_id: PWId,
+            membership,
             password: password
           }
         });
@@ -105,16 +105,16 @@ export default function SignupCard() {
           </Typography>
           <RadioGroup
             row
-            defaultValue={'basic'}
+            defaultValue={'Basic'}
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
             onChange={(e) => {
               setMembership(e.target.value);
             }}
           >
-            <FormControlLabel value="basic" control={<Radio />} label="Basic" />
+            <FormControlLabel value="BASIC" control={<Radio />} label="Basic" />
             <FormControlLabel
-              value="Advance"
+              value="ADVANCE"
               control={<Radio />}
               label="Advance"
             />
@@ -148,7 +148,7 @@ export default function SignupCard() {
           <Typography variant="body1" color="text.secondary" text-align="left">
             Already have an account ?
           </Typography>
-          <Button
+          <LoadingButton
             onClick={() => {
               router.push('/auth/login');
             }}
@@ -158,7 +158,7 @@ export default function SignupCard() {
             href=""
           >
             Login
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
 

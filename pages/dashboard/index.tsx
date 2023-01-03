@@ -1,24 +1,18 @@
-import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import { ChangeEvent, useState } from 'react';
-import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
 import Footer from '@/components/Footer';
-import {
-  Grid,
-  Tab,
-  Tabs,
-  Container,
-  Card,
-  Box,
-  useTheme,
-  styled
-} from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import InfoTab from './Tabs/Info';
-import PaymentTab from "./Tabs/Payment";
-import DocumentTab from "./Tabs/Documents"
-import NomineeTab from './Tabs/Nominee';
+import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
+import SidebarLayout from '@/layouts/SidebarLayout';
+import {
+  Box, Card, Container, Grid, styled, Tab,
+  Tabs
+} from '@mui/material';
+import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import { ChangeEvent, useState } from 'react';
+import DocumentTab from "./Tabs/Documents";
+import InfoTab from './Tabs/Info';
+import NomineeTab from './Tabs/Nominee';
+import PaymentTab from "./Tabs/Payment";
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -103,7 +97,6 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-  const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 

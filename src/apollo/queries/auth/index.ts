@@ -13,8 +13,8 @@ mutation AuthUser($pw_id:String!,$password:String!) {
 }`);
 
 export const SIGNUP = gql(`
-mutation AuthUser($pw_id:String!,$password:String!) {
-  signup(data: { pw_id:$pw_id, password:$password}) {
+mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
+  signup(data: { pw_id:$pw_id, membership:$membership ,password:$password}) {
     accessToken
     user{
      createdAt

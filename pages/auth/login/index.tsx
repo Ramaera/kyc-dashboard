@@ -1,20 +1,13 @@
-import { useState } from 'react';
 import {
-  Box,
-  Typography,
-  Hidden,
-  Container,
-  Grid,
-  styled
+  Box, Container,
+  Grid, Hidden, styled, Typography
 } from '@mui/material';
+import Head from 'next/head';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
-import Head from 'next/head';
 import LoginCard from './components/LoginCard';
 
-const GridWrapper = styled(Grid)(
- 
-);
+
 
 const MainContent = styled(Box)(
   () => `
@@ -28,23 +21,8 @@ const MainContent = styled(Box)(
 `
 );
 
-const TypographyPrimary = styled(Typography)(
-  ({ theme }) => `
-      color: ${theme.colors.alpha.white[100]};
-`
-);
-
-const TypographySecondary = styled(Typography)(
-  ({ theme }) => `
-      color: ${theme.colors.alpha.white[70]};
-`
-);
-
 function Login() {
-  const [pending, setPending] = useState(false);
-  function handleClick() {
-    setPending(true);
-  }
+  
 
   return (
     <>

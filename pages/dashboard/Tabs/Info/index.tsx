@@ -1,25 +1,24 @@
-import { Grid, Box, useTheme, TextField} from '@mui/material';
-import { useEffect, useState } from 'react';
 import { UPDATEUSERDETAILS } from '@/apollo/queries/auth';
-import { useMutation } from '@apollo/client';
-import { toast } from 'react-hot-toast';
-import { LoadingButton } from '@mui/lab';
 import { useAppSelector } from '@/hooks';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Box, Grid, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
-const InfoTab = (props:any) => {
-  const theme = useTheme();
+const InfoTab = () => {
 
   const user = useAppSelector(state=>state.user.data);
-
-  const [fullName,setFullName]=useState('')
-  const [fatherHusbandName, setFatherHusbandName]=useState('')
-  const [dob,setDob]=useState('')
-  const [mobileNumber,SetMobileNumber]=useState('')
-  const [AlternateMobileNumber,setAlternateMobileNumber]=useState('')
-  const [email,setEmail]=useState('')
+  
+  const [fullName,setFullName]=useState<any | null>(null);
+  const [fatherHusbandName, setFatherHusbandName]=useState<any | null>(null);
+  const [dob,setDob]=useState<any | null>(null);
+  const [mobileNumber,SetMobileNumber]=useState<any | null>(null);
+  const [AlternateMobileNumber,setAlternateMobileNumber]=useState<any | null>(null);
+  const [email,setEmail]=useState<any | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [updatedetails]=useMutation(UPDATEUSERDETAILS)
-  const [demat,setDemat]=useState('');
+  const [demat,setDemat]=useState<any | null>(null);
 
   const handleSubmit=async ()=>{
 

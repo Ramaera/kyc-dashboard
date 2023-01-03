@@ -1,17 +1,20 @@
-import {Grid,useTheme,Button,Typography} from '@mui/material';
-import { useEffect, useState } from 'react';
+import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
+import documentsConfig from '@/config/documentsConfig';
+import { useAppSelector } from '@/hooks';
+import DocumentType from '@/state/types/document';
+import handleImageUpload from '@/utils/upload';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Button, Grid, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useMutation } from '@apollo/client';
-import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
-import { useAppSelector } from '@/hooks';
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+
 const rows = [
   {
     name: 'Company Name',
@@ -40,77 +43,79 @@ const rows = [
 ];
 const InfoTab = () => {
   const user = useAppSelector(state => state.user.data);
-  const theme = useTheme();
-  const [isLoading,setLoading]=useState(false)
-  const [isBasicMember, setBasicMember] = useState(false);
-  const [proofImage, setProofImage] = useState("");
-  const [paymentDocument,setPaymentDocument] = useState<DocumentType>();
-  const [isImageChanged,setImageChanged]  = useState(false)
-  const [isSubmitButtonEnalbed,setSubmitButtonEnabled] = useState(false)
-  const [createDocument]=useMutation(CREATEDOCUMENT)
-  const [updateDocument]=useMutation(UPDATEDOCUMENT)
-  const handleImageUpload = async()=>{
-
-    return "https://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg"
-
-  }
-
-  const validateSubmit = (imgUrl)=>{
-    if(!imgUrl){
-        alert("Invalid Image")
-        return false
+  const [isLoading, setLoading] = useState(false)
+  const [proofImage, setProofImage] = useState<any | null>(null);
+  const [paymentDocument, setPaymentDocument] = useState<DocumentType>();
+  const [isImageChanged, setImageChanged] = useState(false)
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
+  const [createDocument] = useMutation(CREATEDOCUMENT)
+  const [updateDocument] = useMutation(UPDATEDOCUMENT)
+  const validateSubmit = (imgUrl) => {
+    if (!imgUrl) {
+      alert("Invalid Image")
+      return false
     }
 
     return true
   }
-
-  const handlePaymentSubmit= async ()=>{
+  
+  const handlePaymentSubmit = async () => {
+    const isValid = validateSubmit(proofImage)
+    if (!isValid) {
+      return
+    }
     setLoading(true);
-    try{
+    
+    try {
       let imgUrl = ""
-      if(isImageChanged){
-        imgUrl = await handleImageUpload();
-      }else{
+      if (isImageChanged) {
+        console.log("hjjj")
+        imgUrl = await handleImageUpload(proofImage);
+      } else {
         imgUrl = proofImage
       }
-      const isValid = validateSubmit(imgUrl)
-      if(paymentDocument){
-        const respupdateDocument=await updateDocument({
-          variables:{
-            name:documentsConfig.payment_proof.items[0].id,
-            url:imgUrl,
-            id:paymentDocument.id
-          }
-        })
-        console.log({respupdateDocument})
-      }else{
-        const respDocument=await createDocument({
-          variables:{
-            title:documentsConfig.payment_proof.items[0].id,
-            url:imgUrl
-          }
-        })
-      }
+
       toast.success("Payment Slip Updated ")
-    }catch(err){
-      toast.error(err)
-    }
-    setLoading(false) 
-}
-useEffect(()=>{
-  if (user && user.documents && user.documents.length>0){
-    user.documents.find((document:DocumentType)=>{
-      if(document.title.toLowerCase() === documentsConfig.payment_proof.items[0].id){
-        setPaymentDocument(document)
-        setProofImage(document.url)
+      if (paymentDocument) {
+        console.log("checkpoint")
+        await updateDocument({
+          variables: {
+            name: documentsConfig.payment_proof.items[0].id,
+            url: imgUrl,
+            id: paymentDocument.id
+          }
+        })
+        
+      } else {
+        await createDocument({
+          variables: {
+            title: documentsConfig.payment_proof.items[0].id,
+            url: imgUrl
+          }
+        })
       }
-    })
+      
+    } catch (err) {
+
+    }
+    setLoading(false)
   }
-},[user])
+  useEffect(() => {
+    
+    if (user && user.documents && user.documents.length > 0) {
+      user.documents.find((document: DocumentType) => {
+        if (document.title.toLowerCase() === documentsConfig.payment_proof.items[0].id) {
+          setPaymentDocument(document)
+          setProofImage(document.url)
+        }
+      })
+    }
+  }, [user])
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.{isBasicMember ? '10,000/-' : '1,25,000/-'} and upload
+        
+        Kindly Deposit Rs.{user.membership ==="BASIC" ? '10,000/-' : '1,25,000/-'} and upload
         the payment slip as a proof!
       </Typography>
       <TableContainer component={Paper}>
@@ -132,7 +137,7 @@ useEffect(()=>{
           </TableBody>
         </Table>
       </TableContainer>
-      {proofImage ? <img src={proofImage} height={200} width={200} /> : null}
+      {proofImage ? <img src={typeof proofImage == 'object' ? URL.createObjectURL(proofImage) : proofImage} height={200} width={200} /> : null}
       <Grid container p={2} spacing={2}>
         <Grid item xs={4}>
           <Button variant="contained" component="label">
@@ -144,7 +149,7 @@ useEffect(()=>{
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setSubmitButtonEnabled(true)
-                  setProofImage(URL.createObjectURL(f.target.files[0]));
+                  setProofImage(f.target.files[0]);
                   setImageChanged(true)
                 }
               }}
@@ -152,18 +157,19 @@ useEffect(()=>{
           </Button>
         </Grid>
         <Grid item xs={2}>
-          <Button fullWidth 
-          variant="contained" 
-          disabled={!isSubmitButtonEnalbed}
-          onClick={() => {
-            handlePaymentSubmit();
-          }}>
+          <LoadingButton loading={isLoading}
+           fullWidth
+            variant="contained"
+            disabled={!isSubmitButtonEnalbed}
+            onClick={() => {
+              handlePaymentSubmit();
+            }}>
             Submit
-          </Button>
+          </LoadingButton>
         </Grid>
-        <Toaster 
-        position='bottom-center'
-        reverseOrder={false}/>
+        <Toaster
+          position='bottom-center'
+          reverseOrder={false} />
       </Grid>
     </>
   );

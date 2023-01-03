@@ -17,6 +17,7 @@ const authLink = setContext((_, { headers }) => {
 
 const httpLink = createHttpLink({
   uri:CONFIG.SERVER_URL,
+  
 });
 
 let ACCESSTOKEN;

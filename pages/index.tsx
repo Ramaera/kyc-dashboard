@@ -1,21 +1,15 @@
 import {
-  Typography,
-  Box,
-  Card,
-  Container,
-  Button,
-  styled
+  Box, Button, Card,
+  Container, styled, Typography
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
-import Link from 'src/components/Link';
 import Head from 'next/head';
+import Link from 'src/components/Link';
 
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
-import { wrapper } from '@/state/store';
-import { setProfileData } from '@/state/profileSlice';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `

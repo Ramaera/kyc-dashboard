@@ -2,18 +2,11 @@ import {
   Box,
   Button,
   Container,
-  Grid,
-  Typography,
-  styled
+  Grid, styled, Typography
 } from '@mui/material';
 
 import Link from 'src/components/Link';
 
-const TypographyH1 = styled(Typography)(
-  ({ theme }) => `
-    font-size: ${theme.typography.pxToRem(50)};
-`
-);
 
 const TypographyH2 = styled(Typography)(
   ({ theme }) => `

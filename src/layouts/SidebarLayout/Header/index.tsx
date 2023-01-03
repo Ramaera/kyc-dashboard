@@ -1,23 +1,14 @@
 import { useContext } from 'react';
 
-import {
-  Box,
-  alpha,
-  Stack,
-  lighten,
-  Divider,
-  IconButton,
-  Tooltip,
-  styled,
-  useTheme
-} from '@mui/material';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { SidebarContext } from 'src/contexts/SidebarContext';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import {
+  alpha, Box, Divider,
+  IconButton, lighten, Stack, styled, Tooltip, useTheme
+} from '@mui/material';
+import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
-import HeaderMenu from './Menu';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `

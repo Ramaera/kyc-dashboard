@@ -1,23 +1,24 @@
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
+import { getApolloClient } from '@/apollo';
+import { ApolloProvider } from '@apollo/client';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import CssBaseline from '@mui/material/CssBaseline';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Router from 'next/router';
 import nProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import ThemeProvider from 'src/theme/ThemeProvider';
-import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from 'src/createEmotionCache';
-import { SidebarProvider } from 'src/contexts/SidebarContext';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { ApolloProvider} from '@apollo/client';
-import { getApolloClient } from '@/apollo';
-import RamaeraRouter from './RamaeraRouter';
-import { store } from '../src/state/store';
 import { Provider } from 'react-redux';
+import { SidebarProvider } from 'src/contexts/SidebarContext';
+import createEmotionCache from 'src/createEmotionCache';
+import ThemeProvider from 'src/theme/ThemeProvider';
+import { store } from '../src/state/store';
+import RamaeraRouter from './RamaeraRouter';
+import './style.css';
 
 const clientSideEmotionCache = createEmotionCache();
 

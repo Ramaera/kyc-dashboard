@@ -2,19 +2,17 @@
 // import SidebarLayout from '@/layouts/SidebarLayout';
 // import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 
 import { FORGETPASSWORD } from '@/apollo/queries/auth';
-import Dialog from '@mui/material/Dialog';
-import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
 import { toast } from 'react-hot-toast';
-import { responsePathAsArray } from 'graphql';
 
 
 function ForgotPasswordModal({ open, setOpen }) {
-  const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [PWId, setPWId] = useState('');
   const [forgetpassword]=useMutation(FORGETPASSWORD)
@@ -102,7 +100,8 @@ Please Fill This Form to Reset Your Password            </Typography>
                 
               />
 
-              <Button
+              <LoadingButton
+              loading={isLoading}
               // onClick={() => {
               //   router.push('/auth/login');
               // }}
@@ -113,7 +112,7 @@ Please Fill This Form to Reset Your Password            </Typography>
                 
               >
                 Reset Password
-              </Button>
+              </LoadingButton>
 
               <Button
               color="error"

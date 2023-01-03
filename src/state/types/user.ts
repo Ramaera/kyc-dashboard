@@ -2,6 +2,7 @@ import DocumentType  from "./document";
 import NomineeType from "./nominee";
 
    type UserType = {
+    membership: Membership;
     alternate_mobile_number?:string
     createdAt: string
     date_of_birth?: String
@@ -14,8 +15,14 @@ import NomineeType from "./nominee";
     pw_id?:String
     rm_id?:String
     updatedAt?:String
+
     nominee?:NomineeType | undefined
     documents?:[DocumentType] | []
+  }
+
+  enum Membership {
+    BASIC="BASIC",
+    ADVANCE="ADVANCE"
   }
 
 
