@@ -58,7 +58,6 @@ const InfoTab = () => {
 
     return true
   }
-  
   const handlePaymentSubmit = async () => {
     const isValid = validateSubmit(proofImage)
     if (!isValid) {
@@ -93,14 +92,13 @@ const InfoTab = () => {
           }
         })
       }
-      
     } catch (err) {
-
+      
     }
     setLoading(false)
   }
   useEffect(() => {
-    
+    console.log("usercheck",user)
     if (user && user.documents && user.documents.length > 0) {
       user.documents.find((document: DocumentType) => {
         if (document.title.toLowerCase() === documentsConfig.payment_proof.items[0].id) {

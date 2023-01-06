@@ -5,11 +5,6 @@ import {
 // import { Collapse, Text } from "@nextui-org/react";
 
 
-import "primeicons/primeicons.css"; //icons
-import "primereact/resources/primereact.min.css"; //core css
-import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
-import { useEffect, useState } from 'react';
-
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
 import { useAppSelector } from '@/hooks';
@@ -24,7 +19,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import "primeicons/primeicons.css"; //icons
+import "primereact/resources/primereact.min.css"; //core css
+import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+
+
 
 const rows = [
   {
@@ -130,12 +131,9 @@ const DocumentRow = ({ data, documents = [] }) => {
     try {
       for (let i = 0; i < imagesChanged.length; i++) {
         if (imagesChanged[i]) {
-          console.log("images", documents)
-
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
           toast.success(`${documentTitle} Updated`)
-
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true

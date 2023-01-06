@@ -25,7 +25,7 @@ const InfoTab = () => {
 
     setLoading(true);
       try{
-        const resp=await updatedetails({
+        await updatedetails({
           variables:{
             name:fullName,
             father_or_husband_name:fatherHusbandName,
@@ -36,8 +36,6 @@ const InfoTab = () => {
             email:email
           }
         });
-        const data = resp.data.updateUser
-        console.log({data})
       }catch(err){
         toast.error(err.message)
       }
@@ -89,8 +87,7 @@ const InfoTab = () => {
           value={dob}
           onChange={(e)=>{
             setDob(e.target.value)
-          }}
-           />
+          }}/>
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
@@ -113,8 +110,7 @@ const InfoTab = () => {
             value={AlternateMobileNumber}
             onChange={(e)=>{
               setAlternateMobileNumber(e.target.value)
-            }}
-          />
+            }}/>
         </Grid>
         <Grid item xs={4}>
           <TextField 
@@ -128,18 +124,7 @@ const InfoTab = () => {
            />
         </Grid>
       </Grid>
-
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
-          <TextField
-            label="Demat A/C no (optional)"
-            variant="outlined"
-            fullWidth
-            value={demat}
-            onChange={(e)=>{
-              setDemat(e.target.value)}}
-          />
-        </Grid>
         <Grid item xs={4}>
           <Box component="form">
           <LoadingButton loading={isLoading}

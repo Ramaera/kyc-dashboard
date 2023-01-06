@@ -115,9 +115,7 @@ const NomineeTab = () => {
           name: nomineeName,
           relationship: relationship
         }
-      }
-      
-      );
+      });
       
       await handleDocuments(true)
       await handleDocuments(false)

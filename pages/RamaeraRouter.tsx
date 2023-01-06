@@ -76,8 +76,6 @@ const RamaeraRouter = ({ children }) => {
         ) {
             await router.replace("/dashboard")
         }
-
-
         setAuthFinished(true)
     }
 

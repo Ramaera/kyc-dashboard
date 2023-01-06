@@ -3,6 +3,8 @@ import { ReactElement, ReactNode } from 'react';
 import { getApolloClient } from '@/apollo';
 import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,6 +21,8 @@ import ThemeProvider from 'src/theme/ThemeProvider';
 import { store } from '../src/state/store';
 import RamaeraRouter from './RamaeraRouter';
 import './style.css';
+library.add(faEye, faEyeSlash)
+// import type { AppProps } from 'next/app'
 
 const clientSideEmotionCache = createEmotionCache();
 

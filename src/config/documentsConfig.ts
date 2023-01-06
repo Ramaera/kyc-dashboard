@@ -41,8 +41,6 @@ export default {
     },
     avatar: {
         name:"Photo",
-        
-
         items: [
             {
                 id: "avatar",
@@ -50,11 +48,10 @@ export default {
             }
         ]
     },
+
     voterId: {
         id:"voterId",
         name:"Voter Id Card",
-        
-
         items: [
             {
                 id: "voterid_front",
@@ -119,6 +116,17 @@ export default {
                 id: "nominee_aadhar_back",
                 name: "AADHAR Card Back"
             }
+        ]
+    },
+    demat_document: {
+        name:"Demat Document",
+        id:"demat_document",
+        items: [
+            {
+                id: "demat_document",
+                name: "Demat Document"
+            },
+            
         ]
     }
 

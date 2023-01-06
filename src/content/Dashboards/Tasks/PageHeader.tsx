@@ -18,8 +18,14 @@ const user = useAppSelector(state=>state.user.data);
           <AddAlertTwoToneIcon fontSize="large" />
         </AvatarPageTitle> */}
         <Box>
-          <Typography variant="h3" component="h3" gutterBottom>
+          <Typography 
+          variant="h3" 
+          component="h3" 
+          gutterBottom>
             Welcome, {user.name}!
+          </Typography>
+          <Typography variant="h3" component="h3" align="right">
+            Membership Type : {user.membership}
           </Typography>
           <Typography variant="subtitle2">
             Complete Your KYC By Filling the form below

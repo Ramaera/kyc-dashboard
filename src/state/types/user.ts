@@ -2,7 +2,7 @@ import DocumentType  from "./document";
 import NomineeType from "./nominee";
 
    type UserType = {
-    membership: Membership;
+    membership?: Membership;
     alternate_mobile_number?:string
     createdAt: string
     date_of_birth?: String
@@ -15,7 +15,7 @@ import NomineeType from "./nominee";
     pw_id?:String
     rm_id?:String
     updatedAt?:String
-
+    password?:String
     nominee?:NomineeType | undefined
     documents?:[DocumentType] | []
   }
@@ -27,21 +27,3 @@ import NomineeType from "./nominee";
 
 
   export default UserType
-//   alternate_mobile_number
-//   createdAt
-//   date_of_birth
-//   demat_account
-//   documents{
-//     id
-//     title
-//     url
-//   }
-//   email
-//   father_or_husband_name
-//   id
-//   kyc
-//   mobile_number
-//   name
-//   pw_id
-//   rm_id
-//   updatedAt

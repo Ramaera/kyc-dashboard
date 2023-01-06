@@ -18,19 +18,29 @@ mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
     accessToken
     user{
      createdAt
+     membership
      pw_id
     }
     refreshToken
   }
 }`);
 
-export const FORGETPASSWORD = gql(`
-mutation AuthUser($pw_id:String!){
-  passwordresetRequest(data:{pw_id:$pw_id}){
-    accessToken
+export const RESETPASSWORD=gql(`
+mutation forgetPasswordWithPrivateKey($private_key:String!,$newPassword:String!){
+  forgetPasswordWithPrivateKey(data:{
+    private_key:$private_key,
+    newPassword:$newPassword
+  }){
+    message
   }
-}
-`);
+}`)
+
+
+
+
+
+
+
 
 export const UPDATEUSERDETAILS = gql(`
 mutation updateUser(
@@ -111,6 +121,7 @@ query GetUser {
   alternate_mobile_number
   createdAt
   date_of_birth
+  membership
   demat_account
   documents{
     id

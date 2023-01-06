@@ -24,10 +24,7 @@ const MainContent = styled(Box)(
 
 
 function Signup() {
-  // const [pending, setPending] = useState(false);
-  // function handleClick() {
-  //   setPending(true);
-  // }
+
 
   return (
     <>

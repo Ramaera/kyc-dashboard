@@ -1,10 +1,8 @@
-// import Head from 'next/head';
-// import SidebarLayout from '@/layouts/SidebarLayout';
-// import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
-import { FORGETPASSWORD } from '@/apollo/queries/auth';
+import { RESETPASSWORD } from '@/apollo/queries/auth';
+import { useAppSelector } from '@/hooks';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
@@ -13,17 +11,19 @@ import { toast } from 'react-hot-toast';
 
 
 function ForgotPasswordModal({ open, setOpen }) {
+  const user = useAppSelector(state => state.user.data);
   const [isLoading, setLoading] = useState(false);
-  const [PWId, setPWId] = useState('');
-  const [forgetpassword]=useMutation(FORGETPASSWORD)
+  const [private_key, setPrivate_key]=useState('')
+  const [password,setPassword]=useState('')
+  const [resetPassword]=useMutation(RESETPASSWORD)
   const handleClose = () => {
     setOpen(false);
   };
   const validateForm=()=>{
-    console.log(PWId)
-    if (!PWId){
-      console.log(PWId)
-      toast.error("PW Id is not valid");
+    console.log(private_key)
+    if (!private_key){
+      console.log(private_key)
+      toast.error("Private Key is not valid");
       return ;
     }
     return true
@@ -35,17 +35,21 @@ function ForgotPasswordModal({ open, setOpen }) {
 
     setLoading(true);
     if (isValid){
+      
       try {
-        const resp=await forgetpassword({
+        const resp=await resetPassword({
           variables:{
-            pw_id:PWId
+            private_key:private_key,
+            newPassword:password
           }
         });
-        const data=resp.data.passwordresetRequest;
-        console.log(data.value)
-        for (let key of Object.keys(data)) {
-          localStorage.setItem(key,data[key]);
-        }
+        
+        const data=resp.data.forgetPasswordWithPrivateKey;
+        console.log("check the output",data.message)
+        toast.success("Password Updated",data.message)
+        // for (let key of Object.keys(data)) {
+        //   localStorage.setItem(key,data[key]);
+        // }
 
         // console.log({ resp });
       } catch (err) {
@@ -56,7 +60,11 @@ function ForgotPasswordModal({ open, setOpen }) {
     setLoading(false);
   };
 
-
+// setPassword(password)
+useEffect(()=>{
+  if(user)
+setPassword(user.password)
+},[])
   return (
     <>
       <Dialog onClose={handleClose} open={open}>
@@ -92,10 +100,23 @@ Please Fill This Form to Reset Your Password            </Typography>
                 required
                 fullWidth
                 id="referralId"
-                label="PlanetWay Refferal Id or Email"
+                label="Please Enter your Private Key "
                 autoFocus
                 onChange={(e) => {
-                  setPWId(e.target.value);
+                  setPrivate_key(e.target.value);
+                }}
+                
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="referralId"
+                type='password'
+                label="Please Enter your New password"
+                autoFocus
+                onChange={(e) => {
+                  setPassword(e.target.value);
                 }}
                 
               />
@@ -108,12 +129,9 @@ Please Fill This Form to Reset Your Password            </Typography>
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 1, mb: 1 }}
-                
-              >
+                sx={{ mt: 1, mb: 1 }}>
                 Reset Password
               </LoadingButton>
-
               <Button
               color="error"
               onClick={handleClose}

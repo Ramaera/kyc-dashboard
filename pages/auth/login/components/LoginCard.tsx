@@ -1,6 +1,8 @@
 import { LOGIN } from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { IconButton, InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -9,16 +11,30 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import * as React from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import ForgotPasswordModal from "./ForgotPasswordModal";
+// library.add(faEye, faEyeSlash)
+
+
 export default function LoginCard() {
   const router = useRouter();
-  const [PWId, setPWId] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [forgotPasswordShow,setForgotPasswordShow] = React.useState(false)
-  const [isLoading, setLoading] = React.useState(false);
+  const [PWId, setPWId] = useState('');
+  const [visible,setVisible]=useState<boolean>(false)
+  // const [passwordType,setPasswordType]=useState('text')
+  const [password, setPassword] = useState('');
+  const [forgotPasswordShow,setForgotPasswordShow] = useState(false)
+  const [isLoading, setLoading] = useState(false);
   const [login] = useMutation(LOGIN);
+
+// const togglePassword=()=>{
+//   if(passwordType==="password"){
+//     setPasswordType('text')
+//     return;
+//   }
+//   setPasswordType('password')
+// }
+
   const validateForm = () => {
     if (!PWId) {
       toast.error('PW ID is not valid!');
@@ -50,9 +66,9 @@ export default function LoginCard() {
         toast.error(err.message);
       }
     }
-
     setLoading(false);
   };
+  
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -96,11 +112,24 @@ export default function LoginCard() {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            value={password}
             name="password"
             label="Password"
-            type="password"
+            type={visible ? "text" : "password"}
             id="password"
-            autoComplete="current-password"
+            autoComplete="current-password"    
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" aria-label="togglw password visibility"
+                  onClick={()=>setVisible(!visible)}
+          >
+            {visible?<Visibility />:<VisibilityOff />}
+            </IconButton>  
+                </InputAdornment>
+              ),
+            }}
+            
           />
           <LoadingButton
             loading={isLoading}

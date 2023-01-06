@@ -1,7 +1,8 @@
 import { SIGNUP } from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Radio, RadioGroup } from '@mui/material';
+import { IconButton, InputAdornment, Radio, RadioGroup } from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
@@ -14,8 +15,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function SignupCard() {
   const router = useRouter();
-
   const [PWId, setPWId] = React.useState('');
+  const [visible,setVisible]=React.useState<boolean>(false)
   const [password, setPassword] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
 
@@ -45,7 +46,7 @@ export default function SignupCard() {
         const resp = await signup({
           variables: {
             pw_id: PWId,
-            membership,
+            membership:membership,
             password: password
           }
         });
@@ -61,6 +62,12 @@ export default function SignupCard() {
     }
     setLoading(false);
   };
+  // React.useEffect(()=>{
+  //   console.log("dataatsignup",{user})
+  //   // setMembership(user.membership)
+  // },[user])
+
+
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -110,14 +117,9 @@ export default function SignupCard() {
             name="row-radio-buttons-group"
             onChange={(e) => {
               setMembership(e.target.value);
-            }}
-          >
-            <FormControlLabel value="BASIC" control={<Radio />} label="Basic" />
-            <FormControlLabel
-              value="ADVANCE"
-              control={<Radio />}
-              label="Advance"
-            />
+            }}>
+            <FormControlLabel value="BASIC" control={<Radio />} label="Basic"/>
+            <FormControlLabel value="ADVANCE" control={<Radio />} label="Advance"/>
           </RadioGroup>
           <TextField
             margin="normal"
@@ -131,6 +133,17 @@ export default function SignupCard() {
             type="password"
             id="password"
             autoComplete="current-password"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" aria-label="toggle password visibility"
+                  onClick={()=>setVisible(!visible)}
+          >
+            {visible?<Visibility />:<VisibilityOff />}
+            </IconButton>  
+                </InputAdornment>
+              ),
+            }}
           />
 
           <LoadingButton

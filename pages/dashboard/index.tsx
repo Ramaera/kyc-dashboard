@@ -9,6 +9,7 @@ import {
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useState } from 'react';
+import DematTab from "./Tabs/Demat";
 import DocumentTab from "./Tabs/Documents";
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
@@ -105,9 +106,7 @@ function DashboardTasks() {
     { value: 'payment', label: 'Payment' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
-
-
-
+    { value: 'demat', label: 'Demat Account Details' },
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -177,6 +176,13 @@ function DashboardTasks() {
                 <NomineeTab/>
                 </Box>
               </Grid>
+            )}
+            {currentTab === 'demat' && (
+               <Grid item xs={12}>
+               <Box p={4}>
+               <DematTab/>
+               </Box>
+             </Grid>
             )}
           </Grid>
         </Card>
