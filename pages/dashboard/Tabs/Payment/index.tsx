@@ -75,7 +75,6 @@ const InfoTab = () => {
 
       toast.success("Payment Slip Updated ")
       if (paymentDocument) {
-        console.log("checkpoint")
         await updateDocument({
           variables: {
             title: documentsConfig.payment_proof.items[0].id,

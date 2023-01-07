@@ -14,7 +14,7 @@ function ForgotPasswordModal({ open, setOpen }) {
   const user = useAppSelector(state => state.user.data);
   const [isLoading, setLoading] = useState(false);
   const [private_key, setPrivate_key]=useState('')
-  const [password,setPassword]=useState('')
+  const [password,setPassword]=useState<any | null>(null);
   const [resetPassword]=useMutation(RESETPASSWORD)
   const handleClose = () => {
     setOpen(false);
@@ -45,13 +45,8 @@ function ForgotPasswordModal({ open, setOpen }) {
         });
         
         const data=resp.data.forgetPasswordWithPrivateKey;
-        console.log("check the output",data.message)
         toast.success("Password Updated",data.message)
-        // for (let key of Object.keys(data)) {
-        //   localStorage.setItem(key,data[key]);
-        // }
-
-        // console.log({ resp });
+     
       } catch (err) {
         toast.error(err.message);
       }

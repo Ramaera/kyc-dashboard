@@ -184,9 +184,9 @@ const DocumentRow = ({ data, documents = [] }) => {
     for (let i = 0; i < items.length; i++) {
       const _img = images[i];
       if (_img) {
-        // views.push(<img src={_img} height={100} width={100} />)
+        
         views.push(<img src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img} height={100} width={100} />)
-        // {typeof aadharBack == 'object' ? URL.createObjectURL(aadharBack) : aadharBack
+
       }
 
     }

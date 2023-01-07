@@ -25,7 +25,7 @@ const NomineeTab = () => {
   const [isBackImageChanged, setBackImageChanged] = useState(false)
   const [aadharFront, setAadharFront] = useState<any | null>(null);
   const [aadharBack, setAadharBack] = useState<any | null>(null);
-  // const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
   const [aadharFrontDocument, setAadharFrontDocument] = useState<DocumentType>();
   const [aadharBackDocument, setAadharBackDocument] = useState<DocumentType>();
   const validateForm = () => {
@@ -160,6 +160,7 @@ const NomineeTab = () => {
             variant="outlined"
             onChange={(e) => {
               setNomineeName(e.target.value)
+              setSubmitButtonEnabled(true)
             }}
           />
         </Grid>
@@ -170,6 +171,7 @@ const NomineeTab = () => {
             value={relationship}
             onChange={(e) => {
               setRelationship(e.target.value)
+              setSubmitButtonEnabled(true)
             }} />
         </Grid>
         <Grid item xs={4}></Grid>
@@ -189,6 +191,7 @@ const NomineeTab = () => {
                 if (f.target.files.length > 0) {
                   setAadharFront(f.target.files[0]);
                   setFrontImageChanged(true)
+                  setSubmitButtonEnabled(true)
                 }
               }}
             />
@@ -208,6 +211,7 @@ const NomineeTab = () => {
                 if (f.target.files.length > 0) {
                   setAadharBack(f.target.files[0]);
                   setBackImageChanged(true)
+                  setSubmitButtonEnabled(true)
                 }
               }}
             />
@@ -219,7 +223,7 @@ const NomineeTab = () => {
           <LoadingButton loading={isLoading}
             variant="contained"
             component="label"
-            // disabled={!isSubmitButtonEnalbed}
+            disabled={!isSubmitButtonEnalbed}
             onClick={() => {
               handleNomineeSubmit();
             }}>

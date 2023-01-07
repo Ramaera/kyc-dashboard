@@ -64,13 +64,13 @@ export default {
         ]
     },
     passbook: {
-        name:"Passbook",
+        name:"Passbook  or Bank Statement",
         id: "passbook",
 
         items: [
             {
                 id: "passbook",
-                name: "Bank Passbook"
+                name: "Bank Passbook Or Bank Statement"
             },
 
         ]

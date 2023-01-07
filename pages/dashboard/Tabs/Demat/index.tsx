@@ -7,15 +7,15 @@ import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-
+import toast, { Toaster } from 'react-hot-toast';
 const DematTab = () => {
   const user = useAppSelector(state => state.user.data);
-  const [dematAccount,setDematAccount]=useState('')
+  const [dematAccount,setDematAccount]=useState<any | null>(null);
   const [dematDocumentImage,setDematDocumentImage]=useState<any | null>(null);
   const [dematDocument,setDematDocument]=useState<DocumentType>();
   const [isImageChanged, setImageChanged] = useState(false)
   const [isLoading, setLoading] = useState(false);
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
   const [createDocument] = useMutation(CREATEDOCUMENT)
   const [updateDocument] = useMutation(UPDATEDOCUMENT)
   const [updatedetails]=useMutation(UPDATEUSERDETAILS)
@@ -37,12 +37,15 @@ const DematTab = () => {
     setLoading(true);
     
     try {
+      if (dematAccount){
       await updatedetails({
         variables:{
           demat_account:dematAccount,
         
         }
       });
+      // toast.success("Demat Document No. Updated ")
+    }
       let imgUrl = ""
       if (isImageChanged) {
         imgUrl = await handleImageUpload(dematDocumentImage);
@@ -50,9 +53,8 @@ const DematTab = () => {
         imgUrl = dematDocumentImage
       }
 
-      toast.success("Payment Slip Updated ")
+      
       if (dematDocument) {
-        console.log("checkpoint")
         await updateDocument({
           variables: {
             title: documentsConfig.demat_document.items[0].id,
@@ -60,6 +62,7 @@ const DematTab = () => {
             id: dematDocument.id
           }
         })
+        toast.success("Demat Details Updated ")
       } else {
         await createDocument({
           variables: {
@@ -74,15 +77,16 @@ const DematTab = () => {
     setLoading(false)
   }
   useEffect(() => {
-    console.log("user details",user)
     if(user){
       setDematAccount(user.demat_account)
+      
     }
     if (user && user.documents && user.documents.length > 0) {
       user.documents.find((document: DocumentType) => {
         if (document.title.toLowerCase() === documentsConfig.demat_document.items[0].id) {
           setDematDocument(document)
           setDematDocumentImage(document.url)
+          
         }
       })
     }
@@ -91,8 +95,8 @@ const DematTab = () => {
   
   return (
     <>
-      <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+      {/* <Grid container p={2} spacing={2}> */}
+        <Grid item xs={4} sx={{mb:3}}>
           <TextField
             id="outlined"
             label="Demat Account No."
@@ -101,10 +105,12 @@ const DematTab = () => {
             variant="outlined"
             onChange={(e)=>{
               setDematAccount(e.target.value)
+              setSubmitButtonEnabled(true)
             }}
           />
         </Grid>
-        
+        {dematDocumentImage ? <img src={typeof dematDocumentImage == 'object' ? URL.createObjectURL(dematDocumentImage) : dematDocumentImage} height={200} width={200} /> : null}
+        <Grid container p={2} spacing={2}>
         <Grid item xs={4}>
           <Button variant="contained" component="label">
             Upload Demat Account Details 
@@ -116,17 +122,19 @@ const DematTab = () => {
                 if (f.target.files.length > 0) {
                   setDematDocumentImage(f.target.files[0]);
                   setImageChanged(true)
+                  setSubmitButtonEnabled(true)
                 }
               }}
             />
           </Button>
         </Grid>
-        {dematDocumentImage ? <img src={typeof dematDocumentImage == 'object' ? URL.createObjectURL(dematDocumentImage) : dematDocumentImage} height={200} width={200} /> : null}
+        
         <Grid item xs={4}>
           <Box component="form">
           <LoadingButton 
           loading={isLoading}
           fullWidth 
+          disabled={!isSubmitButtonEnalbed}
           variant="contained"
           onClick={()=>{
             handleSubmit();
@@ -136,8 +144,12 @@ const DematTab = () => {
           </LoadingButton>
           </Box>
         </Grid>
+        <Toaster
+            position='bottom-right'
+            reverseOrder={false} />
+        </Grid>
         <Grid item xs={4} />
-      </Grid>
+      {/* </Grid> */}
     </>
   );
 };

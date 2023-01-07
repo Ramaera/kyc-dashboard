@@ -41,7 +41,6 @@ const InfoTab = () => {
       }
     setLoading(false)
   }
-
   useEffect(()=>{
     if(user){
       setFullName(user.name)
