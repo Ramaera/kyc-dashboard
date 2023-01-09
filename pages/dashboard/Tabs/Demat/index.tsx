@@ -44,7 +44,6 @@ const DematTab = () => {
         
         }
       });
-      // toast.success("Demat Document No. Updated ")
     }
       let imgUrl = ""
       if (isImageChanged) {

@@ -24,7 +24,7 @@ const RamaeraRouter = ({ children }) => {
         try {
             const resp = await userResp.refetch()
             
-            console.log("useQue", { userResp, resp })
+            
 
             return resp.data.me
 
@@ -32,7 +32,7 @@ const RamaeraRouter = ({ children }) => {
 
             if (userResp.error && userResp.error.graphQLErrors) {
                 for (let error of userResp.error.graphQLErrors) {
-                    console.log({ error })
+                
                     if (error.extensions.code === "UNAUTHENTICATED") {
                         localStorage.clear()
 

@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
-
-
 import { RESETPASSWORD } from '@/apollo/queries/auth';
 import { useAppSelector } from '@/hooks';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import { toast } from 'react-hot-toast';
-
+import router from 'next/router';
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 function ForgotPasswordModal({ open, setOpen }) {
   const user = useAppSelector(state => state.user.data);
@@ -20,16 +18,14 @@ function ForgotPasswordModal({ open, setOpen }) {
     setOpen(false);
   };
   const validateForm=()=>{
-    console.log(private_key)
+    
     if (!private_key){
-      console.log(private_key)
+  
       toast.error("Private Key is not valid");
       return ;
     }
     return true
   }
-
- 
   const handleSubmit = async () => {
     const isValid=validateForm();
 
@@ -54,8 +50,6 @@ function ForgotPasswordModal({ open, setOpen }) {
 
     setLoading(false);
   };
-
-// setPassword(password)
 useEffect(()=>{
   if(user)
 setPassword(user.password)
@@ -115,12 +109,11 @@ Please Fill This Form to Reset Your Password            </Typography>
                 }}
                 
               />
-
               <LoadingButton
               loading={isLoading}
-              // onClick={() => {
-              //   router.push('/auth/login');
-              // }}
+              onClick={() => {
+                router.push('/auth/login');
+              }}
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -139,6 +132,9 @@ Please Fill This Form to Reset Your Password            </Typography>
             </Box>
           </Box>
         </Grid>
+        <Toaster
+          position='bottom-center'
+          reverseOrder={false} />
       </Dialog>
     </>
   );

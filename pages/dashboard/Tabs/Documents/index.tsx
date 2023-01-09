@@ -1,10 +1,3 @@
-import {
-  Badge, Button,
-  Typography
-} from '@mui/material';
-// import { Collapse, Text } from "@nextui-org/react";
-
-
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
 import { useAppSelector } from '@/hooks';
@@ -12,6 +5,7 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
+import { Badge, Button, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -24,8 +18,6 @@ import "primereact/resources/primereact.min.css"; //core css
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-
-
 
 const rows = [
   {
@@ -48,37 +40,25 @@ const rows = [
     config: documentsConfig.voterId,
     status: -1,
     isOptional: true
-
   }, {
     config: documentsConfig.driving_license,
     status: -1,
     isOptional: true
-
   },
 ];
-
-
-
-
-
-
 const DocumentRow = ({ data, documents = [] }) => {
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
-
   const [createDocument] = useMutation(CREATEDOCUMENT)
   const [updateDocument] = useMutation(UPDATEDOCUMENT)
-
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     const _imgs = []
     for (let _document of documents) {
       _imgs.push(_document.url)
     }
-
     setImages(_imgs)
   }, [documents])
-
   const getBadge = (status) => {
     let msg = 'Upload';
     if (status != -1) {
@@ -86,8 +66,6 @@ const DocumentRow = ({ data, documents = [] }) => {
     }
     return <Badge badgeContent={msg} color="secondary"></Badge>;
   };
-
-
   const handleCreateDocument = async (title: string, url: string) => {
     await createDocument({
       variables: {
@@ -95,6 +73,9 @@ const DocumentRow = ({ data, documents = [] }) => {
         url
       }
     })
+
+    toast.success(`${title} Uploaded`)
+
   }
 
   const handleUpdateDocument = async (id: string, title: string, url: string) => {
@@ -105,9 +86,11 @@ const DocumentRow = ({ data, documents = [] }) => {
         url
       }
     })
+
+        toast.success(`${title} Updated`)
+
+    
   }
-
-
   const isValidToClick = () => {
     const hasSomethingChanged = imagesChanged.find((img) => {
       if (img) {
@@ -118,22 +101,19 @@ const DocumentRow = ({ data, documents = [] }) => {
       return true
     }
   }
-
-
   const handleDocumentUpload = async () => {
-
-
     setLoading(true)
 
+
+
+    console.log({imagesChanged,images})
     //handle upload 
-
-
     try {
       for (let i = 0; i < imagesChanged.length; i++) {
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
-          toast.success(`${documentTitle} Updated`)
+          // toast.success(`${documentTitle} Updated`)
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true
@@ -141,17 +121,19 @@ const DocumentRow = ({ data, documents = [] }) => {
           })
           if (_document) {
             //updateDocument
+            console.log({imgUrl})
             await handleUpdateDocument(_document.id, documentTitle, imgUrl);
+            // location.reload()
           } else {
             //create document
             await handleCreateDocument(documentTitle, imgUrl);
+            // location.reload()
           }
         }
       }
     } catch (err) {
-
+      console.log("error", err)
     }
-
     setLoading(false)
   }
   const getActionCell = () => {
@@ -168,6 +150,7 @@ const DocumentRow = ({ data, documents = [] }) => {
               const _images = [...images];
               _images[i] = (f.target.files[0])
               setImages(_images);
+              console.log("imageChanged", _images[i])
               const _imagesChanged = [...imagesChanged]
               _imagesChanged[i] = true
               setImagesChange(_imagesChanged)
@@ -184,11 +167,8 @@ const DocumentRow = ({ data, documents = [] }) => {
     for (let i = 0; i < items.length; i++) {
       const _img = images[i];
       if (_img) {
-        
         views.push(<img src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img} height={100} width={100} />)
-
       }
-
     }
     if (views.length == 0) {
       return <Typography variant="subtitle1">
@@ -223,24 +203,13 @@ const DocumentRow = ({ data, documents = [] }) => {
     </TableRow>
   );
 };
-
-
-
 const DocumentTab = () => {
-
-
-
   const user = useAppSelector(state => state.user.data)
-
-
-
   const getDocumentsByConfig = (configs) => {
     const documents = []
     if (user && user.documents) {
-
       for (let config of configs) {
-        const document = user.documents.find((doc:DocumentType) => {
-
+        const document = user.documents.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
             return true
           }
@@ -252,11 +221,6 @@ const DocumentTab = () => {
     }
     return documents;
   }
-
-
-
-
-
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
@@ -274,7 +238,7 @@ const DocumentTab = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row,index) => {
+            {rows.map((row, index) => {
               return <DocumentRow
                 data={row}
                 key={index}
@@ -285,8 +249,8 @@ const DocumentTab = () => {
           </TableRow>
         </Table>
         <Toaster
-            position='bottom-center'
-            reverseOrder={false} />
+          position='bottom-center'
+          reverseOrder={false} />
       </TableContainer>
     </>
   );

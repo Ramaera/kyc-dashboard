@@ -3,13 +3,13 @@ import { useAppSelector } from '@/hooks';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
+import { useEffect, useRef, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
 
+  const ref = useRef()
   const user = useAppSelector(state=>state.user.data);
-  
   const [fullName,setFullName]=useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName]=useState<any | null>(null);
   const [dob,setDob]=useState<any | null>(null);
@@ -19,10 +19,42 @@ const InfoTab = () => {
   const [isLoading, setLoading] = useState(false);
   const [updatedetails]=useMutation(UPDATEUSERDETAILS)
   const [demat,setDemat]=useState<any | null>(null);
+  const [errors, setErrors] = useState({
+     mobileNumber:null,
+     AlternateMobileNumber:null,
+     email:null
+    });
+    const validateEmail=(email)=>{
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      return emailRegex.test(email);
+    }
+
+    const validateMobileNumber=(mobile_number)=>{
+      const mobileNumberRegex = /^\d{10}$/;
+    return mobileNumberRegex.test(mobile_number);
+    }
 
   const handleSubmit=async ()=>{
 
+   
+    
+    if (!validateMobileNumber(mobileNumber)) {
+      setErrors({...errors ,mobileNumber: 'Please enter a valid mobile number' });
+      return;
+    }else{
+      setErrors({...errors ,mobileNumber: '' });
+    }
+    if (!validateMobileNumber(AlternateMobileNumber)) {
+      setErrors({ ...errors, AlternateMobileNumber: 'Please enter a valid Alternate mobile number' });
+      return;
+    }else{
+      setErrors({ ...errors, AlternateMobileNumber: '' });
 
+    }
+    if (!validateEmail(email)) {
+      setErrors({ ...errors, email: 'Please enter a valid Email' });
+      return;
+    }
     setLoading(true);
       try{
         await updatedetails({
@@ -36,6 +68,7 @@ const InfoTab = () => {
             email:email
           }
         });
+        toast.success("Details Updated")
       }catch(err){
         toast.error(err.message)
       }
@@ -58,8 +91,9 @@ const InfoTab = () => {
       <Grid container p={2} spacing={2}>
         <Grid item xs={4}>
           <TextField
+          required
             id="outlined"
-            label="Full Name*"
+            label="Full Name"
             fullWidth
             value={fullName}
             variant="outlined"
@@ -70,7 +104,8 @@ const InfoTab = () => {
         </Grid>
         <Grid item xs={4}>
           <TextField
-            label="Father's/Husband's Name*"
+          required
+            label="Father's/Husband's Name"
             variant="outlined"
             fullWidth
             value={fatherHusbandName}
@@ -80,9 +115,16 @@ const InfoTab = () => {
           />
         </Grid>
         <Grid item xs={4}>
-          <TextField label="DOB(DD/MM/YYYY)*" 
+          <TextField 
+          required
+          hidden
+          label="Date of Birth" 
           variant="outlined" 
           fullWidth
+          type='text'
+          ref={ref}
+         
+          placeholder=''
           value={dob}
           onChange={(e)=>{
             setDob(e.target.value)
@@ -92,35 +134,52 @@ const InfoTab = () => {
       <Grid container p={2} spacing={2}>
         <Grid item xs={4}>
           <TextField 
-          label="Mobile Number*" 
+          required
+          label="Mobile Number" 
           variant="outlined" 
           fullWidth
+          
           value={mobileNumber}
-          onChange={(e)=>{
+          onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
             SetMobileNumber(e.target.value)
+
+            if(validateMobileNumber(e.target.value)){
+              setErrors({ ...errors, mobileNumber: '' });
+            }
+            else{
+              setErrors({...errors ,mobileNumber: 'Please enter a valid mobile number' });
+            }
           }} />
+           {errors.mobileNumber && <p>{errors.mobileNumber}</p>}
         </Grid>
         <Grid item xs={4}>
           <TextField
+          required
             id="outlined"
-            label="Alternate Number*"
+            label="Alternate Number"
             fullWidth
             variant="outlined"
             value={AlternateMobileNumber}
-            onChange={(e)=>{
+            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
               setAlternateMobileNumber(e.target.value)
             }}/>
+            {errors.AlternateMobileNumber && <p>{errors.AlternateMobileNumber}</p>}
         </Grid>
         <Grid item xs={4}>
           <TextField 
-          label="Email ID*" 
+          required
+          label="Email ID" 
           variant="outlined" 
           fullWidth
           value={email}
-          onChange={(e)=>{
+          onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
             setEmail(e.target.value)
-          }}
-           />
+            if (validateEmail(e.target.value)) {
+              setErrors({ ...errors,email: null });
+            }
+          }}/>
+          {errors.email && <p>{errors.email}</p>}
+           
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
@@ -136,6 +195,9 @@ const InfoTab = () => {
           </LoadingButton>
           </Box>
         </Grid>
+        <Toaster
+          position='bottom-center'
+          reverseOrder={false} />
         <Grid item xs={4} />
       </Grid>
     </>

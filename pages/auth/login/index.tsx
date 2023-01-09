@@ -7,8 +7,6 @@ import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 import LoginCard from './components/LoginCard';
 
-
-
 const MainContent = styled(Box)(
   () => `
     height: 100%;
@@ -22,8 +20,6 @@ const MainContent = styled(Box)(
 );
 
 function Login() {
-  
-
   return (
     <>
       <Head>

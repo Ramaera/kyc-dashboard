@@ -193,3 +193,52 @@
     }
   }
   
+
+  ::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+    color: transparent;
+}
+
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+    color: transparent;
+}
+
+
+
+input[type="date"]::before {
+  content: attr(placeholder);
+  position: absolute;
+  color: #999999 !important;
+}
+
+input[type="date"] {
+  color: #ffffff !important;
+}
+
+input[type="date"]:focus,
+input[type="date"]:valid {
+  color: #666666 !important;
+}
+
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {
+  content: "" !important;
+}
+
+
+.dateclass {
+  width: 100%;
+}
+
+.dateclass.placeholderclass::before {
+  width: 100%;
+  content: attr(placeholder);
+}
+
+.dateclass.placeholderclass:hover::before {
+  width: 0%;
+  content: "";
+}

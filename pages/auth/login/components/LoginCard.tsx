@@ -14,26 +14,16 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import ForgotPasswordModal from "./ForgotPasswordModal";
-// library.add(faEye, faEyeSlash)
 
 
 export default function LoginCard() {
   const router = useRouter();
   const [PWId, setPWId] = useState('');
   const [visible,setVisible]=useState<boolean>(false)
-  // const [passwordType,setPasswordType]=useState('text')
   const [password, setPassword] = useState('');
   const [forgotPasswordShow,setForgotPasswordShow] = useState(false)
   const [isLoading, setLoading] = useState(false);
   const [login] = useMutation(LOGIN);
-
-// const togglePassword=()=>{
-//   if(passwordType==="password"){
-//     setPasswordType('text')
-//     return;
-//   }
-//   setPasswordType('password')
-// }
 
   const validateForm = () => {
     if (!PWId) {
