@@ -6,7 +6,7 @@ import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
-  Box, Button, Divider, Grid, TextField, Typography
+  Box, Button, Grid, TextField, Typography
 } from '@mui/material';
 import 'primeicons/primeicons.css'; //icons
 import 'primereact/resources/primereact.min.css'; //core css

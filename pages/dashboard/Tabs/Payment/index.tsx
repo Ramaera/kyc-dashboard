@@ -136,7 +136,11 @@ const InfoTab = () => {
       {proofImage ? <img src={typeof proofImage == 'object' ? URL.createObjectURL(proofImage) : proofImage} height={200} width={200} /> : null}
       <Grid container p={2} spacing={2}>
         <Grid 
-         item xs={12} sm={5} md={3} lg={3}
+          item
+          xs={12}
+          sm={5}
+          md={3}
+          lg={3}
         >
           <Button variant="contained" component="label">
             Select Payment Slip

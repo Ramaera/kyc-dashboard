@@ -3,12 +3,11 @@ import { useAppSelector } from '@/hooks';
 import { useMutation } from '@apollo/client';
 import { DesktopDatePicker, LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
 
-  const ref = useRef()
   const user = useAppSelector(state=>state.user.data);
   const [fullName,setFullName]=useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName]=useState<any | null>(null);

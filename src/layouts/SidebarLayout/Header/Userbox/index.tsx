@@ -11,7 +11,6 @@ import {
   Popover,
   Typography
 } from '@mui/material';
-import Paper from '@mui/material/Paper';
 import { badgeClasses } from '@mui/material/Badge';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
