@@ -1,38 +1,19 @@
-import {
-  Grid,
-  Box,
-  useTheme,
-  Divider,
-  TextField,
-  Button,
-  Typography
-} from '@mui/material';
-
-import TeamOverview from '@/content/Dashboards/Tasks/TeamOverview';
-import TasksAnalytics from '@/content/Dashboards/Tasks/TasksAnalytics';
-import Performance from '@/content/Dashboards/Tasks/Performance';
-import Projects from '@/content/Dashboards/Tasks/Projects';
-import Checklist from '@/content/Dashboards/Tasks/Checklist';
-import Profile from '@/content/Dashboards/Tasks/Profile';
-import { useState } from 'react';
-
+import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
+import documentsConfig from '@/config/documentsConfig';
+import { useAppSelector } from '@/hooks';
+import DocumentType from '@/state/types/document';
+import handleImageUpload from '@/utils/upload';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Button, Grid, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const rows = [
   {
@@ -61,14 +42,76 @@ const rows = [
   }
 ];
 const InfoTab = () => {
-  const theme = useTheme();
-  const [isBasicMember, setBasicMember] = useState(false);
-  const [proofImage, setProofImage] = useState();
-  const [isSubmitButtonEnalbed,setSubmitButtonEnabled] = useState(false)
+  const user = useAppSelector(state => state.user.data);
+  const [isLoading, setLoading] = useState(false)
+  const [proofImage, setProofImage] = useState<any | null>(null);
+  const [paymentDocument, setPaymentDocument] = useState<DocumentType>();
+  const [isImageChanged, setImageChanged] = useState(false)
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
+  const [createDocument] = useMutation(CREATEDOCUMENT)
+  const [updateDocument] = useMutation(UPDATEDOCUMENT)
+  const validateSubmit = (imgUrl) => {
+    if (!imgUrl) {
+      alert("Invalid Image")
+      return false
+    }
+
+    return true
+  }
+  const handlePaymentSubmit = async () => {
+    const isValid = validateSubmit(proofImage)
+    if (!isValid) {
+      return
+    }
+    setLoading(true);
+    
+    try {
+      let imgUrl = ""
+      if (isImageChanged) {
+        imgUrl = await handleImageUpload(proofImage);
+      } else {
+        imgUrl = proofImage
+      }
+
+      toast.success("Payment Slip Updated ")
+      if (paymentDocument) {
+        await updateDocument({
+          variables: {
+            title: documentsConfig.payment_proof.items[0].id,
+            url: imgUrl,
+            id: paymentDocument.id
+          }
+        })
+        
+      } else {
+        await createDocument({
+          variables: {
+            title: documentsConfig.payment_proof.items[0].id,
+            url: imgUrl
+          }
+        })
+      }
+    } catch (err) {
+      
+    }
+    setLoading(false)
+  }
+  useEffect(() => {
+  
+    if (user && user.documents && user.documents.length > 0) {
+      user.documents.find((document: DocumentType) => {
+        if (document.title.toLowerCase() === documentsConfig.payment_proof.items[0].id) {
+          setPaymentDocument(document)
+          setProofImage(document.url)
+        }
+      })
+    }
+  }, [user])
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.{isBasicMember ? '10,000/-' : '1,25,000/-'} and upload
+        
+        Kindly Deposit Rs.{user.membership ==="BASIC" ? '10,000/-' : '1,25,000/-'} and upload
         the payment slip as a proof!
       </Typography>
       <TableContainer component={Paper}>
@@ -90,13 +133,13 @@ const InfoTab = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
-      {proofImage ? <img src={proofImage} height={200} width={200} /> : null}
-
+      {proofImage ? <img src={typeof proofImage == 'object' ? URL.createObjectURL(proofImage) : proofImage} height={200} width={200} /> : null}
       <Grid container p={2} spacing={2}>
-        <Grid item xs={2}>
+        <Grid 
+         item xs={12} sm={5} md={3} lg={3}
+        >
           <Button variant="contained" component="label">
-            Upload Proof
+            Select Payment Slip
             <input
               type="file"
               accept="image/*"
@@ -104,19 +147,27 @@ const InfoTab = () => {
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setSubmitButtonEnabled(true)
-                  setProofImage(URL.createObjectURL(f.target.files[0]));
+                  setProofImage(f.target.files[0]);
+                  setImageChanged(true)
                 }
               }}
             />
           </Button>
         </Grid>
         <Grid item xs={2}>
-          <Button fullWidth variant="contained" disabled={!isSubmitButtonEnalbed}>
+          <LoadingButton loading={isLoading}
+           fullWidth
+            variant="contained"
+            disabled={!isSubmitButtonEnalbed}
+            onClick={() => {
+              handlePaymentSubmit();
+            }}>
             Submit
-          </Button>
+          </LoadingButton>
         </Grid>
-
-        <Grid item sx={8}/>
+        <Toaster
+          position='bottom-center'
+          reverseOrder={false} />
       </Grid>
     </>
   );

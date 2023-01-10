@@ -3,19 +3,11 @@ import Scrollbar from 'src/components/Scrollbar';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import {
-  Box,
-  Drawer,
-  alpha,
-  styled,
-  Divider,
-  useTheme,
-  Button,
-  lighten,
-  darken
+  alpha, Box, darken, Divider, Drawer, lighten, styled, useTheme
 } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
 import Logo from 'src/components/LogoSign';
+import SidebarMenu from './SidebarMenu';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `

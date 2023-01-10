@@ -1,70 +1,64 @@
-import * as React from 'react';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { useRouter } from 'next/router';
-
-import toast, { Toaster } from 'react-hot-toast';
+import { LOGIN } from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
-import { SIGNUP } from '@/apollo/queries/auth';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { IconButton, InputAdornment } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import ForgotPasswordModal from "./ForgotPasswordModal";
+
 
 export default function LoginCard() {
   const router = useRouter();
-
-  const [PWId, setPWId] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  const [isLoading, setLoading] = React.useState(false);
-
-  const [signup] = useMutation(SIGNUP);
+  const [PWId, setPWId] = useState('');
+  const [visible,setVisible]=useState<boolean>(false)
+  const [password, setPassword] = useState('');
+  const [forgotPasswordShow,setForgotPasswordShow] = useState(false)
+  const [isLoading, setLoading] = useState(false);
+  const [login] = useMutation(LOGIN);
 
   const validateForm = () => {
     if (!PWId) {
       toast.error('PW ID is not valid!');
-
       return;
     }
-
     if (!password || password.length < 8) {
       toast.error('Password is not valid!');
-
       return;
     }
-
     return true;
   };
-
   const handleSubmit = async () => {
     const isValid = validateForm();
-
     setLoading(true);
     if (isValid) {
       try {
-        const resp = await signup({
+        const resp = await login({
           variables: {
             pw_id: PWId,
             password: password
           }
         });
-
-        const data = resp.data.signup;
+        const data = resp.data.login;
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
-
-        console.log({ resp });
+        router.reload()
       } catch (err) {
         toast.error(err.message);
       }
     }
-
     setLoading(false);
   };
-
+  
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -100,10 +94,7 @@ export default function LoginCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-            }}
-          />
-
-          
+            }}/>
           <TextField
             margin="normal"
             required
@@ -111,13 +102,25 @@ export default function LoginCard() {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            value={password}
             name="password"
             label="Password"
-            type="password"
+            type={visible ? "text" : "password"}
             id="password"
-            autoComplete="current-password"
+            autoComplete="current-password"    
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" aria-label="togglw password visibility"
+                  onClick={()=>setVisible(!visible)}
+          >
+            {visible?<Visibility />:<VisibilityOff />}
+            </IconButton>  
+                </InputAdornment>
+              ),
+            }}
+            
           />
-
           <LoadingButton
             loading={isLoading}
             fullWidth
@@ -133,17 +136,15 @@ export default function LoginCard() {
           <Typography variant="body1" color="text.secondary" text-align="left">
             Don't Have An Account?
           </Typography>
-          {/* <Grid item xs>
+          <Grid item xs>
           <Link
             href="#"
-            underline="always"
-            variant="body2"
-            onClick={() => {
-              setForgotPasswordOpen(true);
-            }}
-          >   */}
-          {/* </Link> */}
-          {/* </Grid> */}
+          >  
+<a onClick={() => {
+setForgotPasswordShow(true);
+}}> Forgot Password</a>         
+          </Link>
+          </Grid>
 
           <Button
             onClick={() => {
@@ -152,13 +153,12 @@ export default function LoginCard() {
             fullWidth
             variant="outlined"
             sx={{ mt: 2, mb: 2 }}
-            href=""
           >
             Register
           </Button>
+          <ForgotPasswordModal open={forgotPasswordShow} setOpen={setForgotPasswordShow}/>
         </Box>
       </Box>
-
       <Toaster />
     </Grid>
   );

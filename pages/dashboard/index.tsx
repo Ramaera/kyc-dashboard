@@ -1,32 +1,19 @@
-import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import { ChangeEvent, useState } from 'react';
-import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
 import Footer from '@/components/Footer';
-import {
-  Grid,
-  Tab,
-  Tabs,
-  Divider,
-  Container,
-  Card,
-  Box,
-  useTheme,
-  styled
-} from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-
-import TeamOverview from '@/content/Dashboards/Tasks/TeamOverview';
-import TasksAnalytics from '@/content/Dashboards/Tasks/TasksAnalytics';
-import Performance from '@/content/Dashboards/Tasks/Performance';
-import Projects from '@/content/Dashboards/Tasks/Projects';
-import Checklist from '@/content/Dashboards/Tasks/Checklist';
-import Profile from '@/content/Dashboards/Tasks/Profile';
-import TaskSearch from '@/content/Dashboards/Tasks/TaskSearch';
+import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
+import SidebarLayout from '@/layouts/SidebarLayout';
+import {
+  Box, Card, Container, Grid, styled, Tab,
+  Tabs
+} from '@mui/material';
+import Head from 'next/head';
+import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import { ChangeEvent, useState } from 'react';
+import DematTab from "./Tabs/Demat";
+import DocumentTab from "./Tabs/Documents";
 import InfoTab from './Tabs/Info';
-import PaymentTab from "./Tabs/Payment";
-import DocumentTab from "./Tabs/Documents"
 import NomineeTab from './Tabs/Nominee';
+import PaymentTab from "./Tabs/Payment";
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -111,18 +98,15 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-  const theme = useTheme();
 
-  const [currentTab, setCurrentTab] = useState<string>('nominee');
+  const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
-
-
-
+    { value: 'demat', label: 'Demat Account Details' },
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -130,7 +114,7 @@ function DashboardTasks() {
   };
 
   return (
-    <>
+    <ProtectedSSRoute>
       <Head>
         <title>KYC Dashboard</title>
       </Head>
@@ -185,21 +169,26 @@ function DashboardTasks() {
                 </Box>
               </Grid>
             )}
-
-
+            
 {currentTab === 'nominee' && (
               <Grid item xs={12}>
                 <Box p={4}>
                 <NomineeTab/>
-
                 </Box>
               </Grid>
+            )}
+            {currentTab === 'demat' && (
+               <Grid item xs={12}>
+               <Box p={4}>
+               <DematTab/>
+               </Box>
+             </Grid>
             )}
           </Grid>
         </Card>
       </Container>
       <Footer />
-    </>
+    </ProtectedSSRoute>
   );
 }
 

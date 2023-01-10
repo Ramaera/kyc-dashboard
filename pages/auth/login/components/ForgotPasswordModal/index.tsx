@@ -1,18 +1,59 @@
-import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-
-import Dialog from '@mui/material/Dialog';
+import { RESETPASSWORD } from '@/apollo/queries/auth';
+import { useAppSelector } from '@/hooks';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import router from 'next/router';
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 function ForgotPasswordModal({ open, setOpen }) {
+  const user = useAppSelector(state => state.user.data);
+  const [isLoading, setLoading] = useState(false);
+  const [private_key, setPrivate_key]=useState('')
+  const [password,setPassword]=useState<any | null>(null);
+  const [resetPassword]=useMutation(RESETPASSWORD)
   const handleClose = () => {
     setOpen(false);
   };
+  const validateForm=()=>{
+    
+    if (!private_key){
+  
+      toast.error("Private Key is not valid");
+      return ;
+    }
+    return true
+  }
+  const handleSubmit = async () => {
+    const isValid=validateForm();
 
-  const handleSubmit = () => {};
+    setLoading(true);
+    if (isValid){
+      
+      try {
+        const resp=await resetPassword({
+          variables:{
+            private_key:private_key,
+            newPassword:password
+          }
+        });
+        
+        const data=resp.data.forgetPasswordWithPrivateKey;
+        toast.success("Password Updated",data.message)
+     
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
 
+    setLoading(false);
+  };
+useEffect(()=>{
+  if(user)
+setPassword(user.password)
+},[])
   return (
     <>
       <Dialog onClose={handleClose} open={open}>
@@ -48,19 +89,37 @@ Please Fill This Form to Reset Your Password            </Typography>
                 required
                 fullWidth
                 id="referralId"
-                label="PlanetWay Refferal Id or Email"
+                label="Please Enter your Private Key "
                 autoFocus
+                onChange={(e) => {
+                  setPrivate_key(e.target.value);
+                }}
+                
               />
-
-              <Button
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="referralId"
+                type='password'
+                label="Please Enter your New password"
+                autoFocus
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                
+              />
+              <LoadingButton
+              loading={isLoading}
+              onClick={() => {
+                router.push('/auth/login');
+              }}
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 1, mb: 1 }}
-              >
+                sx={{ mt: 1, mb: 1 }}>
                 Reset Password
-              </Button>
-
+              </LoadingButton>
               <Button
               color="error"
               onClick={handleClose}
@@ -73,6 +132,9 @@ Please Fill This Form to Reset Your Password            </Typography>
             </Box>
           </Box>
         </Grid>
+        <Toaster
+          position='bottom-center'
+          reverseOrder={false} />
       </Dialog>
     </>
   );

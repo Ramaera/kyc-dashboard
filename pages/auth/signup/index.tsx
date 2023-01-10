@@ -1,24 +1,13 @@
-import { useState } from 'react';
 import {
-  Box,
-  Typography,
-  Hidden,
-  Container,
-  Button,
-  Grid,
-  styled
+  Box, Container, Grid, Hidden, styled, Typography
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Head from 'next/head';
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
-import LoadingButton from '@mui/lab/LoadingButton';
 import SignupCard from './components/SignupCard';
 
-const GridWrapper = styled(Grid)(
- 
-);
+
 
 const MainContent = styled(Box)(
   () => `
@@ -32,23 +21,10 @@ const MainContent = styled(Box)(
 `
 );
 
-const TypographyPrimary = styled(Typography)(
-  ({ theme }) => `
-      color: ${theme.colors.alpha.white[100]};
-`
-);
 
-const TypographySecondary = styled(Typography)(
-  ({ theme }) => `
-      color: ${theme.colors.alpha.white[70]};
-`
-);
 
 function Signup() {
-  const [pending, setPending] = useState(false);
-  function handleClick() {
-    setPending(true);
-  }
+
 
   return (
     <>
@@ -115,7 +91,6 @@ function Signup() {
     </>
   );
 }
-
 export default Signup;
 
 Signup.getLayout = function getLayout(page: ReactElement) {

@@ -1,19 +1,13 @@
-import { useState } from 'react';
 import {
-  Box,
-  Typography,
-  Hidden,
-  Container,
-  Button,
-  Grid,
-  styled
+  Box, Button, Container, Grid, Hidden, styled, Typography
 } from '@mui/material';
 import type { ReactElement } from 'react';
+import { useState } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
-import Head from 'next/head';
 import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Head from 'next/head';
 
 const GridWrapper = styled(Grid)(
   ({ theme }) => `
@@ -33,11 +27,6 @@ const MainContent = styled(Box)(
 `
 );
 
-const TypographyPrimary = styled(Typography)(
-  ({ theme }) => `
-      color: ${theme.colors.alpha.white[100]};
-`
-);
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `

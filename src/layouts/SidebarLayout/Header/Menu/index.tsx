@@ -41,13 +41,10 @@ const ListWrapper = styled(Box)(
                         }
                     }
                 }
-
                 &.active,
                 &:active,
                 &:hover {
-                
                     background: transparent;
-                
                     .MuiListItemText-root {
                         .MuiTypography-root {
                             &:before {

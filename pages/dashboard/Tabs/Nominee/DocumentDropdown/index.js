@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
-import { FileUpload } from "primereact/fileupload";
 
 import { Button } from "primereact/button";
 
-import "./style.css";
 const DocumentDropDown = ({ items }) => {
   const [selectedOption, setSelectedOption] = useState();
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState([]);
 
-  const handleUpload = (event) => {
-    console.log("handleUpload", event.files);
-  };
 
   const onChangePicture = (e) => {
     setSelectedFile([...selectedFile,URL.createObjectURL(e.target.files[0])]);
@@ -36,8 +31,8 @@ const DocumentDropDown = ({ items }) => {
 
       <div style={{display:"flex"}}>
       {selectedFile.length>0 ? (
-          selectedFile.map((file)=>{
-            return <img src={file} style={{ height: "200px", marginTop: 10 }} />
+          selectedFile.map((file,index)=>{
+            return <img src={file} key={index} style={{ height: "200px", marginTop: 10 }} />
           })
       ) : null}
       </div>

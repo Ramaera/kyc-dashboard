@@ -1,28 +1,24 @@
 import { useRef, useState } from 'react';
 
-import NextLink from 'next/link';
-
 import {
-  Avatar,
+  Badge,
   Box,
   Button,
   Divider,
+  Grid,
   Hidden,
   lighten,
-  List,
-  ListItem,
-  ListItemText,
   Popover,
   Typography
 } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { badgeClasses } from '@mui/material/Badge';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import { styled } from '@mui/material/styles';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { logout } from '@/state/slice/userSlice';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-
+import { styled } from '@mui/material/styles';
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -58,16 +54,21 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
+
+const Item = styled(Typography)(({ theme }) => ({
+  // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  // ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: 'center'
+  // color: theme.palette.text.secondary,
+}));
 function HeaderUserbox() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
-  };
+  const user = useAppSelector((state) => state.user.data);
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
   const handleOpen = (): void => {
     setOpen(true);
   };
@@ -76,15 +77,47 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+
   return (
-    <>
+    <div>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        {/* <Avatar variant="rounded" alt={user.name} src={} /> */}
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body2">{user.name}</UserBoxLabel>
+
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              <Grid display={'flex'}></Grid>
+
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Item>
+                    <Badge
+                      badgeContent={user.membership}
+                   
+                      color="success"
+                    />
+                  </Item>
+                </Grid>
+                <Grid item>
+                  <Item>
+                    <Badge
+                      variant="standard"
+                      sx={{
+                        marginLeft: 1,
+                        marginRight: 1,
+                        [`& .${badgeClasses.standard}`]: {
+                          width: '70px'
+                          // minWidth:"100%",
+                        }
+                      }}
+                      // classes={{ badge: classes.badge }}
+                      badgeContent={user.rm_id}
+                      color="primary"
+                    />
+                  </Item>
+                </Grid>
+              </Grid>
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -105,12 +138,12 @@ function HeaderUserbox() {
           horizontal: 'right'
         }}
       >
-        <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <MenuUserBox display="flex">
+          {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user.rm_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -135,15 +168,22 @@ function HeaderUserbox() {
             </ListItem>
           </NextLink>
         </List> */}
+
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button
+            color="primary"
+            fullWidth
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>
         </Box>
       </Popover>
-    </>
+    </div>
   );
 }
 

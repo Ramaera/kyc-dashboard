@@ -1,23 +1,20 @@
 import { useState } from 'react';
 
-import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
+import Head from 'next/head';
 
-import TopBarContent from '@/content/Applications/Messenger/TopBarContent';
 import BottomBarContent from '@/content/Applications/Messenger/BottomBarContent';
-import SidebarContent from '@/content/Applications/Messenger/SidebarContent';
 import ChatContent from '@/content/Applications/Messenger/ChatContent';
+import SidebarContent from '@/content/Applications/Messenger/SidebarContent';
+import TopBarContent from '@/content/Applications/Messenger/TopBarContent';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
 import Scrollbar from '@/components/Scrollbar';
 
 import {
-  Box,
-  styled,
-  Divider,
+  Box, Divider,
   Drawer,
-  IconButton,
-  useTheme
+  IconButton, styled, useTheme
 } from '@mui/material';
 
 const RootWrapper = styled(Box)(
