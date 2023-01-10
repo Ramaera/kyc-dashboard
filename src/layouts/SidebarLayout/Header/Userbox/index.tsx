@@ -9,8 +9,10 @@ import {
   Hidden,
   lighten,
   Popover,
+  Stack,
   Typography
 } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { badgeClasses } from '@mui/material/Badge';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -53,7 +55,6 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-
 const Item = styled(Typography)(({ theme }) => ({
   // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   // ...theme.typography.body2,
@@ -76,48 +77,52 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
-
   return (
     <div>
+      {/* <Grid container spacing={2}>
+                <Grid item>
+                  <Badge badgeContent={user.membership} color="success" />
+                </Grid>
+                <Grid item>
+                  <Badge
+                    variant="standard"
+                    sx={{
+                      marginLeft: 1,
+                      marginRight: 1,
+                      [`& .${badgeClasses.standard}`]: {
+                        // width: '100%'
+                        // minWidth:"100%",
+                      }
+                    }}
+                    // classes={{ badge: classes.badge }}
+                    badgeContent={user.rm_id}
+                    color="primary"
+                  />
+                </Grid>
+              </Grid> */}
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         {/* <Avatar variant="rounded" alt={user.name} src={} /> */}
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body2">{user.name}</UserBoxLabel>
+            <Stack spacing={8} direction="row" mt={1}>
+              <Badge badgeContent={user.membership} color="success" />
 
-            <UserBoxDescription variant="body2">
-              <Grid display={'flex'}></Grid>
-
-              <Grid container spacing={2}>
-                <Grid item>
-                  <Item>
-                    <Badge
-                      badgeContent={user.membership}
-                   
-                      color="success"
-                    />
-                  </Item>
-                </Grid>
-                <Grid item>
-                  <Item>
-                    <Badge
-                      variant="standard"
-                      sx={{
-                        marginLeft: 1,
-                        marginRight: 1,
-                        [`& .${badgeClasses.standard}`]: {
-                          width: '70px'
-                          // minWidth:"100%",
-                        }
-                      }}
-                      // classes={{ badge: classes.badge }}
-                      badgeContent={user.rm_id}
-                      color="primary"
-                    />
-                  </Item>
-                </Grid>
-              </Grid>
-            </UserBoxDescription>
+              <Badge
+                variant="standard"
+                sx={{
+                  // marginLeft: 1,
+                  // marginRight: 1,
+                  [`& .${badgeClasses.standard}`]: {
+                    // width: '100%'
+                    minWidth: '75px'
+                  }
+                }}
+                // classes={{ badge: classes.badge }}
+                badgeContent={user.rm_id}
+                color="primary"
+              />
+            </Stack>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
