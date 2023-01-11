@@ -111,7 +111,7 @@ const InfoTab = () => {
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
         
-        Kindly Deposit Rs.{user.membership ==="BASIC" ? '10,000/-' : '1,25,000/-'} and upload
+        Kindly Deposit Rs.{user.membership ==="BASIC" ? '10,000/-' : '1,00,000/-'} and upload
         the payment slip as a proof!
       </Typography>
       <TableContainer component={Paper}>

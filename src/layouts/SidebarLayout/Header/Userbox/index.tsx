@@ -5,14 +5,12 @@ import {
   Box,
   Button,
   Divider,
-  Grid,
   Hidden,
   lighten,
   Popover,
   Stack,
   Typography
 } from '@mui/material';
-import Paper from '@mui/material/Paper';
 import { badgeClasses } from '@mui/material/Badge';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -55,13 +53,6 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-const Item = styled(Typography)(({ theme }) => ({
-  // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  // ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: 'center'
-  // color: theme.palette.text.secondary,
-}));
 function HeaderUserbox() {
   const user = useAppSelector((state) => state.user.data);
 

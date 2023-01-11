@@ -130,7 +130,7 @@ export default function SignupCard() {
             }}
             name="password"
             label="Password"
-            type="password"
+            type={visible? "text":"password"}
             id="password"
             autoComplete="current-password"
             InputProps={{
