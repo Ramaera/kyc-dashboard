@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 
 
+
 const RamaeraRouter = ({ children }) => {
     const router = useRouter();
     const userResp = useQuery(GetUser);
@@ -23,10 +24,7 @@ const RamaeraRouter = ({ children }) => {
 
         try {
             const resp = await userResp.refetch()
-            
-            
-
-            return resp.data.me
+        return resp.data.me
 
         } catch (err) {
 
@@ -39,9 +37,7 @@ const RamaeraRouter = ({ children }) => {
                     }
                 }
             }
-
         }
-
         return null
     }
     const validatedAuth = async () => {
