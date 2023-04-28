@@ -1,70 +1,75 @@
-import { CREATEDOCUMENT, UPDATEDOCUMENT, UPSERTNOMINEE } from '@/apollo/queries/auth';
+import {
+  CREATEDOCUMENT,
+  UPDATEDOCUMENT,
+  UPSERTNOMINEE
+} from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
 import { useAppSelector } from '@/hooks';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import {
-  Box, Button, Grid, TextField, Typography
-} from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import 'primeicons/primeicons.css'; //icons
 import 'primereact/resources/primereact.min.css'; //core css
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const NomineeTab = () => {
-  const user = useAppSelector(state => state.user.data);
-  const [nomineeName, setNomineeName] = useState('')
-  const [relationship, setRelationship] = useState('')
+  const user = useAppSelector((state) => state.user.data);
+  const [nomineeName, setNomineeName] = useState('');
+  const [relationship, setRelationship] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [createDocument] = useMutation(CREATEDOCUMENT)
-  const [updateDocument] = useMutation(UPDATEDOCUMENT)
-  const [createOrUpdateNominee] = useMutation(UPSERTNOMINEE)
-  const [isFrontImageChanged, setFrontImageChanged] = useState(false)
-  const [isBackImageChanged, setBackImageChanged] = useState(false)
+  const [createDocument] = useMutation(CREATEDOCUMENT);
+  const [updateDocument] = useMutation(UPDATEDOCUMENT);
+  const [createOrUpdateNominee] = useMutation(UPSERTNOMINEE);
+  const [isFrontImageChanged, setFrontImageChanged] = useState(false);
+  const [isBackImageChanged, setBackImageChanged] = useState(false);
   const [aadharFront, setAadharFront] = useState<any | null>(null);
   const [aadharBack, setAadharBack] = useState<any | null>(null);
-  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
-  const [aadharFrontDocument, setAadharFrontDocument] = useState<DocumentType>();
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
+  const [aadharFrontDocument, setAadharFrontDocument] =
+    useState<DocumentType>();
   const [aadharBackDocument, setAadharBackDocument] = useState<DocumentType>();
   const validateForm = () => {
-
     if (!nomineeName) {
-      alert("Please Enter Nominee Name")
-      return null
+      alert('Please Enter Nominee Name');
+      return null;
     }
 
     if (!relationship) {
-      alert("Please Enter Nominee Relation")
-      return null
+      alert('Please Enter Nominee Relation');
+      return null;
     }
 
-
     if (!aadharFrontDocument && !isFrontImageChanged) {
-      alert("Please Select Nominee Aadhar Front")
+      alert('Please Select Nominee Aadhar Front');
 
-      return null
+      return null;
     }
 
     if (!aadharBackDocument && !isBackImageChanged) {
-      alert("Please Select Nominee Aadhar Back")
+      alert('Please Select Nominee Aadhar Back');
 
-      return null
+      return null;
     }
-    return true
-  }
+    return true;
+  };
 
-  const handleUpdateDocument = async (id: string, url: string, title: string) => {
+  const handleUpdateDocument = async (
+    id: string,
+    url: string,
+    title: string
+  ) => {
     const resp = await updateDocument({
       variables: {
         id,
         title,
-        url,
+        url
       }
-    })
-    return resp
-  }
+    });
+    return resp;
+  };
 
   const handleCreateDocument = async (url: string, title: string) => {
     const resp = await createDocument({
@@ -72,41 +77,43 @@ const NomineeTab = () => {
         title,
         url
       }
-    })
-    
-    return resp
-  }
+    });
+
+    return resp;
+  };
   const handleDocuments = async (isFront: boolean) => {
-    const hasDocumentChanged = isFront ? isFrontImageChanged : isBackImageChanged
+    const hasDocumentChanged = isFront
+      ? isFrontImageChanged
+      : isBackImageChanged;
     if (!hasDocumentChanged) {
-      return
+      return;
     }
 
     const baseDocument = isFront ? aadharFrontDocument : aadharBackDocument;
-    const documentTitle = isFront ? documentsConfig.nominee_aadhar.items[0].id : documentsConfig.nominee_aadhar.items[1].id
+    const documentTitle = isFront
+      ? documentsConfig.nominee_aadhar.items[0].id
+      : documentsConfig.nominee_aadhar.items[1].id;
 
-    let imgUrl = ''
+    let imgUrl = '';
     if (documentTitle === 'nominee_aadhar_front') {
       imgUrl = await handleImageUpload(aadharFront);
-      toast.success("Nominee Aadhar Front Updated")
+      toast.success('Nominee Aadhar Front Updated');
     } else {
-      imgUrl = await handleImageUpload(aadharBack)
-      toast.success("Nominee Aadhar Back Updated")
+      imgUrl = await handleImageUpload(aadharBack);
+      toast.success('Nominee Aadhar Back Updated');
     }
-    
+
     if (baseDocument) {
-      await handleUpdateDocument(baseDocument.id, imgUrl, documentTitle)
+      await handleUpdateDocument(baseDocument.id, imgUrl, documentTitle);
     } else {
-      await handleCreateDocument(imgUrl, documentTitle)
+      await handleCreateDocument(imgUrl, documentTitle);
     }
-  }
-
-
+  };
 
   const handleNomineeSubmit = async () => {
-    const isTextValid = validateForm()
+    const isTextValid = validateForm();
     if (!isTextValid) {
-      return
+      return;
     }
     setLoading(true);
     try {
@@ -116,34 +123,40 @@ const NomineeTab = () => {
           relationship: relationship
         }
       });
-      
-      await handleDocuments(true)
-      await handleDocuments(false)
-      toast.success("Nominee Updated Succesfully")
+
+      await handleDocuments(true);
+      await handleDocuments(false);
+      toast.success('Nominee Updated Succesfully');
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
   useEffect(() => {
     if (user) {
       if (user.nominee) {
-        setNomineeName(user.nominee.name)
-        setRelationship(user.nominee.relationship)
+        setNomineeName(user.nominee.name);
+        setRelationship(user.nominee.relationship);
       }
       if (user.documents && user.documents.length > 0) {
         user.documents.find((document: DocumentType) => {
-          if (document.title.toLowerCase() === documentsConfig.nominee_aadhar.items[0].id) {
-            setAadharFrontDocument(document)
-            setAadharFront(document.url)
-          } else if (document.title.toLowerCase() === documentsConfig.nominee_aadhar.items[1].id) {
-            setAadharBack(document.url)
-            setAadharBackDocument(document)
+          if (
+            document.title.toLowerCase() ===
+            documentsConfig.nominee_aadhar.items[0].id
+          ) {
+            setAadharFrontDocument(document);
+            setAadharFront(document.url);
+          } else if (
+            document.title.toLowerCase() ===
+            documentsConfig.nominee_aadhar.items[1].id
+          ) {
+            setAadharBack(document.url);
+            setAadharBackDocument(document);
           }
-        })
+        });
       }
     }
-  }, [user])
+  }, [user]);
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
@@ -159,28 +172,42 @@ const NomineeTab = () => {
             value={nomineeName}
             variant="outlined"
             onChange={(e) => {
-              setNomineeName(e.target.value)
-              setSubmitButtonEnabled(true)
+              setNomineeName(e.target.value);
+              setSubmitButtonEnabled(true);
             }}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <TextField label="Relationship"
+          <TextField
+            label="Relationship"
             variant="outlined"
             fullWidth
             value={relationship}
             onChange={(e) => {
-              setRelationship(e.target.value)
-              setSubmitButtonEnabled(true)
-            }} />
+              setRelationship(e.target.value);
+              setSubmitButtonEnabled(true);
+            }}
+          />
         </Grid>
         {/* <Grid item xs={4}></Grid> */}
       </Grid>
 
       <Grid container pt={1} pl={2} pb={2} pr={2} spacing={2}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Status :{' '}
+            {aadharFrontDocument ? aadharFrontDocument.status : 'Unknown'}
+          </Typography>
           {aadharFront ? (
-            <img src={typeof aadharFront == 'object' ? URL.createObjectURL(aadharFront) : aadharFront} height={200} width={200} />
+            <img
+              src={
+                typeof aadharFront == 'object'
+                  ? URL.createObjectURL(aadharFront)
+                  : aadharFront
+              }
+              height={200}
+              width={200}
+            />
           ) : null}
           <Button variant="contained" component="label">
             Upload Aadhar Card Front
@@ -191,16 +218,28 @@ const NomineeTab = () => {
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharFront(f.target.files[0]);
-                  setFrontImageChanged(true)
-                  setSubmitButtonEnabled(true)
+                  setFrontImageChanged(true);
+                  setSubmitButtonEnabled(true);
                 }
               }}
             />
           </Button>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Status :{' '}
+            {aadharBackDocument ? aadharBackDocument.status : 'Unknown'}
+          </Typography>
           {aadharBack ? (
-            <img src={typeof aadharBack == 'object' ? URL.createObjectURL(aadharBack) : aadharBack} height={200} width={200} />
+            <img
+              src={
+                typeof aadharBack == 'object'
+                  ? URL.createObjectURL(aadharBack)
+                  : aadharBack
+              }
+              height={200}
+              width={200}
+            />
           ) : null}
           <Button variant="contained" component="label">
             Upload Aadhar Card Back
@@ -211,8 +250,8 @@ const NomineeTab = () => {
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharBack(f.target.files[0]);
-                  setBackImageChanged(true)
-                  setSubmitButtonEnabled(true)
+                  setBackImageChanged(true);
+                  setSubmitButtonEnabled(true);
                 }
               }}
             />
@@ -220,21 +259,21 @@ const NomineeTab = () => {
         </Grid>
         {/* <Grid item xs={4}></Grid>
         <Divider /> */}
-        
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3} pl={2}>
         <Box component="form" mt={2}>
-          <LoadingButton loading={isLoading}
+          <LoadingButton
+            loading={isLoading}
             variant="contained"
             component="label"
             disabled={!isSubmitButtonEnalbed}
             onClick={() => {
               handleNomineeSubmit();
-            }}>
-            Submit</LoadingButton>
-          <Toaster
-            position='bottom-center'
-            reverseOrder={false} />
+            }}
+          >
+            Submit
+          </LoadingButton>
+          <Toaster position="bottom-center" reverseOrder={false} />
         </Box>
       </Grid>
     </>

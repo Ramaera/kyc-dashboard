@@ -42,38 +42,38 @@ const rows = [
   }
 ];
 const InfoTab = () => {
-  const user = useAppSelector(state => state.user.data);
-  const [isLoading, setLoading] = useState(false)
+  const user = useAppSelector((state) => state.user.data);
+  const [isLoading, setLoading] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
   const [paymentDocument, setPaymentDocument] = useState<DocumentType>();
-  const [isImageChanged, setImageChanged] = useState(false)
-  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false)
-  const [createDocument] = useMutation(CREATEDOCUMENT)
-  const [updateDocument] = useMutation(UPDATEDOCUMENT)
+  const [isImageChanged, setImageChanged] = useState(false);
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
+  const [createDocument] = useMutation(CREATEDOCUMENT);
+  const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
-      alert("Invalid Image")
-      return false
+      alert('Invalid Image');
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
   const handlePaymentSubmit = async () => {
-    const isValid = validateSubmit(proofImage)
+    const isValid = validateSubmit(proofImage);
     if (!isValid) {
-      return
+      return;
     }
     setLoading(true);
-    
+
     try {
-      let imgUrl = ""
+      let imgUrl = '';
       if (isImageChanged) {
         imgUrl = await handleImageUpload(proofImage);
       } else {
-        imgUrl = proofImage
+        imgUrl = proofImage;
       }
 
-      toast.success("Payment Slip Updated ")
+      toast.success('Payment Slip Updated ');
       if (paymentDocument) {
         await updateDocument({
           variables: {
@@ -81,38 +81,40 @@ const InfoTab = () => {
             url: imgUrl,
             id: paymentDocument.id
           }
-        })
-        
+        });
       } else {
         await createDocument({
           variables: {
             title: documentsConfig.payment_proof.items[0].id,
             url: imgUrl
           }
-        })
+        });
       }
-    } catch (err) {
-      
-    }
-    setLoading(false)
-  }
+    } catch (err) {}
+    setLoading(false);
+  };
   useEffect(() => {
-  
     if (user && user.documents && user.documents.length > 0) {
       user.documents.find((document: DocumentType) => {
-        if (document.title.toLowerCase() === documentsConfig.payment_proof.items[0].id) {
-          setPaymentDocument(document)
-          setProofImage(document.url)
+        if (
+          document.title.toLowerCase() ===
+          documentsConfig.payment_proof.items[0].id
+        ) {
+          setPaymentDocument(document);
+          setProofImage(document.url);
         }
-      })
+      });
     }
-  }, [user])
+  }, [user]);
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        
-        Kindly Deposit Rs.{user.membership ==="BASIC" ? '1,000/-' : '1,00,000/-'} and upload
-        the payment slip as a proof!
+        Status : {paymentDocument ? paymentDocument.status : 'Unknown'}
+      </Typography>
+      <Typography variant="h4" sx={{ my: 2 }}>
+        Kindly Deposit Rs.
+        {user.membership === 'BASIC' ? '1,000/-' : '1,00,000/-'} and upload the
+        payment slip as a proof!
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 100 }} aria-label="simple table">
@@ -133,15 +135,19 @@ const InfoTab = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {proofImage ? <img src={typeof proofImage == 'object' ? URL.createObjectURL(proofImage) : proofImage} height={200} width={200} /> : null}
+      {proofImage ? (
+        <img
+          src={
+            typeof proofImage == 'object'
+              ? URL.createObjectURL(proofImage)
+              : proofImage
+          }
+          height={200}
+          width={200}
+        />
+      ) : null}
       <Grid container p={2} spacing={2}>
-        <Grid 
-          item
-          xs={12}
-          sm={5}
-          md={3}
-          lg={3}
-        >
+        <Grid item xs={12} sm={5} md={3} lg={3}>
           <Button variant="contained" component="label">
             Select Payment Slip
             <input
@@ -150,28 +156,28 @@ const InfoTab = () => {
               hidden
               onChange={(f) => {
                 if (f.target.files.length > 0) {
-                  setSubmitButtonEnabled(true)
+                  setSubmitButtonEnabled(true);
                   setProofImage(f.target.files[0]);
-                  setImageChanged(true)
+                  setImageChanged(true);
                 }
               }}
             />
           </Button>
         </Grid>
         <Grid item xs={2}>
-          <LoadingButton loading={isLoading}
-           fullWidth
+          <LoadingButton
+            loading={isLoading}
+            fullWidth
             variant="contained"
             disabled={!isSubmitButtonEnalbed}
             onClick={() => {
               handlePaymentSubmit();
-            }}>
+            }}
+          >
             Submit
           </LoadingButton>
         </Grid>
-        <Toaster
-          position='bottom-center'
-          reverseOrder={false} />
+        <Toaster position="bottom-center" reverseOrder={false} />
       </Grid>
     </>
   );

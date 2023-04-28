@@ -25,7 +25,7 @@ mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
   }
 }`);
 
-export const RESETPASSWORD=gql(`
+export const RESETPASSWORD = gql(`
 mutation forgetPasswordWithPrivateKey($private_key:String!,$newPassword:String!){
   forgetPasswordWithPrivateKey(data:{
     private_key:$private_key,
@@ -33,14 +33,7 @@ mutation forgetPasswordWithPrivateKey($private_key:String!,$newPassword:String!)
   }){
     message
   }
-}`)
-
-
-
-
-
-
-
+}`);
 
 export const UPDATEUSERDETAILS = gql(`
 mutation updateUser(
@@ -80,8 +73,7 @@ export const CREATEDOCUMENT = gql(`
                               url
                             }
                           }
-                          `)
-
+                          `);
 
 export const UPDATEDOCUMENT = gql(`
                           mutation updateDocument(
@@ -98,8 +90,7 @@ export const UPDATEDOCUMENT = gql(`
                               url
                             }
                           }
-                          `)
-
+                          `);
 
 export const UPSERTNOMINEE = gql(`
         mutation upsertNominee(
@@ -113,7 +104,7 @@ export const UPSERTNOMINEE = gql(`
                       }){
                         name
                         relationship
-                      }}`)
+                      }}`);
 
 export const GetUser = gql(`
 query GetUser {
@@ -127,6 +118,7 @@ query GetUser {
     id
     title
     url
+    status
   }
   nominee{
     id

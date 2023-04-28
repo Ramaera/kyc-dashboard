@@ -215,7 +215,7 @@ const DocumentRow = ({ data, documents = [] }) => {
         </LoadingButton>
       </TableCell>
 
-      <TableCell>{getBadge(data.status)}</TableCell>
+      <TableCell>{documents[0].status}</TableCell>
     </TableRow>
   );
 };
