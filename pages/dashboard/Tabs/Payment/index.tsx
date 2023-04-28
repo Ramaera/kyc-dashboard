@@ -109,9 +109,6 @@ const InfoTab = () => {
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Status : {paymentDocument ? paymentDocument.status : 'Unknown'}
-      </Typography>
-      <Typography variant="h4" sx={{ my: 2 }}>
         Kindly Deposit Rs.
         {user.membership === 'BASIC' ? '1,000/-' : '1,00,000/-'} and upload the
         payment slip as a proof!
@@ -142,10 +139,13 @@ const InfoTab = () => {
               ? URL.createObjectURL(proofImage)
               : proofImage
           }
+          style={{ marginTop: '10px' }}
           height={200}
-          width={200}
         />
       ) : null}
+      <Typography variant="h4" sx={{ my: 2 }}>
+        Status : {paymentDocument ? paymentDocument.status : 'Unknown'}
+      </Typography>
       <Grid container p={2} spacing={2}>
         <Grid item xs={12} sm={5} md={3} lg={3}>
           <Button variant="contained" component="label">

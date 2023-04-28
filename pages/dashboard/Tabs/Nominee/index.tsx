@@ -192,12 +192,8 @@ const NomineeTab = () => {
         {/* <Grid item xs={4}></Grid> */}
       </Grid>
 
-      <Grid container pt={1} pl={2} pb={2} pr={2} spacing={2}>
+      <Grid container pt={1} pl={2} pb={2} spacing={15}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Status :{' '}
-            {aadharFrontDocument ? aadharFrontDocument.status : 'Unknown'}
-          </Typography>
           {aadharFront ? (
             <img
               src={
@@ -205,11 +201,14 @@ const NomineeTab = () => {
                   ? URL.createObjectURL(aadharFront)
                   : aadharFront
               }
-              height={200}
-              width={200}
+              height={180}
             />
           ) : null}
-          <Button variant="contained" component="label">
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Status :{' '}
+            {aadharFrontDocument ? aadharFrontDocument.status : 'Unknown'}
+          </Typography>
+          <Button size="large" variant="contained" component="label">
             Upload Aadhar Card Front
             <input
               type="file"
@@ -226,10 +225,6 @@ const NomineeTab = () => {
           </Button>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Status :{' '}
-            {aadharBackDocument ? aadharBackDocument.status : 'Unknown'}
-          </Typography>
           {aadharBack ? (
             <img
               src={
@@ -237,11 +232,14 @@ const NomineeTab = () => {
                   ? URL.createObjectURL(aadharBack)
                   : aadharBack
               }
-              height={200}
-              width={200}
+              height={180}
             />
           ) : null}
-          <Button variant="contained" component="label">
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Status :{' '}
+            {aadharBackDocument ? aadharBackDocument.status : 'Unknown'}
+          </Typography>
+          <Button size="large" variant="contained" component="label">
             Upload Aadhar Card Back
             <input
               type="file"

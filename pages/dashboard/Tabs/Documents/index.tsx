@@ -180,7 +180,6 @@ const DocumentRow = ({ data, documents = [] }) => {
           <img
             src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img}
             height={100}
-            width={100}
           />
         );
       }

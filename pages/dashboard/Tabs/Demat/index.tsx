@@ -96,9 +96,6 @@ const DematTab = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Status : {dematDocument ? dematDocument.status : 'Unknown'}
-      </Typography>
       {/* <Grid container p={2} spacing={2}> */}
       <Grid item xs={12} sm={6} md={4}>
         <TextField
@@ -120,10 +117,13 @@ const DematTab = () => {
               ? URL.createObjectURL(dematDocumentImage)
               : dematDocumentImage
           }
+          style={{ marginTop: '10px' }}
           height={200}
-          width={200}
         />
       ) : null}
+      <Typography variant="h4" sx={{ my: 2 }}>
+        Status : {dematDocument ? dematDocument.status : 'Unknown'}
+      </Typography>
       <Grid container pt={3} pb={2} pr={2} spacing={2}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
           <Button variant="contained" component="label">
