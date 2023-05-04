@@ -9,6 +9,7 @@ import {
   lighten,
   Popover,
   Stack,
+  Avatar,
   Typography
 } from '@mui/material';
 import { badgeClasses } from '@mui/material/Badge';
@@ -67,6 +68,15 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
+  const avatarFetch = (userData) => {
+    let photoUrl = '';
+    userData.documents.forEach((doc) => {
+      if (doc.title === 'avatar') {
+        photoUrl = doc.url;
+      }
+    });
+    return photoUrl;
+  };
 
   return (
     <div>
@@ -92,14 +102,14 @@ function HeaderUserbox() {
                 </Grid>
               </Grid> */}
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        {/* <Avatar variant="rounded" alt={user.name} src={} /> */}
+        <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body2">{user.name}</UserBoxLabel>
-            <Stack spacing={8} direction="row" mt={1}>
-              <Badge badgeContent={user.membership} color="success" />
+            <Stack spacing={8} direction="row" mt={1} ml={3}>
+              {/* <Badge badgeContent={user.membership} color="success" />
 
-              <Badge
+                <Badge
                 variant="standard"
                 sx={{
                   // marginLeft: 1,
@@ -112,7 +122,7 @@ function HeaderUserbox() {
                 // classes={{ badge: classes.badge }}
                 badgeContent={user.rm_id}
                 color="primary"
-              />
+              /> */}
             </Stack>
           </UserBoxText>
         </Hidden>
@@ -134,11 +144,12 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox display="flex">
-          {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
+          <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
+
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user ? user.name : ''}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.rm_id}
+              {user && user.rm_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

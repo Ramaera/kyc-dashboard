@@ -28,21 +28,15 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
   }
 }));
 
-
-
 function Logo() {
-
   return (
-    <TooltipWrapper
-      title="Ramaera KYC Dashboard"
-      arrow
-    >
-      <LogoWrapper href="/">
-      <img
-                  // alt="500"
-                  height={150}
-                  src="/static/images/logo/logo.png"
-                />
+    <TooltipWrapper title="Ramaera KYC Dashboard" arrow>
+      <LogoWrapper href="/dashboard">
+        <img
+          // alt="500"
+          height={150}
+          src="/static/images/logo/logo.png"
+        />
       </LogoWrapper>
     </TooltipWrapper>
   );

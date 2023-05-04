@@ -147,12 +147,36 @@ const DocumentRow = ({ data, documents = [] }) => {
     const items = data.config.items;
     for (let i = 0; i < items.length; i++) {
       views.push(
-        <Button component="label">
+        <Button
+          style={{
+            cursor: documents[0]
+              ? documents[0].status === 'APPROVED'
+                ? 'not-allowed'
+                : 'pointer'
+              : 'pointer',
+            marginTop: '10px'
+          }}
+          component="label"
+          color={
+            documents[0]
+              ? documents[0].status === 'APPROVED'
+                ? 'secondary'
+                : 'primary'
+              : 'primary'
+          }
+        >
           Choose {items[i].name}
           <input
             type="file"
             accept="image/*"
             hidden
+            disabled={
+              documents[0]
+                ? documents[0].status === 'APPROVED'
+                  ? true
+                  : false
+                : false
+            }
             onChange={(f) => {
               if (f.target.files.length > 0) {
                 const _images = [...images];
@@ -180,6 +204,7 @@ const DocumentRow = ({ data, documents = [] }) => {
           <img
             src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img}
             height={100}
+            style={{ marginLeft: '5px' }}
           />
         );
       }
@@ -214,7 +239,18 @@ const DocumentRow = ({ data, documents = [] }) => {
         </LoadingButton>
       </TableCell>
 
-      <TableCell>{documents[0].status}</TableCell>
+      <TableCell>
+        <span
+          style={{
+            color: documents[0]
+              ? (documents[0].status === 'APPROVED' && 'green') ||
+                (documents[0].status === 'REJECTED' && 'red')
+              : ''
+          }}
+        >
+          {documents[0] && documents[0].status}
+        </span>
+      </TableCell>
     </TableRow>
   );
 };

@@ -121,17 +121,54 @@ const DematTab = () => {
           height={200}
         />
       ) : null}
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Status : {dematDocument ? dematDocument.status : 'Unknown'}
-      </Typography>
+      {dematDocument && dematDocument.status && (
+        <Typography variant="h4" sx={{ mt: 2 }}>
+          Status :{' '}
+          <span
+            style={{
+              color: dematDocument
+                ? (dematDocument.status === 'APPROVED' && 'green') ||
+                  (dematDocument.status === 'REJECTED' && 'red')
+                : ''
+            }}
+          >
+            {' '}
+            {dematDocument && dematDocument.status}
+          </span>
+        </Typography>
+      )}
       <Grid container pt={3} pb={2} pr={2} spacing={2}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
-          <Button variant="contained" component="label">
+          <Button
+            variant="contained"
+            style={{
+              cursor: dematDocument
+                ? dematDocument.status === 'APPROVED'
+                  ? 'not-allowed'
+                  : 'pointer'
+                : 'pointer'
+            }}
+            component="label"
+            color={
+              dematDocument
+                ? dematDocument.status === 'APPROVED'
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
+            }
+          >
             Upload Demat Account Details
             <input
               type="file"
               accept="image/*"
               hidden
+              disabled={
+                dematDocument
+                  ? dematDocument.status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
+              }
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setDematDocumentImage(f.target.files[0]);

@@ -8,7 +8,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
   const user = useAppSelector((state) => state.user.data);
-  console.log('useruseruseruser', user);
+  // console.log('useruseruseruser', user);
   const [fullName, setFullName] = useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName] = useState<any | null>(null);
   const [dob, setDob] = useState<any | null>(null);
@@ -74,7 +74,8 @@ const InfoTab = () => {
       });
       toast.success('Details Updated');
     } catch (err) {
-      toast.error(err.message);
+      console.log(err.message);
+      toast.error('Email already registered');
     }
     setLoading(false);
   };
@@ -123,12 +124,14 @@ const InfoTab = () => {
             label="Date of Birth"
             inputFormat="dd/MM/yyyy"
             value={dob}
-            disableFuture
+            // disableFuture
             onChange={(e) => {
               console.log(e);
               setDob(e);
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField {...params} sx={{ width: '100%' }} />
+            )}
           />
           {/* <TextField 
           required

@@ -204,16 +204,53 @@ const NomineeTab = () => {
               height={180}
             />
           ) : null}
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Status :{' '}
-            {aadharFrontDocument ? aadharFrontDocument.status : 'Unknown'}
-          </Typography>
-          <Button size="large" variant="contained" component="label">
+          {aadharFrontDocument && aadharFrontDocument.status && (
+            <Typography variant="h4" sx={{ my: 2 }}>
+              Status :{' '}
+              <span
+                style={{
+                  color: aadharFrontDocument
+                    ? (aadharFrontDocument.status === 'APPROVED' && 'green') ||
+                      (aadharFrontDocument.status === 'REJECTED' && 'red')
+                    : ''
+                }}
+              >
+                {' '}
+                {aadharFrontDocument && aadharFrontDocument.status}
+              </span>
+            </Typography>
+          )}
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              cursor: aadharFrontDocument
+                ? aadharFrontDocument.status === 'APPROVED'
+                  ? 'not-allowed'
+                  : 'pointer'
+                : 'pointer'
+            }}
+            component="label"
+            color={
+              aadharFrontDocument
+                ? aadharFrontDocument.status === 'APPROVED'
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
+            }
+          >
             Upload Aadhar Card Front
             <input
               type="file"
               accept="image/*"
               hidden
+              disabled={
+                aadharFrontDocument
+                  ? aadharFrontDocument.status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
+              }
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharFront(f.target.files[0]);
@@ -235,16 +272,52 @@ const NomineeTab = () => {
               height={180}
             />
           ) : null}
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Status :{' '}
-            {aadharBackDocument ? aadharBackDocument.status : 'Unknown'}
-          </Typography>
-          <Button size="large" variant="contained" component="label">
+          {aadharBackDocument && aadharBackDocument.status && (
+            <Typography variant="h4" sx={{ my: 2 }}>
+              Status :{' '}
+              <span
+                style={{
+                  color: aadharBackDocument
+                    ? (aadharBackDocument.status === 'APPROVED' && 'green') ||
+                      (aadharBackDocument.status === 'REJECTED' && 'red')
+                    : ''
+                }}
+              >
+                {aadharBackDocument && aadharBackDocument.status}
+              </span>
+            </Typography>
+          )}
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              cursor: aadharBackDocument
+                ? aadharBackDocument.status === 'APPROVED'
+                  ? 'not-allowed'
+                  : 'pointer'
+                : 'pointer'
+            }}
+            component="label"
+            color={
+              aadharBackDocument
+                ? aadharBackDocument.status === 'APPROVED'
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
+            }
+          >
             Upload Aadhar Card Back
             <input
               type="file"
               accept="image/*"
               hidden
+              disabled={
+                aadharFrontDocument
+                  ? aadharFrontDocument.status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
+              }
               onChange={(f) => {
                 if (f.target.files.length > 0) {
                   setAadharBack(f.target.files[0]);

@@ -1,10 +1,19 @@
 import { useContext } from 'react';
+import { useAppSelector } from '@/hooks';
 
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import {
-  alpha, Box, Divider,
-  IconButton, lighten, Stack, styled, Tooltip, useTheme
+  alpha,
+  Box,
+  Divider,
+  IconButton,
+  lighten,
+  Typography,
+  Stack,
+  styled,
+  Tooltip,
+  useTheme
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
@@ -12,26 +21,27 @@ import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
-        height: ${theme.header.height};
-        color: ${theme.header.textColor};
-        padding: ${theme.spacing(0, 2)};
-        right: 0;
-        z-index: 6;
-        background-color: ${alpha(theme.header.background, 0.95)};
-        backdrop-filter: blur(3px);
-        position: fixed;
-        justify-content: space-between;
-        width: 100%;
-        @media (min-width: ${theme.breakpoints.values.lg}px) {
-            left: ${theme.sidebar.width};
-            width: auto;
-        }
-`
+  height: ${theme.header.height};
+  color: ${theme.header.textColor};
+  padding: ${theme.spacing(0, 2)};
+  right: 0;
+  z-index: 6;
+  background-color: ${alpha(theme.header.background, 0.95)};
+  backdrop-filter: blur(3px);
+  position: fixed;
+  justify-content: space-between;
+  width: 100%;
+  @media (min-width: ${theme.breakpoints.values.lg}px) {
+    left: ${theme.sidebar.width};
+    width: auto;
+  }
+  `
 );
 
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
+  const user = useAppSelector((state) => state.user.data);
 
   return (
     <HeaderWrapper
@@ -53,14 +63,19 @@ function Header() {
               )}`
       }}
     >
-   
       <Stack
         direction="row"
         divider={<Divider orientation="vertical" flexItem />}
         alignItems="center"
+        justifyContent="flex-end"
         spacing={2}
       >
-        
+        <Typography variant="h4" sx={{ my: 2 }}>
+          PW ID : {user.pw_id}
+        </Typography>
+        <Typography variant="h4" sx={{ my: 2 }}>
+          RM ID : {user.rm_id}
+        </Typography>
       </Stack>
       <Box display="flex" alignItems="center">
         {/* <HeaderButtons /> */}
@@ -82,7 +97,6 @@ function Header() {
             </IconButton>
           </Tooltip>
         </Box>
-
       </Box>
     </HeaderWrapper>
   );
