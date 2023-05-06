@@ -34,8 +34,7 @@ const rows = [
   },
   {
     config: documentsConfig.passbook,
-    status: -1,
-    isOptional: true
+    status: -1
   },
   {
     config: documentsConfig.voterId,
