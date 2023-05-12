@@ -12,47 +12,24 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
+import { setOrUpdateUser } from '@/state/slice/userSlice';
 import TableRow from '@mui/material/TableRow';
 import 'primeicons/primeicons.css'; //icons
 import 'primereact/resources/primereact.min.css'; //core css
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { rows } from './documentData';
 
-const rows = [
-  {
-    config: documentsConfig.avatar,
-    status: -1
-  },
-  {
-    config: documentsConfig.aadhar,
-    status: -1
-  },
-  {
-    config: documentsConfig.pancard,
-    status: -1
-  },
-  {
-    config: documentsConfig.passbook,
-    status: -1
-  },
-  {
-    config: documentsConfig.voterId,
-    status: -1,
-    isOptional: true
-  },
-  {
-    config: documentsConfig.driving_license,
-    status: -1,
-    isOptional: true
-  }
-];
-const DocumentRow = ({ data, documents = [], usersss }) => {
+const DocumentRow = ({ data, documents = [] }) => {
   const [images, setImages] = useState([]);
+  const user = useSelector((state) => state.user.data);
   const [imagesChanged, setImagesChange] = useState([]);
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     const _imgs = [];
     for (let _document of documents) {
@@ -60,27 +37,14 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
     }
     setImages(_imgs);
   }, [documents]);
-  // const getBadge = (status) => {
-  //   let msg = 'Upload';
-  //   if (status != -1) {
-  //     msg = 'Pending';
-  //   }
-  //   return (
-  //     <TableCell>
-  //       {' '}
-  //       <Badge badgeContent={msg} color="secondary"></Badge>{' '}
-  //     </TableCell>
-  //   );
-  // };
+
   const handleCreateDocument = async (title: string, url: string) => {
-    await createDocument({
+    return await createDocument({
       variables: {
         title,
         url
       }
     });
-
-    toast.success(`${title} Uploaded`);
   };
 
   const handleUpdateDocument = async (
@@ -88,16 +52,15 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
     title: string,
     url: string
   ) => {
-    await updateDocument({
+    return await updateDocument({
       variables: {
         id,
         title,
         url
       }
     });
-
-    toast.success(`${title} Updated`);
   };
+
   const isValidToClick = () => {
     const hasSomethingChanged = imagesChanged.find((img) => {
       if (img) {
@@ -108,6 +71,7 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
       return true;
     }
   };
+
   const handleDocumentUpload = async () => {
     setLoading(true);
 
@@ -118,22 +82,38 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
-          // toast.success(`${documentTitle} Updated`)
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true;
             }
           });
+          let userAllDocuments = user.documents;
+          if (!userAllDocuments) {
+            userAllDocuments = [];
+          }
           if (_document) {
-            //updateDocument
-            console.log({ imgUrl });
-            await handleUpdateDocument(_document.id, documentTitle, imgUrl);
-            // location.reload()
+            const resp = await handleUpdateDocument(
+              _document.id,
+              documentTitle,
+              imgUrl
+            );
+            toast.success(`${documentTitle} Uploaded`);
+            const listAfterRemovingExistingDocument = userAllDocuments.filter(
+              (doc: any) => {
+                return doc.id !== document.id;
+              }
+            );
+            listAfterRemovingExistingDocument.push(resp.data.updateDocument);
+            userAllDocuments = listAfterRemovingExistingDocument;
           } else {
             //create document
-            await handleCreateDocument(documentTitle, imgUrl);
-            // location.reload()
+            const resp = await handleCreateDocument(documentTitle, imgUrl);
+            toast.success(`${documentTitle} Uploaded`);
+            userAllDocuments = [...userAllDocuments, resp.data.createDocument];
           }
+          const _user = { ...user };
+          _user.documents = userAllDocuments;
+          dispatch(setOrUpdateUser(_user));
         }
       }
     } catch (err) {
@@ -145,54 +125,51 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
     const views = [];
     const items = data.config.items;
     for (let i = 0; i < items.length; i++) {
-      console.log('user', usersss);
-      if (usersss.kyc != 'APPROVED') {
-        views.push(
-          <Button
-            style={{
-              cursor: documents[0]
-                ? documents[0].status === 'APPROVED'
-                  ? 'not-allowed'
-                  : 'pointer'
-                : 'pointer',
-              marginTop: '10px'
-            }}
-            component="label"
-            color={
+      views.push(
+        <Button
+          style={{
+            cursor: documents[0]
+              ? documents[0].status === 'APPROVED'
+                ? 'not-allowed'
+                : 'pointer'
+              : 'pointer',
+            marginTop: '10px'
+          }}
+          component="label"
+          color={
+            documents[0]
+              ? documents[0].status === 'APPROVED'
+                ? 'secondary'
+                : 'primary'
+              : 'primary'
+          }
+        >
+          Choose {items[i].name}
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            disabled={
               documents[0]
                 ? documents[0].status === 'APPROVED'
-                  ? 'secondary'
-                  : 'primary'
-                : 'primary'
-            }
-          >
-            Choose {items[i].name}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              disabled={
-                documents[0]
-                  ? documents[0].status === 'APPROVED'
-                    ? true
-                    : false
+                  ? true
                   : false
+                : false
+            }
+            onChange={(f) => {
+              if (f.target.files.length > 0) {
+                const _images = [...images];
+                _images[i] = f.target.files[0];
+                setImages(_images);
+                console.log('imageChanged', _images[i]);
+                const _imagesChanged = [...imagesChanged];
+                _imagesChanged[i] = true;
+                setImagesChange(_imagesChanged);
               }
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  const _images = [...images];
-                  _images[i] = f.target.files[0];
-                  setImages(_images);
-                  console.log('imageChanged', _images[i]);
-                  const _imagesChanged = [...imagesChanged];
-                  _imagesChanged[i] = true;
-                  setImagesChange(_imagesChanged);
-                }
-              }}
-            />
-          </Button>
-        );
-      }
+            }}
+          />
+        </Button>
+      );
     }
     return views;
   };
@@ -256,9 +233,10 @@ const DocumentRow = ({ data, documents = [], usersss }) => {
     </TableRow>
   );
 };
+
 const DocumentTab = () => {
-  const user = useAppSelector((state) => state.user.data);
-  let usersss = user;
+  const user = useSelector((state) => state.user.data);
+  console.log('----------------------', user.documents);
   const getDocumentsByConfig = (configs) => {
     const documents = [];
     if (user && user.documents) {
@@ -294,12 +272,11 @@ const DocumentTab = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index, user) => (
+            {rows.map((row, index) => (
               <DocumentRow
                 data={row}
                 key={index}
                 documents={getDocumentsByConfig(row.config.items)}
-                usersss={usersss}
               />
             ))}
           </TableBody>
