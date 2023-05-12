@@ -25,8 +25,7 @@ const InfoTab = () => {
     email: null
   });
   const validateEmail = (email) => {
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   };
 
@@ -182,7 +181,7 @@ const InfoTab = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setAlternateMobileNumber(e.target.value);
               if (validateMobileNumber(e.target.value)) {
-                setErrors({ ...errors, mobileNumber: '' });
+                setErrors({ ...errors, AlternateMobileNumber: '' });
               } else {
                 setErrors({
                   ...errors,
@@ -206,6 +205,11 @@ const InfoTab = () => {
               setEmail(e.target.value);
               if (validateEmail(e.target.value)) {
                 setErrors({ ...errors, email: null });
+              } else {
+                setErrors({
+                  ...errors,
+                  email: 'Please enter a valid Email'
+                });
               }
             }}
           />
