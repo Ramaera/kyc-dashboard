@@ -181,6 +181,14 @@ const InfoTab = () => {
             value={AlternateMobileNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setAlternateMobileNumber(e.target.value);
+              if (validateMobileNumber(e.target.value)) {
+                setErrors({ ...errors, mobileNumber: '' });
+              } else {
+                setErrors({
+                  ...errors,
+                  AlternateMobileNumber: 'Please enter a valid Alternate number'
+                });
+              }
             }}
           />
           {errors.AlternateMobileNumber && (
