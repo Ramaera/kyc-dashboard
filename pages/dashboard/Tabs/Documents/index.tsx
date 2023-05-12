@@ -47,7 +47,7 @@ const rows = [
     isOptional: true
   }
 ];
-const DocumentRow = ({ data, documents = [] }) => {
+const DocumentRow = ({ data, documents = [], usersss }) => {
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [createDocument] = useMutation(CREATEDOCUMENT);
@@ -145,51 +145,54 @@ const DocumentRow = ({ data, documents = [] }) => {
     const views = [];
     const items = data.config.items;
     for (let i = 0; i < items.length; i++) {
-      views.push(
-        <Button
-          style={{
-            cursor: documents[0]
-              ? documents[0].status === 'APPROVED'
-                ? 'not-allowed'
-                : 'pointer'
-              : 'pointer',
-            marginTop: '10px'
-          }}
-          component="label"
-          color={
-            documents[0]
-              ? documents[0].status === 'APPROVED'
-                ? 'secondary'
-                : 'primary'
-              : 'primary'
-          }
-        >
-          Choose {items[i].name}
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            disabled={
+      console.log('user', usersss);
+      if (usersss.kyc != 'APPROVED') {
+        views.push(
+          <Button
+            style={{
+              cursor: documents[0]
+                ? documents[0].status === 'APPROVED'
+                  ? 'not-allowed'
+                  : 'pointer'
+                : 'pointer',
+              marginTop: '10px'
+            }}
+            component="label"
+            color={
               documents[0]
                 ? documents[0].status === 'APPROVED'
-                  ? true
-                  : false
-                : false
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
             }
-            onChange={(f) => {
-              if (f.target.files.length > 0) {
-                const _images = [...images];
-                _images[i] = f.target.files[0];
-                setImages(_images);
-                console.log('imageChanged', _images[i]);
-                const _imagesChanged = [...imagesChanged];
-                _imagesChanged[i] = true;
-                setImagesChange(_imagesChanged);
+          >
+            Choose {items[i].name}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              disabled={
+                documents[0]
+                  ? documents[0].status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
               }
-            }}
-          />
-        </Button>
-      );
+              onChange={(f) => {
+                if (f.target.files.length > 0) {
+                  const _images = [...images];
+                  _images[i] = f.target.files[0];
+                  setImages(_images);
+                  console.log('imageChanged', _images[i]);
+                  const _imagesChanged = [...imagesChanged];
+                  _imagesChanged[i] = true;
+                  setImagesChange(_imagesChanged);
+                }
+              }}
+            />
+          </Button>
+        );
+      }
     }
     return views;
   };
@@ -255,6 +258,7 @@ const DocumentRow = ({ data, documents = [] }) => {
 };
 const DocumentTab = () => {
   const user = useAppSelector((state) => state.user.data);
+  let usersss = user;
   const getDocumentsByConfig = (configs) => {
     const documents = [];
     if (user && user.documents) {
@@ -290,11 +294,12 @@ const DocumentTab = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {rows.map((row, index, user) => (
               <DocumentRow
                 data={row}
                 key={index}
                 documents={getDocumentsByConfig(row.config.items)}
+                usersss={usersss}
               />
             ))}
           </TableBody>
