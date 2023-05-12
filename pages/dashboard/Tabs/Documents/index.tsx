@@ -5,7 +5,7 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Badge, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -34,8 +34,7 @@ const rows = [
   },
   {
     config: documentsConfig.passbook,
-    status: -1,
-    isOptional: true
+    status: -1
   },
   {
     config: documentsConfig.voterId,
@@ -61,18 +60,18 @@ const DocumentRow = ({ data, documents = [] }) => {
     }
     setImages(_imgs);
   }, [documents]);
-  const getBadge = (status) => {
-    let msg = 'Upload';
-    if (status != -1) {
-      msg = 'Pending';
-    }
-    return (
-      <TableCell>
-        {' '}
-        <Badge badgeContent={msg} color="secondary"></Badge>{' '}
-      </TableCell>
-    );
-  };
+  // const getBadge = (status) => {
+  //   let msg = 'Upload';
+  //   if (status != -1) {
+  //     msg = 'Pending';
+  //   }
+  //   return (
+  //     <TableCell>
+  //       {' '}
+  //       <Badge badgeContent={msg} color="secondary"></Badge>{' '}
+  //     </TableCell>
+  //   );
+  // };
   const handleCreateDocument = async (title: string, url: string) => {
     await createDocument({
       variables: {

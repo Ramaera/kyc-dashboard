@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 
 import {
-  Badge,
   Box,
   Button,
   Divider,
@@ -12,7 +11,7 @@ import {
   Avatar,
   Typography
 } from '@mui/material';
-import { badgeClasses } from '@mui/material/Badge';
+// import { badgeClasses } from '@mui/material/Badge';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { logout } from '@/state/slice/userSlice';

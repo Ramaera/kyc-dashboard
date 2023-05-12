@@ -1,17 +1,4 @@
-// export default {
-//     AADHAR_CARD_FRONT:"aadhar_front",
-//     AADHAR_CARD_BACK:"aadhar_back",
-//     PASSPORT_SIZE_PHOTO:"passport_size_photo",
-//     PAN_CARD:"pancard",
-//     PAYMENT_PROOF:"payment_proof",
-//     // ADDITIONAL_DOCUMENT:"payment_proof",
-//     PASSBOOK:"passbook",
-//     DRIVING_LICENSE:"driving_license",
-//     VOTER_ID:"voter_id",
 
-
-
-// }
 
 export default {
     aadhar: {
