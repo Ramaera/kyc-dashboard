@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import PaymentInfo from './paymentDetails';
 
 const rows = [
   {
@@ -108,30 +109,8 @@ const InfoTab = () => {
   }, [user]);
   return (
     <>
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.
-        {user.membership === 'BASIC' ? '1,000/-' : '1,00,000/-'} and upload the
-        payment slip as a proof!
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 100 }} aria-label="simple table">
-          <TableBody>
-            {rows.map((row) => {
-              return (
-                <TableRow
-                  key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.value}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <PaymentInfo />
+
       {proofImage ? (
         <img
           src={
