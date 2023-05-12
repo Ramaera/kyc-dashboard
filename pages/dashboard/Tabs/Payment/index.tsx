@@ -158,63 +158,65 @@ const InfoTab = () => {
           </span>
         </Typography>
       )}
-      <Grid container p={2} spacing={2}>
-        <Grid item xs={12} sm={5} md={3} lg={3}>
-          <Button
-            variant="contained"
-            component="label"
-            style={{
-              cursor: paymentDocument
-                ? paymentDocument.status === 'APPROVED'
-                  ? 'not-allowed'
+      {user.kyc === 'APPROVED' ? null : (
+        <Grid container p={2} spacing={2}>
+          <Grid item xs={12} sm={5} md={3} lg={3}>
+            <Button
+              variant="contained"
+              component="label"
+              style={{
+                cursor: paymentDocument
+                  ? paymentDocument.status === 'APPROVED'
+                    ? 'not-allowed'
+                    : 'pointer'
                   : 'pointer'
-                : 'pointer'
-            }}
-            color={
-              paymentDocument
-                ? paymentDocument.status === 'APPROVED'
-                  ? 'secondary'
-                  : 'primary'
-                : 'primary'
-            }
-          >
-            Select Payment Slip
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              disabled={
+              }}
+              color={
                 paymentDocument
                   ? paymentDocument.status === 'APPROVED'
-                    ? true
-                    : false
-                  : false
+                    ? 'secondary'
+                    : 'primary'
+                  : 'primary'
               }
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  setSubmitButtonEnabled(true);
-                  setProofImage(f.target.files[0]);
-                  setImageChanged(true);
+            >
+              Select Payment Slip
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                disabled={
+                  paymentDocument
+                    ? paymentDocument.status === 'APPROVED'
+                      ? true
+                      : false
+                    : false
                 }
+                onChange={(f) => {
+                  if (f.target.files.length > 0) {
+                    setSubmitButtonEnabled(true);
+                    setProofImage(f.target.files[0]);
+                    setImageChanged(true);
+                  }
+                }}
+              />
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
+            <LoadingButton
+              loading={isLoading}
+              fullWidth
+              variant="contained"
+              disabled={!isSubmitButtonEnalbed}
+              onClick={() => {
+                handlePaymentSubmit();
               }}
-            />
-          </Button>
+            >
+              Submit
+            </LoadingButton>
+          </Grid>
+          <Toaster position="bottom-center" reverseOrder={false} />
         </Grid>
-        <Grid item xs={2}>
-          <LoadingButton
-            loading={isLoading}
-            fullWidth
-            variant="contained"
-            disabled={!isSubmitButtonEnalbed}
-            onClick={() => {
-              handlePaymentSubmit();
-            }}
-          >
-            Submit
-          </LoadingButton>
-        </Grid>
-        <Toaster position="bottom-center" reverseOrder={false} />
-      </Grid>
+      )}
     </>
   );
 };

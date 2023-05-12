@@ -220,46 +220,48 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          <Button
-            size="small"
-            variant="contained"
-            style={{
-              cursor: aadharFrontDocument
-                ? aadharFrontDocument.status === 'APPROVED'
-                  ? 'not-allowed'
+          {user.kyc === 'APPROVED' ? null : (
+            <Button
+              size="small"
+              variant="contained"
+              style={{
+                cursor: aadharFrontDocument
+                  ? aadharFrontDocument.status === 'APPROVED'
+                    ? 'not-allowed'
+                    : 'pointer'
                   : 'pointer'
-                : 'pointer'
-            }}
-            component="label"
-            color={
-              aadharFrontDocument
-                ? aadharFrontDocument.status === 'APPROVED'
-                  ? 'secondary'
-                  : 'primary'
-                : 'primary'
-            }
-          >
-            Upload Aadhar Card Front
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              disabled={
+              }}
+              component="label"
+              color={
                 aadharFrontDocument
                   ? aadharFrontDocument.status === 'APPROVED'
-                    ? true
-                    : false
-                  : false
+                    ? 'secondary'
+                    : 'primary'
+                  : 'primary'
               }
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  setAadharFront(f.target.files[0]);
-                  setFrontImageChanged(true);
-                  setSubmitButtonEnabled(true);
+            >
+              Upload Aadhar Card Front
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                disabled={
+                  aadharFrontDocument
+                    ? aadharFrontDocument.status === 'APPROVED'
+                      ? true
+                      : false
+                    : false
                 }
-              }}
-            />
-          </Button>
+                onChange={(f) => {
+                  if (f.target.files.length > 0) {
+                    setAadharFront(f.target.files[0]);
+                    setFrontImageChanged(true);
+                    setSubmitButtonEnabled(true);
+                  }
+                }}
+              />
+            </Button>
+          )}
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
           {aadharBack ? (
@@ -287,66 +289,70 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          <Button
-            size="small"
-            variant="contained"
-            style={{
-              cursor: aadharBackDocument
-                ? aadharBackDocument.status === 'APPROVED'
-                  ? 'not-allowed'
+          {user.kyc === 'APPROVED' ? null : (
+            <Button
+              size="small"
+              variant="contained"
+              style={{
+                cursor: aadharBackDocument
+                  ? aadharBackDocument.status === 'APPROVED'
+                    ? 'not-allowed'
+                    : 'pointer'
                   : 'pointer'
-                : 'pointer'
-            }}
-            component="label"
-            color={
-              aadharBackDocument
-                ? aadharBackDocument.status === 'APPROVED'
-                  ? 'secondary'
-                  : 'primary'
-                : 'primary'
-            }
-          >
-            Upload Aadhar Card Back
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              disabled={
-                aadharFrontDocument
-                  ? aadharFrontDocument.status === 'APPROVED'
-                    ? true
-                    : false
-                  : false
-              }
-              onChange={(f) => {
-                if (f.target.files.length > 0) {
-                  setAadharBack(f.target.files[0]);
-                  setBackImageChanged(true);
-                  setSubmitButtonEnabled(true);
-                }
               }}
-            />
-          </Button>
+              component="label"
+              color={
+                aadharBackDocument
+                  ? aadharBackDocument.status === 'APPROVED'
+                    ? 'secondary'
+                    : 'primary'
+                  : 'primary'
+              }
+            >
+              Upload Aadhar Card Back
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                disabled={
+                  aadharFrontDocument
+                    ? aadharFrontDocument.status === 'APPROVED'
+                      ? true
+                      : false
+                    : false
+                }
+                onChange={(f) => {
+                  if (f.target.files.length > 0) {
+                    setAadharBack(f.target.files[0]);
+                    setBackImageChanged(true);
+                    setSubmitButtonEnabled(true);
+                  }
+                }}
+              />
+            </Button>
+          )}
         </Grid>
         {/* <Grid item xs={4}></Grid>
         <Divider /> */}
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3} pl={2}>
-        <Box component="form" mt={2}>
-          <LoadingButton
-            loading={isLoading}
-            variant="contained"
-            component="label"
-            disabled={!isSubmitButtonEnalbed}
-            onClick={() => {
-              handleNomineeSubmit();
-            }}
-          >
-            Submit
-          </LoadingButton>
-          <Toaster position="bottom-center" reverseOrder={false} />
-        </Box>
-      </Grid>
+      {user.kyc === 'APPROVED' ? null : (
+        <Grid item xs={12} sm={6} md={4} lg={3} pl={2}>
+          <Box component="form" mt={2}>
+            <LoadingButton
+              loading={isLoading}
+              variant="contained"
+              component="label"
+              disabled={!isSubmitButtonEnalbed}
+              onClick={() => {
+                handleNomineeSubmit();
+              }}
+            >
+              Submit
+            </LoadingButton>
+            <Toaster position="bottom-center" reverseOrder={false} />
+          </Box>
+        </Grid>
+      )}
     </>
   );
 };

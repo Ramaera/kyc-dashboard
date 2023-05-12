@@ -8,7 +8,6 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
   const user = useAppSelector((state) => state.user.data);
-  // console.log('useruseruseruser', user);
   const [fullName, setFullName] = useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName] = useState<any | null>(null);
   const [dob, setDob] = useState<any | null>(null);
@@ -206,20 +205,22 @@ const InfoTab = () => {
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
-          <Box component="form">
-            <LoadingButton
-              loading={isLoading}
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Submit
-            </LoadingButton>
-          </Box>
-        </Grid>
+        {user.kyc === 'APPROVED' ? null : (
+          <Grid item xs={4}>
+            <Box component="form">
+              <LoadingButton
+                loading={isLoading}
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                Submit
+              </LoadingButton>
+            </Box>
+          </Grid>
+        )}
         <Toaster position="bottom-center" reverseOrder={false} />
         <Grid item xs={4} />
       </Grid>
