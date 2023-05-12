@@ -236,7 +236,7 @@ const DocumentRow = ({ data, documents = [] }) => {
 
 const DocumentTab = () => {
   const user = useSelector((state) => state.user.data);
-  console.log('----------------------', user.documents);
+  // console.log('----------------------', user.documents);
   const getDocumentsByConfig = (configs) => {
     const documents = [];
     if (user && user.documents) {
