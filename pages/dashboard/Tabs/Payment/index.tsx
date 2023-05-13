@@ -1,48 +1,18 @@
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid, Typography } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import PaymentInfo from './paymentDetails';
 
-const rows = [
-  {
-    name: 'Company Name',
-    value: 'RAMAERA INDUSTRIES LTD.'
-  },
-
-  {
-    name: 'Bank Name',
-    value: 'KOTAK MAHINDRA BANK '
-  },
-
-  {
-    name: 'Branch',
-    value: 'NOIDA SECTOR 63'
-  },
-
-  {
-    name: 'A/C No.',
-    value: '4747237385'
-  },
-
-  {
-    name: 'IFSC CODE ',
-    value: 'KKBK0000180'
-  }
-];
 const InfoTab = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
   const [isLoading, setLoading] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
@@ -58,6 +28,20 @@ const InfoTab = () => {
     }
 
     return true;
+  };
+
+  const updateUser = (id, imgUrl) => {
+    let newUser = user;
+    let newDocs = [];
+    user.documents.map((item) => {
+      if (item.id === id) {
+        newDocs.push({ ...item, url: imgUrl });
+        // newDocs.push(...item, url:imgUrl);
+      } else {
+        newDocs.push(item);
+      }
+    });
+    return { ...newUser, documents: newDocs };
   };
   const handlePaymentSubmit = async () => {
     const isValid = validateSubmit(proofImage);
@@ -83,6 +67,8 @@ const InfoTab = () => {
             id: paymentDocument.id
           }
         });
+
+        dispatch(setOrUpdateUser(updateUser(paymentDocument.id, imgUrl)));
       } else {
         await createDocument({
           variables: {

@@ -4,7 +4,8 @@ import {
   UPSERTNOMINEE
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
@@ -16,6 +17,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const NomineeTab = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
   const [nomineeName, setNomineeName] = useState('');
   const [relationship, setRelationship] = useState('');
@@ -55,7 +57,19 @@ const NomineeTab = () => {
     }
     return true;
   };
-
+  const updateUser = (id, imgUrl) => {
+    let newUser = user;
+    let newDocs = [];
+    user.documents.map((item) => {
+      if (item.id === id) {
+        newDocs.push({ ...item, url: imgUrl });
+        // newDocs.push(...item, url:imgUrl);
+      } else {
+        newDocs.push(item);
+      }
+    });
+    return { ...newUser, documents: newDocs };
+  };
   const handleUpdateDocument = async (
     id: string,
     url: string,
@@ -68,6 +82,7 @@ const NomineeTab = () => {
         url
       }
     });
+    dispatch(setOrUpdateUser(updateUser(id, url)));
     return resp;
   };
 
@@ -123,6 +138,16 @@ const NomineeTab = () => {
           relationship: relationship
         }
       });
+      await dispatch(
+        setOrUpdateUser({
+          ...user,
+          nominee: {
+            ...user.nominee,
+            name: nomineeName,
+            relationship: relationship
+          }
+        })
+      );
 
       await handleDocuments(true);
       await handleDocuments(false);

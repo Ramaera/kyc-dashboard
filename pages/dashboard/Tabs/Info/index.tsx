@@ -1,5 +1,6 @@
 import { UPDATEUSERDETAILS } from '@/apollo/queries/auth';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import { setOrUpdateUser } from '@/state/slice/userSlice';
 import { useMutation } from '@apollo/client';
 import { DesktopDatePicker, LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField } from '@mui/material';
@@ -7,6 +8,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
   const [fullName, setFullName] = useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName] = useState<any | null>(null);
@@ -70,6 +72,18 @@ const InfoTab = () => {
           email: email
         }
       });
+      dispatch(
+        setOrUpdateUser({
+          ...user,
+          name: fullName,
+          father_or_husband_name: fatherHusbandName,
+          date_of_birth: dob,
+          mobile_number: mobileNumber,
+          alternate_mobile_number: AlternateMobileNumber,
+          demat_account: demat,
+          email: email
+        })
+      );
       toast.success('Details Updated');
     } catch (err) {
       console.log(err.message);

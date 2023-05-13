@@ -4,7 +4,8 @@ import {
   UPDATEUSERDETAILS
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
@@ -13,6 +14,7 @@ import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const DematTab = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
   const [dematAccount, setDematAccount] = useState<any | null>(null);
   const [dematDocumentImage, setDematDocumentImage] = useState<any | null>(
@@ -34,6 +36,18 @@ const DematTab = () => {
 
     return true;
   };
+  const updateUser = (dematId, imgUrl, dematAccount) => {
+    let newUser = user;
+    let newDocs = [];
+    user.documents.map((item) => {
+      if (item.id === dematId) {
+        newDocs.push({ ...item, url: imgUrl });
+      } else {
+        newDocs.push(item);
+      }
+    });
+    return { ...newUser, documents: newDocs, demat_account: dematAccount };
+  };
 
   const handleSubmit = async () => {
     const isValid = validateSubmit(dematDocumentImage);
@@ -49,6 +63,9 @@ const DematTab = () => {
             demat_account: dematAccount
           }
         });
+        await dispatch(
+          setOrUpdateUser({ ...user, demat_account: dematAccount })
+        );
       }
       let imgUrl = '';
       if (isImageChanged) {
@@ -65,6 +82,9 @@ const DematTab = () => {
             id: dematDocument.id
           }
         });
+        dispatch(
+          setOrUpdateUser(updateUser(dematDocument.id, imgUrl, dematAccount))
+        );
         toast.success('Demat Details Updated ');
       } else {
         await createDocument({
