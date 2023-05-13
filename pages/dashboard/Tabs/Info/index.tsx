@@ -222,6 +222,11 @@ const InfoTab = () => {
             <Box component="form">
               <LoadingButton
                 loading={isLoading}
+                disabled={
+                  errors.AlternateMobileNumber ||
+                  errors.email ||
+                  errors.mobileNumber
+                }
                 fullWidth
                 variant="contained"
                 onClick={() => {
