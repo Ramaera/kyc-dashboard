@@ -88,6 +88,8 @@ export const UPDATEDOCUMENT = gql(`
                             }){
                               title
                               url
+                              id
+                              status
                             }
                           }
                           `);

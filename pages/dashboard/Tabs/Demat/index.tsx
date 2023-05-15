@@ -116,6 +116,9 @@ const DematTab = () => {
 
   return (
     <>
+      <Typography variant="h4" sx={{ my: 2 }}>
+        Kindly Fill the form add demat details
+      </Typography>
       {/* <Grid container p={2} spacing={2}> */}
       <Grid item xs={12} sm={6} md={4}>
         <TextField

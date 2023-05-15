@@ -1,6 +1,6 @@
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
@@ -19,24 +19,22 @@ import 'primereact/resources/primereact.min.css'; //core css
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
 import { rows } from './documentData';
 
-const DocumentRow = ({ data, documents = [] }) => {
+const DocumentRow = ({ data, documents = [], user }) => {
   const [images, setImages] = useState([]);
-  const user = useSelector((state) => state.user.data);
   const [imagesChanged, setImagesChange] = useState([]);
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const _imgs = [];
     for (let _document of documents) {
       _imgs.push(_document.url);
     }
     setImages(_imgs);
-  }, [documents]);
+  }, [documents, user]);
 
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
@@ -71,11 +69,24 @@ const DocumentRow = ({ data, documents = [] }) => {
       return true;
     }
   };
+  const updateUser = (id, title, imgUrl) => {
+    let newUser = user;
+    let newDocs = [];
+    user.documents.map((item) => {
+      if (item.id === id) {
+        newDocs.push({ ...item, title: 'avatar' });
+      } else if (item.title !== title) {
+        newDocs.push(item);
+      }
+    });
+    console.log(imgUrl, { ...newUser, documents: newDocs });
+    return { ...newUser, documents: newDocs };
+  };
 
   const handleDocumentUpload = async () => {
     setLoading(true);
 
-    console.log({ imagesChanged, images });
+    // console.log({ imagesChanged, images });
     //handle upload
     try {
       for (let i = 0; i < imagesChanged.length; i++) {
@@ -97,7 +108,12 @@ const DocumentRow = ({ data, documents = [] }) => {
               documentTitle,
               imgUrl
             );
+            await dispatch(
+              setOrUpdateUser(updateUser(_document.id, documentTitle, imgUrl))
+            );
             toast.success(`${documentTitle} Uploaded`);
+            // location.reload();
+
             const listAfterRemovingExistingDocument = userAllDocuments.filter(
               (doc: any) => {
                 return doc.id !== document.id;
@@ -235,7 +251,8 @@ const DocumentRow = ({ data, documents = [] }) => {
 };
 
 const DocumentTab = () => {
-  const user = useSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user.data);
+  // console.log(user);
   // console.log('----------------------', user.documents);
   const getDocumentsByConfig = (configs) => {
     const documents = [];
@@ -276,6 +293,7 @@ const DocumentTab = () => {
               <DocumentRow
                 data={row}
                 key={index}
+                user={user}
                 documents={getDocumentsByConfig(row.config.items)}
               />
             ))}
