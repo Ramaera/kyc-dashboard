@@ -9,7 +9,7 @@ import { LoadingButton } from '@mui/lab';
 import { Button, Grid, Typography, TextField, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import PaymentInfo from './paymentDetails';
+import AgraPaymentInfo from './AgraPaymentDetails';
 import LinearProgress, {
   linearProgressClasses
 } from '@mui/material/LinearProgress';
@@ -110,7 +110,7 @@ const InfoTab = () => {
   }, [user]);
   return (
     <>
-      <PaymentInfo />
+      <AgraPaymentInfo />
       <Box sx={{ flexGrow: 1, my: 2 }}>
         <Typography variant="h6">Till Raised(%)</Typography>
         <BorderLinearProgress variant="determinate" value={risedFundPer} />

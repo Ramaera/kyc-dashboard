@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import PaymentInfo from './paymentDetails';
+import HajipurPaymentInfo from './HajipurPaymentDetails';
 
 const InfoTab = () => {
   const dispatch = useAppDispatch();
@@ -111,7 +111,7 @@ const InfoTab = () => {
 
   return (
     <>
-      <PaymentInfo />
+      <HajipurPaymentInfo />
       <Typography variant="h4" sx={{ my: 2 }}>
         Enroll Payment Receipt
       </Typography>

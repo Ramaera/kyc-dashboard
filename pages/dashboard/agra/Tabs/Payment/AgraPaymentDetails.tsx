@@ -99,7 +99,7 @@ const rowSecond = [
   }
 ];
 
-const PaymentInfo = () => {
+const AgraPaymentInfo = () => {
   // const user = useAppSelector((state) => state.user.data);
 
   return (
@@ -155,4 +155,4 @@ const PaymentInfo = () => {
   );
 };
 
-export default PaymentInfo;
+export default AgraPaymentInfo;

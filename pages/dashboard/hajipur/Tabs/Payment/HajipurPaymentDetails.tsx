@@ -18,25 +18,21 @@ const data = [
     name: 'Company Name',
     value: 'RAMAERA INDUSTRIES LTD.'
   },
-
   {
     name: 'Bank Name',
-    value: 'KOTAK MAHINDRA BANK '
+    value: 'HDFC BANK '
   },
-
   {
     name: 'Branch',
-    value: 'NOIDA SECTOR 63'
+    value: 'HAJIPUR BIHAR'
   },
-
   {
     name: 'A/C No.',
-    value: '4747237385'
+    value: '50200078200870'
   },
-
   {
     name: 'IFSC CODE ',
-    value: 'KKBK0000180'
+    value: 'HDFC0000088'
   }
 ];
 
@@ -102,7 +98,7 @@ const rows = [
   }
 ];
 
-const PaymentInfo = () => {
+const HajipurPaymentInfo = () => {
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 20,
     borderRadius: 10,
@@ -183,4 +179,4 @@ const PaymentInfo = () => {
   );
 };
 
-export default PaymentInfo;
+export default HajipurPaymentInfo;
