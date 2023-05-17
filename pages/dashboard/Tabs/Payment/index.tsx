@@ -31,7 +31,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     }
     setImages(_imgs);
   }, [documents, user]);
-
+  console.log(imagesChanged);
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
@@ -169,6 +169,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
                 : false
             }
             onChange={(f) => {
+              console.log(i);
               if (f.target.files.length > 0) {
                 const _images = [...images];
                 _images[i] = f.target.files[0];
