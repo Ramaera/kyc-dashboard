@@ -86,6 +86,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
+        console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
@@ -462,12 +463,16 @@ const InfoTab = () => {
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
           )}
-          <LoadingButton
-            variant="contained"
-            onClick={() => setAdditionalDocuments(true)}
-          >
-            Add Additional Documents
-          </LoadingButton>
+          {proofImage && (
+            <LoadingButton
+              variant="contained"
+              onClick={() => {
+                setAdditionalDocuments(true);
+              }}
+            >
+              Add Additional Documents
+            </LoadingButton>
+          )}
         </>
       ) : (
         <>

@@ -71,10 +71,7 @@ function Header() {
         spacing={2}
       >
         <Typography variant="h4" sx={{ my: 2 }}>
-          PW ID : {user.pw_id}
-        </Typography>
-        <Typography variant="h4" sx={{ my: 2 }}>
-          RM ID : {user.rm_id}
+          RM ID : {user && user.rm_id}
         </Typography>
       </Stack>
       <Box display="flex" alignItems="center">

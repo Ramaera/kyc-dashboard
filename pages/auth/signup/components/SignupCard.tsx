@@ -12,19 +12,46 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 export default function SignupCard() {
   const router = useRouter();
   const [PWId, setPWId] = React.useState('');
-  const [visible,setVisible]=React.useState<boolean>(false)
+  const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
-
+  const [validPWID, setValidPWID] = React.useState<any>();
   const [isLoading, setLoading] = React.useState(false);
 
+  const checkPWID = (text: any) => {
+    const postData = {
+      Reff_Code: text
+    };
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    axios
+      .post('https://api.ramaera.com/api/KYC', postData, options)
+      .then((res) => {
+        console.log(res.data[0]);
+        setValidPWID(res.data[0]);
+      })
+      .catch((err) => {
+        console.log('ERROR: ====', err);
+      });
+  };
   const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
+    /*  if (!validPWID) {
+      toast.error('Please Enter a valid PWID');
+
+      return;
+    } */
     if (!PWId) {
       toast.error('PW ID is not valid!');
 
@@ -46,7 +73,7 @@ export default function SignupCard() {
         const resp = await signup({
           variables: {
             pw_id: PWId,
-            membership:membership,
+            membership: membership,
             password: password
           }
         });
@@ -55,7 +82,7 @@ export default function SignupCard() {
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
-        router.reload()
+        router.reload();
       } catch (err) {
         toast.error(err.message);
       }
@@ -67,7 +94,6 @@ export default function SignupCard() {
   //   // setMembership(user.membership)
   // },[user])
 
-
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -78,7 +104,8 @@ export default function SignupCard() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}>
+        }}
+      >
         <Typography variant="h1" sx={{ my: 2 }}>
           Signup
         </Typography>
@@ -86,7 +113,8 @@ export default function SignupCard() {
           variant="h4"
           color="text.secondary"
           fontWeight="normal"
-          sx={{ mb: 0 }}>
+          sx={{ mb: 0 }}
+        >
           For the purpose of industry regulation, your details are required.
         </Typography>
         <Box component="form" noValidate sx={{ mt: 0 }}>
@@ -100,6 +128,7 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
+              //checkPWID(e.target.value);
             }}
           />
 
@@ -117,9 +146,14 @@ export default function SignupCard() {
             name="row-radio-buttons-group"
             onChange={(e) => {
               setMembership(e.target.value);
-            }}>
-            <FormControlLabel value="BASIC" control={<Radio />} label="Basic"/>
-            <FormControlLabel value="ADVANCE" control={<Radio />} label="Advance"/>
+            }}
+          >
+            <FormControlLabel value="BASIC" control={<Radio />} label="Basic" />
+            <FormControlLabel
+              value="ADVANCE"
+              control={<Radio />}
+              label="Advance"
+            />
           </RadioGroup>
           <TextField
             margin="normal"
@@ -130,19 +164,21 @@ export default function SignupCard() {
             }}
             name="password"
             label="Password"
-            type={visible? "text":"password"}
+            type={visible ? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" aria-label="toggle password visibility"
-                  onClick={()=>setVisible(!visible)}
-          >
-            {visible?<Visibility />:<VisibilityOff />}
-            </IconButton>  
+                  <IconButton
+                    edge="end"
+                    aria-label="toggle password visibility"
+                    onClick={() => setVisible(!visible)}
+                  >
+                    {visible ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
                 </InputAdornment>
-              ),
+              )
             }}
           />
 
