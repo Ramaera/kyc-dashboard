@@ -6,27 +6,22 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, Typography, TextField, Box } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import AgraPaymentInfo from './AgraPaymentDetails';
-import LinearProgress, {
-  linearProgressClasses
-} from '@mui/material/LinearProgress';
-import { styled } from '@mui/material/styles';
+import Details from './Details';
 
-const InfoTab = () => {
-  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 20,
-    borderRadius: 10,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor:
-        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800]
-    }
-  }));
-  const diff = 100500 / 3300000;
-  const risedFundPer = diff * 100;
-
+const InfoTab = ({ title }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.data);
   const [isLoading, setLoading] = useState(false);
@@ -108,26 +103,15 @@ const InfoTab = () => {
       });
     }
   }, [user]);
+
+  const [amount, setAmount] = useState('');
+  const handleChange = (e) => {
+    setAmount(e.target.value as string);
+  };
+
   return (
     <>
-      <AgraPaymentInfo />
-      <Box sx={{ flexGrow: 1, my: 2 }}>
-        <Typography variant="h6">Till Raised(%)</Typography>
-        <BorderLinearProgress variant="determinate" value={risedFundPer} />
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          style={{
-            display: 'flex',
-            position: 'absolute',
-            marginTop: '-20px',
-            marginLeft: '50px',
-            fontWeight: 'bold',
-            color: 'white'
-          }}
-        >{`${Math.round(risedFundPer)}%`}</Typography>
-      </Box>
-
+      <Details title={title} />
       <Typography variant="h4" sx={{ my: 2 }}>
         Enroll Payment Receipt
       </Typography>
@@ -138,7 +122,7 @@ const InfoTab = () => {
               ? URL.createObjectURL(proofImage)
               : proofImage
           }
-          style={{ marginTop: '10px' }}
+          style={{ marginTop: '10px', maxWidth: '100%' }}
           height={200}
         />
       ) : null}
@@ -158,8 +142,8 @@ const InfoTab = () => {
         </Typography>
       )}
       {user.kyc === 'APPROVED' ? null : (
-        <Grid container p={0} spacing={2}>
-          <Grid item xs={12} sm={5} md={3} lg={12}>
+        <Grid container py={2} spacing={2}>
+          <Grid item xs={12} sm={5} md={3} lg={3}>
             <Button
               variant="contained"
               component="label"
@@ -200,7 +184,6 @@ const InfoTab = () => {
               />
             </Button>
           </Grid>
-
           {/* <Grid item xs={2}>
             <LoadingButton
               loading={isLoading}
@@ -213,124 +196,53 @@ const InfoTab = () => {
             >
               Submit
             </LoadingButton>
-          </Grid>
-          <Toaster position="bottom-center" reverseOrder={false} /> */}
-        </Grid>
-      )}
-
-      <Typography variant="h4" sx={{ my: 2 }}>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%'
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-basic"
-            label="UTR NO./Transaction ID"
-            variant="outlined"
-            sx={{ width: '48%' }}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Enter Amount(Multiple of 500)"
-            variant="outlined"
-            sx={{ width: '48%' }}
-          />
-        </Box>
-      </Typography>
-      {/* {proofImage ? (
-        <img
-          src={
-            typeof proofImage == 'object'
-              ? URL.createObjectURL(proofImage)
-              : proofImage
-          }
-          style={{ marginTop: '10px' }}
-          height={200}
-        />
-      ) : null}
-      {paymentDocument && paymentDocument.status && (
-        <Typography variant="h4" sx={{ my: 2 }}>
-          Status :{' '}
-          <span
-            style={{
-              color: paymentDocument
-                ? (paymentDocument.status === 'APPROVED' && 'green') ||
-                  (paymentDocument.status === 'REJECTED' && 'red')
-                : ''
-            }}
-          >
-            {paymentDocument && paymentDocument.status}
-          </span>
-        </Typography>
-      )} */}
-      {user.kyc === 'APPROVED' ? null : (
-        <Grid container p={0} spacing={2}>
-          {/* <Grid item xs={12} sm={5} md={3} lg={12}>
-            <Button
-              variant="contained"
-              component="label"
-              style={{
-                cursor: paymentDocument
-                  ? paymentDocument.status === 'APPROVED'
-                    ? 'not-allowed'
-                    : 'pointer'
-                  : 'pointer'
-              }}
-              color={
-                paymentDocument
-                  ? paymentDocument.status === 'APPROVED'
-                    ? 'secondary'
-                    : 'primary'
-                  : 'primary'
-              }
-            >
-              Select Payment Slip
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                disabled={
-                  paymentDocument
-                    ? paymentDocument.status === 'APPROVED'
-                      ? true
-                      : false
-                    : false
-                }
-                onChange={(f) => {
-                  if (f.target.files.length > 0) {
-                    setSubmitButtonEnabled(true);
-                    setProofImage(f.target.files[0]);
-                    setImageChanged(true);
-                  }
-                }}
-              />
-            </Button>
           </Grid> */}
-
-          <Grid item xs={2}>
-            <LoadingButton
-              loading={isLoading}
-              fullWidth
-              variant="contained"
-              disabled={!isSubmitButtonEnalbed}
-              onClick={() => {
-                handlePaymentSubmit();
-              }}
-            >
-              Submit
-            </LoadingButton>
-          </Grid>
           <Toaster position="bottom-center" reverseOrder={false} />
         </Grid>
       )}
+
+      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <TextField
+          id="outlined-basic"
+          label="UTR No./Transaction ID"
+          variant="outlined"
+          style={{ width: '48%' }}
+        />
+
+        <FormControl sx={{ width: '48%' }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Select Amount
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={amount}
+            label="Select Amount"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={25000}>Rs 25000</MenuItem>
+            <MenuItem value={50000}>Rs 50000</MenuItem>
+            <MenuItem value={100000}>Rs 100000</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Grid item xs={2} my={4}>
+        <LoadingButton
+          loading={isLoading}
+          fullWidth
+          variant="contained"
+          disabled={!isSubmitButtonEnalbed}
+          onClick={() => {
+            handlePaymentSubmit();
+          }}
+        >
+          Submit
+        </LoadingButton>
+      </Grid>
     </>
   );
 };
-
 export default InfoTab;

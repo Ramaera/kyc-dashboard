@@ -5,6 +5,8 @@ import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useState } from 'react';
 import PaymentTab from './Tabs/Payment';
+import { useRouter } from 'next/router';
+
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -76,14 +78,10 @@ const TabsContainerWrapper = styled(Box)(
       }
   `
 );
-function DashboardTasks() {
-  const [currentTab, setCurrentTab] = useState<string>('Hajipur Spice Project');
-  const tabs = [
-    { value: 'Hajipur Spice Project', label: 'Hajipur Spice Project' }
-  ];
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+function index() {
+  const router = useRouter();
+  let title =
+    router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -95,16 +93,13 @@ function DashboardTasks() {
       <Container maxWidth="lg">
         <TabsContainerWrapper>
           <Tabs
-            onChange={handleTabsChange}
-            value={currentTab}
+            value={title}
             variant="scrollable"
             scrollButtons="auto"
             textColor="primary"
             indicatorColor="primary"
           >
-            {tabs.map((tab) => (
-              <Tab key={tab.value} label={tab.label} value={tab.value} />
-            ))}
+            <Tab key={title} label={title} value={title} />
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">
@@ -115,13 +110,11 @@ function DashboardTasks() {
             alignItems="stretch"
             spacing={0}
           >
-            {currentTab === 'Hajipur Spice Project' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <PaymentTab />
-                </Box>
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <Box p={4}>
+                <PaymentTab title={title} />
+              </Box>
+            </Grid>
           </Grid>
         </Card>
       </Container>
@@ -129,5 +122,5 @@ function DashboardTasks() {
     </ProtectedSSRoute>
   );
 }
-DashboardTasks.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
-export default DashboardTasks;
+index.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+export default index;

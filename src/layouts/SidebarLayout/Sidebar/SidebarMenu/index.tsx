@@ -5,6 +5,8 @@ import NextLink from 'next/link';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 import AccountTree from '@mui/icons-material/AccountTree';
+import { projectData } from './projectDetails';
+
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -128,9 +130,7 @@ function SidebarMenu() {
   const router = useRouter();
   const currentRoute = router.pathname;
   const [listVisible, setListVisible] = useState(false);
-  const handleListVisibility = () => {
-    setListVisible(!listVisible);
-  };
+
   return (
     <>
       <MenuWrapper>
@@ -152,48 +152,42 @@ function SidebarMenu() {
               </ListItem>
               <ListItem component="div">
                 <Button
-                  onClick={handleListVisibility}
+                  onClick={() => setListVisible(!listVisible)}
                   startIcon={<AccountTree />}
                 >
-                  Upcoming Project
+                  Our Projects
                 </Button>
               </ListItem>
               {listVisible ? (
                 <List component="div" style={{ marginLeft: '40px' }}>
-                  <ListItem component="div" onClick={handleListVisibility}>
-                    <NextLink href="/dashboard/agra" passHref>
-                      <Button
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 400,
-                          color: 'white'
-                        }}
-                        className={
-                          currentRoute === '="/dashboard/agra' ? 'active' : ''
-                        }
+                  {projectData.map((project) => {
+                    return (
+                      <ListItem
+                        component="div"
+                        onClick={() => setListVisible(!listVisible)}
                       >
-                        Ramaera Mart Agra
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                  <ListItem component="div" onClick={handleListVisibility}>
-                    <NextLink href="/dashboard/hajipur" passHref>
-                      <Button
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 400,
-                          color: 'white'
-                        }}
-                        className={
-                          currentRoute === '="/dashboard/hajipur'
-                            ? 'active'
-                            : ''
-                        }
-                      >
-                        Hajipur Spice Project
-                      </Button>
-                    </NextLink>
-                  </ListItem>
+                        <NextLink
+                          href={`/dashboard/project/${project.navigateTo}`}
+                          passHref
+                        >
+                          <Button
+                            style={{
+                              fontSize: '15px',
+                              fontWeight: 400,
+                              color: 'white'
+                            }}
+                            className={
+                              currentRoute === '="/dashboard/agra'
+                                ? 'active'
+                                : ''
+                            }
+                          >
+                            {project.projectName}
+                          </Button>
+                        </NextLink>
+                      </ListItem>
+                    );
+                  })}
                 </List>
               ) : (
                 ''
