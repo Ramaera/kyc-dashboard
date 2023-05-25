@@ -5048,6 +5048,11 @@ scuid@^1.1.0:
   resolved "https://registry.npmjs.org/scuid/-/scuid-1.1.0.tgz"
   integrity sha512-MuCAyrGZcTLfQoH2XoBlQ8C6bzwN88XT/0slOGz0pn8+gIP85BOAfYa44ZXQUTOwRwPU0QvgU+V+OSajl/59Xg==
 
+search-array@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/search-array/-/search-array-1.6.0.tgz#0937f45f4d906caa83fb0585aadcbc5455f2572e"
+  integrity sha512-7gRZ5m4JcI+lFQjQSjTfmD7HoJ//I41DmbHTDuHIVyCyEZhj43hxnXOcCZoB9L2dbSfUPPyu2khu7HzDy9IJ0w==
+
 semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz"
@@ -5150,6 +5155,11 @@ snake-case@^3.0.4:
   dependencies:
     dot-case "^3.0.4"
     tslib "^2.0.3"
+
+sort-objects-array@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/sort-objects-array/-/sort-objects-array-2.0.0.tgz#babd685deebe57618b322bb604d5ff80811a8b11"
+  integrity sha512-kwnz9DtWYOGzB9H1SwH/350XyHGMk+k9aoM5HYn6V+qeVl0qIwRnmxVC5xz7UFjHADSqXtVkUizJFPdC3aqt4w==
 
 source-map-js@^1.0.1:
   version "1.0.2"

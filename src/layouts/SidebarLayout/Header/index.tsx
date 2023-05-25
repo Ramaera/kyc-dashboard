@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { useAppSelector } from '@/hooks';
+import { useRouter } from 'next/router';
 
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
@@ -41,8 +42,8 @@ const HeaderWrapper = styled(Box)(
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
+  const router = useRouter();
   const user = useAppSelector((state) => state.user.data);
-
   return (
     <HeaderWrapper
       display="flex"
@@ -70,9 +71,11 @@ function Header() {
         justifyContent="flex-end"
         spacing={2}
       >
-        <Typography variant="h4" sx={{ my: 2 }}>
-          RM ID : {user && user.rm_id}
-        </Typography>
+        {router.pathname === '/dashboard' && (
+          <Typography variant="h4" sx={{ my: 2 }}>
+            RM ID : {user && user.rm_id}
+          </Typography>
+        )}
       </Stack>
       <Box display="flex" alignItems="center">
         {/* <HeaderButtons /> */}

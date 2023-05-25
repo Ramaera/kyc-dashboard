@@ -139,3 +139,19 @@ query GetUser {
 }
   }
   `);
+export const GET_ALL_USERS = gql(`
+query {getAllUser {
+    name
+    id
+    membership
+    pw_id
+    father_or_husband_name
+    mobile_number
+    email
+    kyc
+    documents{
+      title
+      status
+    }
+  }}
+  `);
