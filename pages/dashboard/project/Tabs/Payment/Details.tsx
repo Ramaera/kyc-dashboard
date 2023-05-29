@@ -35,9 +35,12 @@ const Details = ({ title }) => {
 
   return (
     <>
-      <div onClick={() => setHidden({ ...isHidden, bank: !isHidden.bank })}>
+      <div
+        style={{ cursor: 'pointer' }}
+        onClick={() => setHidden({ ...isHidden, bank: !isHidden.bank })}
+      >
         <Typography variant="h4" sx={{ my: 2 }}>
-          Bank Detail
+          Bank Detail &#8964;
         </Typography>
       </div>
       {isHidden.bank && (
@@ -62,10 +65,11 @@ const Details = ({ title }) => {
         </TableContainer>
       )}
       <div
+        style={{ cursor: 'pointer' }}
         onClick={() => setHidden({ ...isHidden, project: !isHidden.project })}
       >
         <Typography variant="h4" sx={{ my: 2, marginTop: 5 }}>
-          Project Detail
+          Project Detail &#8964;
         </Typography>
       </div>
       {isHidden.project && (

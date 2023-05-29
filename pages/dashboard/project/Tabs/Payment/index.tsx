@@ -201,7 +201,7 @@ const InfoTab = ({ title }) => {
         </Grid>
       )}
 
-      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+      {/*       <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
         <TextField
           id="outlined-basic"
           label="UTR No./Transaction ID"
@@ -228,8 +228,8 @@ const InfoTab = ({ title }) => {
             <MenuItem value={100000}>Rs 100000</MenuItem>
           </Select>
         </FormControl>
-      </Box>
-      <Grid item xs={2} my={4}>
+      </Box> */}
+      <Grid item xs={2}>
         <LoadingButton
           loading={isLoading}
           fullWidth
