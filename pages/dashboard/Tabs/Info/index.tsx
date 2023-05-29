@@ -132,7 +132,7 @@ const InfoTab = () => {
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <DesktopDatePicker
+          {/*  <DesktopDatePicker
             label="Date of Birth"
             inputFormat="dd/MM/yyyy"
             value={dob}
@@ -144,21 +144,19 @@ const InfoTab = () => {
             renderInput={(params) => (
               <TextField {...params} sx={{ width: '100%' }} />
             )}
+          /> */}
+          <TextField
+            required
+            hidden
+            label="Date of Birth"
+            variant="outlined"
+            fullWidth
+            placeholder=""
+            value={dob}
+            onChange={(e) => {
+              setDob(e.target.value);
+            }}
           />
-          {/* <TextField 
-          required
-          hidden
-          label="Date of Birth" 
-          variant="outlined" 
-          fullWidth
-          type='date'
-          ref={ref}
-         
-          placeholder=''
-          value={dob}
-          onChange={(e)=>{
-            setDob(e.target.value)
-          }}/> */}
         </Grid>
       </Grid>
       <Grid container pr={2} pb={2} pl={2} spacing={2}>

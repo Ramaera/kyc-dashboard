@@ -470,7 +470,7 @@ const InfoTab = () => {
                 setAdditionalDocuments(true);
               }}
             >
-              Add Additional Documents
+              Add/See Additional Documents
             </LoadingButton>
           )}
         </>
