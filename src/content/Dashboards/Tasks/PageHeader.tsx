@@ -18,12 +18,12 @@ function PageHeader() {
         <Box>
           {/* <Grid> */}
           <Typography variant="h3" component="h3" gutterBottom>
-            Welcome, {user.name ? user.name : user.rm_id}!
+            Welcome, {user?.name ? user?.name : user?.rm_id}!
           </Typography>
           <Typography variant="h5" component="h5" align="left">
             Membership Type :{' '}
             <Badge
-              badgeContent={user.membership}
+              badgeContent={user?.membership}
               sx={{
                 marginLeft: 4
               }}
@@ -47,13 +47,13 @@ function PageHeader() {
           Status :{' '}
           <span
             style={{
-              color: user.kyc
-                ? (user.kyc === 'APPROVED' && 'green') ||
-                  (user.kyc === 'REJECTED' && 'red')
+              color: user?.kyc
+                ? (user?.kyc === 'APPROVED' && 'green') ||
+                  (user?.kyc === 'REJECTED' && 'red')
                 : ''
             }}
           >
-            {user.kyc ? user.kyc : ''}
+            {user?.kyc ? user?.kyc : ''}
           </span>
         </Typography>{' '}
       </Box>

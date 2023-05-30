@@ -104,7 +104,7 @@ function HeaderUserbox() {
         <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body2">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body2">{user?.name}</UserBoxLabel>
             <Stack spacing={8} direction="row" mt={1} ml={3}>
               {/* <Badge badgeContent={user.membership} color="success" />
 
@@ -146,7 +146,9 @@ function HeaderUserbox() {
           <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
 
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user ? user.name : ''}</UserBoxLabel>
+            <UserBoxLabel variant="body1">
+              {user ? user?.name : ''}
+            </UserBoxLabel>
             <UserBoxDescription variant="body2">
               {user && user.rm_id}
             </UserBoxDescription>

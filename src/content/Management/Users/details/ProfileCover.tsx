@@ -89,7 +89,7 @@ const ProfileCover = ({ user }) => {
         </Tooltip>
         <Box>
           <Typography variant="h3" component="h3" gutterBottom>
-            Profile for {user.name}
+            Profile for {user?.name}
           </Typography>
           <Typography variant="subtitle2">
             This is a profile page. Easy to modify, always blazing fast
@@ -97,7 +97,7 @@ const ProfileCover = ({ user }) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.coverImg} />
+        <CardMedia image={user?.coverImg} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">

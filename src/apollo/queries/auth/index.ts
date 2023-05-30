@@ -26,9 +26,9 @@ mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
 }`);
 
 export const RESETPASSWORD = gql(`
-mutation forgetPasswordWithPrivateKey($private_key:String!,$newPassword:String!){
+mutation forgetPasswordWithPrivateKey($pwId:String!,$newPassword:String!){
   forgetPasswordWithPrivateKey(data:{
-    private_key:$private_key,
+    pwId:$pwId,
     newPassword:$newPassword
   }){
     message
