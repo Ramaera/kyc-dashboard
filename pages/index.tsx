@@ -1,6 +1,10 @@
 import {
-  Box, Button, Card,
-  Container, styled, Typography
+  Box,
+  Button,
+  Card,
+  Container,
+  styled,
+  Typography
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
@@ -34,7 +38,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Head>
-        <title>Tokyo Free Black NextJS Typescript Admin Dashboard</title>
+        <title>KYC Dashboard</title>
       </Head>
       <HeaderWrapper>
         <Container maxWidth="lg">
@@ -53,35 +57,20 @@ function Overview() {
                   href="/dashboards/tasks"
                   variant="contained"
                   sx={{ ml: 2 }}
-                >
-                  Live Preview
-                </Button>
+                ></Button>
               </Box>
             </Box>
           </Box>
         </Container>
       </HeaderWrapper>
       <Hero />
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography textAlign="center" variant="subtitle1">
-          Crafted by{' '}
-          <Link
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            BloomUI.com
-          </Link>
-        </Typography>
-      </Container>
+      <Container maxWidth="lg" sx={{ mt: 8 }}></Container>
     </OverviewWrapper>
   );
 }
-
 
 export default Overview;
 
 Overview.getLayout = function getLayout(page: ReactElement) {
   return <BaseLayout>{page}</BaseLayout>;
 };
-

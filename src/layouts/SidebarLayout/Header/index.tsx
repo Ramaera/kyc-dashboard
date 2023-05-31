@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks';
 import { useRouter } from 'next/router';
 
@@ -19,6 +19,7 @@ import {
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import HeaderUserbox from './Userbox';
+import { useSelector } from 'react-redux';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -40,10 +41,52 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
+  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const [numbers, setNumbers] = useState({
+    totalKYC: 0,
+    totalHajipur: 0,
+    totalAgra: 0
+  });
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const router = useRouter();
   const user = useAppSelector((state) => state.user.data);
+
+  const checkTotal = () => {
+    let totalKyc = 0;
+    let totalHajipur = 0;
+    let totalAgra = 0;
+    usersList.map((user) => {
+      user.documents.map((doc) => {
+        console.log(doc.title);
+        if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
+          totalKyc += 1;
+        }
+        if (
+          doc.title.toLowerCase() === 'hajipur_project_payment' &&
+          doc.status != 'REJECTED'
+        ) {
+          totalHajipur += 1;
+        }
+        if (
+          doc.title.toLowerCase() === 'agra_project_payment' &&
+          doc.status != 'REJECTED'
+        ) {
+          totalAgra += 1;
+        }
+      });
+    });
+    setNumbers({
+      ...numbers,
+      totalKYC: totalKyc,
+      totalAgra: totalAgra,
+      totalHajipur: totalHajipur
+    });
+  };
+
+  useEffect(() => {
+    checkTotal();
+  }, []);
   return (
     <HeaderWrapper
       display="flex"
@@ -64,19 +107,38 @@ function Header() {
               )}`
       }}
     >
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={2}
-      >
-        {router.pathname === '/dashboard' && (
+      {router.pathname === '/dashboard' && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
           <Typography variant="h4" sx={{ my: 2 }}>
             RM ID : {user && user.rm_id}
           </Typography>
-        )}
-      </Stack>
+        </Stack>
+      )}
+      {router.pathname === '/list' && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Total KYC : {numbers.totalKYC}
+          </Typography>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Total Hajipur KYC : {numbers.totalHajipur}
+          </Typography>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Total Agra KYC : {numbers.totalAgra}
+          </Typography>
+        </Stack>
+      )}
       <Box display="flex" alignItems="center">
         {/* <HeaderButtons /> */}
         <HeaderUserbox />

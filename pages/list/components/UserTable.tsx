@@ -1,6 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
+import { ChangeEvent, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -9,21 +7,17 @@ import {
   FormControl,
   InputLabel,
   Card,
-  Checkbox,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
   TableContainer,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
   CardHeader
 } from '@mui/material';
+
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
 import Label from '@/components/Label';
@@ -65,9 +59,8 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 
-const UserTable: FC<UserTableProps> = () => {
+const UserTable = () => {
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-  console.log('erfenusersList', usersList);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const selectedBulkActions = selectedUsers.length > 0;
   const [kycList, setKycList] = useState('ADVANCE');
@@ -161,6 +154,7 @@ const UserTable: FC<UserTableProps> = () => {
     return status;
   };
 
+  let index = -1;
   return (
     <>
       <Card>
@@ -194,6 +188,7 @@ const UserTable: FC<UserTableProps> = () => {
           <LoadingButton
             style={{ marginRight: 10 }}
             variant="contained"
+            color={kycList === 'ADVANCE' ? 'primary' : 'secondary'}
             onClick={() => {
               setKycList('ADVANCE');
             }}
@@ -202,6 +197,7 @@ const UserTable: FC<UserTableProps> = () => {
           </LoadingButton>
           <LoadingButton
             variant="contained"
+            color={kycList === 'BASIC' ? 'primary' : 'secondary'}
             onClick={() => {
               setKycList('BASIC');
             }}
@@ -214,13 +210,15 @@ const UserTable: FC<UserTableProps> = () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>S.No.</TableCell>
                 <TableCell>PW ID</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell align="center">Father's Name</TableCell>
                 <TableCell align="center">Moibile No.</TableCell>
-                <TableCell align="center">Email</TableCell>
+                {/* <TableCell align="center">Email</TableCell> */}
                 <TableCell align="center">KYC Status</TableCell>
                 <TableCell align="center">Hajipur Project</TableCell>
+                <TableCell align="center">Agra Project</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -229,8 +227,22 @@ const UserTable: FC<UserTableProps> = () => {
                   return;
                 }
                 const isUserSelected = selectedUsers.includes(user.id);
+                index += 1;
                 return (
                   <TableRow hover key={user.id} selected={isUserSelected}>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        align="center"
+                        noWrap
+                        width={30}
+                      >
+                        {index + 1}
+                      </Typography>
+                    </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
@@ -253,6 +265,7 @@ const UserTable: FC<UserTableProps> = () => {
                         color="text.primary"
                         gutterBottom
                         noWrap
+                        width={150}
                       >
                         {user.name}
                       </Typography>
@@ -280,7 +293,7 @@ const UserTable: FC<UserTableProps> = () => {
                         {censorMe(user.mobile_number)}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    {/*  <TableCell align="right">
                       <Typography
                         variant="body1"
                         fontWeight="bold"
@@ -290,7 +303,7 @@ const UserTable: FC<UserTableProps> = () => {
                       >
                         {censorMe(user.email)}
                       </Typography>
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="right">
                       <Typography
                         variant="body1"
@@ -300,7 +313,9 @@ const UserTable: FC<UserTableProps> = () => {
                         align="center"
                         noWrap
                       >
-                        {user.kyc}
+                        {user?.kyc === 'NOT_INITIALIZED'
+                          ? 'NOT STARTED'
+                          : user.kyc}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -311,7 +326,21 @@ const UserTable: FC<UserTableProps> = () => {
                         gutterBottom
                         noWrap
                       >
-                        {projectChecker(user.documents, 'nominee_aadhar_front')}
+                        {projectChecker(
+                          user.documents,
+                          'hajipur_project_payment'
+                        )}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {projectChecker(user.documents, 'agra_project_payment')}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -320,17 +349,6 @@ const UserTable: FC<UserTableProps> = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box p={2}>
-          {/* <TablePagination
-            component="div"
-            count={filteredUsers.length}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleLimitChange}
-            page={page}
-            rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25, 30]}
-          /> */}
-        </Box>
       </Card>
     </>
   );

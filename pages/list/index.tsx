@@ -106,7 +106,7 @@ const TabsContainerWrapper = styled(Box)(
         `
 );
 
-function DashboardTasks() {
+function index() {
   const dispatch = useDispatch();
 
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
@@ -135,10 +135,10 @@ function DashboardTasks() {
   return (
     <ProtectedSSRoute>
       <Head>
-        <title>KYC Users</title>
+        <title>KYC User</title>
       </Head>
-      <PageTitleWrapper>{/* // todo place filters here */}</PageTitleWrapper>
-      <Container maxWidth="lg">
+      {/* <PageTitleWrapper>// todo place filters here</PageTitleWrapper> */}
+      <Container sx={{ mt: 2 }} maxWidth="lg">
         <UserTable />
       </Container>
       <Footer />
@@ -146,6 +146,6 @@ function DashboardTasks() {
   );
 }
 
-DashboardTasks.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+index.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default DashboardTasks;
+export default index;
