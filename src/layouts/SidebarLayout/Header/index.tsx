@@ -58,7 +58,6 @@ function Header() {
     let totalAgra = 0;
     usersList.map((user) => {
       user.documents.map((doc) => {
-        console.log(doc.title);
         if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;
         }

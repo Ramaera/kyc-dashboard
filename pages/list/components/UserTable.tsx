@@ -17,7 +17,8 @@ import {
   useTheme,
   CardHeader
 } from '@mui/material';
-
+import { useRef } from 'react';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
 import Label from '@/components/Label';
@@ -60,10 +61,11 @@ const applyPagination = (
 };
 
 const UserTable = () => {
+  const tableRef = useRef(null);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const selectedBulkActions = selectedUsers.length > 0;
-  const [kycList, setKycList] = useState('ADVANCE');
+  const [kycList, setKycList] = useState<string | null>();
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -183,31 +185,41 @@ const UserTable = () => {
           />
         )}
         <Divider />
-
-        <Box m={2}>
-          <LoadingButton
-            style={{ marginRight: 10 }}
-            variant="contained"
-            color={kycList === 'ADVANCE' ? 'primary' : 'secondary'}
-            onClick={() => {
-              setKycList('ADVANCE');
-            }}
-          >
-            ADVANCE
-          </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            color={kycList === 'BASIC' ? 'primary' : 'secondary'}
-            onClick={() => {
-              setKycList('BASIC');
-            }}
-          >
-            BASIC
-          </LoadingButton>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box m={2}>
+            <LoadingButton
+              style={{ marginRight: 10 }}
+              variant="contained"
+              color={kycList === 'ADVANCE' ? 'primary' : 'secondary'}
+              onClick={() => {
+                setKycList('ADVANCE');
+              }}
+            >
+              ADVANCE
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              color={kycList === 'BASIC' ? 'primary' : 'secondary'}
+              onClick={() => {
+                setKycList('BASIC');
+              }}
+            >
+              BASIC
+            </LoadingButton>
+          </Box>
+          <Box m={2}>
+            <DownloadTableExcel
+              filename={kycList ? kycList + '_KYC' : 'ALL_KYC'}
+              sheet={kycList ? kycList + '_KYC' : 'ALL_KYC'}
+              currentTableRef={tableRef.current}
+            >
+              <LoadingButton variant="contained">Download</LoadingButton>
+            </DownloadTableExcel>
+          </Box>
         </Box>
         <Divider />
         <TableContainer>
-          <Table>
+          <Table ref={tableRef}>
             <TableHead>
               <TableRow>
                 <TableCell>S.No.</TableCell>
