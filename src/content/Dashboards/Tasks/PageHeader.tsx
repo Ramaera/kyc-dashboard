@@ -53,7 +53,7 @@ function PageHeader() {
                 : ''
             }}
           >
-            {user?.kyc ? user?.kyc : ''}
+            {user?.kyc === 'NOT_INITIALIZED' ? 'NOT STARTED' : user?.kyc}
           </span>
         </Typography>{' '}
       </Box>
