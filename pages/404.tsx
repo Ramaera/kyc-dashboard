@@ -92,7 +92,7 @@ function Status404() {
                   />
                 </FormControl>
                 <Divider sx={{ my: 4 }}>OR</Divider>
-                <Button href="/" variant="outlined">
+                <Button href="/list" variant="outlined">
                   Go to homepage
                 </Button>
               </Card>

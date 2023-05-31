@@ -13,15 +13,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import ForgotPasswordModal from "./ForgotPasswordModal";
-
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 export default function LoginCard() {
   const router = useRouter();
   const [PWId, setPWId] = useState('');
-  const [visible,setVisible]=useState<boolean>(false)
+  const [visible, setVisible] = useState<boolean>(false);
   const [password, setPassword] = useState('');
-  const [forgotPasswordShow,setForgotPasswordShow] = useState(false)
+  const [forgotPasswordShow, setForgotPasswordShow] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [login] = useMutation(LOGIN);
 
@@ -51,14 +50,14 @@ export default function LoginCard() {
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);
         }
-        router.reload()
+        router.reload();
       } catch (err) {
         toast.error(err.message);
       }
     }
     setLoading(false);
   };
-  
+
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -94,7 +93,8 @@ export default function LoginCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-            }}/>
+            }}
+          />
           <TextField
             margin="normal"
             required
@@ -105,25 +105,27 @@ export default function LoginCard() {
             value={password}
             name="password"
             label="Password"
-            type={visible ? "text" : "password"}
+            type={visible ? 'text' : 'password'}
             id="password"
-            autoComplete="current-password"    
+            autoComplete="current-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" aria-label="togglw password visibility"
-                  onClick={()=>setVisible(!visible)}
-          >
-            {visible?<Visibility />:<VisibilityOff />}
-            </IconButton>  
+                  <IconButton
+                    edge="end"
+                    aria-label="togglw password visibility"
+                    onClick={() => setVisible(!visible)}
+                  >
+                    {visible ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
                 </InputAdornment>
-              ),
+              )
             }}
-            
           />
           <LoadingButton
             loading={isLoading}
             fullWidth
+            type="submit"
             onClick={() => {
               handleSubmit();
             }}
@@ -131,19 +133,22 @@ export default function LoginCard() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-           Login
+            Login
           </LoadingButton>
           <Typography variant="body1" color="text.secondary" text-align="left">
             Don't Have An Account?
           </Typography>
           <Grid item xs>
-          <Link
-            href="#"
-          >  
-<a onClick={() => {
-setForgotPasswordShow(true);
-}}> Forgot Password</a>         
-          </Link>
+            <Link href="#">
+              <a
+                onClick={() => {
+                  setForgotPasswordShow(true);
+                }}
+              >
+                {' '}
+                Forgot Password
+              </a>
+            </Link>
           </Grid>
 
           <Button
@@ -156,7 +161,10 @@ setForgotPasswordShow(true);
           >
             Register
           </Button>
-          <ForgotPasswordModal open={forgotPasswordShow} setOpen={setForgotPasswordShow}/>
+          <ForgotPasswordModal
+            open={forgotPasswordShow}
+            setOpen={setForgotPasswordShow}
+          />
         </Box>
       </Box>
       <Toaster />

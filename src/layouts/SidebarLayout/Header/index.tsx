@@ -85,7 +85,7 @@ function Header() {
 
   useEffect(() => {
     checkTotal();
-  }, []);
+  }, [usersList]);
   return (
     <HeaderWrapper
       display="flex"
