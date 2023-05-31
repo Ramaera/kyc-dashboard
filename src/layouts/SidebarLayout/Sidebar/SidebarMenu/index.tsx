@@ -144,7 +144,8 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<DesignServicesTwoToneIcon />}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={<>&#x2022;</>}
                   >
                     KYC
                   </Button>
@@ -156,7 +157,8 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<DesignServicesTwoToneIcon />}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={<>&#x2022;</>}
                   >
                     List
                   </Button>
@@ -165,13 +167,14 @@ function SidebarMenu() {
               <ListItem component="div">
                 <Button
                   onClick={() => setListVisible(!listVisible)}
-                  startIcon={<AccountTree />}
+                  // startIcon={<AccountTree />}
+                  startIcon={<>&#x2022;</>}
                 >
                   Our Projects
                 </Button>
               </ListItem>
               {listVisible ? (
-                <List component="div" style={{ marginLeft: '40px' }}>
+                <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
                       <ListItem
@@ -184,9 +187,9 @@ function SidebarMenu() {
                         >
                           <Button
                             style={{
-                              fontSize: '15px',
-                              fontWeight: 400,
-                              color: 'white'
+                              fontSize: '12px',
+                              textAlign: 'right',
+                              padding: '10px 15px'
                             }}
                             className={
                               currentRoute === '="/dashboard/agra'
