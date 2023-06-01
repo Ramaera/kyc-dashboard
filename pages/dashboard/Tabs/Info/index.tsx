@@ -30,7 +30,6 @@ const InfoTab = () => {
     const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   };
-
   const validateMobileNumber = (mobile_number) => {
     const mobileNumberRegex = /^\d{10}$/;
     return mobileNumberRegex.test(mobile_number);

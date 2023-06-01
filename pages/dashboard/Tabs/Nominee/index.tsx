@@ -217,7 +217,7 @@ const NomineeTab = () => {
         {/* <Grid item xs={4}></Grid> */}
       </Grid>
 
-      <Grid container pt={1} pl={2} pb={2} spacing={15}>
+      <Grid container pt={1} pb={2} spacing={15}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
           {aadharFront ? (
             <img
@@ -288,7 +288,7 @@ const NomineeTab = () => {
             </Button>
           )}
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3.5}>
+        <Grid item xs={12} sm={6} ml={1} md={4} lg={3.5}>
           {aadharBack ? (
             <img
               src={
@@ -361,7 +361,7 @@ const NomineeTab = () => {
         <Divider /> */}
       </Grid>
       {user.kyc === 'APPROVED' ? null : (
-        <Grid item xs={12} sm={6} md={4} lg={3} pl={2}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box component="form" mt={2}>
             <LoadingButton
               loading={isLoading}

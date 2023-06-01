@@ -57,10 +57,13 @@ function Header() {
     let totalHajipur = 0;
     let totalAgra = 0;
     usersList.map((user) => {
+      if (user) {
+        totalKyc += 1;
+      }
       user.documents.map((doc) => {
-        if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
+        /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;
-        }
+        } */
         if (
           doc.title.toLowerCase() === 'hajipur_project_payment' &&
           doc.status != 'REJECTED'
@@ -106,6 +109,13 @@ function Header() {
               )}`
       }}
     >
+      <Stack
+        direction="row"
+        divider={<Divider orientation="vertical" flexItem />}
+        alignItems="center"
+        justifyContent="flex-end"
+        spacing={2}
+      ></Stack>
       {router.pathname === '/dashboard' && (
         <Stack
           direction="row"
@@ -131,10 +141,10 @@ function Header() {
             Total KYC : {numbers.totalKYC}
           </Typography>
           <Typography variant="h4" sx={{ my: 2 }}>
-            Total Hajipur KYC : {numbers.totalHajipur}
+            Hajipur Enrolled : {numbers.totalHajipur}
           </Typography>
           <Typography variant="h4" sx={{ my: 2 }}>
-            Total Agra KYC : {numbers.totalAgra}
+            Agra Enrolled : {numbers.totalAgra}
           </Typography>
         </Stack>
       )}

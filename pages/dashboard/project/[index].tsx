@@ -1,6 +1,15 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardHeader,
+  Container,
+  Grid,
+  styled,
+  Tab,
+  Tabs
+} from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useState } from 'react';
@@ -90,8 +99,8 @@ function index() {
       {/* <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper> */}
-      <Container maxWidth="lg">
-        <TabsContainerWrapper>
+      <Container maxWidth="lg" sx={{ mt: 2 }}>
+        {/*  <TabsContainerWrapper>
           <Tabs
             value={title}
             variant="scrollable"
@@ -101,8 +110,16 @@ function index() {
           >
             <Tab key={title} label={title} value={title} />
           </Tabs>
-        </TabsContainerWrapper>
+        </TabsContainerWrapper> */}
         <Card variant="outlined">
+          <CardHeader
+            title={title}
+            sx={{
+              ml: 2,
+              textTransform: 'uppercase',
+              textDecoration: 'underline'
+            }}
+          />
           <Grid
             container
             direction="row"
@@ -111,7 +128,7 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              <Box p={4}>
+              <Box px={4}>
                 <PaymentTab title={title} />
               </Box>
             </Grid>

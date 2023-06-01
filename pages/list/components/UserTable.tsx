@@ -37,7 +37,6 @@ const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
   user.map((doc) => {
     if (doc.title === project) {
-      console.log(doc.status);
       status = doc.status;
     }
   });
@@ -54,7 +53,6 @@ const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
     if ((filters.status && user.kyc) !== filters.status) {
-      console.log('user', user.kyc, filters.status);
       matches = false;
     }
     if (
@@ -102,6 +100,20 @@ const UserTable = () => {
   const filteredUsers = applyFilters(usersList, filters);
   const [kycList, setKycList] = useState<string | null>();
 
+  const projects = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'ADVANCE',
+      name: 'ADVANCE'
+    },
+    {
+      id: 'BASIC',
+      name: 'BASIC'
+    }
+  ];
   const statusOptions = [
     {
       id: 'all',
@@ -161,6 +173,9 @@ const UserTable = () => {
     }
   ];
 
+  const handleProjectChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setKycList(e);
+  };
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
@@ -267,7 +282,32 @@ const UserTable = () => {
         />
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box m={2}>
+          <Box m={1} width={150} display={'flex'}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel>KYC</InputLabel>
+              <Select
+                value={kycList || 'all'}
+                onChange={(e) => handleProjectChange(e.target.value)}
+                label="Project"
+                autoWidth
+              >
+                {projects.map((statusOption) => (
+                  <MenuItem key={statusOption.id} value={statusOption.id}>
+                    {statusOption.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/*  <LoadingButton
+              style={{ marginRight: 10 }}
+              variant="contained"
+              color={kycList ? 'secondary' : 'primary'}
+              onClick={() => {
+                setKycList(null);
+              }}
+            >
+              ALL
+            </LoadingButton>
             <LoadingButton
               style={{ marginRight: 10 }}
               variant="contained"
@@ -286,7 +326,7 @@ const UserTable = () => {
               }}
             >
               BASIC
-            </LoadingButton>
+            </LoadingButton> */}
           </Box>
           <Box m={2}>
             <DownloadTableExcel

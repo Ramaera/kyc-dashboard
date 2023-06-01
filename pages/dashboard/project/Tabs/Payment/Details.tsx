@@ -98,7 +98,7 @@ const Details = ({ title }) => {
       )}
 
       <Box sx={{ flexGrow: 1, my: 2 }}>
-        <Typography variant="h6">Till Raised(%)</Typography>
+        <Typography variant="h6">Total Funding Completed</Typography>
         <BorderLinearProgress variant="determinate" value={risedFundPer} />
         <Typography
           variant="body2"

@@ -160,7 +160,7 @@ function SidebarMenu() {
                     // startIcon={<DesignServicesTwoToneIcon />}
                     startIcon={<>&#x2022;</>}
                   >
-                    List
+                    KYC LIST
                   </Button>
                 </NextLink>
               </ListItem>
@@ -170,17 +170,14 @@ function SidebarMenu() {
                   // startIcon={<AccountTree />}
                   startIcon={<>&#x2022;</>}
                 >
-                  Our Projects
+                  PROJECTS
                 </Button>
               </ListItem>
               {listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
-                      <ListItem
-                        component="div"
-                        onClick={() => setListVisible(!listVisible)}
-                      >
+                      <ListItem component="div" onClick={closeSidebar}>
                         <NextLink
                           href={`/dashboard/project/${project.navigateTo}`}
                           passHref
@@ -191,11 +188,6 @@ function SidebarMenu() {
                               textAlign: 'right',
                               padding: '10px 15px'
                             }}
-                            className={
-                              currentRoute === '="/dashboard/agra'
-                                ? 'active'
-                                : ''
-                            }
                           >
                             {project.projectName}
                           </Button>

@@ -405,7 +405,7 @@ const InfoTab = () => {
             </Typography>
           )}
           {user.kyc === 'APPROVED' ? null : (
-            <Grid container p={2} spacing={2}>
+            <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
                   variant="contained"

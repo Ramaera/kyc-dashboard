@@ -120,7 +120,9 @@ const PaymentInfo = () => {
                 OR
               </Typography>
               <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
-                UPI ID : ramaerakotak@ibl
+                <a href="upi://pay?pa=ramaerakotak@ibl&amp;pn=Ramaera  K&amp;cu=INR">
+                  UPI ID : ramaerakotak@ibl
+                </a>
               </Typography>
             </TableBody>
           </Table>
