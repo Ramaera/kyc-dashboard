@@ -137,7 +137,6 @@ function index() {
       <Head>
         <title>KYC User</title>
       </Head>
-      {/* <PageTitleWrapper>// todo place filters here</PageTitleWrapper> */}
       <Container sx={{ mt: 2 }} maxWidth="lg">
         <UserTable />
       </Container>

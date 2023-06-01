@@ -15,7 +15,9 @@ import {
   TableContainer,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { useRef } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
@@ -31,46 +33,74 @@ import SidebarMenu from '@/layouts/SidebarLayout/Sidebar/SidebarMenu';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 
-interface UserTableProps {
-  className?: string;
-  usersList: any[];
-}
+const projectChecker = (user, project) => {
+  let status = 'NOT ENROLLED';
+  user.map((doc) => {
+    if (doc.title === project) {
+      console.log(doc.status);
+      status = doc.status;
+    }
+  });
+  return status;
+};
 
 interface Filters {
-  status?: UserStatus;
+  status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
+  hajipur?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
+  agra?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
 }
 
-/* const applyFilters = (users: User[], filters: Filters): User[] => {
+const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
+    if ((filters.status && user.kyc) !== filters.status) {
+      console.log('user', user.kyc, filters.status);
+      matches = false;
+    }
+    if (
+      filters.hajipur &&
+      projectChecker(user.documents, 'hajipur_project_payment') !==
+        filters.hajipur
+    ) {
+      matches = false;
+    }
 
-    if (filters.status && user.status !== filters.status) {
+    if (
+      filters.agra &&
+      projectChecker(user.documents, 'agra_project_payment') !== filters.agra
+    ) {
       matches = false;
     }
 
     return matches;
   });
-}; */
-
-const applyPagination = (
-  users: User[],
-  page: number,
-  limit: number
-): User[] => {
-  return users.slice(page * limit, page * limit + limit);
 };
 
+/* const applyFilters = (users: User[], filters: Filters): User[] => {
+  return users.filter((user) => {
+    let matches = true;
+
+    if (filters.status && user.kyc !== filters.status) {
+      matches = false;
+    }
+    if (filters.membership && user.membership !== filters.membership) {
+      matches = false;
+    }
+
+    return matches;
+  });
+};
+ */
 const UserTable = () => {
   const tableRef = useRef(null);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const selectedBulkActions = selectedUsers.length > 0;
-  const [kycList, setKycList] = useState<string | null>();
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
-    status: null
+    status: null,
+    hajipur: null,
+    agra: null
   });
+  const filteredUsers = applyFilters(usersList, filters);
+  const [kycList, setKycList] = useState<string | null>();
 
   const statusOptions = [
     {
@@ -78,16 +108,56 @@ const UserTable = () => {
       name: 'All'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: 'NOT_INITIALIZED',
+      name: 'Not Started'
     },
     {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'rejected',
+      id: 'REJECTED',
       name: 'Rejected'
+    },
+    {
+      id: 'ONGOING',
+      name: 'Ongoing'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    }
+  ];
+  const hajipurOptions = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'NOT ENROLLED',
+      name: 'Not Enrolled'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    },
+    {
+      id: 'PENDING',
+      name: 'Pending'
+    }
+  ];
+  const agraOptions = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'NOT ENROLLED',
+      name: 'Not Enrolled'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    },
+    {
+      id: 'PENDING',
+      name: 'Pending'
     }
   ];
 
@@ -103,40 +173,31 @@ const UserTable = () => {
       status: value
     }));
   };
+  const handleHajipurChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
 
-  const handleSelectAllUsers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedUsers(
-      event.target.checked ? usersList.map((user) => user.id) : []
-    );
-  };
-
-  const handleSelectOneUser = (
-    _event: ChangeEvent<HTMLInputElement>,
-    userId: string
-  ): void => {
-    if (!selectedUsers.includes(userId)) {
-      setSelectedUsers((prevSelected) => [...prevSelected, userId]);
-    } else {
-      setSelectedUsers((prevSelected) =>
-        prevSelected.filter((id) => id !== userId)
-      );
+    if (e.target.value !== 'all') {
+      value = e.target.value;
     }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      hajipur: value
+    }));
+  };
+  const handleAgraChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      agra: value
+    }));
   };
 
-  const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
-
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
-
-  // const filteredUsers = applyFilters(usersList, filters);
-  // const paginatedUsers = applyPagination(filteredUsers, page, limit);
-  const selectedSomeUsers =
-    selectedUsers.length > 0 && selectedUsers.length < usersList.length;
-  const selectedAllUsers = selectedUsers.length === usersList.length;
-  const theme = useTheme();
   const censorMe = (text) => {
     if (!text) {
       return text;
@@ -145,26 +206,16 @@ const UserTable = () => {
     let w = text;
     return w.replace(regex, '*');
   };
-  const projectChecker = (user, project) => {
-    let status = 'NOT ENROLLED';
-    user.map((doc) => {
-      if (doc.title === project) {
-        console.log(doc.status);
-        status = doc.status;
-      }
-    });
-    return status;
-  };
 
   let index = -1;
   return (
     <>
       <Card>
-        {!selectedBulkActions && (
-          <CardHeader
-            action={
-              <Box width={150}>
-                {/* <FormControl fullWidth variant="outlined">
+        <CardHeader
+          action={
+            <Box display={'flex'} gap={'20px'}>
+              <Box width={480} display={'flex'} gap={'10px'}>
+                <FormControl fullWidth variant="outlined">
                   <InputLabel>KYC Status</InputLabel>
                   <Select
                     value={filters.status || 'all'}
@@ -178,12 +229,42 @@ const UserTable = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl> */}
+                </FormControl>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Hajipur </InputLabel>
+                  <Select
+                    value={filters.hajipur || 'all'}
+                    onChange={handleHajipurChange}
+                    label="Status"
+                    autoWidth
+                  >
+                    {hajipurOptions.map((statusOption) => (
+                      <MenuItem key={statusOption.id} value={statusOption.id}>
+                        {statusOption.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Agra </InputLabel>
+                  <Select
+                    value={filters.agra || 'all'}
+                    onChange={handleAgraChange}
+                    label="Status"
+                    autoWidth
+                  >
+                    {agraOptions.map((statusOption) => (
+                      <MenuItem key={statusOption.id} value={statusOption.id}>
+                        {statusOption.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Box>
-            }
-            title="KYC LIST"
-          />
-        )}
+            </Box>
+          }
+          title="KYC LIST"
+        />
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box m={2}>
@@ -234,14 +315,13 @@ const UserTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {usersList.map((user) => {
+              {filteredUsers.map((user) => {
                 if (user.membership === kycList) {
                   return;
                 }
-                const isUserSelected = selectedUsers.includes(user.id);
                 index += 1;
                 return (
-                  <TableRow hover key={user.id} selected={isUserSelected}>
+                  <TableRow hover key={user.id}>
                     <TableCell>
                       <Typography
                         variant="body1"
