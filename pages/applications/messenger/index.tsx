@@ -12,9 +12,12 @@ import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import Scrollbar from '@/components/Scrollbar';
 
 import {
-  Box, Divider,
+  Box,
+  Divider,
   Drawer,
-  IconButton, styled, useTheme
+  IconButton,
+  styled,
+  useTheme
 } from '@mui/material';
 
 const RootWrapper = styled(Box)(
