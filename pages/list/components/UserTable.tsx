@@ -100,7 +100,7 @@ const UserTable = () => {
   const filteredUsers = applyFilters(usersList, filters);
   const [kycList, setKycList] = useState<string | null>();
 
-  const projects = [
+  const membership = [
     {
       id: 'all',
       name: 'All'
@@ -291,7 +291,7 @@ const UserTable = () => {
                 label="Project"
                 autoWidth
               >
-                {projects.map((statusOption) => (
+                {membership.map((statusOption) => (
                   <MenuItem key={statusOption.id} value={statusOption.id}>
                     {statusOption.name}
                   </MenuItem>

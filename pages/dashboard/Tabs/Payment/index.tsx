@@ -24,6 +24,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const _imgs = [];
     for (let _document of documents) {
