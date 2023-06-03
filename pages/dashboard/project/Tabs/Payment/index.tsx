@@ -111,7 +111,7 @@ const DocumentRow = ({
           if (_document) {
             const resp = await handleUpdateDocument(
               _document.id,
-              documentTitle,
+              documentTitle.toLowerCase(),
               imgUrl
             );
             await dispatch(
@@ -129,7 +129,10 @@ const DocumentRow = ({
             userAllDocuments = listAfterRemovingExistingDocument;
           } else {
             //create document
-            const resp = await handleCreateDocument(documentTitle, imgUrl);
+            const resp = await handleCreateDocument(
+              documentTitle.toLowerCase(),
+              imgUrl
+            );
             toast.success(`${documentTitle} Uploaded`);
             userAllDocuments = [...userAllDocuments, resp.data.createDocument];
           }
