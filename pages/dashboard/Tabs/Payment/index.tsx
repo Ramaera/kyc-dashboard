@@ -26,7 +26,6 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [statusUpdate, setStatusUpdate] = useState([]);
 
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     const _imgs = [];
     for (let _document of documents) {
@@ -169,7 +168,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             >
               {statusCheck(documents[i]?.id) ||
                 documents[i]?.status ||
-                'PENDING'}
+                'NOT STARTED'}
             </span>
           </div>
           <Button
@@ -279,6 +278,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
       {moreRow <= 3 && (
         <LoadingButton
           variant="contained"
+          disabled={images.length !== moreRow}
           onClick={() => {
             setMoreRow(moreRow + 1);
           }}
