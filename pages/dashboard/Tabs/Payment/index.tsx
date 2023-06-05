@@ -16,7 +16,13 @@ export const rows = [
     config: documentsConfig.additional_documents
   }
 ];
-const DocumentRow = ({ data, documents = [], user, rowNo }) => {
+const DocumentRow = ({
+  data,
+  documents = [],
+  user,
+  rowNo,
+  hideAdditionalDocuments
+}) => {
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
@@ -286,6 +292,13 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
           Add More
         </LoadingButton>
       )}
+      <LoadingButton
+        sx={{ marginLeft: 2 }}
+        variant="contained"
+        onClick={hideAdditionalDocuments}
+      >
+        Go Back
+      </LoadingButton>
       <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
@@ -402,6 +415,9 @@ const InfoTab = () => {
       });
     }
   }, [user]);
+  const hideAdditionalDocuments = () => {
+    setAdditionalDocuments(false);
+  };
   return (
     <>
       {!additionalDocuments ? (
@@ -508,6 +524,7 @@ const InfoTab = () => {
         <>
           {rows.map((row, index) => (
             <DocumentRow
+              hideAdditionalDocuments={hideAdditionalDocuments}
               data={row}
               rowNo={rowNo}
               key={index}

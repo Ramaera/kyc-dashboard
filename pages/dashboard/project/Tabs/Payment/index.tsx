@@ -29,6 +29,7 @@ const DocumentRow = ({
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
+  const [statusUpdate, setStatusUpdate] = useState([]);
   const dispatch = useAppDispatch();
   useEffect(() => {
     setMoreRow(rowNo);
@@ -88,6 +89,16 @@ const DocumentRow = ({
     return { ...newUser, documents: newDocs };
   };
 
+  const statusCheck = (docId) => {
+    let updatedStatus = false;
+    statusUpdate?.map((stat) => {
+      if (docId === stat.id) {
+        updatedStatus = stat.status;
+      }
+    });
+    // console.log(updatedStatus);
+    return updatedStatus;
+  };
   const handleDocumentUpload = async () => {
     setLoading(true);
 
@@ -151,50 +162,72 @@ const DocumentRow = ({
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       views.push(
-        <Button
-          style={{
-            cursor: documents[0]
-              ? documents[0].status === 'APPROVED'
-                ? 'not-allowed'
-                : 'pointer'
-              : 'pointer',
-            marginTop: '10px'
-          }}
-          component="label"
-          color={
-            documents[0]
-              ? documents[0].status === 'APPROVED'
-                ? 'secondary'
-                : 'primary'
-              : 'primary'
-          }
-        >
-          Choose {items[i]?.name}
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            disabled={
+        <div style={{ height: 160, marginTop: 10 }}>
+          <div style={{ marginBottom: 10 }}>
+            Status:{' '}
+            <span
+              style={{
+                color:
+                  statusCheck(documents[i]?.id) === 'APPROVED'
+                    ? 'green'
+                    : statusCheck(documents[i]?.id) === 'REJECTED'
+                    ? 'red'
+                    : documents[i]
+                    ? (documents[i].status === 'APPROVED' && 'green') ||
+                      (documents[i].status === 'REJECTED' && 'red')
+                    : ''
+              }}
+            >
+              {statusCheck(documents[i]?.id) ||
+                documents[i]?.status ||
+                'NOT STARTED'}
+            </span>
+          </div>
+          <Button
+            style={{
+              cursor: documents[0]
+                ? documents[0].status === 'APPROVED'
+                  ? 'not-allowed'
+                  : 'pointer'
+                : 'pointer',
+              marginTop: '10px'
+            }}
+            component="label"
+            color={
               documents[0]
                 ? documents[0].status === 'APPROVED'
-                  ? true
-                  : false
-                : false
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
             }
-            onChange={(f) => {
-              console.log(i);
-              if (f.target.files.length > 0) {
-                const _images = [...images];
-                _images[i] = f.target.files[0];
-                setImages(_images);
-                console.log('imageChanged', _images[i]);
-                const _imagesChanged = [...imagesChanged];
-                _imagesChanged[i] = true;
-                setImagesChange(_imagesChanged);
+          >
+            Choose {items[i]?.name}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              disabled={
+                documents[0]
+                  ? documents[0].status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
               }
-            }}
-          />
-        </Button>
+              onChange={(f) => {
+                console.log(i);
+                if (f.target.files.length > 0) {
+                  const _images = [...images];
+                  _images[i] = f.target.files[0];
+                  setImages(_images);
+                  console.log('imageChanged', _images[i]);
+                  const _imagesChanged = [...imagesChanged];
+                  _imagesChanged[i] = true;
+                  setImagesChange(_imagesChanged);
+                }
+              }}
+            />
+          </Button>
+        </div>
       );
     }
     return views;
@@ -207,11 +240,13 @@ const DocumentRow = ({
       const _img = images[i];
       if (_img) {
         views.push(
-          <img
-            src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img}
-            height={100}
-            style={{ marginLeft: '5px' }}
-          />
+          <div style={{ marginTop: 15 }}>
+            <img
+              src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img}
+              height={150}
+              style={{ marginLeft: '5px' }}
+            />
+          </div>
         );
       }
     }
@@ -226,14 +261,19 @@ const DocumentRow = ({
         key={data.config.name}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" style={{ border: 'none' }}>
           {data.config.name} {data.isOptional ? '(Optional)' : ''}
         </TableCell>
 
-        <TableCell>{getPreview()}</TableCell>
+        <TableCell
+          style={{ display: 'flex', flexDirection: 'column', border: 'none' }}
+          width={300}
+        >
+          {getPreview()}
+        </TableCell>
 
-        <TableCell style={{}}>{getActionCell()}</TableCell>
-        <TableCell>
+        <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
+        <TableCell style={{ border: 'none' }}>
           <LoadingButton
             loading={isLoading}
             // disabled={!isValidToClick()}
@@ -246,7 +286,7 @@ const DocumentRow = ({
           </LoadingButton>
         </TableCell>
 
-        <TableCell>
+        {/* <TableCell>
           <span
             style={{
               color: documents[0]
@@ -257,27 +297,28 @@ const DocumentRow = ({
           >
             {documents[0] && documents[0].status}
           </span>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
-      {moreRow <= 3 && (
-        <>
+      <div style={{ marginBottom: 40 }}>
+        {moreRow <= 3 && (
           <LoadingButton
             variant="contained"
+            disabled={images.length !== moreRow}
             onClick={() => {
               setMoreRow(moreRow + 1);
             }}
           >
             Add More
           </LoadingButton>
-          <LoadingButton
-            sx={{ marginLeft: 2 }}
-            variant="contained"
-            onClick={hideAdditionalDocuments}
-          >
-            Go Back
-          </LoadingButton>
-        </>
-      )}
+        )}
+        <LoadingButton
+          sx={{ marginLeft: 2 }}
+          variant="contained"
+          onClick={hideAdditionalDocuments}
+        >
+          Go Back
+        </LoadingButton>
+      </div>
     </>
   );
 };
@@ -503,6 +544,7 @@ const InfoTab = ({ title }) => {
           )}
           {proofImage && (
             <LoadingButton
+              sx={{ mb: 4 }}
               variant="contained"
               onClick={() => {
                 setAdditionalDocuments(true);
