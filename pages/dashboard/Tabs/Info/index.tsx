@@ -94,7 +94,7 @@ const InfoTab = () => {
     if (user) {
       setFullName(user.name);
       setFatherHusbandName(user.father_or_husband_name);
-      setDob(user.date_of_birth);
+      setDob(user.date_of_birth.slice(0, 10));
       SetMobileNumber(user.mobile_number);
       setAlternateMobileNumber(user.alternate_mobile_number);
       setEmail(user.email);
