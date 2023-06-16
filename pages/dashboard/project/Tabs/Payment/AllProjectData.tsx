@@ -69,7 +69,7 @@ export const AllProjectDetails = {
       info: 'Minimum 2500 to multiple 8'
     },
     {
-      key: 'No. of sahre allotment',
+      key: 'No. of share allotment',
       info: 'Rs 200/Share'
     },
     {
@@ -121,7 +121,7 @@ export const AllProjectDetails = {
       info: '500'
     },
     {
-      key: 'No. of sahre allotment',
+      key: 'No. of share allotment',
       info: 'Rs 200/Share'
     },
     {
