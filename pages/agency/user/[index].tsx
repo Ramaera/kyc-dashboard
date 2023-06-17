@@ -1,16 +1,32 @@
-import Footer from '@/components/Footer';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
-import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import 'react-photo-view/dist/react-photo-view.css';
 import Head from 'next/head';
-import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { ChangeEvent, useState } from 'react';
-import DematTab from './Tabs/Demat';
-import DocumentTab from './Tabs/Documents';
+import SidebarLayout from '@/layouts/SidebarLayout';
+import { ChangeEvent, useEffect, useState } from 'react';
+import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
+import Footer from '@/components/Footer';
+import { useRouter } from 'next/router';
+
+// import userData from '../data.json';
+import {
+  Grid,
+  Tab,
+  Tabs,
+  Container,
+  Card,
+  Box,
+  useTheme,
+  styled
+} from '@mui/material';
+import PageTitleWrapper from '@/components/PageTitleWrapper';
 import InfoTab from './Tabs/Info';
-import NomineeTab from './Tabs/Nominee';
+import DematTab from './Tabs/Demat';
 import PaymentTab from './Tabs/Payment';
+import Projects from './Tabs/Projects';
+import DocumentTab from './Tabs/Documents';
+import NomineeTab from './Tabs/Nominee';
+import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -95,11 +111,29 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  //const usersList = userData;
+  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  //spread ... userList and add the updated user to itthen change it
+  const { index } = router.query;
+  const foundUser = usersList.find((user) => user.id === index);
+  // console.log(foundUser.date_of_birth.length);
+  useEffect(() => {
+    if (foundUser) {
+      dispatch(setFoundUser(foundUser));
+    }
+  }, []);
+
+  // console.log('foundUser [index]', foundUser);
+  const theme = useTheme();
+
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
+    { value: 'projects', label: 'Projects' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' }
@@ -112,7 +146,7 @@ function DashboardTasks() {
   return (
     <ProtectedSSRoute>
       <Head>
-        <title>KYC Dashboard</title>
+        <title>KYC Admin Dashboard</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -147,10 +181,18 @@ function DashboardTasks() {
                 </Box>
               </Grid>
             )}
+
             {currentTab === 'payment' && (
               <Grid item xs={12}>
                 <Box p={4}>
                   <PaymentTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'projects' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <Projects />
                 </Box>
               </Grid>
             )}

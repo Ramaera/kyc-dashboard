@@ -165,6 +165,19 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
               <ListItem component="div">
+                <NextLink href="/agency" passHref>
+                  <Button
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={<>&#x2022;</>}
+                  >
+                    AGENCY
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
                 <Button
                   onClick={() => setListVisible(!listVisible)}
                   // startIcon={<AccountTree />}

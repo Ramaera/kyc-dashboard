@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  allTheUsers: []
+  allTheUsers: [],
+  allKycHandlerList: []
 };
 
 export const allUSersSlice = createSlice({
@@ -10,10 +11,13 @@ export const allUSersSlice = createSlice({
   reducers: {
     setAllTheUsers: (state, action) => {
       state.allTheUsers = action.payload;
+    },
+    setAllKycHandlerList: (state, action) => {
+      state.allKycHandlerList = action.payload;
     }
   }
 });
 
-export const { setAllTheUsers } = allUSersSlice.actions;
+export const { setAllTheUsers, setAllKycHandlerList } = allUSersSlice.actions;
 
 export default allUSersSlice.reducer;
