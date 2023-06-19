@@ -113,20 +113,14 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   const router = useRouter();
   const dispatch = useDispatch();
-  //const usersList = userData;
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-  //spread ... userList and add the updated user to itthen change it
   const { index } = router.query;
   const foundUser = usersList.find((user) => user.id === index);
-  // console.log(foundUser.date_of_birth.length);
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));
     }
   }, []);
-
-  // console.log('foundUser [index]', foundUser);
-  const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 

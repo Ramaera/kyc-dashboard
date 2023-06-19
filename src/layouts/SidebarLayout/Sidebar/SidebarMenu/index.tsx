@@ -140,7 +140,7 @@ function SidebarMenu() {
               <ListItem component="div">
                 <NextLink href="/dashboard" passHref>
                   <Button
-                    className={currentRoute === '="/dashboard' ? 'active' : ''}
+                    className={currentRoute === '/dashboard' ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
@@ -154,23 +154,26 @@ function SidebarMenu() {
               <ListItem component="div">
                 <NextLink href="/list" passHref>
                   <Button
+                    className={currentRoute === '/list' ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    // startIcon={<DesignServicesTwoToneIcon />}
                     startIcon={<>&#x2022;</>}
                   >
                     KYC LIST
                   </Button>
                 </NextLink>
               </ListItem>
-              <ListItem component="div">
+              <ListItem
+                component="div"
+                // sx={{ backgroundColor: '#ffffff10', borderRadius: 2 }}
+              >
                 <NextLink href="/agency" passHref>
                   <Button
+                    className={currentRoute === '/agency' ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    // startIcon={<DesignServicesTwoToneIcon />}
                     startIcon={<>&#x2022;</>}
                   >
                     AGENCY
@@ -179,6 +182,11 @@ function SidebarMenu() {
               </ListItem>
               <ListItem component="div">
                 <Button
+                  className={
+                    currentRoute.slice(0, 18) === '/dashboard/project'
+                      ? 'active'
+                      : ''
+                  }
                   onClick={() => setListVisible(!listVisible)}
                   // startIcon={<AccountTree />}
                   startIcon={<>&#x2022;</>}
