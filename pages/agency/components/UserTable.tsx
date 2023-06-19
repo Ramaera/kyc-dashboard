@@ -333,7 +333,7 @@ const UserTable = () => {
             <TableBody>
               {paginatedUsers.map((user) => {
                 return (
-                  <Link href={'agency/user/' + user.id}>
+                  <Link href={'agency/' + user.id}>
                     <TableRow hover key={user.id} sx={{ cursor: 'pointer' }}>
                       {/* <TableCell padding="checkbox">
                       <Checkbox
