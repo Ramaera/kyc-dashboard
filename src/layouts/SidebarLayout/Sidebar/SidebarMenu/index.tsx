@@ -1,6 +1,14 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
-import { alpha, Box, Button, List, ListItem, styled } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Button,
+  colors,
+  List,
+  ListItem,
+  styled
+} from '@mui/material';
 import NextLink from 'next/link';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
@@ -138,27 +146,24 @@ function SidebarMenu() {
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
-                <NextLink href="/dashboard" passHref>
-                  <Button
-                    className={currentRoute === '/dashboard' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    // startIcon={<DesignServicesTwoToneIcon />}
-                    startIcon={<>&#x2022;</>}
-                  >
-                    KYC
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
                 <NextLink href="/list" passHref>
                   <Button
                     className={currentRoute === '/list' ? 'active' : ''}
+                    style={{
+                      color: currentRoute === '/list' ? '#7063C0' : ''
+                    }}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<>&#x2022;</>}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute === '/list' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
                   >
                     KYC LIST
                   </Button>
@@ -172,14 +177,51 @@ function SidebarMenu() {
                   <Button
                     className={currentRoute === '/agency' ? 'active' : ''}
                     disableRipple
+                    style={{
+                      color: currentRoute === '/agency' ? '#7063C0' : ''
+                    }}
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<>&#x2022;</>}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute === '/agency' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
                   >
                     AGENCY
                   </Button>
                 </NextLink>
               </ListItem>
+              <ListItem component="div">
+                <NextLink href="/dashboard" passHref>
+                  <Button
+                    className={currentRoute === '/dashboard' ? 'active' : ''}
+                    style={{
+                      color: currentRoute === '/dashboard' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute === '/dashboard' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    KYC
+                  </Button>
+                </NextLink>
+              </ListItem>
+
               <ListItem component="div">
                 <Button
                   className={
@@ -187,9 +229,26 @@ function SidebarMenu() {
                       ? 'active'
                       : ''
                   }
+                  style={{
+                    color:
+                      currentRoute.slice(0, 18) === '/dashboard/project'
+                        ? '#7063C0'
+                        : ''
+                  }}
                   onClick={() => setListVisible(!listVisible)}
                   // startIcon={<AccountTree />}
-                  startIcon={<>&#x2022;</>}
+                  startIcon={
+                    <span
+                      style={{
+                        color:
+                          currentRoute.slice(0, 18) === '/dashboard/project'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                    >
+                      &#x2022;
+                    </span>
+                  }
                 >
                   PROJECTS
                 </Button>

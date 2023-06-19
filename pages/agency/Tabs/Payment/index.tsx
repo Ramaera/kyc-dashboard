@@ -29,7 +29,7 @@ import { LoadingButton } from '@mui/lab';
 
 export const rows = [
   {
-    config: documentsConfig.additional_payment_documents
+    config: documentsConfig.additional_documents
   }
 ];
 // let statusUpdate = [];
