@@ -245,7 +245,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user.kyc === 'APPROVED' ? null : (
+          {user?.kyc === 'APPROVED' ? null : (
             <Button
               size="small"
               variant="contained"
@@ -314,7 +314,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user.kyc === 'APPROVED' ? null : (
+          {user?.kyc === 'APPROVED' ? null : (
             <Button
               size="small"
               variant="contained"
@@ -360,7 +360,7 @@ const NomineeTab = () => {
         {/* <Grid item xs={4}></Grid>
         <Divider /> */}
       </Grid>
-      {user.kyc === 'APPROVED' ? null : (
+      {user?.kyc === 'APPROVED' ? null : (
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box component="form" mt={2}>
             <LoadingButton

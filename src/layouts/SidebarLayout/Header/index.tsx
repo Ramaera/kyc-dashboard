@@ -41,6 +41,7 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
+  const agencyCode = useSelector((state) => state.user.agencyCode);
   const usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
   );
@@ -129,6 +130,17 @@ function Header() {
           <Typography variant="h4" sx={{ my: 2 }}>
             RM ID : {user && user.rm_id}
           </Typography>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Agency Code :{' '}
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                navigator.clipboard.writeText(agencyCode);
+              }}
+            >
+              {agencyCode}
+            </span>
+          </Typography>
         </Stack>
       )}
       {router.pathname === '/list' && (
@@ -147,6 +159,27 @@ function Header() {
           </Typography>
           <Typography variant="h4" sx={{ my: 2 }}>
             Agra Enrolled : {numbers.totalAgra}
+          </Typography>
+        </Stack>
+      )}
+      {router.pathname === '/agency' && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Agency Code :{' '}
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                navigator.clipboard.writeText(agencyCode);
+              }}
+            >
+              {agencyCode}
+            </span>
           </Typography>
         </Stack>
       )}

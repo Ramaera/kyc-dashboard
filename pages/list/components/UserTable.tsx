@@ -52,7 +52,7 @@ interface Filters {
 const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
-    if ((filters.status && user.kyc) !== filters.status) {
+    if ((filters.status && user?.kyc) !== filters.status) {
       matches = false;
     }
     if (
@@ -78,7 +78,7 @@ const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
 
-    if (filters.status && user.kyc !== filters.status) {
+    if (filters.status && user?.kyc !== filters.status) {
       matches = false;
     }
     if (filters.membership && user.membership !== filters.membership) {
@@ -447,7 +447,7 @@ const UserTable = () => {
                       >
                         {user?.kyc === 'NOT_INITIALIZED'
                           ? 'NOT STARTED'
-                          : user.kyc}
+                          : user?.kyc}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">

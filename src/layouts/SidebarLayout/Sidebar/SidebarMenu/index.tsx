@@ -14,6 +14,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 import AccountTree from '@mui/icons-material/AccountTree';
 import { projectData } from './projectDetails';
+import { useSelector } from 'react-redux';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -135,6 +136,7 @@ const SubMenuWrapper = styled(Box)(
 );
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
+  const agencyCode = useSelector((state) => state.user.agencyCode);
   const router = useRouter();
   const currentRoute = router.pathname;
   const [listVisible, setListVisible] = useState(false);
@@ -169,49 +171,51 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-              <ListItem
-                component="div"
-                // sx={{ backgroundColor: '#ffffff10', borderRadius: 2 }}
-              >
-                <NextLink href="/agency" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/agency'
-                        ? 'active'
-                        : currentRoute === '/agency/[index]'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    style={{
-                      color:
+              {agencyCode && (
+                <ListItem
+                  component="div"
+                  // sx={{ backgroundColor: '#ffffff10', borderRadius: 2 }}
+                >
+                  <NextLink href="/agency" passHref>
+                    <Button
+                      className={
                         currentRoute === '/agency'
-                          ? '#7063C0'
+                          ? 'active'
                           : currentRoute === '/agency/[index]'
-                          ? '#7063C0'
+                          ? 'active'
                           : ''
-                    }}
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={
-                      <span
-                        style={{
-                          color:
-                            currentRoute === '/agency'
-                              ? '#7063C0'
-                              : currentRoute === '/agency/[index]'
-                              ? '#7063C0'
-                              : ''
-                        }}
-                      >
-                        &#x2022;
-                      </span>
-                    }
-                  >
-                    AGENCY
-                  </Button>
-                </NextLink>
-              </ListItem>
+                      }
+                      disableRipple
+                      style={{
+                        color:
+                          currentRoute === '/agency'
+                            ? '#7063C0'
+                            : currentRoute === '/agency/[index]'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/agency'
+                                ? '#7063C0'
+                                : currentRoute === '/agency/[index]'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      AGENCY
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
               <ListItem component="div">
                 <NextLink href="/dashboard" passHref>
                   <Button
@@ -238,38 +242,39 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              <ListItem component="div">
-                <Button
-                  className={
-                    currentRoute.slice(0, 18) === '/dashboard/project'
-                      ? 'active'
-                      : ''
-                  }
-                  style={{
-                    color:
+              {currentRoute === '/dashboard' && (
+                <ListItem component="div">
+                  <Button
+                    className={
                       currentRoute.slice(0, 18) === '/dashboard/project'
-                        ? '#7063C0'
+                        ? 'active'
                         : ''
-                  }}
-                  onClick={() => setListVisible(!listVisible)}
-                  // startIcon={<AccountTree />}
-                  startIcon={
-                    <span
-                      style={{
-                        color:
-                          currentRoute.slice(0, 18) === '/dashboard/project'
-                            ? '#7063C0'
-                            : ''
-                      }}
-                    >
-                      &#x2022;
-                    </span>
-                  }
-                >
-                  PROJECTS
-                </Button>
-              </ListItem>
-              {listVisible ? (
+                    }
+                    style={{
+                      color:
+                        currentRoute.slice(0, 18) === '/dashboard/project'
+                          ? '#7063C0'
+                          : ''
+                    }}
+                    onClick={() => setListVisible(!listVisible)}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute.slice(0, 18) === '/dashboard/project'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    PROJECTS
+                  </Button>
+                </ListItem>
+              )}
+              {currentRoute === '/dashboard' && listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (

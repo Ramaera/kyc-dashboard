@@ -174,6 +174,13 @@ query GetAllUser {
 }
   }
   `);
+export const GET_AGENCY_CODE = gql(`
+  query($userID: String!) {
+  kycAgency(userId: $userID) {
+    agencyCode
+  }
+}
+`);
 export const GET_ALL_AGENCY_USERS = gql(`
 query($agencyCode: String!) {
   GetAllKycAgencyUser(agencyCode: $agencyCode) {

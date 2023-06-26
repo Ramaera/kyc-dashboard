@@ -82,6 +82,18 @@ export default {
       }
     ]
   },
+  agency_payment_proof: {
+    name: 'Agency Payment Proof',
+    id: 'agency_payment_proof',
+    status: 'Not Uploaded',
+
+    items: [
+      {
+        id: 'agency_payment_proof',
+        name: 'Agency Payment Proof'
+      }
+    ]
+  },
   additional_documents: {
     name: 'Additional Payment Document',
     id: 'additional_payment_doc',

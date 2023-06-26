@@ -11,7 +11,7 @@ import DocumentTab from './Tabs/Documents';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
-
+import GetAgency from './Tabs/GetAgency';
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -102,7 +102,8 @@ function DashboardTasks() {
     { value: 'payment', label: 'Payment' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
-    { value: 'demat', label: 'Demat Account Details' }
+    { value: 'demat', label: 'Demat Account Details' },
+    { value: 'getAgency', label: 'KYC Agency' }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -151,6 +152,13 @@ function DashboardTasks() {
               <Grid item xs={12}>
                 <Box p={4}>
                   <PaymentTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'getAgency' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <GetAgency />
                 </Box>
               </Grid>
             )}

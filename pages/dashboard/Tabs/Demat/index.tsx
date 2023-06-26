@@ -160,7 +160,7 @@ const DematTab = () => {
           </span>
         </Typography>
       )}
-      {user.kyc === 'APPROVED' ? null : (
+      {user?.kyc === 'APPROVED' ? null : (
         <Grid container pt={3} pb={2} pr={2} spacing={2}>
           <Grid item xs={12} sm={6} md={4} lg={3.5}>
             <Button

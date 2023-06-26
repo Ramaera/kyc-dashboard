@@ -32,6 +32,7 @@ function DashboardTasks() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const foundUser = useSelector((state) => state.foundUser.foundUser);
+  const agencyCode = useSelector((state) => state.user.agencyCode);
 
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const tabs = [
@@ -46,7 +47,7 @@ function DashboardTasks() {
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
     variables: {
-      agencyCode: 'RIL36938'
+      agencyCode: agencyCode
     }
   });
   const kycHandlersList = useQuery(GET_ALL_KYC_HANDLER);

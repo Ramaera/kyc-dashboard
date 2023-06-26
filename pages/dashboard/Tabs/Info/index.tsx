@@ -94,7 +94,7 @@ const InfoTab = () => {
     if (user) {
       setFullName(user.name);
       setFatherHusbandName(user.father_or_husband_name);
-      setDob(user.date_of_birth.slice(0, 10));
+      setDob(user.date_of_birth?.slice(0, 10));
       SetMobileNumber(user.mobile_number);
       setAlternateMobileNumber(user.alternate_mobile_number);
       setEmail(user.email);
@@ -228,7 +228,7 @@ const InfoTab = () => {
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        {user.kyc === 'APPROVED' ? null : (
+        {user?.kyc === 'APPROVED' ? null : (
           <Grid item xs={4}>
             <Box component="form">
               <LoadingButton

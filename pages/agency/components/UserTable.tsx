@@ -42,7 +42,7 @@ const applyFilters = (users: User[], filters: Filters): User[] => {
   return users.filter((user) => {
     let matches = true;
 
-    if (filters.status && user.kyc !== filters.status) {
+    if (filters.status && user?.kyc !== filters.status) {
       matches = false;
     }
     if (filters.membership && user.membership !== filters.membership) {
@@ -390,11 +390,11 @@ const UserTable = () => {
                         <Typography
                           style={{
                             color:
-                              user.kyc === 'APPROVED'
+                              user?.kyc === 'APPROVED'
                                 ? 'green'
-                                : user.kyc === 'REJECTED'
+                                : user?.kyc === 'REJECTED'
                                 ? 'red'
-                                : user.kyc === 'ONGOING'
+                                : user?.kyc === 'ONGOING'
                                 ? 'orange'
                                 : 'white'
                           }}
@@ -405,7 +405,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user.kyc}
+                          {user?.kyc}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
