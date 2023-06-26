@@ -78,7 +78,7 @@ const DocumentRow = ({
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, title: 'avatar' });
       } else if (item.title !== title) {
@@ -344,7 +344,7 @@ const InfoTab = ({ title }) => {
   };
   const getDocNum = () => {
     let count = 0;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (
         doc.title.slice(0, 17 + title.length).toLowerCase() ===
         title.toLowerCase() + '_' + documentsConfig.project_payment.id + '_'
@@ -358,7 +358,7 @@ const InfoTab = ({ title }) => {
     const documents = [];
     if (user && user.documents) {
       for (let config of configs) {
-        const document = user.documents.find((doc: DocumentType) => {
+        const document = user?.documents?.find((doc: DocumentType) => {
           if (
             doc.title.toLowerCase() ===
             title.toLowerCase() + '_' + config.id.toLowerCase()
@@ -377,7 +377,7 @@ const InfoTab = ({ title }) => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -429,8 +429,8 @@ const InfoTab = ({ title }) => {
   useEffect(() => {
     setPaymentDocument(null);
     setProofImage(null);
-    if (user && user.documents && user.documents.length > 0) {
-      user.documents.find((document: DocumentType) => {
+    if (user && user.documents && user?.documents?.length > 0) {
+      user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           title.toLowerCase() + '_' + documentsConfig.project_payment.id

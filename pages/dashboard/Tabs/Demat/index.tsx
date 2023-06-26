@@ -39,7 +39,7 @@ const DematTab = () => {
   const updateUser = (dematId, imgUrl, dematAccount) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, url: imgUrl });
       } else {
@@ -101,8 +101,8 @@ const DematTab = () => {
     if (user) {
       setDematAccount(user.demat_account);
     }
-    if (user && user.documents && user.documents.length > 0) {
-      user.documents.find((document: DocumentType) => {
+    if (user && user.documents && user?.documents?.length > 0) {
+      user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.demat_document.items[0].id

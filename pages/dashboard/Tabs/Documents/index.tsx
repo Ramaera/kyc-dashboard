@@ -72,7 +72,7 @@ const DocumentRow = ({ data, documents = [], user }) => {
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, title: 'avatar' });
       } else if (item.title !== title) {
@@ -258,7 +258,7 @@ const DocumentTab = () => {
     const documents = [];
     if (user && user.documents) {
       for (let config of configs) {
-        const document = user.documents.find((doc: DocumentType) => {
+        const document = user?.documents?.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
             return true;
           }

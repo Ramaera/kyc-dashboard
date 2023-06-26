@@ -90,7 +90,14 @@ function DashboardTasks() {
         <title>KYC Users</title>
       </Head>
       <PageTitleWrapper>
-        <Typography>All Users</Typography>
+        <Typography
+          variant="h3"
+          component="h3"
+          sx={{ textTransform: 'uppercase', marginTop: 2, marginBottom: 2 }}
+          gutterBottom
+        >
+          Agency Dashboard
+        </Typography>
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <UserTable />

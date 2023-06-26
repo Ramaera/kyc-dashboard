@@ -62,7 +62,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     setImages(_imgs);
     let newArr = [null, null, null, null];
     data.config.items.map((docTitle) => {
-      user.documents.map((doc) => {
+      user?.documents?.map((doc) => {
         if (doc.title === docTitle.id) {
           newArr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.amount;
         }
@@ -102,7 +102,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, title: 'avatar' });
       } else if (item.title !== title) {
@@ -114,7 +114,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
 
   const findDocId = (title) => {
     let id;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (doc.title === title) {
         id = doc.id;
       }
@@ -408,7 +408,7 @@ const getDocumentsByConfig = (configs) => {
   const documents = [];
   if (user && user.documents) {
     for (let config of configs) {
-      const document = user.documents.find((doc: DocumentType) => {
+      const document = user?.documents?.find((doc: DocumentType) => {
         if (doc.title.toLowerCase() === config.id.toLowerCase()) {
           return true;
         }
@@ -443,7 +443,7 @@ const InfoTab = () => {
   }; */
   const getDocNum = async () => {
     let count = 0;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (doc.title.slice(0, 22) === 'additional_payment_doc') {
         count += 1;
       }
@@ -457,7 +457,7 @@ const InfoTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -470,7 +470,7 @@ const InfoTab = () => {
   const updateUserAmount = (id, amount) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, amount: amount });
         // newDocs.push(...item, url:imgUrl);
@@ -483,7 +483,7 @@ const InfoTab = () => {
   const updateUserStatus = (id, status) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, status: status });
       } else {
@@ -593,8 +593,8 @@ const InfoTab = () => {
     setLoading(false);
   };
   useEffect(() => {
-    if (user && user.documents && user.documents.length > 0) {
-      user.documents.find((document: DocumentType) => {
+    if (user && user.documents && user?.documents?.length > 0) {
+      user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.payment_proof.items[0].id

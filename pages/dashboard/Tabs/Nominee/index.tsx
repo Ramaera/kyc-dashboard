@@ -60,7 +60,7 @@ const NomineeTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -163,8 +163,8 @@ const NomineeTab = () => {
         setNomineeName(user.nominee.name);
         setRelationship(user.nominee.relationship);
       }
-      if (user.documents && user.documents.length > 0) {
-        user.documents.find((document: DocumentType) => {
+      if (user.documents && user?.documents?.length > 0) {
+        user?.documents?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===
             documentsConfig.nominee_aadhar.items[0].id

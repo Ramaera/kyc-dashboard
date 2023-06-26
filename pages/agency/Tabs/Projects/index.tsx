@@ -70,7 +70,7 @@ const DocumentRow = ({
     setImages(_imgs);
     let newArr = [null, null, null, null];
     data.config.items.map((docTitle) => {
-      user.documents.map((doc) => {
+      user?.documents?.map((doc) => {
         if (doc.title === projectName + docTitle.id) {
           newArr[
             parseInt(
@@ -114,7 +114,7 @@ const DocumentRow = ({
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, title: 'avatar' });
       } else if (item.title !== title) {
@@ -438,7 +438,7 @@ const InfoTab = () => {
     const documents = [];
     if (user && user.documents) {
       for (let config of configs) {
-        const document = user.documents.find((doc: DocumentType) => {
+        const document = user?.documents?.find((doc: DocumentType) => {
           if (
             doc.title.toLowerCase() ===
             projectName + config.id.toLowerCase()
@@ -456,7 +456,7 @@ const InfoTab = () => {
   };
   const getDocNum = async () => {
     let count = 0;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (
         doc.title.slice(0, 16 + projectName.length) ===
         projectName + rows[0].config.items[0].id.slice(0, -1)
@@ -474,7 +474,7 @@ const InfoTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -487,7 +487,7 @@ const InfoTab = () => {
   const updateUserAmount = (id, amount) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, amount: amount });
         // newDocs.push(...item, url:imgUrl);
@@ -500,7 +500,7 @@ const InfoTab = () => {
   const updateUserStatus = (id, status) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, status: status });
       } else {
@@ -615,8 +615,8 @@ const InfoTab = () => {
     setPaymentDocument(null);
     setProofImage(null);
     setAmount(null);
-    if (user && user.documents && user.documents.length > 0) {
-      user.documents.find((document: DocumentType) => {
+    if (user && user.documents && user?.documents?.length > 0) {
+      user?.documents?.find((document: DocumentType) => {
         if (document.title.toLowerCase() === projectName + rows[0].config.id) {
           setPaymentDocument(document);
           setProofImage(document.url);

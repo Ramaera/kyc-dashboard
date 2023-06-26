@@ -300,7 +300,7 @@ const UserTable = () => {
               </Box>
             </Box>
           }
-          title="Partners List"
+          title="User List"
         />
 
         <Divider />

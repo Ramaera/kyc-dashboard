@@ -72,7 +72,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   const updateUserStatus = (docId, docStatus) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === docId) {
         newDocs.push({ ...item, status: docStatus });
       } else {
@@ -85,7 +85,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -319,7 +319,7 @@ const DocumentTab = () => {
     const documents = [];
     if (user && user.documents) {
       for (let config of configs) {
-        const document = user.documents.find((doc: DocumentType) => {
+        const document = user?.documents?.find((doc: DocumentType) => {
           // console.log('docccccc', doc);
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
             return true;

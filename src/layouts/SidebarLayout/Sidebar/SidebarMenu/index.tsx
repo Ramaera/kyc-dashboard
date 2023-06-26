@@ -175,17 +175,33 @@ function SidebarMenu() {
               >
                 <NextLink href="/agency" passHref>
                   <Button
-                    className={currentRoute === '/agency' ? 'active' : ''}
+                    className={
+                      currentRoute === '/agency'
+                        ? 'active'
+                        : currentRoute === '/agency/[index]'
+                        ? 'active'
+                        : ''
+                    }
                     disableRipple
                     style={{
-                      color: currentRoute === '/agency' ? '#7063C0' : ''
+                      color:
+                        currentRoute === '/agency'
+                          ? '#7063C0'
+                          : currentRoute === '/agency/[index]'
+                          ? '#7063C0'
+                          : ''
                     }}
                     component="a"
                     onClick={closeSidebar}
                     startIcon={
                       <span
                         style={{
-                          color: currentRoute === '/agency' ? '#7063C0' : ''
+                          color:
+                            currentRoute === '/agency'
+                              ? '#7063C0'
+                              : currentRoute === '/agency/[index]'
+                              ? '#7063C0'
+                              : ''
                         }}
                       >
                         &#x2022;

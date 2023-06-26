@@ -140,7 +140,7 @@ function DashboardTasks() {
   return (
     <ProtectedSSRoute>
       <Head>
-        <title>KYC Admin Dashboard</title>
+        <title>KYC Agency Dashboard</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
