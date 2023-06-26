@@ -139,24 +139,8 @@ query GetUser {
 }
   }
   `);
-export const GET_ALL_USERS = gql(`
-query {getAllUser {
-    name
-    id
-    membership
-    pw_id
-    father_or_husband_name
-    mobile_number
-    email
-    kyc
-    documents{
-      title
-      status
-    }
-  }}
-  `);
 
-export const GetAllUser = gql(`
+export const GET_ALL_USERS = gql(`
 
 query GetAllUser {
  getAllUser{
@@ -189,4 +173,38 @@ query GetAllUser {
   updatedAt
 }
   }
+  `);
+export const GET_ALL_AGENCY_USERS = gql(`
+query($agencyCode: String!) {
+  GetAllKycAgencyUser(agencyCode: $agencyCode) {
+    alternate_mobile_number
+    createdAt
+    date_of_birth
+    demat_account
+    membership
+    documents {
+      id
+      title
+      url
+      userId
+      status
+      amount
+    }
+    nominee {
+      id
+      name
+      relationship
+    }
+    email
+    father_or_husband_name
+    id
+    kyc
+    mobile_number
+    name
+    pw_id
+    rm_id
+    updatedAt
+  }
+}
+
   `);

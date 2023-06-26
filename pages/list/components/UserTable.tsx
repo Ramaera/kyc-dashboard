@@ -35,7 +35,7 @@ import { LoadingButton } from '@mui/lab';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
-  user.map((doc) => {
+  user?.map((doc) => {
     if (doc.title === project) {
       status = doc.status;
     }

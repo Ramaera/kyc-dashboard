@@ -21,7 +21,7 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import RecentOrdersTable from '@/content/Management/Transactions/RecentOrdersTable';
 import UserTable from './components/UserTable';
-import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setAllTheUsersForList } from '@/state/slice/allUsersSlice';
 // import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 
 const TabsContainerWrapper = styled(Box)(
@@ -126,7 +126,7 @@ function index() {
   // console.log(useSelector((state) => state.allUsers.allTheUsers));
 
   if (getAllUser.data) {
-    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
+    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
     // dispatch(setAllKycHandlerList(kycHandlersList.data.getAllKycHandler));
   }
 

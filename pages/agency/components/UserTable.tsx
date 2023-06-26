@@ -152,7 +152,7 @@ const UserTable = () => {
 
   const avatarFetch = (userData) => {
     let photoUrl = '';
-    userData.documents.forEach((doc) => {
+    userData?.documents?.forEach((doc) => {
       if (doc.title === 'avatar') {
         photoUrl = doc.url;
       }

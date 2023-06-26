@@ -41,7 +41,9 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const usersList = useSelector(
+    (state: any) => state.allUsers.allTheUsersForList
+  );
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalHajipur: 0,
@@ -60,7 +62,7 @@ function Header() {
       if (user) {
         totalKyc += 1;
       }
-      user.documents.map((doc) => {
+      user?.documents?.map((doc) => {
         /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;
         } */

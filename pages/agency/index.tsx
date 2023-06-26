@@ -2,7 +2,7 @@ import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Footer from '@/components/Footer';
-import { GetAllUser } from '@/apollo/queries/auth';
+import { GET_ALL_AGENCY_USERS } from '@/apollo/queries/auth';
 import { GET_ALL_KYC_HANDLER } from '@/apollo/queries/updateUser';
 import { useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,7 +44,11 @@ function DashboardTasks() {
     setCurrentTab(value);
   };
 
-  const { loading, error, data, refetch } = useQuery(GetAllUser);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
+    variables: {
+      agencyCode: 'RIL36938'
+    }
+  });
   const kycHandlersList = useQuery(GET_ALL_KYC_HANDLER);
 
   // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
@@ -71,8 +75,7 @@ function DashboardTasks() {
     return <h3>error</h3>;
   }
   if (data) {
-    // console.log('all users', data.getAllUser);
-    dispatch(setAllTheUsers(data.getAllUser));
+    dispatch(setAllTheUsers(data.GetAllKycAgencyUser));
   }
   if (kycHandlersList.data) {
     // console.log('kycHandlersList', kycHandlersList.data.getAllKycHandler);
