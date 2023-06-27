@@ -91,7 +91,9 @@ const applyFilters = (users: User[], filters: Filters): any => {
  */
 const UserTable = () => {
   const tableRef = useRef(null);
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const usersList = useSelector(
+    (state: any) => state.allUsers.allTheUsersForList
+  );
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,

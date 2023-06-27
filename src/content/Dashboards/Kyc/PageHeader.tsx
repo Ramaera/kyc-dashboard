@@ -185,7 +185,7 @@ function PageHeader() {
               <Button
                 onClick={() => {
                   handleClickOpen();
-                  setStatus('APPROVED');
+                  setStatus('AGENT_APPROVED');
 
                   // handleStatus('APPROVED');
                 }}

@@ -130,17 +130,19 @@ function Header() {
           <Typography variant="h4" sx={{ my: 2 }}>
             RM ID : {user && user.rm_id}
           </Typography>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Agency Code :{' '}
-            <span
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                navigator.clipboard.writeText(agencyCode);
-              }}
-            >
-              {agencyCode}
-            </span>
-          </Typography>
+          {agencyCode && (
+            <Typography variant="h4" sx={{ my: 2 }}>
+              Agency Code :{' '}
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  navigator.clipboard.writeText(agencyCode);
+                }}
+              >
+                {agencyCode}
+              </span>
+            </Typography>
+          )}
         </Stack>
       )}
       {router.pathname === '/list' && (
@@ -162,7 +164,7 @@ function Header() {
           </Typography>
         </Stack>
       )}
-      {router.pathname === '/agency' && (
+      {router.pathname === '/agency' && agencyCode && (
         <Stack
           direction="row"
           divider={<Divider orientation="vertical" flexItem />}

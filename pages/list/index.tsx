@@ -124,7 +124,6 @@ function index() {
 
   // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
   // console.log(useSelector((state) => state.allUsers.allTheUsers));
-
   if (getAllUser.data) {
     dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
     // dispatch(setAllKycHandlerList(kycHandlersList.data.getAllKycHandler));
