@@ -19,6 +19,7 @@ export default function SignupCard() {
   const [PWId, setPWId] = React.useState('');
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
+  const [referral, setReferral] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
   const [validPWID, setValidPWID] = React.useState<any>();
   const [isLoading, setLoading] = React.useState(false);
@@ -74,7 +75,8 @@ export default function SignupCard() {
           variables: {
             pw_id: PWId,
             membership: membership,
-            password: password
+            password: password,
+            referralAgencyCode: referral
           }
         });
 
@@ -155,6 +157,17 @@ export default function SignupCard() {
               label="Advance"
             />
           </RadioGroup>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="referralId"
+            label="Agency Referral Code (optional)"
+            name="referralId"
+            onChange={(e) => {
+              setReferral(e.target.value);
+              //checkPWID(e.target.value);
+            }}
+          />
           <TextField
             margin="normal"
             required

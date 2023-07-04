@@ -167,17 +167,23 @@ function PageHeader() {
                       color: response
                         ? (response === 'APPROVED' && 'green') ||
                           (response === 'REJECTED' && 'red') ||
-                          (response === 'ONGOING' && 'orange')
+                          (response === 'ONGOING' && 'orange') ||
+                          (response === 'AGENT_APPROVED' && 'green')
                         : (currentUser.kyc === 'APPROVED' && 'green') ||
                           (currentUser.kyc === 'REJECTED' && 'red') ||
-                          (currentUser.kyc === 'ONGOING' && 'orange')
+                          (currentUser.kyc === 'ONGOING' && 'orange') ||
+                          (currentUser.kyc === 'AGENT_APPROVED' && 'green')
                     }}
                   >
                     Status :{' '}
                     {response
-                      ? response
+                      ? (response === 'AGENT_APPROVED' && 'AGENT APPROVED') ||
+                        (response === 'NOT_INITIALIZED' && 'NOT INITIALIZED') ||
+                        response
                       : currentUser?.kyc
-                      ? currentUser?.kyc
+                      ? (currentUser?.kyc === 'AGENT_APPROVED' &&
+                          'AGENT APPROVED') ||
+                        currentUser?.kyc
                       : 'UNKNOWN'}
                   </span>
                 </Typography>
