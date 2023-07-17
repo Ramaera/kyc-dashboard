@@ -1,18 +1,8 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  Box,
-  Card,
-  CardHeader,
-  Container,
-  Grid,
-  styled,
-  Tab,
-  Tabs
-} from '@mui/material';
+import { Box, Card, CardHeader, Container, Grid } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { ChangeEvent, useState } from 'react';
 import PaymentTab from './Tabs/Payment';
 import { useRouter } from 'next/router';
 
