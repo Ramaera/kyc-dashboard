@@ -162,7 +162,7 @@ const index = () => {
                 showBankDetails();
               }}
             >
-              Back Details
+              Bank Details
             </Button>
             <Button
               variant="contained"

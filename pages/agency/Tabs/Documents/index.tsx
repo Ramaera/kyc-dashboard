@@ -57,12 +57,12 @@ const rows = [
 
 const DocumentRow = ({ user, data, documents = [] }) => {
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const [images, setImages] = useState([]);
+  const [imagesChanged, setImagesChange] = useState([]);
   const dispatch = useDispatch();
   if (!documents[0]) {
     return null;
   }
-  const [images, setImages] = useState([]);
-  const [imagesChanged, setImagesChange] = useState([]);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   //const [createDocument] = useMutation(CREATEDOCUMENT);

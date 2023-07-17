@@ -4,7 +4,6 @@ import { FileUpload } from "primereact/fileupload";
 
 import { Button } from "primereact/button";
 
-import "./style.css";
 const DocumentDropDown = ({ items }) => {
   const [selectedOption, setSelectedOption] = useState();
   const inputFile = useRef(null);

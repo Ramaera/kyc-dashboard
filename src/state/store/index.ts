@@ -1,10 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import userSlice from '../slice/userSlice';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
+
 import allUsersSlice from '../slice/allUsersSlice';
 import foundUserSlice from '../slice/foundUserSlice';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
+import userSlice from '../slice/userSlice';
 
 const persistConfig = {
   key: 'root',

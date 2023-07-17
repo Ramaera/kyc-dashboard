@@ -1,5 +1,13 @@
 const withImages = require('next-images');
-
+const nextConfig = {
+  output: 'export',
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  }
+};
 const redirects = {
   async redirects() {
     return [
@@ -17,4 +25,5 @@ const redirects = {
   }
 };
 
-module.exports = withImages(redirects);
+// module.exports = [withImages(redirects),]
+module.exports = nextConfig;

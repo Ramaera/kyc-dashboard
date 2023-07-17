@@ -1,36 +1,23 @@
-import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import { ChangeEvent, useEffect, useState } from 'react';
-import Footer from '@/components/Footer';
 import { GET_ALL_AGENCY_USERS } from '@/apollo/queries/auth';
 import { GET_ALL_KYC_HANDLER } from '@/apollo/queries/updateUser';
-import { useQuery } from '@apollo/client';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setAllTheUsers,
-  setAllKycHandlerList
-} from '@/state/slice/allUsersSlice';
-import {
-  Grid,
-  Tab,
-  Tabs,
-  Container,
-  Card,
-  Box,
-  useTheme,
-  styled,
-  Typography
-} from '@mui/material';
+import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-
+import SidebarLayout from '@/layouts/SidebarLayout';
+import {
+  setAllKycHandlerList,
+  setAllTheUsers
+} from '@/state/slice/allUsersSlice';
+import { useQuery } from '@apollo/client';
+import { Container, Typography } from '@mui/material';
+import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import RecentOrdersTable from '@/content/Management/Transactions/RecentOrdersTable';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import UserTable from './components/UserTable';
-import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 
 function DashboardTasks() {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const foundUser = useSelector((state) => state.foundUser.foundUser);
   const agencyCode = useSelector((state) => state.user.agencyCode);
 

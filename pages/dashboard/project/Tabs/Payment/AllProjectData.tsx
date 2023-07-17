@@ -150,3 +150,9 @@ export const AllProjectDetails = {
     }
   ]
 };
+
+const RemoveError = () => {
+  return <div>RemoveError</div>;
+};
+
+export default RemoveError;

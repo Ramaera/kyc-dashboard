@@ -7,16 +7,7 @@ import Footer from '@/components/Footer';
 import { useRouter } from 'next/router';
 
 // import userData from '../data.json';
-import {
-  Grid,
-  Tab,
-  Tabs,
-  Container,
-  Card,
-  Box,
-  useTheme,
-  styled
-} from '@mui/material';
+import { Grid, Tab, Tabs, Container, Card, Box, styled } from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import InfoTab from './Tabs/Info';
 import DematTab from './Tabs/Demat';

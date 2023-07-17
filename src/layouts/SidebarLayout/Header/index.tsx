@@ -14,7 +14,8 @@ import {
   Stack,
   styled,
   Tooltip,
-  useTheme
+  useTheme,
+  Button
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
@@ -143,6 +144,17 @@ function Header() {
               </span>
             </Typography>
           )}
+          {/* {user?.membership === 'BASIC' && (
+            <Button
+              style={{ marginRight: 20 }}
+              variant="contained"
+              // onClick={() => {
+              //   showBankDetails();
+              // }}
+            >
+              Upgrade to ADVANCE KYC
+            </Button>
+          )} */}
         </Stack>
       )}
       {router.pathname === '/list' && (

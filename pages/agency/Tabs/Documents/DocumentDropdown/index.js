@@ -4,7 +4,7 @@ import { FileUpload } from 'primereact/fileupload';
 
 import { Button } from 'primereact/button';
 
-import './style.css';
+// import './style.css';
 const DocumentDropDown = ({ items }) => {
   const [selectedOption, setSelectedOption] = useState();
   const inputFile = useRef(null);
@@ -35,9 +35,13 @@ const DocumentDropDown = ({ items }) => {
 
       <div style={{ display: 'flex' }}>
         {selectedFile.length > 0
-          ? selectedFile.map((file) => {
+          ? selectedFile.map((file, index) => {
               return (
-                <img src={file} style={{ height: '200px', marginTop: 10 }} />
+                <img
+                  key={index}
+                  src={file}
+                  style={{ height: '200px', marginTop: 10 }}
+                />
               );
             })
           : null}

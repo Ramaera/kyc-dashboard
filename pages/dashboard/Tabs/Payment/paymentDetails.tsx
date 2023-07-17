@@ -72,7 +72,7 @@ const PaymentInfo = () => {
             showBankDetails();
           }}
         >
-          Back Details
+          Bank Details
         </Button>
         <Button
           variant="contained"

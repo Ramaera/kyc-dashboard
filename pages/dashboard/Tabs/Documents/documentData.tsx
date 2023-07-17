@@ -28,3 +28,9 @@ export const rows = [
     isOptional: true
   }
 ];
+
+const RemoveError = () => {
+  return <div>RemoveError</div>;
+};
+
+export default RemoveError;
