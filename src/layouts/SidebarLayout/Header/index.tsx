@@ -22,6 +22,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import HeaderUserbox from './Userbox';
 import { useDispatch, useSelector } from 'react-redux';
 import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import toast from 'react-hot-toast';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -152,6 +153,7 @@ function Header() {
               variant="contained"
               onClick={() => {
                 dispatch(upgradeKYC(true));
+                // toast.success('pay 1 Lakh');
               }}
             >
               Upgrade to ADVANCE KYC
