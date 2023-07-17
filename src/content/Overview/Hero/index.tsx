@@ -2,11 +2,12 @@ import {
   Box,
   Button,
   Container,
-  Grid, styled, Typography
+  Grid,
+  styled,
+  Typography
 } from '@mui/material';
 
 import Link from 'src/components/Link';
-
 
 const TypographyH2 = styled(Typography)(
   ({ theme }) => `
@@ -88,7 +89,18 @@ const NextJsAvatar = styled(Box)(
 `
 );
 
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 function Hero() {
+  let router = useRouter();
+  // condition base redirecting
+  function redirect() {
+    router.push('/dashboard');
+  }
+  useEffect(() => {
+    redirect();
+  }, []);
+  redirect();
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid
@@ -99,7 +111,7 @@ function Hero() {
       >
         <Grid item md={10} lg={8} mx="auto">
           <LabelWrapper color="success">Version 1.0.0</LabelWrapper>
-        
+
           <TypographyH2
             sx={{ lineHeight: 1.5, pb: 4 }}
             variant="h4"
@@ -112,7 +124,7 @@ function Hero() {
           </TypographyH2>
           <Button
             component={Link}
-            href="/dashboards/tasks"
+            href="/dashboard"
             size="large"
             variant="contained"
           >
@@ -173,7 +185,8 @@ function Hero() {
                   <b>Built with Typescript</b>
                 </Box>
                 <Typography component="span" variant="subtitle2">
-                  Tokyo Free Black features a modern technology stack and is built with React + Typescript.
+                  Tokyo Free Black features a modern technology stack and is
+                  built with React + Typescript.
                 </Typography>
               </Typography>
             </Grid>

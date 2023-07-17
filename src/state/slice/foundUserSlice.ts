@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  foundUser: {}
+  foundUser: {},
+  toAdvance: false
 };
 
 export const foundUserSlice = createSlice({
@@ -10,10 +11,13 @@ export const foundUserSlice = createSlice({
   reducers: {
     setFoundUser: (state, action) => {
       state.foundUser = action.payload;
+    },
+    upgradeKYC: (state, action) => {
+      state.toAdvance = action.payload;
     }
   }
 });
 
-export const { setFoundUser } = foundUserSlice.actions;
+export const { setFoundUser, upgradeKYC } = foundUserSlice.actions;
 
 export default foundUserSlice.reducer;

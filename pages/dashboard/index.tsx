@@ -5,13 +5,15 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import GetAgency from './Tabs/GetAgency';
+import { useDispatch, useSelector } from 'react-redux';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -95,8 +97,11 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
-
+  const upgradeToAdvance = useSelector(
+    (state: any) => state.foundUser.toAdvance
+  );
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
@@ -108,7 +113,15 @@ function DashboardTasks() {
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
+    if (upgradeToAdvance) {
+      dispatch(upgradeKYC(false));
+    }
   };
+  useEffect(() => {
+    if (upgradeToAdvance) {
+      setCurrentTab('payment');
+    }
+  }, [upgradeToAdvance]);
 
   return (
     <ProtectedSSRoute>

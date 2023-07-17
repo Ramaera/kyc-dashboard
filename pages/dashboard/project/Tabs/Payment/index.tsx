@@ -483,7 +483,7 @@ const InfoTab = ({ title }) => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -541,7 +541,7 @@ const InfoTab = ({ title }) => {
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
-          )}
+          }
           {proofImage && (
             <LoadingButton
               sx={{ mb: 4 }}

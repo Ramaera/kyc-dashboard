@@ -20,7 +20,8 @@ import {
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import HeaderUserbox from './Userbox';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -42,6 +43,7 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
+  const dispatch = useDispatch();
   const agencyCode = useSelector((state) => state.user.agencyCode);
   const usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
@@ -144,17 +146,17 @@ function Header() {
               </span>
             </Typography>
           )}
-          {/* {user?.membership === 'BASIC' && (
+          {user?.membership === 'BASIC' && (
             <Button
               style={{ marginRight: 20 }}
               variant="contained"
-              // onClick={() => {
-              //   showBankDetails();
-              // }}
+              onClick={() => {
+                dispatch(upgradeKYC(true));
+              }}
             >
               Upgrade to ADVANCE KYC
             </Button>
-          )} */}
+          )}
         </Stack>
       )}
       {router.pathname === '/list' && (
