@@ -242,7 +242,8 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              {currentRoute === '/dashboard' && (
+              {(currentRoute === '/dashboard' ||
+                currentRoute.slice(0, 18) === '/dashboard/project') && (
                 <ListItem component="div">
                   <Button
                     className={
@@ -274,7 +275,9 @@ function SidebarMenu() {
                   </Button>
                 </ListItem>
               )}
-              {currentRoute === '/dashboard' && listVisible ? (
+              {(currentRoute === '/dashboard' ||
+                currentRoute.slice(0, 18) === '/dashboard/project') &&
+              listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
