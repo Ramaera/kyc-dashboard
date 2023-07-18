@@ -153,7 +153,6 @@ function Header() {
               variant="contained"
               onClick={() => {
                 dispatch(upgradeKYC(true));
-                toast.success('pay 1 Lakh');
               }}
             >
               Upgrade to ADVANCE KYC

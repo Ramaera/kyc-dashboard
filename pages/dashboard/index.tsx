@@ -11,6 +11,7 @@ import DocumentTab from './Tabs/Documents';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
+import ToAdvance from './Tabs/ToAdvance';
 import GetAgency from './Tabs/GetAgency';
 import { useDispatch, useSelector } from 'react-redux';
 import { upgradeKYC } from '@/state/slice/foundUserSlice';
@@ -98,13 +99,23 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
   );
+  const tabsAdvance = [
+    { value: 'basicInfo', label: 'Basic Info' },
+    { value: 'payment', label: 'Payment' },
+    { value: 'documents', label: 'Documents' },
+    { value: 'nominee', label: 'Nominee' },
+    { value: 'demat', label: 'Demat Account Details' },
+    { value: 'getAgency', label: 'KYC Agency' }
+  ];
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
+    { value: 'upgradeKyc', label: 'Upgrade KYC' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' },
@@ -119,7 +130,7 @@ function DashboardTasks() {
   };
   useEffect(() => {
     if (upgradeToAdvance) {
-      setCurrentTab('payment');
+      setCurrentTab('upgradeKyc');
     }
   }, [upgradeToAdvance]);
 
@@ -141,9 +152,29 @@ function DashboardTasks() {
             textColor="primary"
             indicatorColor="primary"
           >
-            {tabs.map((tab) => (
-              <Tab key={tab.value} label={tab.label} value={tab.value} />
-            ))}
+            {user?.membership === 'BASIC'
+              ? tabs.map((tab) => {
+                  if (upgradeToAdvance || upgradeToAdvance === false) {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  } else if (tab.value !== 'upgradeKyc') {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  }
+                })
+              : tabsAdvance.map((tab) => (
+                  <Tab key={tab.value} label={tab.label} value={tab.value} />
+                ))}
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">
@@ -165,6 +196,13 @@ function DashboardTasks() {
               <Grid item xs={12}>
                 <Box p={4}>
                   <PaymentTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'upgradeKyc' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <ToAdvance />
                 </Box>
               </Grid>
             )}

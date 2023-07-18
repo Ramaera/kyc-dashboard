@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   foundUser: {},
-  toAdvance: false
+  toAdvance: null
 };
 
 export const foundUserSlice = createSlice({

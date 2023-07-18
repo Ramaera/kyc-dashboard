@@ -116,6 +116,40 @@ export default {
       }
     ]
   },
+  to_advance_payment_proof: {
+    name: 'To Advance Payment Proof',
+    id: 'to_advance_payment_proof',
+    status: 'Not Uploaded',
+
+    items: [
+      {
+        id: 'to_advance_payment_proof',
+        name: 'To Advance Payment Proof'
+      }
+    ]
+  },
+  to_advance_additional_documents: {
+    name: 'To Advance Additional Payment Document',
+    id: 'to_advance_additional_payment_doc',
+    items: [
+      {
+        id: 'to_advance_additional_payment_doc2',
+        name: 'To Advance Payment Document'
+      },
+      {
+        id: 'to_advance_additional_payment_doc3',
+        name: 'To Advance Payment Document'
+      },
+      {
+        id: 'to_advance_additional_payment_doc4',
+        name: 'To Advance Payment Document'
+      },
+      {
+        id: 'to_advance_additional_payment_doc5',
+        name: 'To Advance Payment Document'
+      }
+    ]
+  },
 
   driving_license: {
     name: 'Driving License',
