@@ -136,10 +136,11 @@ const SubMenuWrapper = styled(Box)(
 );
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
-  const agencyCode = useSelector((state) => state.user.agencyCode);
+  const agencyCode = useSelector((state: any) => state.user.agencyCode);
   const router = useRouter();
   const currentRoute = router.pathname;
   const [listVisible, setListVisible] = useState(false);
+  const [shareList, setShareList] = useState(false);
 
   return (
     <>
@@ -242,8 +243,7 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              {(currentRoute === '/dashboard' ||
-                currentRoute.slice(0, 18) === '/dashboard/project') && (
+              {currentRoute.slice(0, 10) === '/dashboard' && (
                 <ListItem component="div">
                   <Button
                     className={
@@ -275,15 +275,84 @@ function SidebarMenu() {
                   </Button>
                 </ListItem>
               )}
-              {(currentRoute === '/dashboard' ||
-                currentRoute.slice(0, 18) === '/dashboard/project') &&
-              listVisible ? (
+              {currentRoute.slice(0, 10) === '/dashboard' && listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
                       <ListItem component="div" onClick={closeSidebar}>
                         <NextLink
                           href={`/dashboard/project/${project.navigateTo}`}
+                          passHref
+                        >
+                          <Button
+                            style={{
+                              fontSize: '12px',
+                              textAlign: 'right',
+                              padding: '10px 15px'
+                            }}
+                          >
+                            {project.projectName}
+                          </Button>
+                        </NextLink>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              ) : (
+                ''
+              )}
+              {currentRoute.slice(0, 10) === '/dashboard' && (
+                <ListItem component="div">
+                  <Button
+                    className={
+                      currentRoute.slice(0, 16) === '/dashboard/share'
+                        ? 'active'
+                        : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute.slice(0, 16) === '/dashboard/share'
+                          ? '#7063C0'
+                          : ''
+                    }}
+                    onClick={() => setShareList(!shareList)}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute.slice(0, 16) === '/dashboard/share'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    SHARES
+                  </Button>
+                </ListItem>
+              )}
+              {currentRoute.slice(0, 10) === '/dashboard' && shareList ? (
+                <List component="div" style={{ marginLeft: '' }}>
+                  <ListItem component="div" onClick={closeSidebar}>
+                    <NextLink href={`/dashboard/share/ramaera`} passHref>
+                      <Button
+                        style={{
+                          fontSize: '12px',
+                          textAlign: 'right',
+                          padding: '10px 15px'
+                        }}
+                      >
+                        Ramaera
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                  {projectData.map((project) => {
+                    return (
+                      <ListItem component="div" onClick={closeSidebar}>
+                        <NextLink
+                          href={`/dashboard/share/${project.navigateTo}`}
                           passHref
                         >
                           <Button
