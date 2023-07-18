@@ -257,7 +257,10 @@ function SidebarMenu() {
                           ? '#7063C0'
                           : ''
                     }}
-                    onClick={() => setListVisible(!listVisible)}
+                    onClick={() => {
+                      setListVisible(!listVisible);
+                      setShareList(false);
+                    }}
                     startIcon={
                       <span
                         style={{
@@ -315,7 +318,10 @@ function SidebarMenu() {
                           ? '#7063C0'
                           : ''
                     }}
-                    onClick={() => setShareList(!shareList)}
+                    onClick={() => {
+                      setShareList(!shareList);
+                      setListVisible(false);
+                    }}
                     startIcon={
                       <span
                         style={{
