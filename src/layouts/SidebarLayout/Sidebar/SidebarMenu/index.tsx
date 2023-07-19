@@ -270,7 +270,7 @@ function SidebarMenu() {
                               : ''
                         }}
                       >
-                        &#x2022;
+                        {' '}
                       </span>
                     }
                   >
@@ -331,7 +331,7 @@ function SidebarMenu() {
                               : ''
                         }}
                       >
-                        &#x2022;
+                        {' '}
                       </span>
                     }
                   >
