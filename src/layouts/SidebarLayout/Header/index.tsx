@@ -45,7 +45,7 @@ const HeaderWrapper = styled(Box)(
 
 function Header() {
   const dispatch = useDispatch();
-  const agencyCode = useSelector((state) => state.user.agencyCode);
+  const agencyCode = useSelector((state:any) => state.user.agencyCode);
   const usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
   );

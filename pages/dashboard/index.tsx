@@ -154,7 +154,19 @@ function DashboardTasks() {
           >
             {user?.membership === 'BASIC'
               ? tabs.map((tab) => {
-                  if (upgradeToAdvance || upgradeToAdvance === false) {
+                  if (
+                    user.documents.find(
+                      (doc) => doc.title === 'to_advance_payment_proof'
+                    )
+                  ) {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  } else if (upgradeToAdvance || upgradeToAdvance === false) {
                     return (
                       <Tab
                         key={tab.value}

@@ -1,20 +1,10 @@
+import { Box, Button, List, ListItem, alpha, styled } from '@mui/material';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
-import {
-  alpha,
-  Box,
-  Button,
-  colors,
-  List,
-  ListItem,
-  styled
-} from '@mui/material';
-import NextLink from 'next/link';
-import { SidebarContext } from 'src/contexts/SidebarContext';
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import AccountTree from '@mui/icons-material/AccountTree';
-import { projectData } from './projectDetails';
 import { useSelector } from 'react-redux';
+import { SidebarContext } from 'src/contexts/SidebarContext';
+import { projectData } from './projectDetails';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
