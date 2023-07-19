@@ -53,7 +53,7 @@ const PaymentInfo = () => {
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.
+        Kindly Deposit Rs.{' '}
         {user?.membership === 'BASIC' ? '1,000/-' : '1,00,000/-'} and upload the
         payment slip as a proof!
       </Typography>

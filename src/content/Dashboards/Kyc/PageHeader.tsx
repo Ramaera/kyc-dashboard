@@ -100,7 +100,9 @@ function PageHeader() {
                 ></Badge>
               </Typography>
               <Typography variant="subtitle2" mt={1}>
-                Complete Your KYC By Filling the form below
+                {user?.kyc === 'APPROVED'
+                  ? 'Your KYC has been Approved'
+                  : 'Complete Your KYC By Filling the form below'}
               </Typography>
               {/* </Grid> */}
             </Box>

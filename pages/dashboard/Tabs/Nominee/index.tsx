@@ -247,7 +247,6 @@ const NomineeTab = () => {
           )}
           {user?.kyc === 'APPROVED' ? null : (
             <Button
-              size="small"
               variant="contained"
               style={{
                 cursor: aadharFrontDocument
@@ -316,7 +315,6 @@ const NomineeTab = () => {
           )}
           {user?.kyc === 'APPROVED' ? null : (
             <Button
-              size="small"
               variant="contained"
               style={{
                 cursor: aadharBackDocument

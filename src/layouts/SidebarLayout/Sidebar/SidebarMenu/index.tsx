@@ -252,6 +252,7 @@ function SidebarMenu() {
                         : ''
                     }
                     style={{
+                      fontWeight: 500,
                       color:
                         currentRoute.slice(0, 18) === '/dashboard/project'
                           ? '#7063C0'
@@ -289,6 +290,7 @@ function SidebarMenu() {
                         >
                           <Button
                             style={{
+                              fontWeight: 500,
                               fontSize: '12px',
                               textAlign: 'right',
                               padding: '10px 15px'
@@ -313,6 +315,7 @@ function SidebarMenu() {
                         : ''
                     }
                     style={{
+                      fontWeight: 500,
                       color:
                         currentRoute.slice(0, 16) === '/dashboard/share'
                           ? '#7063C0'
@@ -345,6 +348,7 @@ function SidebarMenu() {
                     <NextLink href={`/dashboard/share/ramaera`} passHref>
                       <Button
                         style={{
+                          fontWeight: 500,
                           fontSize: '12px',
                           textAlign: 'right',
                           padding: '10px 15px'
@@ -363,6 +367,7 @@ function SidebarMenu() {
                         >
                           <Button
                             style={{
+                              fontWeight: 500,
                               fontSize: '12px',
                               textAlign: 'right',
                               padding: '10px 15px'

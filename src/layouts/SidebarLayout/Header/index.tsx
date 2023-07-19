@@ -140,6 +140,7 @@ function Header() {
               <span
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
+                  toast.success(`Agency Code Copied`);
                   navigator.clipboard.writeText(agencyCode);
                 }}
               >
