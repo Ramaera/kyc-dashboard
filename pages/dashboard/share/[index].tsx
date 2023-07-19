@@ -33,7 +33,7 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              <Box m={4}>Alotted Share:</Box>
+              <Box m={4}>Allotted Share:</Box>
             </Grid>
           </Grid>
         </Card>
