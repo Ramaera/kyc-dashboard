@@ -89,18 +89,7 @@ const NextJsAvatar = styled(Box)(
 `
 );
 
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 function Hero() {
-  let router = useRouter();
-  // condition base redirecting
-  function redirect() {
-    router.push('/dashboard');
-  }
-  useEffect(() => {
-    redirect();
-  }, []);
-  redirect();
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid

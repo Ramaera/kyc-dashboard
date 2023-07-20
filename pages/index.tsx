@@ -6,7 +6,7 @@ import {
   styled,
   Typography
 } from '@mui/material';
-import type { ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Head from 'next/head';
@@ -14,6 +14,7 @@ import Link from 'src/components/Link';
 
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
+import { useRouter } from 'next/router';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -35,12 +36,21 @@ const OverviewWrapper = styled(Box)(
 );
 
 function Overview() {
+  let router = useRouter();
+  // condition base redirecting
+  function redirect() {
+    router.push('/dashboard');
+  }
+  useEffect(() => {
+    redirect();
+  }, []);
+  redirect();
   return (
     <OverviewWrapper>
       <Head>
-        <title>KYC Dashboard</title>
+        <title>Re-Routing</title>
       </Head>
-      <HeaderWrapper>
+      {/* <HeaderWrapper>
         <Container maxWidth="lg">
           <Box display="flex" alignItems="center">
             <Logo />
@@ -65,7 +75,8 @@ function Overview() {
           </Box>
         </Container>
       </HeaderWrapper>
-      <Hero />
+      <Hero /> */}
+
       <Container maxWidth="lg" sx={{ mt: 8 }}></Container>
     </OverviewWrapper>
   );
