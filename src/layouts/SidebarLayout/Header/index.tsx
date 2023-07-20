@@ -45,7 +45,7 @@ const HeaderWrapper = styled(Box)(
 
 function Header() {
   const dispatch = useDispatch();
-  const agencyCode = useSelector((state:any) => state.user.agencyCode);
+  const agencyCode = useSelector((state: any) => state.user.agencyCode);
   const usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
   );
@@ -148,7 +148,7 @@ function Header() {
               </span>
             </Typography>
           )}
-          {user?.membership === 'BASIC' && (
+          {user?.membership !== 'ADVANCE' && (
             <Button
               style={{ marginRight: 20 }}
               variant="contained"
