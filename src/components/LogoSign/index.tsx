@@ -34,7 +34,9 @@ function Logo() {
       <LogoWrapper href="/dashboard">
         <img
           // alt="500"
-          height={150}
+
+          style={{ marginLeft: 25 }}
+          height={100}
           src="/static/images/logo/logo.png"
         />
       </LogoWrapper>

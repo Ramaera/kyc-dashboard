@@ -79,50 +79,14 @@ function HeaderUserbox() {
 
   return (
     <div>
-      {/* <Grid container spacing={2}>
-                <Grid item>
-                  <Badge badgeContent={user.membership} color="success" />
-                </Grid>
-                <Grid item>
-                  <Badge
-                    variant="standard"
-                    sx={{
-                      marginLeft: 1,
-                      marginRight: 1,
-                      [`& .${badgeClasses.standard}`]: {
-                        // width: '100%'
-                        // minWidth:"100%",
-                      }
-                    }}
-                    // classes={{ badge: classes.badge }}
-                    badgeContent={user.rm_id}
-                    color="primary"
-                  />
-                </Grid>
-              </Grid> */}
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body2">{user.name}</UserBoxLabel>
-            <Stack spacing={8} direction="row" mt={1} ml={3}>
-              {/* <Badge badgeContent={user.membership} color="success" />
-
-                <Badge
-                variant="standard"
-                sx={{
-                  // marginLeft: 1,
-                  // marginRight: 1,
-                  [`& .${badgeClasses.standard}`]: {
-                    // width: '100%'
-                    minWidth: '75px'
-                  }
-                }}
-                // classes={{ badge: classes.badge }}
-                badgeContent={user.rm_id}
-                color="primary"
-              /> */}
-            </Stack>
+            <UserBoxLabel variant="body2">
+              {user?.name || user?.rm_id}
+            </UserBoxLabel>
+            <Stack spacing={8} direction="row" mt={1} ml={3}></Stack>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -146,33 +110,15 @@ function HeaderUserbox() {
           <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
 
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user ? user.name : ''}</UserBoxLabel>
+            <UserBoxLabel variant="body1">
+              {user?.name ? user?.name : ''}
+            </UserBoxLabel>
             <UserBoxDescription variant="body2">
               {user && user.rm_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
-        {/* <List sx={{ p: 1 }} component="nav">
-          <NextLink href="/management/profile" passHref>
-            <ListItem button>
-              <AccountBoxTwoToneIcon fontSize="small" />
-              <ListItemText primary="My Profile" />
-            </ListItem>
-          </NextLink>
-          <NextLink href="/applications/messenger" passHref>
-            <ListItem button>
-              <InboxTwoToneIcon fontSize="small" />
-              <ListItemText primary="Messenger" />
-            </ListItem>
-          </NextLink>
-          <NextLink href="/management/profile/settings" passHref>
-            <ListItem button>
-              <AccountTreeTwoToneIcon fontSize="small" />
-              <ListItemText primary="Account Settings" />
-            </ListItem>
-          </NextLink>
-        </List> */}
 
         <Divider />
         <Box sx={{ m: 1 }}>

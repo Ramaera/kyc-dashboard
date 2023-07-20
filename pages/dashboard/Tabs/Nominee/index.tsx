@@ -60,7 +60,7 @@ const NomineeTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -163,8 +163,8 @@ const NomineeTab = () => {
         setNomineeName(user.nominee.name);
         setRelationship(user.nominee.relationship);
       }
-      if (user.documents && user.documents.length > 0) {
-        user.documents.find((document: DocumentType) => {
+      if (user.documents && user?.documents?.length > 0) {
+        user?.documents?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===
             documentsConfig.nominee_aadhar.items[0].id
@@ -185,10 +185,10 @@ const NomineeTab = () => {
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Please Fill the form to enlist nominee
+        Kindly Fill the form to enlist nominee
       </Typography>
 
-      <Grid container p={2} spacing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4}>
           <TextField
             id="outlined"
@@ -217,7 +217,7 @@ const NomineeTab = () => {
         {/* <Grid item xs={4}></Grid> */}
       </Grid>
 
-      <Grid container pt={1} pl={2} pb={2} spacing={15}>
+      <Grid container pt={1} pb={2} spacing={15}>
         <Grid item xs={12} sm={6} md={4} lg={3.5}>
           {aadharFront ? (
             <img
@@ -245,9 +245,8 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user.kyc === 'APPROVED' ? null : (
+          {user?.kyc === 'APPROVED' ? null : (
             <Button
-              size="small"
               variant="contained"
               style={{
                 cursor: aadharFrontDocument
@@ -288,7 +287,7 @@ const NomineeTab = () => {
             </Button>
           )}
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3.5}>
+        <Grid item xs={12} sm={6} ml={1} md={4} lg={3.5}>
           {aadharBack ? (
             <img
               src={
@@ -314,9 +313,8 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user.kyc === 'APPROVED' ? null : (
+          {user?.kyc === 'APPROVED' ? null : (
             <Button
-              size="small"
               variant="contained"
               style={{
                 cursor: aadharBackDocument
@@ -360,8 +358,8 @@ const NomineeTab = () => {
         {/* <Grid item xs={4}></Grid>
         <Divider /> */}
       </Grid>
-      {user.kyc === 'APPROVED' ? null : (
-        <Grid item xs={12} sm={6} md={4} lg={3} pl={2}>
+      {user?.kyc === 'APPROVED' ? null : (
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box component="form" mt={2}>
             <LoadingButton
               loading={isLoading}

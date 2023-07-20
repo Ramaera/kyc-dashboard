@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks';
+import { useRouter } from 'next/router';
 
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
@@ -13,11 +14,15 @@ import {
   Stack,
   styled,
   Tooltip,
-  useTheme
+  useTheme,
+  Button
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import HeaderUserbox from './Userbox';
+import { useDispatch, useSelector } from 'react-redux';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import toast from 'react-hot-toast';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -39,10 +44,58 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
+  const dispatch = useDispatch();
+  const agencyCode = useSelector((state: any) => state.user.agencyCode);
+  const usersList = useSelector(
+    (state: any) => state.allUsers.allTheUsersForList
+  );
+  const [numbers, setNumbers] = useState({
+    totalKYC: 0,
+    totalHajipur: 0,
+    totalAgra: 0
+  });
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
+  const router = useRouter();
   const user = useAppSelector((state) => state.user.data);
 
+  const checkTotal = () => {
+    let totalKyc = 0;
+    let totalHajipur = 0;
+    let totalAgra = 0;
+    usersList.map((user) => {
+      if (user) {
+        totalKyc += 1;
+      }
+      user?.documents?.map((doc) => {
+        /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
+          totalKyc += 1;
+        } */
+        if (
+          doc.title.toLowerCase() === 'hajipur_project_payment' &&
+          doc.status != 'REJECTED'
+        ) {
+          totalHajipur += 1;
+        }
+        if (
+          doc.title.toLowerCase() === 'agra_project_payment' &&
+          doc.status != 'REJECTED'
+        ) {
+          totalAgra += 1;
+        }
+      });
+    });
+    setNumbers({
+      ...numbers,
+      totalKYC: totalKyc,
+      totalAgra: totalAgra,
+      totalHajipur: totalHajipur
+    });
+  };
+
+  useEffect(() => {
+    checkTotal();
+  }, [usersList]);
   return (
     <HeaderWrapper
       display="flex"
@@ -69,14 +122,85 @@ function Header() {
         alignItems="center"
         justifyContent="flex-end"
         spacing={2}
-      >
-        <Typography variant="h4" sx={{ my: 2 }}>
-          PW ID : {user.pw_id}
-        </Typography>
-        <Typography variant="h4" sx={{ my: 2 }}>
-          RM ID : {user.rm_id}
-        </Typography>
-      </Stack>
+      ></Stack>
+      {router.pathname === '/dashboard' && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Typography variant="h4" sx={{ my: 2 }}>
+            RM ID : {user && user.rm_id}
+          </Typography>
+          {agencyCode && (
+            <Typography variant="h4" sx={{ my: 2 }}>
+              Agency Code :{' '}
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  toast.success(`Agency Code Copied`);
+                  navigator.clipboard.writeText(agencyCode);
+                }}
+              >
+                {agencyCode}
+              </span>
+            </Typography>
+          )}
+          {user?.membership !== 'ADVANCE' && (
+            <Button
+              style={{ marginRight: 20 }}
+              variant="contained"
+              onClick={() => {
+                dispatch(upgradeKYC(true));
+              }}
+            >
+              Upgrade to ADVANCE KYC
+            </Button>
+          )}
+        </Stack>
+      )}
+      {router.pathname === '/list' && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Total KYC : {numbers.totalKYC}
+          </Typography>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Hajipur Enrolled : {numbers.totalHajipur}
+          </Typography>
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Agra Enrolled : {numbers.totalAgra}
+          </Typography>
+        </Stack>
+      )}
+      {router.pathname === '/agency' && agencyCode && (
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          justifyContent="flex-end"
+          spacing={2}
+        >
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Agency Code :{' '}
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                navigator.clipboard.writeText(agencyCode);
+              }}
+            >
+              {agencyCode}
+            </span>
+          </Typography>
+        </Stack>
+      )}
       <Box display="flex" alignItems="center">
         {/* <HeaderButtons /> */}
         <HeaderUserbox />

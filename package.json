@@ -1,8 +1,8 @@
 {
-  "name": "tokyo-free-black-nextjs-admin-dashboard",
+  "name": "kycdashboard",
   "version": "1.0.0",
-  "title": "Tokyo Free Black NextJS Typescript Admin Dashboard",
-  "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
+  "title": "Ramaera KYC",
+  "description": "KYC Dashboard",
   "author": {
     "name": "BloomUI.com",
     "url": "https://bloomui.com"
@@ -31,7 +31,7 @@
     "@types/react": "17.0.40",
     "@types/react-dom": "17.0.13",
     "apexcharts": "3.35.3",
-    "axios": "^1.2.1",
+    "axios": "^1.4.0",
     "clsx": "1.1.1",
     "context-api": "0.0.2",
     "cookie": "^0.5.0",
@@ -49,13 +49,18 @@
     "react-apexcharts": "1.4.0",
     "react-custom-scrollbars-2": "4.4.0",
     "react-dom": "17.0.2",
+    "react-export-table-to-excel": "^1.0.6",
     "react-hot-toast": "^2.4.0",
+    "react-photo-view": "^1.2.3",
     "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0",
+    "search-array": "^1.6.0",
+    "sort-objects-array": "^2.0.0",
     "typescript": "^4.9.4"
   },
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "export": "next export",
     "lint": "next lint",

@@ -39,7 +39,7 @@ const DematTab = () => {
   const updateUser = (dematId, imgUrl, dematAccount) => {
     let newUser = user;
     let newDocs = [];
-    user.documents.map((item) => {
+    user?.documents?.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, url: imgUrl });
       } else {
@@ -101,8 +101,8 @@ const DematTab = () => {
     if (user) {
       setDematAccount(user.demat_account);
     }
-    if (user && user.documents && user.documents.length > 0) {
-      user.documents.find((document: DocumentType) => {
+    if (user && user.documents && user?.documents?.length > 0) {
+      user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.demat_document.items[0].id
@@ -116,6 +116,9 @@ const DematTab = () => {
 
   return (
     <>
+      <Typography variant="h4" sx={{ my: 2 }}>
+        Kindly Fill the form add demat details
+      </Typography>
       {/* <Grid container p={2} spacing={2}> */}
       <Grid item xs={12} sm={6} md={4}>
         <TextField
@@ -157,7 +160,7 @@ const DematTab = () => {
           </span>
         </Typography>
       )}
-      {user.kyc === 'APPROVED' ? null : (
+      {user?.kyc === 'APPROVED' ? null : (
         <Grid container pt={3} pb={2} pr={2} spacing={2}>
           <Grid item xs={12} sm={6} md={4} lg={3.5}>
             <Button

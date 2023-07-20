@@ -30,7 +30,6 @@ const InfoTab = () => {
     const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   };
-
   const validateMobileNumber = (mobile_number) => {
     const mobileNumberRegex = /^\d{10}$/;
     return mobileNumberRegex.test(mobile_number);
@@ -95,7 +94,7 @@ const InfoTab = () => {
     if (user) {
       setFullName(user.name);
       setFatherHusbandName(user.father_or_husband_name);
-      setDob(user.date_of_birth);
+      setDob(user.date_of_birth?.slice(0, 10));
       SetMobileNumber(user.mobile_number);
       setAlternateMobileNumber(user.alternate_mobile_number);
       setEmail(user.email);
@@ -132,7 +131,7 @@ const InfoTab = () => {
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <DesktopDatePicker
+          {/*  <DesktopDatePicker
             label="Date of Birth"
             inputFormat="dd/MM/yyyy"
             value={dob}
@@ -144,21 +143,19 @@ const InfoTab = () => {
             renderInput={(params) => (
               <TextField {...params} sx={{ width: '100%' }} />
             )}
+          /> */}
+          <TextField
+            required
+            hidden
+            label="Date of Birth"
+            variant="outlined"
+            fullWidth
+            placeholder=""
+            value={dob}
+            onChange={(e) => {
+              setDob(e.target.value);
+            }}
           />
-          {/* <TextField 
-          required
-          hidden
-          label="Date of Birth" 
-          variant="outlined" 
-          fullWidth
-          type='date'
-          ref={ref}
-         
-          placeholder=''
-          value={dob}
-          onChange={(e)=>{
-            setDob(e.target.value)
-          }}/> */}
         </Grid>
       </Grid>
       <Grid container pr={2} pb={2} pl={2} spacing={2}>
@@ -231,7 +228,7 @@ const InfoTab = () => {
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        {user.kyc === 'APPROVED' ? null : (
+        {user?.kyc === 'APPROVED' ? null : (
           <Grid item xs={4}>
             <Box component="form">
               <LoadingButton

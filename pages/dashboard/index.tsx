@@ -1,20 +1,20 @@
 import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
+import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  Box, Card, Container, Grid, styled, Tab,
-  Tabs
-} from '@mui/material';
+import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { ChangeEvent, useState } from 'react';
-import DematTab from "./Tabs/Demat";
-import DocumentTab from "./Tabs/Documents";
+import { ChangeEvent, useEffect, useState } from 'react';
+import DematTab from './Tabs/Demat';
+import DocumentTab from './Tabs/Documents';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
-import PaymentTab from "./Tabs/Payment";
-
+import PaymentTab from './Tabs/Payment';
+import ToAdvance from './Tabs/ToAdvance';
+import GetAgency from './Tabs/GetAgency';
+import { useDispatch, useSelector } from 'react-redux';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -98,20 +98,41 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
-
-  const tabs = [
+  const upgradeToAdvance = useSelector(
+    (state: any) => state.foundUser.toAdvance
+  );
+  const tabsAdvance = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' },
+    { value: 'getAgency', label: 'KYC Agency' }
+  ];
+  const tabs = [
+    { value: 'basicInfo', label: 'Basic Info' },
+    { value: 'payment', label: 'Payment' },
+    { value: 'upgradeKyc', label: 'Upgrade KYC' },
+    { value: 'documents', label: 'Documents' },
+    { value: 'nominee', label: 'Nominee' },
+    { value: 'demat', label: 'Demat Account Details' },
+    { value: 'getAgency', label: 'KYC Agency' }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
+    if (upgradeToAdvance) {
+      dispatch(upgradeKYC(false));
+    }
   };
+  useEffect(() => {
+    if (upgradeToAdvance) {
+      setCurrentTab('upgradeKyc');
+    }
+  }, [upgradeToAdvance]);
 
   return (
     <ProtectedSSRoute>
@@ -131,9 +152,41 @@ function DashboardTasks() {
             textColor="primary"
             indicatorColor="primary"
           >
-            {tabs.map((tab) => (
-              <Tab key={tab.value} label={tab.label} value={tab.value} />
-            ))}
+            {user?.membership === 'BASIC'
+              ? tabs.map((tab) => {
+                  if (
+                    user.documents.find(
+                      (doc) => doc.title === 'to_advance_payment_proof'
+                    )
+                  ) {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  } else if (upgradeToAdvance || upgradeToAdvance === false) {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  } else if (tab.value !== 'upgradeKyc') {
+                    return (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    );
+                  }
+                })
+              : tabsAdvance.map((tab) => (
+                  <Tab key={tab.value} label={tab.label} value={tab.value} />
+                ))}
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">
@@ -145,44 +198,55 @@ function DashboardTasks() {
             spacing={0}
           >
             {currentTab === 'basicInfo' && (
-               <Grid item xs={12}>
-               <Box p={4}>
-               <InfoTab/>
-
-               </Box>
-             </Grid>
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <InfoTab />
+                </Box>
+              </Grid>
             )}
             {currentTab === 'payment' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                <PaymentTab/>
-
+                  <PaymentTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'upgradeKyc' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <ToAdvance />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'getAgency' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <GetAgency />
                 </Box>
               </Grid>
             )}
 
-{currentTab === 'documents' && (
+            {currentTab === 'documents' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                <DocumentTab/>
-
+                  <DocumentTab />
                 </Box>
               </Grid>
             )}
-            
-{currentTab === 'nominee' && (
+
+            {currentTab === 'nominee' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                <NomineeTab/>
+                  <NomineeTab />
                 </Box>
               </Grid>
             )}
             {currentTab === 'demat' && (
-               <Grid item xs={12}>
-               <Box p={4}>
-               <DematTab/>
-               </Box>
-             </Grid>
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <DematTab />
+                </Box>
+              </Grid>
             )}
           </Grid>
         </Card>

@@ -13,8 +13,8 @@ mutation AuthUser($pw_id:String!,$password:String!) {
 }`);
 
 export const SIGNUP = gql(`
-mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
-  signup(data: { pw_id:$pw_id, membership:$membership ,password:$password}) {
+mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!,$referralAgencyCode:String) {
+  signup(data: { pw_id:$pw_id, membership:$membership ,password:$password,referralAgencyCode:$referralAgencyCode}) {
     accessToken
     user{
      createdAt
@@ -26,9 +26,9 @@ mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!) {
 }`);
 
 export const RESETPASSWORD = gql(`
-mutation forgetPasswordWithPrivateKey($private_key:String!,$newPassword:String!){
+mutation forgetPasswordWithPrivateKey($pwId:String!,$newPassword:String!){
   forgetPasswordWithPrivateKey(data:{
-    private_key:$private_key,
+    pwId:$pwId,
     newPassword:$newPassword
   }){
     message
@@ -88,6 +88,8 @@ export const UPDATEDOCUMENT = gql(`
                             }){
                               title
                               url
+                              id
+                              status
                             }
                           }
                           `);
@@ -136,4 +138,80 @@ query GetUser {
   updatedAt
 }
   }
+  `);
+
+export const GET_ALL_USERS = gql(`
+
+query GetAllUser {
+ getAllUser{
+  alternate_mobile_number
+  createdAt
+  date_of_birth
+  demat_account
+  membership
+  documents{
+    id
+    title
+    url
+    userId
+    status
+    amount
+  }
+  nominee{
+    id
+    name
+    relationship
+  }
+  email
+  father_or_husband_name
+  id
+  kyc
+  mobile_number
+  name
+  pw_id
+  rm_id
+  updatedAt
+}
+  }
+  `);
+export const GET_AGENCY_CODE = gql(`
+  query($userID: String!) {
+  kycAgency(userId: $userID) {
+    agencyCode
+  }
+}
+`);
+export const GET_ALL_AGENCY_USERS = gql(`
+query($agencyCode: String!) {
+  GetAllKycAgencyUser(agencyCode: $agencyCode) {
+    alternate_mobile_number
+    createdAt
+    date_of_birth
+    demat_account
+    membership
+    documents {
+      id
+      title
+      url
+      userId
+      status
+      amount
+    }
+    nominee {
+      id
+      name
+      relationship
+    }
+    email
+    father_or_husband_name
+    id
+    kyc
+    mobile_number
+    name
+    pw_id
+    rm_id
+    updatedAt
+  }
+}
+
   `);
