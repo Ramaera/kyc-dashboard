@@ -1,6 +1,4 @@
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
-import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector } from '@/hooks';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
