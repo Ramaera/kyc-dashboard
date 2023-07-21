@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import { projectData } from './projectDetails';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -373,10 +374,36 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
+              <ListItem component="div">
+                <NextLink href="/setting" passHref>
+                  <Button
+                    className={currentRoute === '/setting' ? 'active' : ''}
+                    style={{
+                      color: currentRoute === '/setting' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute === '/setting' ? '#7063C0' : ''
+                        }}
+                      >
+                        <SettingsIcon />
+                      </span>
+                    }
+                  >
+                    Account Setting
+                  </Button>
+                </NextLink>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
       </MenuWrapper>
+      <ListItem component="div"></ListItem>
     </>
   );
 }

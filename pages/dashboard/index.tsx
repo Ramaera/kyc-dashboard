@@ -15,6 +15,8 @@ import ToAdvance from './Tabs/ToAdvance';
 import GetAgency from './Tabs/GetAgency';
 import { useDispatch, useSelector } from 'react-redux';
 import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import parameters from '@/parameters';
+
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -152,7 +154,7 @@ function DashboardTasks() {
             textColor="primary"
             indicatorColor="primary"
           >
-            {user?.membership === 'BASIC'
+            {user?.membership == parameters.BASIC_KYC
               ? tabs.map((tab) => {
                   if (
                     user.documents.find(
