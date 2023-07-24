@@ -1,5 +1,4 @@
-import { ApolloClient,createHttpLink, InMemoryCache } from '@apollo/client';
-import CONFIG from '@/config';
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 
 import { setContext } from '@apollo/client/link/context';
 
@@ -9,23 +8,20 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: ACCESSTOKEN ? `Bearer ${ACCESSTOKEN}` : "",
+      authorization: ACCESSTOKEN ? `Bearer ${ACCESSTOKEN}` : ''
     }
-  }
+  };
 });
 
 const httpLink = createHttpLink({
-  uri:CONFIG.SERVER_URL,
-  
+  uri: process.env.NEXT_PUBLIC_SERVER_URL
 });
 
 let ACCESSTOKEN;
 export const getApolloClient = () => {
-  if (typeof window !== "undefined") {
-
-    ACCESSTOKEN  = localStorage.getItem('accessToken')
-    
-    }
+  if (typeof window !== 'undefined') {
+    ACCESSTOKEN = localStorage.getItem('accessToken');
+  }
   // if(ACCESSTOKEN){
   //   return new ApolloClient({
   //     link: authLink.concat(httpLink),
@@ -42,5 +38,3 @@ export const getApolloClient = () => {
     cache: new InMemoryCache()
   });
 };
-
-
