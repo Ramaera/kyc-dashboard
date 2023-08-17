@@ -232,7 +232,6 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-
               {currentRoute.slice(0, 10) === '/dashboard' && (
                 <ListItem component="div">
                   <Button
@@ -295,6 +294,43 @@ function SidebarMenu() {
                 </List>
               ) : (
                 ''
+              )}{' '}
+              {currentRoute.slice(0, 10) === '/dashboard' && (
+                <ListItem component="div">
+                  <NextLink href={`/dashboard/certificate`} passHref>
+                    <Button
+                      className={
+                        currentRoute.slice(0, 22) === '/dashboard/certificate'
+                          ? 'active'
+                          : ''
+                      }
+                      style={{
+                        fontWeight: 500,
+                        color:
+                          currentRoute.slice(0, 22) === '/dashboard/certificate'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                      }}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute.slice(0, 22) ===
+                              '/dashboard/certificate'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        ></span>
+                      }
+                    >
+                      CERTIFICATE
+                    </Button>
+                  </NextLink>
+                </ListItem>
               )}
               {currentRoute.slice(0, 10) === '/dashboard' && (
                 <ListItem component="div">
