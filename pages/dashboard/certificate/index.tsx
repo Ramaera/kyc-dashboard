@@ -14,7 +14,7 @@ function index() {
     let docs: any = [];
     user.documents.map((doc: any) => {
       doc.title.includes('payment') &&
-        // doc.status === 'APPROVED' && uncomment this to generate certificate for approved payments only
+        doc.status === 'APPROVED' &&
         docs.push(doc);
     });
     setPaymentDocs(docs);
@@ -23,6 +23,7 @@ function index() {
   const allCertificates = () => {
     return paymentDocs.map((doc: any, index) => (
       <Certificate
+        id={'certificate_' + index}
         key={index}
         username={user?.name}
         membership={
