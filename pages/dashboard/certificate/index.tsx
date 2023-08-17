@@ -66,7 +66,11 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              {allCertificates()}
+              {paymentDocs.length === 0 ? (
+                <Box>No Certificates to Show</Box>
+              ) : (
+                allCertificates()
+              )}
             </Grid>
           </Grid>
         </Card>
