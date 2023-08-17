@@ -1,30 +1,31 @@
-import { ChangeEvent, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Tooltip,
-  Divider,
   Box,
+  Card,
+  CardHeader,
+  Divider,
   FormControl,
   InputLabel,
-  Card,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableContainer,
-  Typography,
-  CardHeader,
-  Select,
-  MenuItem
+  Typography
 } from '@mui/material';
-import { useRef } from 'react';
+import PropTypes from 'prop-types';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
 import { User } from '@/models/user';
-import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
+import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_USERS } from '@/apollo/queries/auth';
+import { setAllTheUsersForList } from '@/state/slice/allUsersSlice';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -84,9 +85,14 @@ const applyFilters = (users: User[], filters: Filters): any => {
  */
 const UserTable = () => {
   const tableRef = useRef(null);
-  const usersList = useSelector(
-    (state: any) => state.allUsers.allTheUsersForList
-  );
+  const dispatch = useDispatch();
+  const [usersList, setUsersList] = useState([]);
+  const getAllUser = useQuery(GET_ALL_USERS);
+
+  if (getAllUser.data) {
+    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
+  }
+
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,
@@ -218,6 +224,26 @@ const UserTable = () => {
   };
 
   let index = -1;
+
+  useEffect(() => {
+    getAllUser.data && setUsersList(getAllUser.data.getAllUser);
+  }, [getAllUser]);
+
+  if (getAllUser.loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          height: '90vh',
+          alignItems: 'center'
+        }}
+      >
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
   return (
     <>
       <Card>
