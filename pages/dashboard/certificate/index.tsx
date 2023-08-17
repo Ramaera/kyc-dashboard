@@ -14,7 +14,7 @@ function index() {
     let docs: any = [];
     user.documents.map((doc: any) => {
       doc.title.includes('payment') &&
-        // doc.status === 'APPROVED' &&
+        // doc.status === 'APPROVED' && uncomment this to generate certificate for approved payments only
         docs.push(doc);
     });
     setPaymentDocs(docs);

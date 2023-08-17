@@ -2,7 +2,7 @@ import amountToWords from '../utils/amountToWords';
 
 const Certificate = ({ username, membership, digit, description }: any) => {
   return (
-    <div style={{ fontSize: '1.6rem', minHeight: '800px' }}>
+    <div id="divToPrint" style={{ fontSize: '1rem', minHeight: '800px' }}>
       <div
         style={{
           backgroundImage: 'url("/certificateAssets/bg.png")',
@@ -15,37 +15,34 @@ const Certificate = ({ username, membership, digit, description }: any) => {
         <h1
           style={{
             width: '1000px',
-            fontSize: '5.6rem',
+            fontSize: '2.6rem',
             color: 'orange',
             textAlign: 'left'
           }}
         >
           RAMAERA INDUSTRIES LTD
         </h1>
-        <h2 style={{ fontSize: '2.4rem', padding: ' 2.4rem 0' }}>
-          Received From {username}
-        </h2>
+        <h2 style={{ fontSize: '1.4rem' }}>Received From {username}</h2>
 
-        <h2 style={{ fontSize: '2.6rem', padding: ' 2rem 0 0 0' }}>
+        <h2 style={{ fontSize: '1.6rem' }}>
           We have Received the sum of rupees{' '}
           <span style={{ color: 'red' }}>
             {digit} ({amountToWords(digit)} ONLY )
           </span>
           ,
         </h2>
-        <h2 style={{ fontSize: '2.6rem', padding: '  0 0 2rem 0' }}>
+        <h2 style={{ fontSize: '1.6rem' }}>
           {membership === 'BASIC' || membership === 'ADVANCE'
             ? ', For Your '
             : ', For '}
-          <p style={{ color: '#1FAE47' }}>{membership}</p>
+          <span style={{ color: '#1FAE47' }}>{membership}</span>
           {(membership === 'BASIC' || membership === 'ADVANCE') && ' KYC'}
         </h2>
         <h3
           style={{
             width: '780px',
             color: 'white',
-            fontSize: '2.8rem',
-            padding: ' 0.6rem 0',
+            fontSize: '1.8rem',
             backgroundColor: 'green',
             textAlign: 'center',
             border: 'solid 2px black'
@@ -74,7 +71,7 @@ const Certificate = ({ username, membership, digit, description }: any) => {
               width: '200px',
               textAlign: 'center',
               fontWeight: 'bold',
-              fontSize: '1.8rem'
+              fontSize: '0.8rem'
             }}
           >
             Authorized Stamp
