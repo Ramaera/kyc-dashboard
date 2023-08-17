@@ -4,10 +4,44 @@ import { Box, Card, CardHeader, Container, Grid } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useSelector } from 'react-redux';
-
+import Certificate from './components/Certificate';
+import { useEffect, useState } from 'react';
 function index() {
   const user = useSelector((state: any) => state.user.data);
-  console.log(user);
+  const [paymentDocs, setPaymentDocs] = useState([]);
+
+  useEffect(() => {
+    let docs: any = [];
+    user.documents.map((doc: any) => {
+      doc.title.includes('payment') &&
+        // doc.status === 'APPROVED' &&
+        docs.push(doc);
+    });
+    setPaymentDocs(docs);
+  }, [user]);
+
+  const allCertificates = () => {
+    return paymentDocs.map((doc: any, index) => (
+      <Certificate
+        key={index}
+        username={user?.name}
+        membership={
+          doc.title === 'payment_proof' && doc.amount === 1000
+            ? 'BASIC'
+            : doc.title.includes('to_advance') && doc.amount === 199000
+            ? 'ADVANCE'
+            : doc.title.includes('hajipur')
+            ? 'Hajipur Project'
+            : doc.title.includes('agra')
+            ? 'Agra Project'
+            : 'KYC'
+        }
+        description={'YOUR KYC HAS BEEN SUCCESSFULLY APPROVED'}
+        digit={doc.amount}
+      />
+    ));
+  };
+
   return (
     <ProtectedSSRoute>
       <Head>
@@ -31,7 +65,7 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              {/* <Box m={4}>Allotted Share:</Box> */}
+              {allCertificates()}
             </Grid>
           </Grid>
         </Card>

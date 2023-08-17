@@ -100,6 +100,7 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user.data);
+  console.log(user);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
