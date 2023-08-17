@@ -2,7 +2,7 @@ import amountToWords from '../utils/amountToWords';
 
 const Certificate = ({ username, membership, digit, description }: any) => {
   return (
-    <div id="divToPrint" style={{ fontSize: '1rem', minHeight: '800px' }}>
+    <div style={{ fontSize: '1rem', minHeight: '800px' }}>
       <div
         style={{
           backgroundImage: 'url("/certificateAssets/bg.png")',
