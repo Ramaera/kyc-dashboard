@@ -17,6 +17,7 @@ function index() {
         doc.status === 'APPROVED' &&
         docs.push(doc);
     });
+    console.log(docs);
     setPaymentDocs(docs);
   }, [user]);
 
@@ -65,7 +66,7 @@ function index() {
             alignItems="stretch"
             spacing={0}
           >
-            <Grid item xs={12}>
+            <Grid item xs={12} paddingX={6}>
               {paymentDocs.length === 0 ? (
                 <Box>No Certificates to Show</Box>
               ) : (

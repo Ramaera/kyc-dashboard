@@ -11,12 +11,21 @@ const Certificate = ({ username, membership, digit, description, id }: any) => {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
     pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('shipping_label.pdf');
+    pdf.save('certificate.pdf');
   };
 
   return (
     <>
-      <div id={id} style={{ fontSize: '1rem', minHeight: '800px' }}>
+      <div
+        id={id}
+        style={{
+          fontSize: '16px',
+          height: 768,
+          color: '#000',
+          width: 1080,
+          fontWeight: 400
+        }}
+      >
         <div
           style={{
             backgroundImage: 'url("/certificateAssets/bg.png")',
@@ -26,44 +35,47 @@ const Certificate = ({ username, membership, digit, description, id }: any) => {
             padding: '6rem 8rem'
           }}
         >
-          <h1
+          <p
             style={{
-              width: '1000px',
-              fontSize: '2.6rem',
-              color: 'orange',
-              textAlign: 'left'
+              fontSize: '64px',
+              color: '#FFA502',
+              textAlign: 'center',
+              margin: 0
             }}
           >
             RAMAERA INDUSTRIES LTD
-          </h1>
-          <h2 style={{ fontSize: '1.4rem' }}>Received From {username}</h2>
+          </p>
+          <p style={{ fontSize: '1.4rem', textTransform: 'capitalize' }}>
+            Received From <span style={{ fontWeight: 600 }}>{username}</span>
+          </p>
 
-          <h2 style={{ fontSize: '1.6rem' }}>
+          <p style={{ fontSize: '1.6rem' }}>
             We have Received the sum of rupees{' '}
             <span style={{ color: 'red' }}>
               {digit} ({amountToWords(digit)} ONLY )
             </span>
             ,
-          </h2>
-          <h2 style={{ fontSize: '1.6rem' }}>
+          </p>
+          <p style={{ fontSize: '1.6rem' }}>
             {membership === 'BASIC' || membership === 'ADVANCE'
               ? ', For Your '
               : ', For '}
             <span style={{ color: '#1FAE47' }}>{membership}</span>
             {(membership === 'BASIC' || membership === 'ADVANCE') && ' KYC'}
-          </h2>
-          <h3
+          </p>
+          <p
             style={{
-              width: '780px',
+              // width: '780px',
               color: 'white',
               fontSize: '1.8rem',
               backgroundColor: 'green',
               textAlign: 'center',
-              border: 'solid 2px black'
+              border: 'solid 2px black',
+              margin: 0
             }}
           >
             {description}
-          </h3>
+          </p>
           <div
             style={{
               display: 'flex',

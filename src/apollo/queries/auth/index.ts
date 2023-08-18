@@ -121,6 +121,7 @@ query GetUser {
     title
     url
     status
+    amount
   }
   nominee{
     id

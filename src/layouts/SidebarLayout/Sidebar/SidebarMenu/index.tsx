@@ -294,7 +294,7 @@ function SidebarMenu() {
                 </List>
               ) : (
                 ''
-              )}{' '}
+              )}
               {currentRoute.slice(0, 10) === '/dashboard' && (
                 <ListItem component="div">
                   <NextLink href={`/dashboard/certificate`} passHref>
