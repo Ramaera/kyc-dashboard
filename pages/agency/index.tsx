@@ -49,9 +49,11 @@ function DashboardTasks() {
     );
   }
   if (error) {
-    return <h3>error</h3>;
+    console.log(error);
+    // return <h3>error</h3>;
   }
   if (data) {
+    console.log('fdfsf', data.GetAllKycAgencyUser);
     dispatch(setAllTheUsers(data.GetAllKycAgencyUser));
   }
   if (kycHandlersList.data) {
@@ -59,7 +61,7 @@ function DashboardTasks() {
     dispatch(setAllKycHandlerList(kycHandlersList.data.getAllKycHandler));
   }
 
-  //console.log(helloW);
+  //console.log(helloW)
 
   return (
     <ProtectedSSRoute>
