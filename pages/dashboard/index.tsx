@@ -24,6 +24,8 @@ import ToAdvance from './Tabs/ToAdvance';
 import GetAgency from './Tabs/GetAgency';
 import { useDispatch, useSelector } from 'react-redux';
 import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       padding: 0 ${theme.spacing(2)};
@@ -108,7 +110,8 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const mobile = useMediaQuery('(max-width:600px)');
+
   const user = useSelector((state: any) => state.user.data);
   console.log(user);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
@@ -154,25 +157,14 @@ function DashboardTasks() {
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <TabsContainerWrapper
-          sx={{
-            [theme.breakpoints.down('sm')]: {
-              overflowX: 'scroll'
-            }
-          }}
-        >
+        <TabsContainerWrapper>
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
-            variant="scrollable"
+            variant="fullWidth"
             scrollButtons="auto"
             textColor="primary"
             indicatorColor="primary"
-            sx={{
-              [theme.breakpoints.down('sm')]: {
-                width: 800
-              }
-            }}
           >
             {user?.membership === 'BASIC'
               ? tabs.map((tab) => {
@@ -183,6 +175,7 @@ function DashboardTasks() {
                   ) {
                     return (
                       <Tab
+                        style={{ fontSize: mobile ? 10 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -191,6 +184,7 @@ function DashboardTasks() {
                   } else if (upgradeToAdvance || upgradeToAdvance === false) {
                     return (
                       <Tab
+                        style={{ fontSize: mobile ? 10 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -199,6 +193,7 @@ function DashboardTasks() {
                   } else if (tab.value !== 'upgradeKyc') {
                     return (
                       <Tab
+                        style={{ fontSize: mobile ? 10 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -207,7 +202,12 @@ function DashboardTasks() {
                   }
                 })
               : tabsAdvance.map((tab) => (
-                  <Tab key={tab.value} label={tab.label} value={tab.value} />
+                  <Tab
+                    style={{ fontSize: mobile ? 10 : 14 }}
+                    key={tab.value}
+                    label={tab.label}
+                    value={tab.value}
+                  />
                 ))}
           </Tabs>
         </TabsContainerWrapper>

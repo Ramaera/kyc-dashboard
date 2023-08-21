@@ -1,5 +1,4 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
-import CONFIG from '@/config';
 
 import { setContext } from '@apollo/client/link/context';
 
@@ -15,7 +14,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: CONFIG.SERVER_URL
+  uri: process.env.NEXT_PUBLIC_SERVER_URL
 });
 
 let ACCESSTOKEN;

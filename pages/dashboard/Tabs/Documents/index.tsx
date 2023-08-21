@@ -5,7 +5,7 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Typography } from '@mui/material';
+import { Button, Hidden, Typography, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -22,6 +22,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { rows } from './documentData';
 
 const DocumentRow = ({ data, documents = [], user }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [createDocument] = useMutation(CREATEDOCUMENT);
@@ -212,7 +213,13 @@ const DocumentRow = ({ data, documents = [], user }) => {
   return (
     <TableRow
       key={data.config.name}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        [theme.breakpoints.down('sm')]: {
+          display: 'flex',
+          flexDirection: 'column'
+        }
+      }}
     >
       <TableCell component="th" scope="row">
         {data.config.name} {data.isOptional ? '(Optional)' : ''}
@@ -280,12 +287,14 @@ const DocumentTab = () => {
           <TableHead>
             <TableRow>
               <TableCell>Document Name</TableCell>
-              <TableCell>Preview</TableCell>
-              <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
-              <TableCell style={{ padding: '0 0 0 2rem' }}>
-                Upload Action
-              </TableCell>
-              <TableCell>Status</TableCell>
+              <Hidden smDown>
+                <TableCell>Preview</TableCell>
+                <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
+                <TableCell style={{ padding: '0 0 0 2rem' }}>
+                  Upload Action
+                </TableCell>
+                <TableCell>Status</TableCell>
+              </Hidden>
             </TableRow>
           </TableHead>
           <TableBody>

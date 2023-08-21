@@ -1,6 +1,10 @@
 import {
-  Box, Container,
-  Grid, Hidden, styled, Typography
+  Box,
+  Container,
+  Grid,
+  Hidden,
+  styled,
+  Typography
 } from '@mui/material';
 import Head from 'next/head';
 import type { ReactElement } from 'react';
@@ -32,40 +36,6 @@ function Login() {
           alignItems="stretch"
           spacing={0}
         >
-
-<Hidden mdDown>
-            <Grid
-              xs={12}
-              md={6}
-              alignItems="center"
-              display="flex"
-              justifyContent="center"
-              item
-            >
-              <Container maxWidth="sm">
-                <Box textAlign="center">
-
-                <img
-                  alt="500"
-                  height={260}
-                  src="/static/images/logo/logo.png"
-                />
-                  <Typography variant="h1" sx={{ my: 2 }}>
-                    Become A Partner
-                  </Typography>
-                  <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 4 }}
-                >
-                   RAMAERA is the future of upcoming Industrialisation in India, aiming presence in all kind of manufacturing sector
-                  </Typography>
-                 
-                </Box>
-              </Container>
-            </Grid>
-          </Hidden>
           <Grid
             xs={12}
             md={6}
@@ -76,7 +46,40 @@ function Login() {
           >
             <Container maxWidth="sm">
               <Box textAlign="center">
-               <LoginCard/>
+                <img
+                  alt="500"
+                  height={180}
+                  src="/static/images/logo/logo.png"
+                />
+                <Typography variant="h1" sx={{ my: 2 }}>
+                  Become A Partner
+                </Typography>
+                <Hidden mdDown>
+                  <Typography
+                    variant="h4"
+                    color="text.secondary"
+                    fontWeight="normal"
+                    sx={{ mb: 4 }}
+                  >
+                    RAMAERA is the future of upcoming Industrialisation in
+                    India, aiming presence in all kind of manufacturing sector
+                  </Typography>
+                </Hidden>
+              </Box>
+            </Container>
+          </Grid>
+
+          <Grid
+            xs={12}
+            md={6}
+            alignItems="center"
+            display="flex"
+            justifyContent="center"
+            item
+          >
+            <Container maxWidth="sm">
+              <Box textAlign="center">
+                <LoginCard />
               </Box>
             </Container>
           </Grid>

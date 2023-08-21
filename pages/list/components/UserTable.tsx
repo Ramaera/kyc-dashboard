@@ -13,7 +13,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -84,6 +85,7 @@ const applyFilters = (users: User[], filters: Filters): any => {
 };
  */
 const UserTable = () => {
+  const theme = useTheme();
   const tableRef = useRef(null);
   const dispatch = useDispatch();
   const [usersList, setUsersList] = useState([]);
@@ -250,7 +252,16 @@ const UserTable = () => {
         <CardHeader
           action={
             <Box display={'flex'} gap={'20px'}>
-              <Box width={480} display={'flex'} gap={'10px'}>
+              <Box
+                width={480}
+                display={'flex'}
+                gap={'10px'}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%'
+                  }
+                }}
+              >
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>KYC Status</InputLabel>
                   <Select
@@ -305,7 +316,7 @@ const UserTable = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box m={1} width={150} display={'flex'}>
             <FormControl variant="outlined" fullWidth>
-              <InputLabel>KYC</InputLabel>
+              <InputLabel>KYC Membership</InputLabel>
               <Select
                 value={kycList || 'all'}
                 onChange={(e) => handleProjectChange(e.target.value)}
