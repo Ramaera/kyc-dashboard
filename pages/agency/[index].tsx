@@ -7,7 +7,16 @@ import Footer from '@/components/Footer';
 import { useRouter } from 'next/router';
 
 // import userData from '../data.json';
-import { Grid, Tab, Tabs, Container, Card, Box, styled } from '@mui/material';
+import {
+  Grid,
+  Tab,
+  Tabs,
+  Container,
+  Card,
+  Box,
+  styled,
+  useTheme
+} from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import InfoTab from './Tabs/Info';
 import DematTab from './Tabs/Demat';
@@ -103,6 +112,7 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const router = useRouter();
+  const theme = useTheme();
   const dispatch = useDispatch();
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const { index } = router.query;

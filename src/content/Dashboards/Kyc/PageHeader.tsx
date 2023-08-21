@@ -8,7 +8,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  useTheme
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
@@ -20,7 +21,7 @@ import { useState } from 'react';
 
 function PageHeader() {
   const user = useAppSelector((state) => state.user.data);
-
+  const theme = useTheme();
   const [updateStatus] = useMutation(UPDATE_KYC_BY_ADMIN);
   const [response, setResponse] = useState('');
   const [status, setStatus] = useState('');
@@ -86,7 +87,16 @@ function PageHeader() {
         </AvatarPageTitle> */}
             <Box>
               {/* <Grid> */}
-              <Typography variant="h3" component="h3" gutterBottom>
+              <Typography
+                variant="h3"
+                component="h3"
+                gutterBottom
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 20
+                  }
+                }}
+              >
                 Welcome, {user?.name ? user?.name : user?.rm_id}!
               </Typography>
               <Typography variant="h5" component="h5" align="left">
@@ -99,7 +109,15 @@ function PageHeader() {
                   color="success"
                 ></Badge>
               </Typography>
-              <Typography variant="subtitle2" mt={1}>
+              <Typography
+                variant="subtitle2"
+                mt={1}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 12
+                  }
+                }}
+              >
                 {user?.kyc === 'APPROVED'
                   ? 'Your KYC has been Approved'
                   : 'Complete Your KYC By Filling the form below'}

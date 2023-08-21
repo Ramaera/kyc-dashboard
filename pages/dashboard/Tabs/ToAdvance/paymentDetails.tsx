@@ -18,22 +18,22 @@ const rows = [
 
   {
     name: 'Bank Name',
-    value: 'KOTAK MAHINDRA BANK '
+    value: 'HDFC BANK'
   },
 
   {
     name: 'Branch',
-    value: 'NOIDA SECTOR 63'
+    value: 'NOIDA SECTOR 18'
   },
 
   {
     name: 'A/C No.',
-    value: '4747237385'
+    value: '50200069506090'
   },
 
   {
     name: 'IFSC CODE ',
-    value: 'KKBK0000180'
+    value: 'HDFC0000088'
   }
 ];
 const PaymentInfo = () => {
@@ -53,7 +53,7 @@ const PaymentInfo = () => {
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs. 99,000/- and upload the payment slip as a proof!
+        Kindly Deposit Rs. 198,000/- and upload the payment slip as a proof!
       </Typography>
       <div
         style={{
@@ -118,8 +118,8 @@ const PaymentInfo = () => {
                 OR
               </Typography>
               <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
-                <a href="upi://pay?pa=ramaerakotak@ibl&amp;pn=Ramaera  K&amp;cu=INR">
-                  UPI ID : ramaerakotak@ibl
+                <a href="upi://pay?pa=ramaeraindustriesupi.pay@hdfcbank&amp;pn=Ramaera  K&amp;cu=INR">
+                  UPI ID : ramaeraindustriesupi.pay@hdfcbank
                 </a>
               </Typography>
             </TableBody>

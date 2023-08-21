@@ -131,7 +131,16 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 10,
+                width: 90
+              }
+            }}
+          >
             RM ID : {user && user.rm_id}
           </Typography>
           {agencyCode && (
@@ -150,7 +159,11 @@ function Header() {
           )}
           {user?.membership !== 'ADVANCE' && (
             <Button
-              style={{ marginRight: 20 }}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 10
+                }
+              }}
               variant="contained"
               onClick={() => {
                 dispatch(upgradeKYC(true));
@@ -169,14 +182,38 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Total KYC : {numbers.totalKYC}
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 12
+              }
+            }}
+          >
+            Total KYC: {numbers.totalKYC}
           </Typography>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Hajipur Enrolled : {numbers.totalHajipur}
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 12
+              }
+            }}
+          >
+            Hajipur Enrolled: {numbers.totalHajipur}
           </Typography>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Agra Enrolled : {numbers.totalAgra}
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 12
+              }
+            }}
+          >
+            Agra Enrolled: {numbers.totalAgra}
           </Typography>
         </Stack>
       )}

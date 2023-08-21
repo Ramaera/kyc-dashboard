@@ -2,7 +2,16 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import {
+  Box,
+  Card,
+  Container,
+  Grid,
+  styled,
+  Tab,
+  Tabs,
+  useTheme
+} from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -99,6 +108,7 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const user = useSelector((state: any) => state.user.data);
   console.log(user);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
@@ -144,7 +154,13 @@ function DashboardTasks() {
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <TabsContainerWrapper>
+        <TabsContainerWrapper
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              overflowX: 'scroll'
+            }
+          }}
+        >
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
@@ -152,6 +168,11 @@ function DashboardTasks() {
             scrollButtons="auto"
             textColor="primary"
             indicatorColor="primary"
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                width: 800
+              }
+            }}
           >
             {user?.membership === 'BASIC'
               ? tabs.map((tab) => {
