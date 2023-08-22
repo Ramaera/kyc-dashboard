@@ -4,7 +4,8 @@ import {
   Grid,
   Hidden,
   styled,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
 import type { ReactElement } from 'react';
@@ -24,6 +25,7 @@ const MainContent = styled(Box)(
 );
 
 function Login() {
+  const theme = useTheme();
   return (
     <>
       <Head>
@@ -49,9 +51,18 @@ function Login() {
                 <img
                   alt="500"
                   height={180}
+                  style={{ marginTop: 20 }}
                   src="/static/images/logo/logo.png"
                 />
-                <Typography variant="h1" sx={{ my: 2 }}>
+                <Typography
+                  variant="h1"
+                  sx={{
+                    my: 2,
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 22
+                    }
+                  }}
+                >
                   Become A Partner
                 </Typography>
                 <Hidden mdDown>
@@ -64,6 +75,20 @@ function Login() {
                     RAMAERA is the future of upcoming Industrialisation in
                     India, aiming presence in all kind of manufacturing sector
                   </Typography>
+                </Hidden>
+                <Hidden mdUp>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.ramaerapartnersclient"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      width={'50%'}
+                      style={{ marginBottom: -50 }}
+                      src="/static/images/logo/playStore.png"
+                      alt=""
+                    />
+                  </a>
                 </Hidden>
               </Box>
             </Container>

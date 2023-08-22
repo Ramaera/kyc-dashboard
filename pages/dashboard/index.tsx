@@ -2,29 +2,20 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  styled,
-  Tab,
-  Tabs,
-  useTheme
-} from '@mui/material';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
+import GetAgency from './Tabs/GetAgency';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import ToAdvance from './Tabs/ToAdvance';
-import GetAgency from './Tabs/GetAgency';
-import { useDispatch, useSelector } from 'react-redux';
-import { upgradeKYC } from '@/state/slice/foundUserSlice';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -161,9 +152,9 @@ function DashboardTasks() {
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
-            variant="fullWidth"
-            scrollButtons="auto"
+            variant="scrollable"
             textColor="primary"
+            visibleScrollbar={true}
             indicatorColor="primary"
           >
             {user?.membership === 'BASIC'
@@ -175,7 +166,7 @@ function DashboardTasks() {
                   ) {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -184,7 +175,7 @@ function DashboardTasks() {
                   } else if (upgradeToAdvance || upgradeToAdvance === false) {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -193,7 +184,7 @@ function DashboardTasks() {
                   } else if (tab.value !== 'upgradeKyc') {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -203,7 +194,7 @@ function DashboardTasks() {
                 })
               : tabsAdvance.map((tab) => (
                   <Tab
-                    style={{ fontSize: mobile ? 10 : 14 }}
+                    style={{ fontSize: mobile ? 12 : 14 }}
                     key={tab.value}
                     label={tab.label}
                     value={tab.value}
