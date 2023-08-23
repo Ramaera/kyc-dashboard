@@ -16,6 +16,13 @@ import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import ToAdvance from './Tabs/ToAdvance';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_USERS } from '@/apollo/queries/auth';
+import {
+  setAllTheUsersForList,
+  setTotalAgraAmount,
+  setTotalHajipurAmount
+} from '@/state/slice/allUsersSlice';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -101,14 +108,33 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
-  const mobile = useMediaQuery('(max-width:600px)');
-
   const user = useSelector((state: any) => state.user.data);
-  console.log(user);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
   );
+
+  const getAllUser = useQuery(GET_ALL_USERS);
+  if (getAllUser.data) {
+    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
+  }
+  const mobile = useMediaQuery('(max-width:600px)');
+
+  const setProjectAmount = async () => {
+    let hajipurAmount = 0;
+    let agraAmount = 0;
+    if (getAllUser.data) {
+      await getAllUser.data.getAllUser.map((user) => {
+        user.documents.map((doc) => {
+          doc.title.includes('hajipur') && (hajipurAmount += doc.amount);
+          doc.title.includes('agra') && (agraAmount += doc.amount);
+        });
+      });
+      await dispatch(setTotalHajipurAmount(hajipurAmount));
+      await dispatch(setTotalAgraAmount(agraAmount));
+    }
+  };
+
   const tabsAdvance = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
@@ -138,6 +164,10 @@ function DashboardTasks() {
       setCurrentTab('upgradeKyc');
     }
   }, [upgradeToAdvance]);
+
+  useEffect(() => {
+    setProjectAmount();
+  }, [getAllUser]);
 
   return (
     <ProtectedSSRoute>

@@ -21,12 +21,12 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
-import { User } from '@/models/user';
-import { LoadingButton } from '@mui/lab';
-import { useDispatch, useSelector } from 'react-redux';
-import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '@/apollo/queries/auth';
+import { User } from '@/models/user';
 import { setAllTheUsersForList } from '@/state/slice/allUsersSlice';
+import { useQuery } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { useDispatch } from 'react-redux';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -176,7 +176,7 @@ const UserTable = () => {
     }
   ];
 
-  const handleProjectChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleProjectChange = (e) => {
     setKycList(e);
   };
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
