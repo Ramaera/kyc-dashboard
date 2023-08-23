@@ -67,6 +67,9 @@ function Header() {
       if (user) {
         totalKyc += 1;
       }
+      if (user.role === 'ADMIN') {
+        totalKyc -= 1;
+      }
       user?.documents?.map((doc) => {
         /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;

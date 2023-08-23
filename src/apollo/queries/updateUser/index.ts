@@ -67,3 +67,23 @@ query getAllKycHandler {
   }
 }
 `);
+
+export const GET_ALL_AGENCY = gql(`
+query{
+  AllKycAgency{
+    agencyCode
+    user{
+      id
+      name
+      referralAgencyCode
+      kyc
+      membership
+      referralAgencyCode
+      pw_id
+      rm_id
+      mobile_number
+      email
+    }
+  }
+}
+`);

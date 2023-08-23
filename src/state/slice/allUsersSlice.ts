@@ -4,6 +4,7 @@ const initialState = {
   allTheUsers: [],
   allTheUsersForList: [],
   allKycHandlerList: [],
+  allAgencyList: [],
   totalHajipurAmount: 0,
   totalAgraAmount: 0
 };
@@ -26,6 +27,9 @@ export const allUSersSlice = createSlice({
     },
     setTotalAgraAmount: (state, action) => {
       state.totalAgraAmount = action.payload;
+    },
+    setAllAgencyList: (state, action) => {
+      state.allAgencyList = action.payload;
     }
   }
 });
@@ -33,6 +37,7 @@ export const allUSersSlice = createSlice({
 export const {
   setAllTheUsers,
   setTotalHajipurAmount,
+  setAllAgencyList,
   setTotalAgraAmount,
   setAllTheUsersForList,
   setAllKycHandlerList
