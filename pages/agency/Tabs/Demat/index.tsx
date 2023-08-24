@@ -1,25 +1,23 @@
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
-import handleImageUpload from '@/utils/upload';
-import { useMutation } from '@apollo/client';
-import { LoadingButton } from '@mui/lab';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import {
   UPDATE_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
+import documentsConfig from '@/config/documentsConfig';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
+import DocumentType from '@/state/types/document';
 import allUsersUpdater from '@/utils/updateUserList';
+import handleImageUpload from '@/utils/upload';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Box, Button, Grid, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { useDispatch, useSelector } from 'react-redux';
 
 const DematTab = () => {
   const dispatch = useDispatch();
-
-  // const user = useAppSelector((state) => state.user.data);
   const user = useSelector((state: any) => state.foundUser.foundUser);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
@@ -31,9 +29,6 @@ const DematTab = () => {
   const [isImageChanged, setImageChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
-  // const [createDocument] = useMutation(CREATEDOCUMENT);
-  // const [updateDocument] = useMutation(UPDATEDOCUMENT);
-  // const [updatedetails] = useMutation(UPDATEUSERDETAILS);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin, { data }] = useMutation(
     UPDATE_STATUS_BY_ADMIN
@@ -51,6 +46,7 @@ const DematTab = () => {
     });
     return { ...newUser, documents: newDocs, demat_account: dematAccount };
   };
+
   const updateUserStatus = (dematId, status) => {
     let newUser = user;
     let newDocs = [];
@@ -63,6 +59,7 @@ const DematTab = () => {
     });
     return { ...newUser, documents: newDocs };
   };
+
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
       alert('Invalid Image');
@@ -73,7 +70,7 @@ const DematTab = () => {
   };
 
   const changeDocumentStatus = async (docId, docStatus) => {
-    const dataaa = await updateDocumentStatusByAdmin({
+    await updateDocumentStatusByAdmin({
       variables: {
         id: docId,
         status: docStatus
@@ -89,6 +86,7 @@ const DematTab = () => {
       )
     );
   };
+
   const handleSubmit = async () => {
     const isValid = validateSubmit(dematDocumentImage);
     if (!isValid) {
@@ -151,6 +149,7 @@ const DematTab = () => {
     } catch (err) {}
     setLoading(false);
   };
+
   useEffect(() => {
     if (user) {
       setDematAccount(user.demat_account);
@@ -170,8 +169,7 @@ const DematTab = () => {
 
   return (
     <>
-      {/* <Grid container p={2} spacing={2}> */}
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6}>
         <TextField
           id="outlined"
           label="Demat Account No."

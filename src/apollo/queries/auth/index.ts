@@ -138,6 +138,7 @@ query GetAllUser {
     userId
     status
     amount
+    utrNo
   }
   nominee{
     id
