@@ -16,6 +16,7 @@ export interface User {
   referralAgencyCode?: String;
   updatedAt?: String;
   membership?: Membership;
+  documents?: DocumentType;
   kyc?: KYC;
 }
 export type DocumentType = {
@@ -24,6 +25,8 @@ export type DocumentType = {
   url: String;
   updatedAt: String;
   createdAt: String;
+  amount: String;
+  status: String;
 };
 enum Membership {
   BASIC = 'BASIC',

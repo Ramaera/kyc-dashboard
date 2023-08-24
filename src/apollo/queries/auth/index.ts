@@ -150,6 +150,7 @@ query GetAllUser {
   kyc
   mobile_number
   name
+  role
   pw_id
   rm_id
   updatedAt

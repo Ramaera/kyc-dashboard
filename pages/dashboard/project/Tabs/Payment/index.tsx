@@ -1,12 +1,12 @@
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector, useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { TableRow, TableCell, Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import Details from './Details';
@@ -85,7 +85,6 @@ const DocumentRow = ({
         newDocs.push(item);
       }
     });
-    console.log(imgUrl, { ...newUser, documents: newDocs });
     return { ...newUser, documents: newDocs };
   };
 
@@ -106,7 +105,6 @@ const DocumentRow = ({
     //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
-        console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = projectTitle + '_' + data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
@@ -334,6 +332,7 @@ const InfoTab = ({ title }) => {
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
+
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
       alert('Invalid Image');

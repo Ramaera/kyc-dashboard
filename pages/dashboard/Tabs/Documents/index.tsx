@@ -80,7 +80,6 @@ const DocumentRow = ({ data, documents = [], user }) => {
         newDocs.push(item);
       }
     });
-    console.log(imgUrl, { ...newUser, documents: newDocs });
     return { ...newUser, documents: newDocs };
   };
 

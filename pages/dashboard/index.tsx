@@ -2,29 +2,27 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  styled,
-  Tab,
-  Tabs,
-  useTheme
-} from '@mui/material';
+import { upgradeKYC } from '@/state/slice/foundUserSlice';
+import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
+import GetAgency from './Tabs/GetAgency';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import ToAdvance from './Tabs/ToAdvance';
-import GetAgency from './Tabs/GetAgency';
-import { useDispatch, useSelector } from 'react-redux';
-import { upgradeKYC } from '@/state/slice/foundUserSlice';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_USERS } from '@/apollo/queries/auth';
+import {
+  setAllTheUsersForList,
+  setTotalAgraAmount,
+  setTotalHajipurAmount
+} from '@/state/slice/allUsersSlice';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -110,14 +108,33 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
-  const mobile = useMediaQuery('(max-width:600px)');
-
   const user = useSelector((state: any) => state.user.data);
-  console.log(user);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
   );
+
+  const getAllUser = useQuery(GET_ALL_USERS);
+  if (getAllUser.data) {
+    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
+  }
+  const mobile = useMediaQuery('(max-width:600px)');
+
+  const setProjectAmount = async () => {
+    let hajipurAmount = 0;
+    let agraAmount = 0;
+    if (getAllUser.data) {
+      await getAllUser.data.getAllUser.map((user) => {
+        user.documents.map((doc) => {
+          doc.title.includes('hajipur') && (hajipurAmount += doc.amount);
+          doc.title.includes('agra') && (agraAmount += doc.amount);
+        });
+      });
+      await dispatch(setTotalHajipurAmount(hajipurAmount));
+      await dispatch(setTotalAgraAmount(agraAmount));
+    }
+  };
+
   const tabsAdvance = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
@@ -148,6 +165,10 @@ function DashboardTasks() {
     }
   }, [upgradeToAdvance]);
 
+  useEffect(() => {
+    setProjectAmount();
+  }, [getAllUser]);
+
   return (
     <ProtectedSSRoute>
       <Head>
@@ -161,9 +182,9 @@ function DashboardTasks() {
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
-            variant="fullWidth"
-            scrollButtons="auto"
+            variant="scrollable"
             textColor="primary"
+            visibleScrollbar={true}
             indicatorColor="primary"
           >
             {user?.membership === 'BASIC'
@@ -175,7 +196,7 @@ function DashboardTasks() {
                   ) {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -184,7 +205,7 @@ function DashboardTasks() {
                   } else if (upgradeToAdvance || upgradeToAdvance === false) {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -193,7 +214,7 @@ function DashboardTasks() {
                   } else if (tab.value !== 'upgradeKyc') {
                     return (
                       <Tab
-                        style={{ fontSize: mobile ? 10 : 14 }}
+                        style={{ fontSize: mobile ? 12 : 14 }}
                         key={tab.value}
                         label={tab.label}
                         value={tab.value}
@@ -203,7 +224,7 @@ function DashboardTasks() {
                 })
               : tabsAdvance.map((tab) => (
                   <Tab
-                    style={{ fontSize: mobile ? 10 : 14 }}
+                    style={{ fontSize: mobile ? 12 : 14 }}
                     key={tab.value}
                     label={tab.label}
                     value={tab.value}

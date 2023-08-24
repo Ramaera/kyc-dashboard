@@ -67,19 +67,24 @@ function Header() {
       if (user) {
         totalKyc += 1;
       }
+      if (user.role === 'ADMIN') {
+        totalKyc -= 1;
+      }
       user?.documents?.map((doc) => {
         /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;
         } */
         if (
           doc.title.toLowerCase() === 'hajipur_project_payment' &&
-          doc.status != 'REJECTED'
+          doc.status != 'REJECTED' &&
+          doc.url !== 'NULL'
         ) {
           totalHajipur += 1;
         }
         if (
           doc.title.toLowerCase() === 'agra_project_payment' &&
-          doc.status != 'REJECTED'
+          doc.status != 'REJECTED' &&
+          doc.url !== 'NULL'
         ) {
           totalAgra += 1;
         }

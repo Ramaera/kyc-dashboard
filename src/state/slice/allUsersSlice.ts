@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   allTheUsers: [],
   allTheUsersForList: [],
-  allKycHandlerList: []
+  allKycHandlerList: [],
+  allAgencyList: [],
+  totalHajipurAmount: 0,
+  totalAgraAmount: 0
 };
 
 export const allUSersSlice = createSlice({
@@ -18,11 +21,26 @@ export const allUSersSlice = createSlice({
     },
     setAllKycHandlerList: (state, action) => {
       state.allKycHandlerList = action.payload;
+    },
+    setTotalHajipurAmount: (state, action) => {
+      state.totalHajipurAmount = action.payload;
+    },
+    setTotalAgraAmount: (state, action) => {
+      state.totalAgraAmount = action.payload;
+    },
+    setAllAgencyList: (state, action) => {
+      state.allAgencyList = action.payload;
     }
   }
 });
 
-export const { setAllTheUsers, setAllTheUsersForList, setAllKycHandlerList } =
-  allUSersSlice.actions;
+export const {
+  setAllTheUsers,
+  setTotalHajipurAmount,
+  setAllAgencyList,
+  setTotalAgraAmount,
+  setAllTheUsersForList,
+  setAllKycHandlerList
+} = allUSersSlice.actions;
 
 export default allUSersSlice.reducer;

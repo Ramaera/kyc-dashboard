@@ -17,7 +17,6 @@ function index() {
         doc.status === 'APPROVED' &&
         docs.push(doc);
     });
-    console.log(docs);
     setPaymentDocs(docs);
   }, [user]);
 

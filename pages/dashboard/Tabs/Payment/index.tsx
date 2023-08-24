@@ -92,7 +92,6 @@ const DocumentRow = ({
         newDocs.push(item);
       }
     });
-    console.log(imgUrl, { ...newUser, documents: newDocs });
     return { ...newUser, documents: newDocs };
   };
 

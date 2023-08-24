@@ -10,6 +10,7 @@ function index() {
   const router = useRouter();
   let title =
     router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
+
   return (
     <ProtectedSSRoute>
       <Head>
