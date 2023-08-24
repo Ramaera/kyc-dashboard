@@ -238,32 +238,7 @@ const UserTable = () => {
         <CardHeader
           action={
             <Box display={'flex'} gap={'20px'}>
-              <Box display={'flex'} gap={'10px'}>
-                <TextField
-                  fullWidth
-                  label="Search"
-                  variant="outlined"
-                  value={searchText}
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                    if (!e.target.value) {
-                      setUsersList(initialusersList);
-                      setSearchText('');
-                    }
-                  }}
-                />
-                {/*  <Button
-                  onClick={() => {
-                    setUsersList(initialusersList);
-                    setSearchText('');
-                  }}
-                  variant="outlined"
-                  sx={{ ml: 2 }}
-                >
-                  Clear
-                </Button> */}
-              </Box>
-              <Box width={'150px'}>
+              <Box width={'120px'}>
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Membership Type</InputLabel>
                   <Select
@@ -280,7 +255,7 @@ const UserTable = () => {
                   </Select>
                 </FormControl>
               </Box>
-              <Box width={'150px'}>
+              <Box width={'120px'}>
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>KYC Status</InputLabel>
                   <Select

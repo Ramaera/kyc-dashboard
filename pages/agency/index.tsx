@@ -53,7 +53,7 @@ function DashboardTasks() {
     // return <h3>error</h3>;
   }
   if (data) {
-    console.log('fdfsf', data.GetAllKycAgencyUser);
+    console.log('fdfsf', data);
     dispatch(setAllTheUsers(data.GetAllKycAgencyUser));
   }
   if (kycHandlersList.data) {

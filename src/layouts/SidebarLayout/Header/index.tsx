@@ -137,7 +137,8 @@ function Header() {
               my: 2,
               [theme.breakpoints.down('sm')]: {
                 fontSize: 10,
-                width: 90
+                width: 90,
+                display: 'none'
               }
             }}
           >
