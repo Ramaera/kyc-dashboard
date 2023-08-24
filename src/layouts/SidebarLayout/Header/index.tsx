@@ -67,24 +67,19 @@ function Header() {
       if (user) {
         totalKyc += 1;
       }
-      if (user.role === 'ADMIN') {
-        totalKyc -= 1;
-      }
       user?.documents?.map((doc) => {
         /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
           totalKyc += 1;
         } */
         if (
           doc.title.toLowerCase() === 'hajipur_project_payment' &&
-          doc.status != 'REJECTED' &&
-          doc.url !== 'NULL'
+          doc.status != 'REJECTED'
         ) {
           totalHajipur += 1;
         }
         if (
           doc.title.toLowerCase() === 'agra_project_payment' &&
-          doc.status != 'REJECTED' &&
-          doc.url !== 'NULL'
+          doc.status != 'REJECTED'
         ) {
           totalAgra += 1;
         }
@@ -136,6 +131,18 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 10,
+                width: 90
+              }
+            }}
+          >
+            RM ID : {user && user.rm_id}
+          </Typography>
           {agencyCode && (
             <Typography
               variant="h4"
@@ -233,7 +240,16 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 10,
+                width: 90
+              }
+            }}
+          >
             Agency Code :{' '}
             <span
               style={{ cursor: 'pointer' }}
