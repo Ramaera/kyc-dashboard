@@ -29,7 +29,8 @@ export default function LoginCard() {
       toast.error('PW ID is not valid!');
       return;
     }
-    if (!password || password.length < 8) {
+    // if (!password || password.length < 8) {
+    if (!password) {
       toast.error('Password is not valid!');
       return;
     }
