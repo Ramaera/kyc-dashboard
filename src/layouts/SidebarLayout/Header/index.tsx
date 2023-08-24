@@ -131,23 +131,26 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              my: 2,
-              [theme.breakpoints.down('sm')]: {
-                fontSize: 10,
-                width: 90
-              }
-            }}
-          >
-            RM ID : {user && user.rm_id}
-          </Typography>
           {agencyCode && (
-            <Typography variant="h4" sx={{ my: 2 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 10,
+                  width: 90
+                }
+              }}
+            >
               Agency Code :{' '}
               <span
-                style={{ cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 10,
+                    width: 90
+                  }
+                }}
                 onClick={() => {
                   toast.success(`Agency Code Copied`);
                   navigator.clipboard.writeText(agencyCode);
