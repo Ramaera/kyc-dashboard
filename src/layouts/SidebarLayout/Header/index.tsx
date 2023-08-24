@@ -22,7 +22,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import HeaderUserbox from './Userbox';
 import { useDispatch, useSelector } from 'react-redux';
 import { upgradeKYC } from '@/state/slice/foundUserSlice';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -255,6 +255,7 @@ function Header() {
             <span
               style={{ cursor: 'pointer' }}
               onClick={() => {
+                toast.success(`Agency Code Copied`);
                 navigator.clipboard.writeText(agencyCode);
               }}
             >
@@ -283,6 +284,7 @@ function Header() {
             </IconButton>
           </Tooltip>
         </Box>
+        <Toaster position="top-left" reverseOrder={true} />
       </Box>
     </HeaderWrapper>
   );
