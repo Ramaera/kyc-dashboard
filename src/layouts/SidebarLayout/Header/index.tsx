@@ -177,7 +177,7 @@ function Header() {
               </span>
             </Typography>
           )}
-          {user?.membership === 'ADVANCE' && (
+          {user?.membership !== 'ADVANCE' && (
             <Button
               sx={{
                 [theme.breakpoints.down('sm')]: {
