@@ -15,7 +15,8 @@ import {
   styled,
   Tooltip,
   useTheme,
-  Button
+  Button,
+  useMediaQuery
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
@@ -49,6 +50,8 @@ function Header() {
   const usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
   );
+  const mobile = useMediaQuery('(max-width:600px)');
+
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalHajipur: 0,
@@ -131,19 +134,20 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              my: 2,
-              [theme.breakpoints.down('sm')]: {
-                fontSize: 10,
-                width: 90,
-                display: 'none'
-              }
-            }}
-          >
-            RM ID : {user && user.rm_id}
-          </Typography>
+          {!mobile && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 10,
+                  width: 90
+                }
+              }}
+            >
+              RM ID : {user && user.rm_id}
+            </Typography>
+          )}
           {agencyCode && (
             <Typography
               variant="h4"
@@ -173,7 +177,7 @@ function Header() {
               </span>
             </Typography>
           )}
-          {user?.membership !== 'ADVANCE' && (
+          {user?.membership === 'ADVANCE' && (
             <Button
               sx={{
                 [theme.breakpoints.down('sm')]: {
