@@ -89,7 +89,7 @@ export default function LoginCard() {
             required
             fullWidth
             id="referralId"
-            label="PlanetWay Refferal Id"
+            label="PW ID"
             name="referralId"
             autoFocus
             onChange={(e) => {
