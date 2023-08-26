@@ -42,11 +42,15 @@ interface Filters {
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
   hajipur?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
   agra?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
+  membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
 const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
+    if ((filters.membership && user?.membership) !== filters.membership) {
+      matches = false;
+    }
     if ((filters.status && user?.kyc) !== filters.status) {
       matches = false;
     }
@@ -176,8 +180,20 @@ const UserTable = () => {
     }
   ];
 
-  const handleProjectChange = (e) => {
+  /* const handleProjectChange = (e) => {
     setKycList(e);
+  }; */
+  const handleMembershipChange = (e) => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      membership: value
+    }));
   };
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -318,8 +334,8 @@ const UserTable = () => {
             <FormControl variant="outlined" fullWidth>
               <InputLabel>KYC Membership</InputLabel>
               <Select
-                value={kycList || 'all'}
-                onChange={(e) => handleProjectChange(e.target.value)}
+                value={filters.membership || 'all'}
+                onChange={handleMembershipChange}
                 label="Project"
                 autoWidth
               >
