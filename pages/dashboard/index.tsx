@@ -21,7 +21,8 @@ import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import {
   setAllTheUsers,
   setTotalAgraAmount,
-  setTotalHajipurAmount
+  setTotalHajipurAmount,
+  gotData
 } from '@/state/slice/allUsersSlice';
 
 const TabsContainerWrapper = styled(Box)(
@@ -117,6 +118,7 @@ function DashboardTasks() {
   const getAllUser = useQuery(GET_ALL_USERS);
   if (getAllUser.data) {
     dispatch(setAllTheUsers(getAllUser.data.getAllUser));
+    dispatch(gotData('true'));
   }
   const mobile = useMediaQuery('(max-width:600px)');
 
@@ -169,6 +171,20 @@ function DashboardTasks() {
     setProjectAmount();
   }, [getAllUser]);
 
+  if (getAllUser.loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          height: '90vh',
+          alignItems: 'center'
+        }}
+      >
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
   return (
     <ProtectedSSRoute>
       <Head>

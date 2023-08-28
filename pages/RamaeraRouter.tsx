@@ -4,10 +4,12 @@ import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const RamaeraRouter = ({ children }) => {
   const router = useRouter();
   const userResp = useQuery(GetUser);
+
   const agencyCode = useQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
@@ -18,7 +20,12 @@ const RamaeraRouter = ({ children }) => {
   }
 
   const [isLoading, setLoading] = useState(true);
-
+  const gotData = useSelector((state: any) => state.allUsers.gotData);
+  useEffect(() => {
+    if (!gotData) {
+      router.replace('/dashboard');
+    }
+  }, []);
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   const [isAuthFinished, setAuthFinished] = useState(false);

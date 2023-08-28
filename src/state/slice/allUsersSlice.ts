@@ -5,7 +5,8 @@ const initialState = {
   allKycHandlerList: [],
   allAgencyList: [],
   totalHajipurAmount: 0,
-  totalAgraAmount: 0
+  totalAgraAmount: 0,
+  isData: false
 };
 
 export const allUSersSlice = createSlice({
@@ -14,6 +15,9 @@ export const allUSersSlice = createSlice({
   reducers: {
     setAllTheUsers: (state, action) => {
       state.allTheUsers = action.payload;
+    },
+    gotData: (state, action) => {
+      state.isData = action.payload;
     },
     setAllKycHandlerList: (state, action) => {
       state.allKycHandlerList = action.payload;
@@ -32,6 +36,7 @@ export const allUSersSlice = createSlice({
 
 export const {
   setAllTheUsers,
+  gotData,
   setTotalHajipurAmount,
   setAllAgencyList,
   setTotalAgraAmount,

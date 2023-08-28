@@ -12,21 +12,20 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
-import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import { User } from '@/models/user';
-import { setAllTheUsers } from '@/state/slice/allUsersSlice';
-import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -73,6 +72,14 @@ const applyFilters = (users: User[], filters: Filters): any => {
   });
 };
 
+const applyPagination = (
+  users: User[],
+  page: number,
+  limit: number
+): User[] => {
+  return users.slice(page * limit, page * limit + limit);
+};
+
 /* const applyFilters = (users: User[], filters: Filters): User[] => {
   return users.filter((user) => {
     let matches = true;
@@ -90,14 +97,13 @@ const applyFilters = (users: User[], filters: Filters): any => {
  */
 const UserTable = () => {
   const theme = useTheme();
+  const router = useRouter();
   const tableRef = useRef(null);
-  const dispatch = useDispatch();
-  const [usersList, setUsersList] = useState([]);
-  const getAllUser = useQuery(GET_ALL_USERS);
-
-  if (getAllUser.data) {
-    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
-  }
+  const [page, setPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(20);
+  const [usersList, setUsersList] = useState(
+    useSelector((state: any) => state.allUsers.allTheUsers)
+  );
 
   const [filters, setFilters] = useState<Filters>({
     status: null,
@@ -105,6 +111,8 @@ const UserTable = () => {
     agra: null
   });
   const filteredUsers = applyFilters(usersList, filters);
+  const paginatedUsers = applyPagination(filteredUsers, page, limit);
+
   const [kycList, setKycList] = useState<string | null>();
 
   const membership = [
@@ -231,6 +239,13 @@ const UserTable = () => {
       agra: value
     }));
   };
+  const handlePageChange = (_event: any, newPage: number): void => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setLimit(parseInt(event.target.value === 'All' ? -1 : event.target.value));
+  };
 
   const censorMe = (text) => {
     if (!text) {
@@ -243,11 +258,8 @@ const UserTable = () => {
 
   let index = -1;
 
-  useEffect(() => {
-    getAllUser.data && setUsersList(getAllUser.data.getAllUser);
-  }, [getAllUser]);
-
-  if (getAllUser.loading) {
+  if (!usersList[0]) {
+    router.push('/dashboard');
     return (
       <div
         style={{
@@ -403,7 +415,7 @@ const UserTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.map((user) => {
+              {paginatedUsers.map((user) => {
                 if (user.membership === kycList) {
                   return;
                 }
@@ -529,6 +541,17 @@ const UserTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box p={2}>
+          <TablePagination
+            component="div"
+            count={filteredUsers.length}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleLimitChange}
+            page={page}
+            rowsPerPage={limit}
+            rowsPerPageOptions={[20, 100, 200, 'All']}
+          />
+        </Box>
       </Card>
     </>
   );
