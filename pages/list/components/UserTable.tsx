@@ -326,7 +326,7 @@ const UserTable = () => {
               </Box>
             </Box>
           }
-          title="KYC LIST"
+          title="DASHBOARD"
         />
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
