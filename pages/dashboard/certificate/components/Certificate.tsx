@@ -1,9 +1,11 @@
 import amountToWords from '../utils/amountToWords';
 import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
+import { Button } from '@mui/material';
+import { Toaster, toast } from 'react-hot-toast';
 const Certificate = ({ username, membership, digit, description, id }: any) => {
   const generatePDF = async () => {
+    toast.success('Downloading');
     const pdf = new JsPDF('landscape', 'pt', 'a4');
     const data = await html2canvas(document.querySelector('#' + id));
     const img = data.toDataURL('image/png');
@@ -16,6 +18,7 @@ const Certificate = ({ username, membership, digit, description, id }: any) => {
 
   return (
     <>
+      <Toaster position="bottom-center" reverseOrder={false} />
       <div
         id={id}
         style={{
@@ -105,7 +108,9 @@ const Certificate = ({ username, membership, digit, description, id }: any) => {
           </div>
         </div>
       </div>
-      <button onClick={generatePDF}>Print</button>
+      <Button sx={{ mb: 2 }} variant="outlined" onClick={generatePDF}>
+        Print
+      </Button>
     </>
   );
 };
