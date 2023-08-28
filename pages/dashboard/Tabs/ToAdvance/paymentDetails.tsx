@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
+import documentsConfig from '@/config/documentsConfig';
 const rows = [
   {
     name: 'Company Name',
@@ -50,10 +51,35 @@ const PaymentInfo = () => {
     setUPIDetails(true);
   };
 
+  /* const beforeAugustFifteenthTwentyTwentyThree =
+    20230815 > parseInt(user.createdAt.split('-').join(''));
+ */
+  const beforeAugustFifteenthTwentyTwentyThree = 20230815;
+
   return (
     <>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs. 198,000/- and upload the payment slip as a proof!
+        Kindly Deposit Rs.{' '}
+        {user.documents.find(
+          (doc: Document) =>
+            doc.title === documentsConfig.payment_proof.id &&
+            parseInt(doc.createdAt.split('-').join('')) <
+              beforeAugustFifteenthTwentyTwentyThree &&
+            doc.amount === 1000 &&
+            doc.status === 'APPROVED'
+        )
+          ? '199,000'
+          : user.documents.find(
+              (doc: Document) =>
+                doc.title === documentsConfig.payment_proof.id &&
+                parseInt(doc.createdAt.split('-').join('')) >
+                  beforeAugustFifteenthTwentyTwentyThree &&
+                doc.amount === 2000 &&
+                doc.status === 'APPROVED'
+            )
+          ? '198,000'
+          : '200,000'}
+        /- and upload the payment slip as a proof!
       </Typography>
       <div
         style={{

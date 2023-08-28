@@ -98,6 +98,8 @@ query GetUser {
   membership
   demat_account
   documents{
+    createdAt
+    updatedAt
     id
     title
     url
@@ -132,6 +134,8 @@ query GetAllUser {
   demat_account
   membership
   documents{
+    createdAt
+    updatedAt
     id
     title
     url
@@ -174,6 +178,8 @@ query($agencyCode: String!) {
     demat_account
     membership
     documents {
+      createdAt
+    updatedAt
       id
       title
       url
@@ -208,6 +214,8 @@ query($agencyCode: String!) {
       demat_account
       membership
       documents {
+        createdAt
+    updatedAt
         id
         title
         url
