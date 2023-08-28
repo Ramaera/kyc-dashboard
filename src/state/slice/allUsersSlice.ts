@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   allTheUsers: [],
-  allTheUsersForList: [],
   allKycHandlerList: [],
   allAgencyList: [],
   totalHajipurAmount: 0,
@@ -15,9 +14,6 @@ export const allUSersSlice = createSlice({
   reducers: {
     setAllTheUsers: (state, action) => {
       state.allTheUsers = action.payload;
-    },
-    setAllTheUsersForList: (state, action) => {
-      state.allTheUsersForList = action.payload;
     },
     setAllKycHandlerList: (state, action) => {
       state.allKycHandlerList = action.payload;
@@ -39,7 +35,6 @@ export const {
   setTotalHajipurAmount,
   setAllAgencyList,
   setTotalAgraAmount,
-  setAllTheUsersForList,
   setAllKycHandlerList
 } = allUSersSlice.actions;
 

@@ -19,7 +19,7 @@ import ToAdvance from './Tabs/ToAdvance';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import {
-  setAllTheUsersForList,
+  setAllTheUsers,
   setTotalAgraAmount,
   setTotalHajipurAmount
 } from '@/state/slice/allUsersSlice';
@@ -116,7 +116,7 @@ function DashboardTasks() {
 
   const getAllUser = useQuery(GET_ALL_USERS);
   if (getAllUser.data) {
-    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
+    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
   }
   const mobile = useMediaQuery('(max-width:600px)');
 

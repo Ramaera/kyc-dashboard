@@ -5,8 +5,6 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import Footer from '@/components/Footer';
 import { useRouter } from 'next/router';
-
-// import userData from '../data.json';
 import {
   Grid,
   Tab,

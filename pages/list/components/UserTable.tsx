@@ -23,7 +23,7 @@ import { DownloadTableExcel } from 'react-export-table-to-excel';
  */
 import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import { User } from '@/models/user';
-import { setAllTheUsersForList } from '@/state/slice/allUsersSlice';
+import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { useDispatch } from 'react-redux';
@@ -96,7 +96,7 @@ const UserTable = () => {
   const getAllUser = useQuery(GET_ALL_USERS);
 
   if (getAllUser.data) {
-    dispatch(setAllTheUsersForList(getAllUser.data.getAllUser));
+    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
   }
 
   const [filters, setFilters] = useState<Filters>({
