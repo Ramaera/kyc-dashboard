@@ -94,7 +94,7 @@ const DocumentRow = ({
   const handleUpdateDocument = async (id: string, url: string) => {
     return await updateDataByAdmin({
       variables: {
-        id: user.id,
+        id: user?.id,
         documentId: id,
         url: url
       }
@@ -132,7 +132,7 @@ const DocumentRow = ({
       if (additionalAmounts[i]) {
         const resp = await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             documentId: documents[i].id,
             amount: additionalAmounts[i]
           }
@@ -189,7 +189,7 @@ const DocumentRow = ({
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -365,7 +365,7 @@ const DocumentRow = ({
   if (!isPaymentDocument) {
     return (
       <>
-        {user?.name ? user.name + ' is ' : user.rm_id + ' is '}not Enrolled in
+        {user?.name ? user?.name + ' is ' : user?.rm_id + ' is '}not Enrolled in
         this Project
       </>
     );
@@ -436,7 +436,7 @@ const InfoTab = () => {
     const user = useSelector((state: any) => state.foundUser.foundUser);
 
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (
@@ -542,7 +542,7 @@ const InfoTab = () => {
     try {
       const resp = await updateDataByAdmin({
         variables: {
-          id: user.id,
+          id: user?.id,
           documentId: paymentDocument.id,
           amount: parseInt(amount)
         }
@@ -584,7 +584,7 @@ const InfoTab = () => {
       if (paymentDocument) {
         await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             documentId: paymentDocument.id,
             url: imgUrl
           }
@@ -615,7 +615,7 @@ const InfoTab = () => {
     setPaymentDocument(null);
     setProofImage(null);
     setAmount(null);
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (document.title.toLowerCase() === projectName + rows[0].config.id) {
           setPaymentDocument(document);

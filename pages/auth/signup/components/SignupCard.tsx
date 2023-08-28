@@ -93,7 +93,7 @@ export default function SignupCard() {
   };
   // React.useEffect(()=>{
   //   console.log("dataatsignup",{user})
-  //   // setMembership(user.membership)
+  //   // setMembership(user?.membership)
   // },[user])
 
   return (

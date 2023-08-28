@@ -117,10 +117,10 @@ const NomineeTab = () => {
     );
   };
   const handleUpdateDocument = async (id: string, url: string) => {
-    // console.log('idurl', user.id, id, url);
+    // console.log('idurl', user?.id, id, url);
     const resp = await updateDataByAdmin({
       variables: {
-        id: user.id,
+        id: user?.id,
         documentId: id,
         url: url
       }
@@ -172,7 +172,7 @@ const NomineeTab = () => {
     try {
       await updateDataByAdmin({
         variables: {
-          id: user.id,
+          id: user?.id,
           nomineeName: nomineeName,
           nomineeRelationship: relationship
         }
@@ -222,15 +222,15 @@ const NomineeTab = () => {
   }, [data]);
   useEffect(() => {
     if (user) {
-      if (user.nomineeName) {
-        setNomineeName(user.nomineeName);
-        setRelationship(user.nomineeRelationship);
-      } else if (user.nominee) {
-        setNomineeName(user.nominee.name);
-        setRelationship(user.nominee.relationship);
+      if (user?.nomineeName) {
+        setNomineeName(user?.nomineeName);
+        setRelationship(user?.nomineeRelationship);
+      } else if (user?.nominee) {
+        setNomineeName(user?.nominee.name);
+        setRelationship(user?.nominee.relationship);
       }
 
-      if (user.documents && user?.documents?.length > 0) {
+      if (user?.documents && user?.documents?.length > 0) {
         user?.documents?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===

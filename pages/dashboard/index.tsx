@@ -109,7 +109,7 @@ const TabsContainerWrapper = styled(Box)(
 
 function DashboardTasks() {
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user.data);
+  const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
@@ -127,7 +127,7 @@ function DashboardTasks() {
     let agraAmount = 0;
     if (getAllUser.data) {
       await getAllUser.data.getAllUser.map((user) => {
-        user.documents.map((doc) => {
+        user?.documents.map((doc) => {
           doc.title.includes('hajipur') && (hajipurAmount += doc.amount);
           doc.title.includes('agra') && (agraAmount += doc.amount);
         });
@@ -157,16 +157,12 @@ function DashboardTasks() {
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
-    if (upgradeToAdvance) {
-      dispatch(upgradeKYC(false));
-    }
   };
   useEffect(() => {
     if (upgradeToAdvance) {
       setCurrentTab('upgradeKyc');
     }
   }, [upgradeToAdvance]);
-
   useEffect(() => {
     setProjectAmount();
   }, [getAllUser]);
@@ -203,49 +199,15 @@ function DashboardTasks() {
             visibleScrollbar={true}
             indicatorColor="primary"
           >
-            {user?.membership === 'BASIC'
-              ? tabs.map((tab) => {
-                  if (
-                    user.documents.find(
-                      (doc) => doc.title === 'to_advance_payment_proof'
-                    )
-                  ) {
-                    return (
-                      <Tab
-                        style={{ fontSize: mobile ? 12 : 14 }}
-                        key={tab.value}
-                        label={tab.label}
-                        value={tab.value}
-                      />
-                    );
-                  } else if (upgradeToAdvance || upgradeToAdvance === false) {
-                    return (
-                      <Tab
-                        style={{ fontSize: mobile ? 12 : 14 }}
-                        key={tab.value}
-                        label={tab.label}
-                        value={tab.value}
-                      />
-                    );
-                  } else if (tab.value !== 'upgradeKyc') {
-                    return (
-                      <Tab
-                        style={{ fontSize: mobile ? 12 : 14 }}
-                        key={tab.value}
-                        label={tab.label}
-                        value={tab.value}
-                      />
-                    );
-                  }
-                })
-              : tabsAdvance.map((tab) => (
-                  <Tab
-                    style={{ fontSize: mobile ? 12 : 14 }}
-                    key={tab.value}
-                    label={tab.label}
-                    value={tab.value}
-                  />
-                ))}
+            {user?.membership === 'BASIC' &&
+              tabs.map((tab) => (
+                <Tab
+                  style={{ fontSize: mobile ? 12 : 14 }}
+                  key={tab.value}
+                  label={tab.label}
+                  value={tab.value}
+                />
+              ))}
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">

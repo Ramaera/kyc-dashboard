@@ -98,7 +98,7 @@ const DocumentRow = ({ data, documents = [], user }) => {
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -257,12 +257,12 @@ const DocumentRow = ({ data, documents = [], user }) => {
 };
 
 const DocumentTab = () => {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   // console.log(user);
-  // console.log('----------------------', user.documents);
+  // console.log('----------------------', user?.documents);
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {

@@ -55,7 +55,7 @@ const applyFilters = (users: User[], filters: Filters): any => {
     }
     if (
       filters.hajipur &&
-      projectChecker(user.documents, 'hajipur_project_payment') !==
+      projectChecker(user?.documents, 'hajipur_project_payment') !==
         filters.hajipur
     ) {
       matches = false;
@@ -63,7 +63,7 @@ const applyFilters = (users: User[], filters: Filters): any => {
 
     if (
       filters.agra &&
-      projectChecker(user.documents, 'agra_project_payment') !== filters.agra
+      projectChecker(user?.documents, 'agra_project_payment') !== filters.agra
     ) {
       matches = false;
     }
@@ -87,7 +87,7 @@ const applyPagination = (
     if (filters.status && user?.kyc !== filters.status) {
       matches = false;
     }
-    if (filters.membership && user.membership !== filters.membership) {
+    if (filters.membership && user?.membership !== filters.membership) {
       matches = false;
     }
 
@@ -416,12 +416,12 @@ const UserTable = () => {
             </TableHead>
             <TableBody>
               {paginatedUsers.map((user) => {
-                if (user.membership === kycList) {
+                if (user?.membership === kycList) {
                   return;
                 }
                 index += 1;
                 return (
-                  <TableRow hover key={user.id}>
+                  <TableRow hover key={user?.id}>
                     <TableCell>
                       <Typography
                         variant="body1"
@@ -444,10 +444,10 @@ const UserTable = () => {
                         noWrap
                         width={100}
                       >
-                        {user.pw_id}
+                        {user?.pw_id}
                       </Typography>
                       <Typography variant="body2" color="text.secondary" noWrap>
-                        {/* {format(user.orderDate, 'MMMM dd yyyy')} */}
+                        {/* {format(user?.orderDate, 'MMMM dd yyyy')} */}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -459,7 +459,7 @@ const UserTable = () => {
                         noWrap
                         width={150}
                       >
-                        {user.name}
+                        {user?.name}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -471,7 +471,7 @@ const UserTable = () => {
                         width={100}
                         noWrap
                       >
-                        {censorMe(user.father_or_husband_name)}
+                        {censorMe(user?.father_or_husband_name)}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -482,7 +482,7 @@ const UserTable = () => {
                         gutterBottom
                         noWrap
                       >
-                        {censorMe(user.mobile_number)}
+                        {censorMe(user?.mobile_number)}
                       </Typography>
                     </TableCell>
                     {/*  <TableCell align="right">
@@ -493,7 +493,7 @@ const UserTable = () => {
                         gutterBottom
                         noWrap
                       >
-                        {censorMe(user.email)}
+                        {censorMe(user?.email)}
                       </Typography>
                     </TableCell> */}
                     <TableCell align="right">
@@ -519,7 +519,7 @@ const UserTable = () => {
                         noWrap
                       >
                         {projectChecker(
-                          user.documents,
+                          user?.documents,
                           'hajipur_project_payment'
                         )}
                       </Typography>
@@ -532,7 +532,10 @@ const UserTable = () => {
                         gutterBottom
                         noWrap
                       >
-                        {projectChecker(user.documents, 'agra_project_payment')}
+                        {projectChecker(
+                          user?.documents,
+                          'agra_project_payment'
+                        )}
                       </Typography>
                     </TableCell>
                   </TableRow>

@@ -20,7 +20,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 function PageHeader() {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const theme = useTheme();
   const [updateStatus] = useMutation(UPDATE_KYC_BY_ADMIN);
   const [response, setResponse] = useState('');

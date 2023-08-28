@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const DematTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [dematAccount, setDematAccount] = useState<any | null>(null);
   const [dematDocumentImage, setDematDocumentImage] = useState<any | null>(
     null
@@ -99,9 +99,9 @@ const DematTab = () => {
   };
   useEffect(() => {
     if (user) {
-      setDematAccount(user.demat_account);
+      setDematAccount(user?.demat_account);
     }
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

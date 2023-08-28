@@ -19,7 +19,7 @@ import UserTable from './components/UserTable';
 function DashboardTasks() {
   const dispatch = useDispatch();
   const foundUser = useSelector((state: any) => state.foundUser.foundUser);
-  const agencyCode = useSelector((state: any) => state.user.agencyCode);
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
     variables: {

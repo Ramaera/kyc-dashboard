@@ -98,7 +98,7 @@ const DematTab = () => {
       if (dematAccount) {
         await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             demat_account: dematAccount
           }
         });
@@ -119,7 +119,7 @@ const DematTab = () => {
       if (dematDocument) {
         await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             documentId: dematDocument.id,
             url: imgUrl
           }
@@ -152,9 +152,9 @@ const DematTab = () => {
 
   useEffect(() => {
     if (user) {
-      setDematAccount(user.demat_account);
+      setDematAccount(user?.demat_account);
     }
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

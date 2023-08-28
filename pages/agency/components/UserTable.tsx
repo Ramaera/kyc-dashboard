@@ -44,7 +44,7 @@ const applyFilters = (users: User[], filters: Filters): User[] => {
     if (filters.status && user?.kyc !== filters.status) {
       matches = false;
     }
-    if (filters.membership && user.membership !== filters.membership) {
+    if (filters.membership && user?.membership !== filters.membership) {
       matches = false;
     }
 
@@ -211,8 +211,8 @@ const UserTable = () => {
   const handlerNameCheck = (handlerId) => {
     let kychandlerName;
     initialusersList.map((user) => {
-      if (user.id === handlerId) {
-        kychandlerName = user.name;
+      if (user?.id === handlerId) {
+        kychandlerName = user?.name;
       }
     });
     return kychandlerName;
@@ -307,14 +307,14 @@ const UserTable = () => {
             <TableBody>
               {paginatedUsers.map((user) => {
                 return (
-                  <Link href={'agency/' + user.id}>
-                    <TableRow hover key={user.id} sx={{ cursor: 'pointer' }}>
+                  <Link href={'agency/' + user?.id}>
+                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
                       {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isUserSelected}
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                          handleSelectOneUser(event, user.id)
+                          handleSelectOneUser(event, user?.id)
                         }
                         value={isUserSelected}
                       />
@@ -323,7 +323,7 @@ const UserTable = () => {
                       <TableCell>
                         <Avatar alt="Avatar" src={`${avatarFetch(user)}`} />
                         {/* <Typography variant="body2" color="text.secondary" noWrap>
-                        {format(user.orderDate, 'MMMM dd yyyy')}
+                        {format(user?.orderDate, 'MMMM dd yyyy')}
                       </Typography> */}
                       </TableCell>
                       <TableCell>
@@ -335,7 +335,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user.name}
+                          {user?.name}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -346,7 +346,7 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {user.pw_id}
+                          {user?.pw_id}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -357,7 +357,7 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {user.rm_id}
+                          {user?.rm_id}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -390,7 +390,7 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {kycHandlerCheck(user.id)}
+                          {kycHandlerCheck(user?.id)}
                         </Typography>
                       </TableCell>
 
@@ -403,7 +403,7 @@ const UserTable = () => {
                           width="80px"
                           noWrap
                         >
-                          {user.membership}
+                          {user?.membership}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -415,7 +415,7 @@ const UserTable = () => {
                           width="100px"
                           noWrap
                         >
-                          {user.mobile_number}
+                          {user?.mobile_number}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -426,7 +426,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user.email}
+                          {user?.email}
                         </Typography>
                       </TableCell>
                       {/* <TableCell align="left">
@@ -438,7 +438,7 @@ const UserTable = () => {
                           noWrap
                         >
                           {changeDate(
-                            format(new Date(user.createdAt), 'MM/dd/yyyy')
+                            format(new Date(user?.createdAt), 'MM/dd/yyyy')
                           )}
                         </Typography>
                       </TableCell>
@@ -451,12 +451,12 @@ const UserTable = () => {
                           noWrap
                         >
                           {changeDate(
-                            format(new Date(user.updatedAt), 'MM/dd/yyyy')
+                            format(new Date(user?.updatedAt), 'MM/dd/yyyy')
                           )}
                         </Typography>
                       </TableCell> 
                        <TableCell align="right">
-                      {getStatusLabel(user.status)}
+                      {getStatusLabel(user?.status)}
                     </TableCell> 
                      <TableCell align="right">
                       <Tooltip title="Edit Order" arrow>

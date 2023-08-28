@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const NomineeTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [nomineeName, setNomineeName] = useState('');
   const [relationship, setRelationship] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -142,7 +142,7 @@ const NomineeTab = () => {
         setOrUpdateUser({
           ...user,
           nominee: {
-            ...user.nominee,
+            ...user?.nominee,
             name: nomineeName,
             relationship: relationship
           }
@@ -159,11 +159,11 @@ const NomineeTab = () => {
   };
   useEffect(() => {
     if (user) {
-      if (user.nominee) {
-        setNomineeName(user.nominee.name);
-        setRelationship(user.nominee.relationship);
+      if (user?.nominee) {
+        setNomineeName(user?.nominee.name);
+        setRelationship(user?.nominee.relationship);
       }
-      if (user.documents && user?.documents?.length > 0) {
+      if (user?.documents && user?.documents?.length > 0) {
         user?.documents?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===

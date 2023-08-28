@@ -47,7 +47,7 @@ const rows = [
 const index = () => {
   const dispatch = useAppDispatch();
   const [wantAgency, setWantAgency] = useState(false);
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [isLoading, setLoading] = useState(false);
   const [agencyProofImage, aetAgencyProofImage] = useState<any | null>(null);
   const [isBankDetails, setBankDetails] = useState(false);
@@ -126,7 +126,7 @@ const index = () => {
   };
 
   useEffect(() => {
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

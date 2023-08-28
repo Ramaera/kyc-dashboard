@@ -37,7 +37,7 @@ const rows = [
   }
 ];
 const PaymentInfo = () => {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [isBankDetails, setBankDetails] = useState(false);
   const [isUPIDetails, setUPIDetails] = useState(false);
 

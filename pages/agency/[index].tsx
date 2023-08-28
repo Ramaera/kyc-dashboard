@@ -114,7 +114,7 @@ function DashboardTasks() {
   const dispatch = useDispatch();
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const { index } = router.query;
-  const foundUser = usersList.find((user) => user.id === index);
+  const foundUser = usersList.find((user) => user?.id === index);
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));

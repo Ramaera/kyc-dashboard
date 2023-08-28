@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 function ForgotPasswordModal({ open, setOpen }) {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [isChangePasswordVisible, setChangePasswordVisible] =
     useState<boolean>(false);
   const [privateKey, setPrivateKey] = useState('');

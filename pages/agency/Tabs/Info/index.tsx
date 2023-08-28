@@ -58,13 +58,13 @@ const InfoTab = () => {
 
   useEffect(() => {
     if (user) {
-      setUserID(user.id);
-      setFullName(user.name);
+      setUserID(user?.id);
+      setFullName(user?.name);
       setDob(user?.date_of_birth?.slice(0, 10));
-      setFatherHusbandName(user.father_or_husband_name);
-      setMobileNumber(user.mobile_number);
-      setAlternateMobileNumber(user.alternate_mobile_number);
-      setEmail(user.email);
+      setFatherHusbandName(user?.father_or_husband_name);
+      setMobileNumber(user?.mobile_number);
+      setAlternateMobileNumber(user?.alternate_mobile_number);
+      setEmail(user?.email);
     }
   }, [user]);
 

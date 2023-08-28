@@ -111,7 +111,7 @@ const DocumentRow = ({
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -304,7 +304,7 @@ const DocumentRow = ({
 };
 const InfoTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
@@ -333,7 +333,7 @@ const InfoTab = () => {
   };
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
@@ -402,7 +402,7 @@ const InfoTab = () => {
   }, []);
 
   useEffect(() => {
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

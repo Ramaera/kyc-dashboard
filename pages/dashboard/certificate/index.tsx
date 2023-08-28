@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux';
 import Certificate from './components/Certificate';
 import { useEffect, useState } from 'react';
 function index() {
-  const user = useSelector((state: any) => state.user.data);
+  const user = useSelector((state: any) => state.user?.data);
   const [paymentDocs, setPaymentDocs] = useState([]);
 
   useEffect(() => {
     let docs: any = [];
-    user.documents.map((doc: any) => {
+    user?.documents.map((doc: any) => {
       doc.title.includes('payment') &&
         doc.status === 'APPROVED' &&
         docs.push(doc);

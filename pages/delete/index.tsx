@@ -3,11 +3,10 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  colors
+  DialogTitle
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

@@ -57,7 +57,7 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const router = useRouter();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -117,7 +117,7 @@ function HeaderUserbox() {
               {user?.name ? user?.name : ''}
             </UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user && user.rm_id}
+              {user && user?.rm_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

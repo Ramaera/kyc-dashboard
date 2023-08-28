@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [fullName, setFullName] = useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName] = useState<any | null>(null);
   const [dob, setDob] = useState<any | null>(null);
@@ -92,13 +92,13 @@ const InfoTab = () => {
   };
   useEffect(() => {
     if (user) {
-      setFullName(user.name);
-      setFatherHusbandName(user.father_or_husband_name);
-      setDob(user.date_of_birth?.slice(0, 10));
-      SetMobileNumber(user.mobile_number);
-      setAlternateMobileNumber(user.alternate_mobile_number);
-      setEmail(user.email);
-      setDemat(user.demat_account);
+      setFullName(user?.name);
+      setFatherHusbandName(user?.father_or_husband_name);
+      setDob(user?.date_of_birth?.slice(0, 10));
+      SetMobileNumber(user?.mobile_number);
+      setAlternateMobileNumber(user?.alternate_mobile_number);
+      setEmail(user?.email);
+      setDemat(user?.demat_account);
     }
   }, [user]);
 

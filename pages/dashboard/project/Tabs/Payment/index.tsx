@@ -128,7 +128,7 @@ const DocumentRow = ({
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -337,7 +337,7 @@ const DocumentRow = ({
 };
 const InfoTab = ({ title }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
   const [rowNo, setRowNo] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -391,7 +391,7 @@ const InfoTab = ({ title }) => {
   };
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (
@@ -465,7 +465,7 @@ const InfoTab = ({ title }) => {
     setPaymentDocument(null);
     setProofImage(null);
     setEnrollNow(false);
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

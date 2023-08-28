@@ -82,7 +82,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const handleUpdateDocument = async (id: string, url: string) => {
     return await updateDataByAdmin({
       variables: {
-        id: user.id,
+        id: user?.id,
         documentId: id,
         url: url
       }
@@ -127,7 +127,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
       if (additionalAmounts[i]) {
         const resp = await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             documentId: findDocId(documentTitle),
             amount: additionalAmounts[i]
           }
@@ -187,7 +187,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -406,7 +406,7 @@ const getDocumentsByConfig = (configs) => {
   const user = useSelector((state: any) => state.foundUser.foundUser);
 
   const documents = [];
-  if (user && user.documents) {
+  if (user && user?.documents) {
     for (let config of configs) {
       const document = user?.documents?.find((doc: DocumentType) => {
         if (doc.title.toLowerCase() === config.id.toLowerCase()) {
@@ -524,7 +524,7 @@ const InfoTab = () => {
     try {
       const resp = await updateDataByAdmin({
         variables: {
-          id: user.id,
+          id: user?.id,
           documentId: paymentDocument.id,
           amount: parseInt(amount)
         }
@@ -565,7 +565,7 @@ const InfoTab = () => {
       if (paymentDocument) {
         await updateDataByAdmin({
           variables: {
-            id: user.id,
+            id: user?.id,
             documentId: paymentDocument.id,
             url: imgUrl
           }
@@ -593,7 +593,7 @@ const InfoTab = () => {
     setLoading(false);
   };
   useEffect(() => {
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===

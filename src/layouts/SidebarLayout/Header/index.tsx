@@ -1,29 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks';
 import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import {
-  alpha,
   Box,
   Divider,
   IconButton,
-  lighten,
-  Typography,
   Stack,
-  styled,
   Tooltip,
-  useTheme,
-  Button,
-  useMediaQuery
+  Typography,
+  alpha,
+  lighten,
+  styled,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import HeaderUserbox from './Userbox';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { upgradeKYC } from '@/state/slice/foundUserSlice';
-import toast, { Toaster } from 'react-hot-toast';
+import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -46,7 +44,7 @@ const HeaderWrapper = styled(Box)(
 
 function Header() {
   const dispatch = useDispatch();
-  const agencyCode = useSelector((state: any) => state.user.agencyCode);
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const mobile = useMediaQuery('(max-width:600px)');
 
@@ -58,7 +56,7 @@ function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const router = useRouter();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
 
   const checkTotal = () => {
     let totalKyc = 0;
@@ -143,7 +141,7 @@ function Header() {
                 }
               }}
             >
-              RM ID : {user && user.rm_id}
+              RM ID : {user && user?.rm_id}
             </Typography>
           )}
           {agencyCode && (
@@ -174,21 +172,6 @@ function Header() {
                 {agencyCode}
               </span>
             </Typography>
-          )}
-          {user?.membership !== 'ADVANCE' && (
-            <Button
-              sx={{
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: 10
-                }
-              }}
-              variant="contained"
-              onClick={() => {
-                dispatch(upgradeKYC(true));
-              }}
-            >
-              Upgrade to ADVANCE KYC
-            </Button>
           )}
         </Stack>
       )}
@@ -286,7 +269,6 @@ function Header() {
             </IconButton>
           </Tooltip>
         </Box>
-        <Toaster position="top-left" reverseOrder={true} />
       </Box>
     </HeaderWrapper>
   );

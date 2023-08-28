@@ -148,7 +148,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   ) => {
     const respData = await updateDataByAdmin({
       variables: {
-        id: user.id,
+        id: user?.id,
         documentId: id,
         url: url
       }
@@ -324,7 +324,7 @@ const DocumentTab = () => {
 
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           // console.log('docccccc', doc);
