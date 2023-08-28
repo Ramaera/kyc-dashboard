@@ -6,10 +6,25 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  LinearProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  linearProgressClasses,
+  styled
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import Details from './Details';
+import { AllBankDetails, AllProjectDetails } from './AllProjectData';
+import { useSelector } from 'react-redux';
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -326,12 +341,33 @@ const InfoTab = ({ title }) => {
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
   const [rowNo, setRowNo] = useState(0);
   const [isLoading, setLoading] = useState(false);
+  const [showBankDetails, setBankDetails] = useState(false);
+  const [enrollNow, setEnrollNow] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
   const [paymentDocument, setPaymentDocument] = useState<DocumentType | null>();
   const [isImageChanged, setImageChanged] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
+  const [isHidden, setHidden] = useState({ project: false });
+  const [isEnrolled, setEnrolled] = useState(false);
+  let projectTitle = title + 'ProjectDetails';
+  const amountFromProject = `total${title}Amount`;
+  const projectAmount = useSelector(
+    (state: any) => state.allUsers[amountFromProject]
+  );
+
+  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 20,
+    borderRadius: 10,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor:
+        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800]
+    }
+  }));
+
+  const diff = projectAmount / AllProjectDetails[projectTitle][0];
+  const risedFundPer = diff * 100;
 
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
@@ -428,6 +464,7 @@ const InfoTab = ({ title }) => {
   useEffect(() => {
     setPaymentDocument(null);
     setProofImage(null);
+    setEnrollNow(false);
     if (user && user.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
@@ -436,6 +473,7 @@ const InfoTab = ({ title }) => {
         ) {
           setPaymentDocument(document);
           setProofImage(document.url);
+          setEnrollNow(true);
         }
       });
     }
@@ -452,10 +490,91 @@ const InfoTab = ({ title }) => {
     <>
       {!additionalDocuments ? (
         <>
-          <Details title={title} />
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Enroll Payment Receipt
-          </Typography>
+          <>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button
+                variant="outlined"
+                onClick={() =>
+                  setHidden({ ...isHidden, project: !isHidden.project })
+                }
+              >
+                <Typography variant="h4">Project Details</Typography>
+              </Button>
+
+              <Typography variant="h4">
+                Enrollment Status :{' '}
+                <span style={{ color: isEnrolled ? 'green' : 'red' }}>
+                  {isEnrolled ? 'Enrolled' : 'Not Enrolled'}
+                </span>{' '}
+              </Typography>
+            </Box>
+            {isHidden.project && (
+              <TableContainer component={Paper} sx={{ mt: 2 }}>
+                <Table sx={{ minWidth: 100 }} aria-label="simple table">
+                  <TableBody>
+                    {AllProjectDetails[projectTitle].map((row) => {
+                      if (!row.key) {
+                        return;
+                      }
+                      return (
+                        <TableRow
+                          key={row.key}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 }
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {row.key}
+                          </TableCell>
+                          <TableCell align="right">
+                            {row.key === 'Till Raised Fund'
+                              ? projectAmount
+                              : row.key === 'Remain Funding'
+                              ? AllProjectDetails[projectTitle][0] -
+                                projectAmount
+                              : row.info}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+
+            <Box sx={{ flexGrow: 1, my: 2 }}>
+              <Typography variant="h6" mb={2} textTransform={'uppercase'}>
+                Total Funding Completed
+              </Typography>
+              <BorderLinearProgress
+                variant="determinate"
+                value={risedFundPer}
+              />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                style={{
+                  display: 'flex',
+                  position: 'absolute',
+                  marginTop: '-20px',
+                  marginLeft: '50px',
+                  fontWeight: 'bold',
+                  color: 'white'
+                }}
+              >{`${Math.round(risedFundPer)}%`}</Typography>
+            </Box>
+          </>
+          {enrollNow && (
+            <>
+              <Button
+                variant="outlined"
+                onClick={() => setBankDetails(!showBankDetails)}
+              >
+                <Typography variant="h4">Bank Details</Typography>
+              </Button>
+              <br />
+            </>
+          )}
           {proofImage ? (
             <img
               src={
@@ -482,7 +601,40 @@ const InfoTab = ({ title }) => {
               </span>
             </Typography>
           )}
-          {
+          {!enrollNow && (
+            <Button
+              variant="outlined"
+              sx={{ mb: 2 }}
+              onClick={() => setEnrollNow(true)}
+            >
+              <Typography variant="h4">Enroll Now</Typography>
+            </Button>
+          )}
+
+          {showBankDetails && (
+            <TableContainer component={Paper} sx={{ mt: 2 }}>
+              <Table sx={{ minWidth: 100 }} aria-label="simple table">
+                <TableBody>
+                  {AllBankDetails[title + 'BankDetails'].map((bankData) => {
+                    return (
+                      <TableRow
+                        key={bankData.key}
+                        sx={{
+                          '&:last-child td, &:last-child th': { border: 0 }
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {bankData.key}
+                        </TableCell>
+                        <TableCell align="right">{bankData.info}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+          {enrollNow && (
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -540,7 +692,7 @@ const InfoTab = ({ title }) => {
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
-          }
+          )}
           {proofImage && (
             <LoadingButton
               sx={{ mb: 4 }}

@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, CardHeader, Container, Grid } from '@mui/material';
+import { Box, Card, CardHeader, Container, Divider, Grid } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useSelector } from 'react-redux';
@@ -54,10 +54,10 @@ function index() {
             title={'CERTIFICATE'}
             sx={{
               ml: 2,
-              textTransform: 'uppercase',
-              textDecoration: 'underline'
+              textTransform: 'uppercase'
             }}
           />
+          <Divider sx={{ mb: 2 }} />
           <Grid
             container
             direction="row"
