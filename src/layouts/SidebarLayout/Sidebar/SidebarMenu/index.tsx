@@ -252,7 +252,6 @@ function SidebarMenu() {
                     currentRoute.includes('/dashboard/project') ? 'active' : ''
                   }
                   style={{
-                    fontWeight: 500,
                     color: currentRoute.includes('/dashboard/project')
                       ? '#7063C0'
                       : ''
@@ -327,7 +326,6 @@ function SidebarMenu() {
                           : ''
                       }
                       style={{
-                        fontWeight: 500,
                         color: currentRoute.includes('/dashboard/certificate')
                           ? '#7063C0'
                           : ''
@@ -362,7 +360,6 @@ function SidebarMenu() {
                       currentRoute.includes('/dashboard/share') ? 'active' : ''
                     }
                     style={{
-                      fontWeight: 500,
                       color: currentRoute.includes('/dashboard/share')
                         ? '#7063C0'
                         : ''
@@ -448,6 +445,35 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
+              <ListItem component="div">
+                <NextLink href="/settings" passHref>
+                  <Button
+                    className={currentRoute === '/settings' ? 'active' : ''}
+                    style={{
+                      color: currentRoute === '/settings' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute === '/settings' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    SETTINGS
+                  </Button>
+                </NextLink>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>

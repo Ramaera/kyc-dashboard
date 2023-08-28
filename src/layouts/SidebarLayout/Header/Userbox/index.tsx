@@ -17,7 +17,9 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { logout } from '@/state/slice/userSlice';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/router';
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -54,6 +56,7 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
+  const router = useRouter();
   const user = useAppSelector((state) => state.user.data);
 
   const ref = useRef<any>(null);
@@ -131,6 +134,20 @@ function HeaderUserbox() {
           >
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
+          </Button>
+        </Box>
+        <Divider />
+        <Box sx={{ m: 1 }}>
+          <Button
+            color="primary"
+            fullWidth
+            onClick={() => {
+              router.push('/settings');
+              handleClose();
+            }}
+          >
+            <SettingsIcon sx={{ mr: 1 }} />
+            Settings
           </Button>
         </Box>
       </Popover>
