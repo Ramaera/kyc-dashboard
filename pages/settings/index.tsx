@@ -1,9 +1,8 @@
 import Footer from '@/components/Footer';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
-import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Card, CardHeader, Container, Divider } from '@mui/material';
+import { Button, Card, CardHeader, Container, Divider } from '@mui/material';
 import Head from 'next/head';
+import Link from 'next/link';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 
 function index() {
@@ -21,7 +20,15 @@ function index() {
               textTransform: 'uppercase'
             }}
           />
-          <Divider sx={{ mb: 2 }} />
+          <Divider />
+          <Container style={{ padding: '2rem' }}>
+            <Link href="settings/change">
+              <Button variant="contained">Change Password</Button>
+            </Link>
+            <Button variant="contained" sx={{ ml: 2 }}>
+              Request a Nominee Change
+            </Button>
+          </Container>
         </Card>
       </Container>
       <Footer />

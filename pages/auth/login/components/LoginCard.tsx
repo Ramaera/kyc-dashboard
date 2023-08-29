@@ -88,9 +88,7 @@ export default function LoginCard() {
             margin="normal"
             required
             fullWidth
-            id="referralId"
             label="PW ID"
-            name="referralId"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);

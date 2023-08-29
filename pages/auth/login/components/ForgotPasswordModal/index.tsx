@@ -4,10 +4,9 @@ import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import axios from 'axios';
 import router from 'next/router';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function ForgotPasswordModal({ open, setOpen }) {
   const user = useAppSelector((state) => state.user?.data);
@@ -119,7 +118,6 @@ function ForgotPasswordModal({ open, setOpen }) {
                   margin="normal"
                   required
                   fullWidth
-                  id="referralId"
                   label="Please Enter your Private Key "
                   autoFocus
                   onChange={(e) => {
@@ -133,7 +131,6 @@ function ForgotPasswordModal({ open, setOpen }) {
                     margin="normal"
                     required
                     fullWidth
-                    id="referralId"
                     type="password"
                     label="Please Enter Your New password"
                     autoFocus
@@ -145,7 +142,6 @@ function ForgotPasswordModal({ open, setOpen }) {
                     margin="normal"
                     required
                     fullWidth
-                    id="referralId"
                     type="password"
                     label="Please Confirm Your New password"
                     onChange={(e) => {
