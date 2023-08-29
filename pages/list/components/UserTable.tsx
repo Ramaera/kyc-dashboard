@@ -344,7 +344,7 @@ const UserTable = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box m={1} width={150} display={'flex'}>
             <FormControl variant="outlined" fullWidth>
-              <InputLabel>KYC Membership</InputLabel>
+              <InputLabel>Share Holder Type</InputLabel>
               <Select
                 value={filters.membership || 'all'}
                 onChange={handleMembershipChange}

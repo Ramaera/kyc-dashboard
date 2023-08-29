@@ -2,7 +2,6 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { upgradeKYC } from '@/state/slice/foundUserSlice';
 import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
@@ -24,6 +23,7 @@ import {
   setTotalHajipurAmount,
   gotData
 } from '@/state/slice/allUsersSlice';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -167,7 +167,7 @@ function DashboardTasks() {
     setProjectAmount();
   }, [getAllUser]);
 
-  if (getAllUser.loading) {
+  /*   if (getAllUser.loading) {
     return (
       <div
         style={{
@@ -180,13 +180,24 @@ function DashboardTasks() {
         <h2>Loading...</h2>
       </div>
     );
-  }
+  } */
   return (
     <ProtectedSSRoute>
       <Head>
         <title>KYC Dashboard</title>
       </Head>
       <PageTitleWrapper>
+        {getAllUser.loading && (
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)'
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">

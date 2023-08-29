@@ -429,7 +429,7 @@ const InfoTab = () => {
               setUpgradeToAdvance(true);
             }}
           >
-            Upgrade to ADVANCE KYC
+            Upgrade to ADVANCE (Profit Sharing Partner)
           </Button>
         </>
       ) : !additionalDocuments ? (

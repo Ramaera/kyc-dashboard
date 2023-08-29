@@ -240,11 +240,11 @@ const UserTable = () => {
             <Box display={'flex'} gap={'20px'}>
               <Box width={'120px'}>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel>Membership Type</InputLabel>
+                  <InputLabel>Share Holder Type</InputLabel>
                   <Select
                     value={filters.membership || 'all'}
                     onChange={handleMembershipChange}
-                    label="Membership"
+                    label="Share Holder Type"
                     autoWidth
                   >
                     {membershipOptions.map((statusOption) => (
@@ -293,7 +293,7 @@ const UserTable = () => {
                 <TableCell>RMID</TableCell>
                 <TableCell>KYC Status</TableCell>
                 <TableCell>KYC Handler</TableCell>
-                <TableCell>Membership</TableCell>
+                <TableCell>Share Holder Type</TableCell>
                 <TableCell>Mobile No.</TableCell>
                 <TableCell>Email</TableCell>
                 {/* <TableCell sx={{ cursor: 'pointer' }} onClick={sortCreatedAt}>

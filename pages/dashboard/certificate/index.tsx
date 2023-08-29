@@ -30,7 +30,7 @@ function index() {
           doc.title === 'payment_proof' && doc.amount === 1000
             ? 'BASIC'
             : doc.title.includes('to_advance') && doc.amount === 199000
-            ? 'ADVANCE'
+            ? 'ADVANCE (Profit Sharing Partner)'
             : doc.title.includes('hajipur')
             ? 'Hajipur Project'
             : doc.title.includes('agra')

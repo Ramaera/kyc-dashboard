@@ -139,7 +139,7 @@ export default function SignupCard() {
             textAlign="left"
             fontWeight="normal"
           >
-            Select Membership Type*:
+            Select Share Holder Type*:
           </Typography>
           <RadioGroup
             row
@@ -154,7 +154,7 @@ export default function SignupCard() {
             <FormControlLabel
               value="ADVANCE"
               control={<Radio />}
-              label="Advance"
+              label="Advance (Profit Sharing Partner)"
             />
           </RadioGroup>
           <TextField

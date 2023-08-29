@@ -21,7 +21,7 @@ function PageHeader() {
             Welcome, {user?.name}!
           </Typography>
           <Typography variant="h5" component="h5" align="right">
-            Membership Type : {user?.membership}
+            Share Holder Type : {user?.membership}
           </Typography>
           <Typography variant="subtitle2">
             Complete Your KYC By Filling the form below
