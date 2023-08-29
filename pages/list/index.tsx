@@ -9,7 +9,7 @@ function index() {
   return (
     <ProtectedSSRoute>
       <Head>
-        <title>KYC User</title>
+        <title>Dashboard</title>
       </Head>
       <Container sx={{ mt: 2 }} maxWidth="lg">
         <UserTable />

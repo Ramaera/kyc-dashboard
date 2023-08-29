@@ -358,35 +358,7 @@ const UserTable = () => {
                 ))}
               </Select>
             </FormControl>
-            {/*  <LoadingButton
-              style={{ marginRight: 10 }}
-              variant="contained"
-              color={kycList ? 'secondary' : 'primary'}
-              onClick={() => {
-                setKycList(null);
-              }}
-            >
-              ALL
-            </LoadingButton>
-            <LoadingButton
-              style={{ marginRight: 10 }}
-              variant="contained"
-              color={kycList === 'ADVANCE' ? 'primary' : 'secondary'}
-              onClick={() => {
-                setKycList('ADVANCE');
-              }}
-            >
-              ADVANCE
-            </LoadingButton>
-            <LoadingButton
-              variant="contained"
-              color={kycList === 'BASIC' ? 'primary' : 'secondary'}
-              onClick={() => {
-                setKycList('BASIC');
-              }}
-            >
-              BASIC
-            </LoadingButton> */}
+          
           </Box>
           <Box m={2}>
             <DownloadTableExcel

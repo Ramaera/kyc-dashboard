@@ -475,6 +475,12 @@ const InfoTab = ({ title }) => {
           setProofImage(document.url);
           setEnrollNow(true);
         }
+        if (
+          document.title.includes(title.toLowerCase()) &&
+          document.status === 'APPROVED'
+        ) {
+          setEnrolled(true);
+        }
       });
     }
   }, [user, title]);
@@ -603,11 +609,11 @@ const InfoTab = ({ title }) => {
           )}
           {!enrollNow && (
             <Button
-              variant="outlined"
+              variant="contained"
               sx={{ mb: 2 }}
               onClick={() => setEnrollNow(true)}
             >
-              <Typography variant="h4">Enroll Now</Typography>
+              Enroll Now
             </Button>
           )}
 
