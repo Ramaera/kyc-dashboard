@@ -575,7 +575,8 @@ const InfoTab = () => {
         try {
           imgUrl = await handleImageUpload(proofImage);
         } catch (err) {
-          imgUrl = 'lorem';
+          // imgUrl = 'lorem';
+          toast.error('Error, Try Again!');
         }
       } else {
         imgUrl = proofImage;
