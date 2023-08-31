@@ -20,12 +20,12 @@ const RamaeraRouter = ({ children }) => {
   }
 
   const [isLoading, setLoading] = useState(true);
-  const gotData = useSelector((state: any) => state.allUsers.gotData);
+  /*  const gotData = useSelector((state: any) => state.allUsers.gotData);
   useEffect(() => {
     if (!gotData) {
       router.replace('/dashboard');
     }
-  }, []);
+  }, []); */
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   const [isAuthFinished, setAuthFinished] = useState(false);
