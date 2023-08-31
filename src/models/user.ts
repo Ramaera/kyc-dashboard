@@ -18,6 +18,7 @@ export interface User {
   membership?: Membership;
   documents?: DocumentType;
   kyc?: KYC;
+  role: ROLE;
 }
 export type DocumentType = {
   id: String;
@@ -31,6 +32,11 @@ export type DocumentType = {
 enum Membership {
   BASIC = 'BASIC',
   ADVANCE = 'ADVANCE'
+}
+enum ROLE {
+  ADMIN = 'ADMIN',
+  AGENT = 'AGENT',
+  USER = 'USER'
 }
 enum KYC {
   APPROVED = 'APPROVED',

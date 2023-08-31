@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import ProjectList from '../ProjectList';
 import { AllBankDetails, AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
 export const rows = [
@@ -463,6 +464,8 @@ const InfoTab = ({ title }) => {
   };
   useEffect(() => {
     setPaymentDocument(null);
+    setEnrolled(false);
+
     setProofImage(null);
     setEnrollNow(false);
     if (user && user?.documents && user?.documents?.length > 0) {
@@ -726,6 +729,7 @@ const InfoTab = ({ title }) => {
           ))}
         </>
       )}
+      {isEnrolled && <ProjectList title={title} />}
     </>
   );
 };
