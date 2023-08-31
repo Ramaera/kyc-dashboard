@@ -12,13 +12,14 @@ const persistConfig = {
   storage
 };
 
-const persistedReducer = persistReducer(persistConfig, allUsersSlice);
+const persistedUserReducer = persistReducer(persistConfig, userSlice);
+const persistedAllUsersReducer = persistReducer(persistConfig, allUsersSlice);
 const persistedFoundUserReducer = persistReducer(persistConfig, foundUserSlice);
 
 export const store = configureStore({
   reducer: {
-    user: userSlice,
-    allUsers: persistedReducer,
+    user: persistedUserReducer,
+    allUsers: persistedAllUsersReducer,
     foundUser: persistedFoundUserReducer
   },
   middleware: [thunk]

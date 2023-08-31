@@ -167,20 +167,6 @@ function DashboardTasks() {
     setProjectAmount();
   }, [getAllUser]);
 
-  /*   if (getAllUser.loading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '90vh',
-          alignItems: 'center'
-        }}
-      >
-        <h2>Loading...</h2>
-      </div>
-    );
-  } */
   return (
     <ProtectedSSRoute>
       <Head>
