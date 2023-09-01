@@ -248,11 +248,10 @@ const UserTable = ({ title }) => {
           title={title.toUpperCase() + ' LIST'}
         />
         <Divider />
-        <Typography variant="h4" textTransform={'uppercase'}>
+        {/*   <Typography variant="h4" textTransform={'uppercase'}>
           {`Total ${title} Subscribers`}:
-        </Typography>
-        <Typography></Typography>
-        <Divider />
+        </Typography> 
+        <Divider />*/}
 
         <TableContainer>
           <Table ref={tableRef}>
