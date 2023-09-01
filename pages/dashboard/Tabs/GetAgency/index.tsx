@@ -21,7 +21,7 @@ import toast, { Toaster } from 'react-hot-toast';
 const rows = [
   {
     name: 'Company Name',
-    value: 'RAMAERA INDUSTRIES LTD.'
+    value: 'RAMAERA LEGAL INFOTECH PVT LTD.'
   },
 
   {
@@ -36,7 +36,7 @@ const rows = [
 
   {
     name: 'A/C No.',
-    value: '50200069506090'
+    value: '50200073634812'
   },
 
   {
@@ -206,14 +206,14 @@ const index = () => {
                       borderRadius: '20px',
                       padding: '10px'
                     }}
-                    src="/images/upi.jpg"
+                    src="/images/upi_legal.png"
                   />
                   <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
                     OR
                   </Typography>
                   <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
-                    <a href="upi://pay?pa=ramaeraindustriesupi.pay@hdfcbank&amp;pn=Ramaera  K&amp;cu=INR">
-                      UPI ID : ramaeraindustriesupi.pay@hdfcbank
+                    <a href="upi://pay?pa=ramaeralegal.noida@hdfcbank&amp;pn=Ramaera  K&amp;cu=INR">
+                      UPI ID : ramaeralegal.noida@hdfcbank
                     </a>
                   </Typography>
                 </TableBody>
