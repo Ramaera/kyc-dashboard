@@ -196,15 +196,23 @@ function DashboardTasks() {
             visibleScrollbar={true}
             indicatorColor="primary"
           >
-            {user?.membership === 'BASIC' &&
-              tabs.map((tab) => (
-                <Tab
-                  style={{ fontSize: mobile ? 12 : 14 }}
-                  key={tab.value}
-                  label={tab.label}
-                  value={tab.value}
-                />
-              ))}
+            {user?.membership === 'BASIC'
+              ? tabs.map((tab) => (
+                  <Tab
+                    style={{ fontSize: mobile ? 12 : 14 }}
+                    key={tab.value}
+                    label={tab.label}
+                    value={tab.value}
+                  />
+                ))
+              : tabsAdvance.map((tab) => (
+                  <Tab
+                    style={{ fontSize: mobile ? 12 : 14 }}
+                    key={tab.value}
+                    label={tab.label}
+                    value={tab.value}
+                  />
+                ))}
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">

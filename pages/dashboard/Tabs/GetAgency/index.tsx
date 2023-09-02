@@ -145,7 +145,7 @@ const index = () => {
       {wantAgency ? (
         <>
           <Typography variant="h4" sx={{ my: 2 }}>
-            Kindly Deposit Rs. 5000 and upload the payment slip as a proof!
+            Kindly Deposit Rs. 5000/- and upload the payment slip as a proof!
           </Typography>
           <div
             style={{
