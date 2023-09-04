@@ -6,6 +6,7 @@ import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useSelector } from 'react-redux';
 import Certificate from './components/Certificate';
 import { useEffect, useState } from 'react';
+import variables from '@/config/variables';
 function index() {
   const user = useSelector((state: any) => state.user?.data);
   // const [paymentDocs, setPaymentDocs] = useState([]);
@@ -46,7 +47,8 @@ function index() {
         docs.push(doc);
       if (
         doc.title === 'payment_proof' &&
-        (doc.amount === 200000 || doc.amount === 100000) &&
+        (doc.amount === variables.amount.beforeFifteenthAugustAdvanceAmount ||
+          doc.amount === variables.amount.afterFifteenthAugustAdvanceAmount) &&
         doc.status === 'APPROVED'
       ) {
         zeroKyc = true;
