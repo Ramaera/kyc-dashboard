@@ -192,7 +192,7 @@ function Header() {
               }
             }}
           >
-            Total KYC: {numbers.totalKYC}
+            Total Subscribers : {numbers.totalKYC}
           </Typography>
           <Typography
             variant="h4"
@@ -203,7 +203,7 @@ function Header() {
               }
             }}
           >
-            Hajipur Enrolled: {numbers.totalHajipur}
+            Hajipur Enrolled : {numbers.totalHajipur}
           </Typography>
           <Typography
             variant="h4"
@@ -214,7 +214,7 @@ function Header() {
               }
             }}
           >
-            Agra Enrolled: {numbers.totalAgra}
+            Agra Enrolled : {numbers.totalAgra}
           </Typography>
         </Stack>
       )}
