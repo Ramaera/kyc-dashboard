@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
+import variables from '@/config/variables';
 const rows = [
   {
     name: 'Company Name',
@@ -52,10 +53,13 @@ const PaymentInfo = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs. {user?.membership === 'BASIC' ? '2,000' : '2,00,000'}
-        /- and upload the payment slip as a proof!
-      </Typography>
+      {user.kyc !== variables.status.APPROVED && (
+        <Typography variant="h4" sx={{ my: 2 }}>
+          Kindly Deposit Rs.{' '}
+          {user?.membership === 'BASIC' ? '2,000' : '2,00,000'}
+          /- and upload the payment slip as a proof!
+        </Typography>
+      )}
       <div
         style={{
           flexDirection: 'row',
