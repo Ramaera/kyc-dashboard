@@ -5,6 +5,9 @@ import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import { projectData } from './projectDetails';
+import { logout } from '@/state/slice/userSlice';
+
+import { useAppDispatch } from '@/hooks';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -130,6 +133,7 @@ function SidebarMenu() {
   const router = useRouter();
   const currentRoute = router.pathname;
   const currentQuery = router.query;
+  const dispatch = useAppDispatch();
   const [listVisible, setListVisible] = useState(false);
   const [shareList, setShareList] = useState(false);
 
@@ -473,6 +477,21 @@ function SidebarMenu() {
                     SETTINGS
                   </Button>
                 </NextLink>
+              </ListItem>
+
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component="a"
+                  onClick={() => {
+                    setListVisible(false);
+                    setShareList(false);
+                    closeSidebar();
+                    dispatch(logout());
+                  }}
+                >
+                  LOGOUT
+                </Button>
               </ListItem>
             </List>
           </SubMenuWrapper>
