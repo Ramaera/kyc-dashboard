@@ -421,7 +421,7 @@ const InfoTab = () => {
     <>
       {!additionalDocuments ? (
         <>
-          <PaymentInfo />
+          <PaymentInfo docStatus={paymentDocument.status} />
 
           {proofImage ? (
             <img
