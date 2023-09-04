@@ -1,11 +1,20 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Button, Card, CardHeader, Container, Divider } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  Divider,
+  Typography
+} from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import { useState } from 'react';
 
 function index() {
+  const [currentButton, setCurrentButton] = useState('');
   return (
     <ProtectedSSRoute>
       <Head>
@@ -25,9 +34,50 @@ function index() {
             <Link href="settings/change">
               <Button variant="contained">Change Password</Button>
             </Link>
-            <Button variant="contained" sx={{ ml: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setCurrentButton((val) => (val === 'nominee' ? '' : 'nominee'));
+              }}
+              sx={{ ml: 2 }}
+            >
               Request a Nominee Change
             </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setCurrentButton((val) => (val === 'support' ? '' : 'support'));
+              }}
+              sx={{ ml: 2 }}
+            >
+              Support
+            </Button>
+            {currentButton === 'nominee' && (
+              <Typography
+                variant="h3"
+                component="h3"
+                sx={{
+                  marginTop: 2,
+                  marginBottom: 2
+                }}
+                gutterBottom
+              >
+                To change nominee Please Contact Us on 0120-4152818
+              </Typography>
+            )}
+            {currentButton === 'support' && (
+              <Typography
+                variant="h3"
+                component="h3"
+                sx={{
+                  marginTop: 2,
+                  marginBottom: 2
+                }}
+                gutterBottom
+              >
+                Please Contact Us on 0120-4152818
+              </Typography>
+            )}
           </Container>
         </Card>
       </Container>
