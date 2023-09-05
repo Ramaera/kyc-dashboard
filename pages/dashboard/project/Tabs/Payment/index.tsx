@@ -368,6 +368,7 @@ const InfoTab = ({ title }) => {
   }));
 
   const diff = projectAmount / AllProjectDetails[projectTitle][0];
+  console.log('', AllProjectDetails[projectTitle]);
   const risedFundPer = diff * 100;
 
   const validateSubmit = (imgUrl) => {
@@ -553,7 +554,7 @@ const InfoTab = ({ title }) => {
 
             <Box sx={{ flexGrow: 1, my: 2 }}>
               <Typography variant="h6" mb={2} textTransform={'uppercase'}>
-                Total Funding Completed
+                Total Funding Completed : {`₹ ${projectAmount}`}
               </Typography>
               <BorderLinearProgress
                 variant="determinate"
