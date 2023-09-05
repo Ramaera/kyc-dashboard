@@ -1,13 +1,12 @@
+import variables from '@/config/variables';
+import { User } from '@/models/user';
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
   Card,
   CardHeader,
   Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -18,14 +17,11 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
-import { User } from '@/models/user';
-import { LoadingButton } from '@mui/lab';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import variables from '@/config/variables';
 
 interface Filters {
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
@@ -42,16 +38,13 @@ const applyPagination = (
 
 const UserTable = ({ title }) => {
   const theme = useTheme();
-  const router = useRouter();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
 
   const [limit, setLimit] = useState<number>(20);
-  const [usersList, setUsersList] = useState(
-    useSelector((state: any) => state.allUsers.allTheUsers)
-  );
+  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
   const checkProject = (docs, projectTitle) => {
     let statuses = [];
@@ -183,22 +176,6 @@ const UserTable = ({ title }) => {
     let w = text;
     return w.replace(regex, '*');
   };
-
-  if (!usersList[0]) {
-    router.push('/dashboard');
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '90vh',
-          alignItems: 'center'
-        }}
-      >
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
 
   return (
     <>

@@ -83,30 +83,13 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 
-/* const applyFilters = (users: User[], filters: Filters): User[] => {
-  return users.filter((user) => {
-    let matches = true;
-
-    if (filters.status && user?.kyc !== filters.status) {
-      matches = false;
-    }
-    if (filters.membership && user?.membership !== filters.membership) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
- */
 const UserTable = () => {
   const theme = useTheme();
   const router = useRouter();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(20);
-  const [usersList, setUsersList] = useState(
-    useSelector((state: any) => state.allUsers.allTheUsers)
-  );
+  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
   const [filters, setFilters] = useState<Filters>({
     status: null,
@@ -263,7 +246,6 @@ const UserTable = () => {
   let index = -1;
 
   if (!usersList[0]) {
-    router.push('/dashboard');
     return (
       <div
         style={{
