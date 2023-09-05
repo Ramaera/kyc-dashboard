@@ -75,7 +75,6 @@ function index() {
           advanceKyc: doc.updatedAt
         };
       }
-      console.log(payments);
       if (
         doc.title.includes('hajipur') &&
         doc.amount &&
@@ -135,6 +134,9 @@ function index() {
       />
     ));
   }; */
+  useEffect(() => {
+    console.log(paymentTotals, user.documents);
+  }, [paymentTotals]);
 
   const allCertificates = () => {
     let certificates: any = [];

@@ -264,7 +264,7 @@ const UserTable = () => {
     <>
       <Card>
         <Box mx={2}>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+          <Box my={2} display={'flex'} gap={2}>
             <Button
               variant={
                 currentSelectedButton.includes('total')
@@ -280,12 +280,11 @@ const UserTable = () => {
                 handleStatusChange('all');
               }}
             >
-              {`Total Subscribers: ` + filteredUsers.length}
+              {`Total Subscribers: ` + usersList.length}
             </Button>
             {currentSelectedButton.includes('total') && (
               <Box display={'flex'} gap={2}>
                 <Button
-                  fullWidth
                   variant={
                     currentSelectedButton === 'totalAvdance'
                       ? 'contained'
@@ -310,12 +309,11 @@ const UserTable = () => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                  fullWidth
                 >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
             )}
           </Box>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+          {/*   <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
             <Button
               variant={
                 currentSelectedButton.includes('pending')
@@ -422,9 +420,10 @@ const UserTable = () => {
                 >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
             )}
-          </Box>
+          </Box> */}
         </Box>
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('totalAvdance') ||
+          currentSelectedButton.includes('totalBasic')) && (
           <CardHeader
             action={
               <Box display={'flex'} gap={'20px'}>
@@ -519,7 +518,8 @@ const UserTable = () => {
           </Box>
         </Box>
         <Divider /> */}
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('totalAvdance') ||
+          currentSelectedButton.includes('totalBasic')) && (
           <TableContainer>
             <Table ref={tableRef}>
               <TableHead>
@@ -671,7 +671,8 @@ const UserTable = () => {
           </TableContainer>
         )}
 
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('totalAvdance') ||
+          currentSelectedButton.includes('totalBasic')) && (
           <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
             <TablePagination
               component="div"
