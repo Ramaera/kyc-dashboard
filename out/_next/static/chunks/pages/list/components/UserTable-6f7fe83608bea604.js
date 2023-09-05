@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[418],{30696:function(n,_,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/list/components/UserTable",function(){return u(44741)}])}},function(n){n.O(0,[9774,5370,9990,3265,6180,1880,6549,7058,315,8584,6261,6372,7362,7491,4741,2888,179],(function(){return _=30696,n(n.s=_);var _}));var _=n.O();_N_E=_}]);

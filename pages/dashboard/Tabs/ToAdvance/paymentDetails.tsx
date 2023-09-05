@@ -11,6 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 const rows = [
   {
     name: 'Company Name',
@@ -37,7 +38,7 @@ const rows = [
     value: 'ICIC0000816'
   }
 ];
-const PaymentInfo = () => {
+const PaymentInfo = ({ docStatus }) => {
   const user = useAppSelector((state) => state.user?.data);
   const [isBankDetails, setBankDetails] = useState(false);
   const [isUPIDetails, setUPIDetails] = useState(false);
@@ -58,29 +59,31 @@ const PaymentInfo = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.{' '}
-        {user.documents.find(
-          (doc: Document) =>
-            doc.title === documentsConfig.payment_proof.id &&
-            parseInt(doc.createdAt.split('-').join('')) <
-              beforeAugustFifteenthTwentyTwentyThree &&
-            doc.amount === 1000 &&
-            doc.status === 'APPROVED'
-        )
-          ? '199,000'
-          : user.documents.find(
-              (doc: Document) =>
-                doc.title === documentsConfig.payment_proof.id &&
-                parseInt(doc.createdAt.split('-').join('')) >
-                  beforeAugustFifteenthTwentyTwentyThree &&
-                doc.amount === 2000 &&
-                doc.status === 'APPROVED'
-            )
-          ? '198,000'
-          : '200,000'}
-        /- and upload the payment slip as a proof!
-      </Typography>
+      {docStatus !== variables.status.APPROVED && (
+        <Typography variant="h4" sx={{ my: 2 }}>
+          Kindly Deposit Rs.{' '}
+          {user.documents.find(
+            (doc: Document) =>
+              doc.title === documentsConfig.payment_proof.id &&
+              parseInt(doc.createdAt.split('-').join('')) <
+                beforeAugustFifteenthTwentyTwentyThree &&
+              doc.amount === 1000 &&
+              doc.status === 'APPROVED'
+          )
+            ? '199,000'
+            : user.documents.find(
+                (doc: Document) =>
+                  doc.title === documentsConfig.payment_proof.id &&
+                  parseInt(doc.createdAt.split('-').join('')) >
+                    beforeAugustFifteenthTwentyTwentyThree &&
+                  doc.amount === 2000 &&
+                  doc.status === 'APPROVED'
+              )
+            ? '198,000'
+            : '200,000'}
+          /- and upload the payment slip as a proof!
+        </Typography>
+      )}
       <div
         style={{
           flexDirection: 'row',

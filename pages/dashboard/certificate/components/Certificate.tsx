@@ -3,7 +3,14 @@ import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Button } from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
-const Certificate = ({ username, membership, digit, description, id }: any) => {
+const Certificate = ({
+  username,
+  membership,
+  digit,
+  description,
+  time = '',
+  id
+}: any) => {
   const generatePDF = async () => {
     toast.success('Downloading');
     const pdf = new JsPDF('landscape', 'pt', 'a4');
@@ -52,20 +59,33 @@ const Certificate = ({ username, membership, digit, description, id }: any) => {
             Received From <span style={{ fontWeight: 600 }}>{username}</span>
           </p>
 
-          <p style={{ fontSize: '1.6rem' }}>
+          <span style={{ fontSize: '1.6rem' }}>
             We have Received the sum of rupees{' '}
             <span style={{ color: 'red' }}>
               {digit} ({amountToWords(digit)} ONLY )
             </span>
-            ,
-          </p>
+          </span>
+          <span style={{ fontSize: '1.6rem' }}>
+            {membership === 'kyc' || membership === 'advanceKyc'
+              ? ', For your '
+              : ', For '}
+            <span style={{ color: '#1FAE47', textTransform: 'uppercase' }}>
+              {membership === 'kyc'
+                ? 'basic'
+                : membership === 'advanceKyc'
+                ? 'advance'
+                : membership}
+            </span>
+            {(membership === 'kyc' || membership === 'advanceKyc') && ' KYC'}
+          </span>
+          {/*   ,
           <p style={{ fontSize: '1.6rem' }}>
             {membership === 'BASIC' || membership === 'ADVANCE'
               ? ', For Your '
               : ', For '}
             <span style={{ color: '#1FAE47' }}>{membership}</span>
             {(membership === 'BASIC' || membership === 'ADVANCE') && ' KYC'}
-          </p>
+          </p> */}
           <p
             style={{
               // width: '780px',

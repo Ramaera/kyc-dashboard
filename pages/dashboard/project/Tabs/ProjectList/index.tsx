@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
@@ -44,6 +45,9 @@ const UserTable = ({ title }) => {
   const router = useRouter();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
+  const [currentSelectedButton, setCurrentSelectedButton] =
+    useState<string>('');
+
   const [limit, setLimit] = useState<number>(20);
   const [usersList, setUsersList] = useState(
     useSelector((state: any) => state.allUsers.allTheUsers)
@@ -139,11 +143,11 @@ const UserTable = ({ title }) => {
     }
   ];
 
-  const handleMembershipChange = (e) => {
+  const handleMembershipChange = (val) => {
     let value = null;
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
+    if (val !== 'all') {
+      value = val;
     }
 
     setFilters((prevFilters) => ({
@@ -151,11 +155,11 @@ const UserTable = ({ title }) => {
       membership: value
     }));
   };
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleStatusChange = (e) => {
     let value = null;
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
+    if (e !== 'all') {
+      value = e;
     }
 
     setFilters((prevFilters) => ({
@@ -198,36 +202,203 @@ const UserTable = ({ title }) => {
 
   return (
     <>
-      <Card>
-        <CardHeader
-          action={
-            <Box display={'flex'} gap={'20px'}>
-              <Box
-                width={480}
-                display={'flex'}
-                gap={'10px'}
-                sx={{
-                  [theme.breakpoints.down('sm')]: {
-                    width: '100%'
+      <Card sx={{ mb: 4 }}>
+        <Box mx={2}>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('total')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('total') ? '' : 'total'
+                );
+                handleMembershipChange('');
+                handleStatusChange('all');
+              }}
+            >
+              {`Total : ` + filteredUsers.length}
+            </Button>
+            {currentSelectedButton.includes('total') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'totalAvdance'
+                      ? 'contained'
+                      : 'outlined'
                   }
-                }}
-              >
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>KYC Status</InputLabel>
-                  <Select
-                    value={filters.status || 'all'}
-                    onChange={handleStatusChange}
-                    label="Status"
-                    autoWidth
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('totalAvdance') ? 'total' : 'totalAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'totalBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('totalBasic') ? 'total' : 'totalBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
+              </Box>
+            )}
+          </Box>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('pending')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('pending') ? '' : 'pending'
+                );
+                handleMembershipChange('');
+                handleStatusChange(variables.status.ONGOING);
+              }}
+            >
+              {`${title} pending`}
+            </Button>
+            {currentSelectedButton.includes('pending') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'pendingAvdance'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('pendingAvdance')
+                        ? 'pending'
+                        : 'pendingAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'pendingBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('pendingBasic') ? 'pending' : 'pendingBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
+              </Box>
+            )}
+          </Box>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('completed')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('completed') ? '' : 'completed'
+                );
+                handleMembershipChange('');
+                handleStatusChange(variables.status.APPROVED);
+              }}
+            >
+              {`${title} Completed`}
+            </Button>
+            {currentSelectedButton.includes('completed') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'completedAvdance'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('completedAvdance')
+                        ? 'completed'
+                        : 'completedAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'completedBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('completedBasic')
+                        ? 'completed'
+                        : 'completedBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
+              </Box>
+            )}
+          </Box>
+        </Box>
+        <Divider />
+        {currentSelectedButton && (
+          <>
+            <CardHeader
+              action={
+                <Box display={'flex'} gap={'20px'}>
+                  <Box
+                    width={480}
+                    display={'flex'}
+                    gap={'10px'}
+                    sx={{
+                      [theme.breakpoints.down('sm')]: {
+                        width: '100%'
+                      }
+                    }}
                   >
-                    {statusOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl variant="outlined" fullWidth>
+                    {/* <FormControl fullWidth variant="outlined">
+                      <InputLabel>KYC Status</InputLabel>
+                      <Select
+                        value={filters.status || 'all'}
+                        onChange={(e) => handleStatusChange(e.target.value)}
+                        label="Status"
+                        autoWidth
+                      >
+                        {statusOptions.map((statusOption) => (
+                          <MenuItem
+                            key={statusOption.id}
+                            value={statusOption.id}
+                          >
+                            {statusOption.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl> */}
+                    {/*  <FormControl variant="outlined" fullWidth>
                   <InputLabel>Share Holder Type</InputLabel>
                   <Select
                     value={filters.membership || 'all'}
@@ -241,143 +412,144 @@ const UserTable = ({ title }) => {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl>
-              </Box>
-            </Box>
-          }
-          title={title.toUpperCase() + ' LIST'}
-        />
-        <Divider />
-        {/*   <Typography variant="h4" textTransform={'uppercase'}>
-          {`Total ${title} Subscribers`}:
-        </Typography> 
-        <Divider />*/}
-
-        <TableContainer>
-          <Table ref={tableRef}>
-            <TableHead>
-              <TableRow>
-                <TableCell>S.No.</TableCell>
-                <TableCell>PW ID</TableCell>
-                <TableCell>Share Holder Type</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Father's Name</TableCell>
-                <TableCell align="center">Moibile No.</TableCell>
-                {/* <TableCell align="center">Email</TableCell> */}
-                <TableCell align="center">Enrollment Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {paginatedUsers.map((user, index) => {
-                return (
-                  <TableRow hover key={user?.id}>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        align="center"
-                        noWrap
-                        width={30}
-                      >
-                        {index + 1}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                        width={100}
-                      >
-                        {user?.pw_id}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                        width={100}
-                      >
-                        {user?.membership}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                        width={150}
-                      >
-                        {user?.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        width={100}
-                        noWrap
-                      >
-                        {censorMe(user?.father_or_husband_name)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {censorMe(user?.mobile_number)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {checkProject(user?.documents, title)}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
-          <TablePagination
-            component="div"
-            count={filteredUsers.length}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleLimitChange}
-            page={page}
-            rowsPerPage={limit}
-            rowsPerPageOptions={[20, 100, 200, 'All']}
-          />
-          <DownloadTableExcel
-            filename={title ? title + '_KYC' : 'PROJECT_KYC'}
-            sheet={title ? title + '_KYC' : 'PROJECT_KYC'}
-            currentTableRef={tableRef.current}
-          >
-            <LoadingButton variant="contained">Download</LoadingButton>
-          </DownloadTableExcel>
-        </Box>
+                </FormControl> */}
+                  </Box>
+                </Box>
+              }
+              title={title.toUpperCase() + ' LIST'}
+            />
+            <Divider />
+          </>
+        )}
+        {currentSelectedButton && (
+          <TableContainer>
+            <Table ref={tableRef}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>S.No.</TableCell>
+                  <TableCell>PW ID</TableCell>
+                  <TableCell>Share Holder Type</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Father's Name</TableCell>
+                  <TableCell align="center">Moibile No.</TableCell>
+                  {/* <TableCell align="center">Email</TableCell> */}
+                  <TableCell align="center">Enrollment Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paginatedUsers.map((user, index) => {
+                  return (
+                    <TableRow hover key={user?.id}>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          align="center"
+                          noWrap
+                          width={30}
+                        >
+                          {index + 1}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          width={100}
+                        >
+                          {user?.pw_id}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          width={100}
+                        >
+                          {user?.membership}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          width={150}
+                        >
+                          {user?.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width={100}
+                          noWrap
+                        >
+                          {censorMe(user?.father_or_husband_name)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {censorMe(user?.mobile_number)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {checkProject(user?.documents, title)}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+        {currentSelectedButton && (
+          <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
+            <TablePagination
+              component="div"
+              count={filteredUsers.length}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleLimitChange}
+              page={page}
+              rowsPerPage={limit}
+              rowsPerPageOptions={[20, 100, 200, 'All']}
+            />
+            <DownloadTableExcel
+              filename={title ? title + '_KYC' : 'PROJECT_KYC'}
+              sheet={title ? title + '_KYC' : 'PROJECT_KYC'}
+              currentTableRef={tableRef.current}
+            >
+              <LoadingButton variant="contained">Download</LoadingButton>
+            </DownloadTableExcel>
+          </Box>
+        )}
       </Card>
     </>
   );

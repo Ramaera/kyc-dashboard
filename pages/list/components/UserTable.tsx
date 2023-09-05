@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
@@ -26,6 +27,8 @@ import { User } from '@/models/user';
 import { LoadingButton } from '@mui/lab';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import variables from '@/config/variables';
+import { title } from 'process';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -110,10 +113,11 @@ const UserTable = () => {
     hajipur: null,
     agra: null
   });
+  const [kycList, setKycList] = useState<string | null>();
+  const [currentSelectedButton, setCurrentSelectedButton] =
+    useState<string>('');
   const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
-
-  const [kycList, setKycList] = useState<string | null>();
 
   const membership = [
     {
@@ -191,11 +195,11 @@ const UserTable = () => {
   /* const handleProjectChange = (e) => {
     setKycList(e);
   }; */
-  const handleMembershipChange = (e) => {
+  const handleMembershipChange = (val) => {
     let value = null;
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
+    if (val !== 'all') {
+      value = val;
     }
 
     setFilters((prevFilters) => ({
@@ -203,11 +207,11 @@ const UserTable = () => {
       membership: value
     }));
   };
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleStatusChange = (e) => {
     let value = null;
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
+    if (e !== 'all') {
+      value = e;
     }
 
     setFilters((prevFilters) => ({
@@ -277,77 +281,240 @@ const UserTable = () => {
   return (
     <>
       <Card>
-        <CardHeader
-          action={
-            <Box display={'flex'} gap={'20px'}>
-              <Box
-                width={480}
-                display={'flex'}
-                gap={'10px'}
-                sx={{
-                  [theme.breakpoints.down('sm')]: {
-                    width: '100%'
+        <Box mx={2}>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('total')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('total') ? '' : 'total'
+                );
+                handleMembershipChange('');
+                handleStatusChange('all');
+              }}
+            >
+              {`Total Subscribers: ` + filteredUsers.length}
+            </Button>
+            {currentSelectedButton.includes('total') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'totalAvdance'
+                      ? 'contained'
+                      : 'outlined'
                   }
-                }}
-              >
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>KYC Status</InputLabel>
-                  <Select
-                    value={filters.status || 'all'}
-                    onChange={handleStatusChange}
-                    label="Status"
-                    autoWidth
-                  >
-                    {statusOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Hajipur </InputLabel>
-                  <Select
-                    value={filters.hajipur || 'all'}
-                    onChange={handleHajipurChange}
-                    label="Status"
-                    autoWidth
-                  >
-                    {hajipurOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Agra </InputLabel>
-                  <Select
-                    value={filters.agra || 'all'}
-                    onChange={handleAgraChange}
-                    label="Status"
-                    autoWidth
-                  >
-                    {agraOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('totalAvdance') ? 'total' : 'totalAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'totalBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('totalBasic') ? 'total' : 'totalBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
-            </Box>
-          }
-          title="DASHBOARD"
-        />
+            )}
+          </Box>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('pending')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('pending') ? '' : 'pending'
+                );
+                handleMembershipChange('');
+                handleStatusChange(variables.status.ONGOING);
+              }}
+            >
+              {`Subscribers Pending Demat `}
+            </Button>
+            {currentSelectedButton.includes('pending') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'pendingAvdance'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('pendingAvdance')
+                        ? 'pending'
+                        : 'pendingAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'pendingBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('pendingBasic') ? 'pending' : 'pendingBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
+              </Box>
+            )}
+          </Box>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+            <Button
+              variant={
+                currentSelectedButton.includes('completed')
+                  ? 'contained'
+                  : 'outlined'
+              }
+              sx={{ textTransform: 'uppercase' }}
+              onClick={() => {
+                setCurrentSelectedButton((val) =>
+                  val.includes('completed') ? '' : 'completed'
+                );
+                handleMembershipChange('');
+                handleStatusChange(variables.status.APPROVED);
+              }}
+            >
+              {`Subscribers Completed Demat`}
+            </Button>
+            {currentSelectedButton.includes('completed') && (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  fullWidth
+                  variant={
+                    currentSelectedButton === 'completedAvdance'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('completedAvdance')
+                        ? 'completed'
+                        : 'completedAvdance'
+                    );
+                    handleMembershipChange(variables.membership.ADVANCE);
+                  }}
+                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                <Button
+                  variant={
+                    currentSelectedButton === 'completedBasic'
+                      ? 'contained'
+                      : 'outlined'
+                  }
+                  onClick={() => {
+                    setCurrentSelectedButton((val) =>
+                      val.includes('completedBasic')
+                        ? 'completed'
+                        : 'completedBasic'
+                    );
+                    handleMembershipChange(variables.membership.BASIC);
+                  }}
+                  fullWidth
+                >{`BASIC SHARE HOLDER LIST`}</Button>
+              </Box>
+            )}
+          </Box>
+        </Box>
+        {currentSelectedButton && (
+          <CardHeader
+            action={
+              <Box display={'flex'} gap={'20px'}>
+                <Box
+                  width={480}
+                  display={'flex'}
+                  gap={'10px'}
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      width: '100%'
+                    }
+                  }}
+                >
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>KYC Status</InputLabel>
+                    <Select
+                      value={filters.status || 'all'}
+                      onChange={(e) => handleStatusChange(e.target.value)}
+                      label="Status"
+                      autoWidth
+                    >
+                      {statusOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Hajipur </InputLabel>
+                    <Select
+                      value={filters.hajipur || 'all'}
+                      onChange={handleHajipurChange}
+                      label="Status"
+                      autoWidth
+                    >
+                      {hajipurOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Agra </InputLabel>
+                    <Select
+                      value={filters.agra || 'all'}
+                      onChange={handleAgraChange}
+                      label="Status"
+                      autoWidth
+                    >
+                      {agraOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Box>
+            }
+            title="DASHBOARD"
+          />
+        )}
         <Divider />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/*  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box m={1} width={150} display={'flex'}>
             <FormControl variant="outlined" fullWidth>
               <InputLabel>Share Holder Type</InputLabel>
               <Select
                 value={filters.membership || 'all'}
-                onChange={handleMembershipChange}
+                onChange={(e) => handleMembershipChange(e.target.value)}
                 label="Project"
                 autoWidth
               >
@@ -358,7 +525,6 @@ const UserTable = () => {
                 ))}
               </Select>
             </FormControl>
-          
           </Box>
           <Box m={2}>
             <DownloadTableExcel
@@ -370,163 +536,179 @@ const UserTable = () => {
             </DownloadTableExcel>
           </Box>
         </Box>
-        <Divider />
-        <TableContainer>
-          <Table ref={tableRef}>
-            <TableHead>
-              <TableRow>
-                <TableCell>S.No.</TableCell>
-                <TableCell>PW ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell align="center">Father's Name</TableCell>
-                <TableCell align="center">Moibile No.</TableCell>
-                {/* <TableCell align="center">Email</TableCell> */}
-                <TableCell align="center">KYC Status</TableCell>
-                <TableCell align="center">Hajipur Project</TableCell>
-                <TableCell align="center">Agra Project</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {paginatedUsers.map((user) => {
-                if (user?.membership === kycList) {
-                  return;
-                }
-                index += 1;
-                return (
-                  <TableRow hover key={user?.id}>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        align="center"
-                        noWrap
-                        width={30}
-                      >
-                        {index + 1}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                        width={100}
-                      >
-                        {user?.pw_id}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" noWrap>
-                        {/* {format(user?.orderDate, 'MMMM dd yyyy')} */}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                        width={150}
-                      >
-                        {user?.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        width={100}
-                        noWrap
-                      >
-                        {censorMe(user?.father_or_husband_name)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {censorMe(user?.mobile_number)}
-                      </Typography>
-                    </TableCell>
-                    {/*  <TableCell align="right">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {censorMe(user?.email)}
-                      </Typography>
-                    </TableCell> */}
-                    <TableCell align="right">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        align="center"
-                        noWrap
-                      >
-                        {user?.kyc === 'NOT_INITIALIZED'
-                          ? 'NOT STARTED'
-                          : user?.kyc}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {projectChecker(
-                          user?.documents,
-                          'hajipur_project_payment'
-                        )}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {projectChecker(
-                          user?.documents,
-                          'agra_project_payment'
-                        )}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box p={2}>
-          <TablePagination
-            component="div"
-            count={filteredUsers.length}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleLimitChange}
-            page={page}
-            rowsPerPage={limit}
-            rowsPerPageOptions={[20, 100, 200, 'All']}
-          />
-        </Box>
+        <Divider /> */}
+        {currentSelectedButton && (
+          <TableContainer>
+            <Table ref={tableRef}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>S.No.</TableCell>
+                  <TableCell>PW ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="center">Father's Name</TableCell>
+                  <TableCell align="center">Moibile No.</TableCell>
+                  {/* <TableCell align="center">Email</TableCell> */}
+                  <TableCell align="center">KYC Status</TableCell>
+                  <TableCell align="center">Hajipur Project</TableCell>
+                  <TableCell align="center">Agra Project</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {paginatedUsers.map((user) => {
+                  if (user?.membership === kycList) {
+                    return;
+                  }
+                  index += 1;
+                  return (
+                    <TableRow hover key={user?.id}>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          align="center"
+                          noWrap
+                          width={30}
+                        >
+                          {index + 1}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          width={100}
+                        >
+                          {user?.pw_id}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          noWrap
+                        >
+                          {/* {format(user?.orderDate, 'MMMM dd yyyy')} */}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          width={150}
+                        >
+                          {user?.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width={100}
+                          noWrap
+                        >
+                          {censorMe(user?.father_or_husband_name)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {censorMe(user?.mobile_number)}
+                        </Typography>
+                      </TableCell>
+                      {/*  <TableCell align="right">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {censorMe(user?.email)}
+                    </Typography>
+                  </TableCell> */}
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          align="center"
+                          noWrap
+                        >
+                          {user?.kyc === 'NOT_INITIALIZED'
+                            ? 'NOT STARTED'
+                            : user?.kyc}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {projectChecker(
+                            user?.documents,
+                            'hajipur_project_payment'
+                          )}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {projectChecker(
+                            user?.documents,
+                            'agra_project_payment'
+                          )}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+
+        {currentSelectedButton && (
+          <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
+            <TablePagination
+              component="div"
+              count={filteredUsers.length}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleLimitChange}
+              page={page}
+              rowsPerPage={limit}
+              rowsPerPageOptions={[20, 100, 200, 'All']}
+            />
+            <DownloadTableExcel
+              filename={'KYC_LIST'}
+              sheet={'KYC_LIST'}
+              currentTableRef={tableRef.current}
+            >
+              <LoadingButton variant="contained">Download</LoadingButton>
+            </DownloadTableExcel>
+          </Box>
+        )}
       </Card>
     </>
   );

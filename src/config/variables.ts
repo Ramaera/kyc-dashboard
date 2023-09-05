@@ -16,5 +16,11 @@ export default {
     PENDING: 'PENDING',
     REJECTED: 'REJECTED',
     SUBMITTED: 'SUBMITTED'
+  },
+  amount: {
+    beforeFifteenthAugustBasicAmount: 1000,
+    beforeFifteenthAugustAdvanceAmount: 100000,
+    afterFifteenthAugustBasicAmount: 2000,
+    afterFifteenthAugustAdvanceAmount: 200000
   }
 };
