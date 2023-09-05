@@ -7,7 +7,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
 import GetAgency from './Tabs/GetAgency';
@@ -15,15 +15,6 @@ import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import ToAdvance from './Tabs/ToAdvance';
-import { useQuery } from '@apollo/client';
-import { GET_ALL_USERS } from '@/apollo/queries/auth';
-import {
-  setAllTheUsers,
-  setTotalAgraAmount,
-  setTotalHajipurAmount,
-  gotData
-} from '@/state/slice/allUsersSlice';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -108,34 +99,18 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
   );
-
-  const getAllUser = useQuery(GET_ALL_USERS);
-  if (getAllUser.data) {
-    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
-    dispatch(gotData('true'));
-  }
   const mobile = useMediaQuery('(max-width:600px)');
 
-  const setProjectAmount = async () => {
-    let hajipurAmount = 0;
-    let agraAmount = 0;
-    if (getAllUser.data) {
-      await getAllUser.data.getAllUser.map((user) => {
-        user?.documents.map((doc) => {
-          doc.title.includes('hajipur') && (hajipurAmount += doc.amount);
-          doc.title.includes('agra') && (agraAmount += doc.amount);
-        });
-      });
-      await dispatch(setTotalHajipurAmount(hajipurAmount));
-      await dispatch(setTotalAgraAmount(agraAmount));
-    }
-  };
+  /*  const getAllUser = useQuery(GET_ALL_USERS);
+  if (getAllUser.data) {
+    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
+  } */
 
   const tabsAdvance = [
     { value: 'basicInfo', label: 'Basic Info' },
@@ -163,9 +138,6 @@ function DashboardTasks() {
       setCurrentTab('upgradeKyc');
     }
   }, [upgradeToAdvance]);
-  useEffect(() => {
-    setProjectAmount();
-  }, [getAllUser]);
 
   return (
     <ProtectedSSRoute>
@@ -173,17 +145,6 @@ function DashboardTasks() {
         <title>KYC Dashboard</title>
       </Head>
       <PageTitleWrapper>
-        {getAllUser.loading && (
-          <div
-            style={{
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)'
-            }}
-          >
-            <CircularProgress />
-          </div>
-        )}
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
