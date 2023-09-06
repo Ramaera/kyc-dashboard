@@ -178,7 +178,15 @@ const DocumentRow = ({
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       views.push(
-        <div style={{ height: 160, marginTop: 10 }}>
+        <Box
+          sx={{
+            height: 160,
+            marginTop: 10,
+            [theme.breakpoints.down('sm')]: {
+              height: 60
+            }
+          }}
+        >
           <div style={{ marginBottom: 10 }}>
             Status:{' '}
             <span
@@ -243,7 +251,7 @@ const DocumentRow = ({
               }}
             />
           </Button>
-        </div>
+        </Box>
       );
     }
     return views;
