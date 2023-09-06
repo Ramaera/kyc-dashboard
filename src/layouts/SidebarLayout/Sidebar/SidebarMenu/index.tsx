@@ -320,7 +320,7 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
-              {
+              {/*   {
                 <ListItem component="div">
                   <NextLink href={`/dashboard/certificate`} passHref>
                     <Button
@@ -356,7 +356,7 @@ function SidebarMenu() {
                     </Button>
                   </NextLink>
                 </ListItem>
-              }
+              } */}
               {
                 <ListItem component="div">
                   <Button
