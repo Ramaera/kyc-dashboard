@@ -50,9 +50,6 @@ const applyFilters = (users: User[], filters: Filters, searchText): any => {
     let matches = true;
     if (
       !user?.name?.toLowerCase().includes(searchText) &&
-      !user?.rm_id?.toLowerCase().includes(searchText) &&
-      !user?.email?.toLowerCase().includes(searchText) &&
-      !user?.mobile_number?.toLowerCase().includes(searchText) &&
       !user?.pw_id?.toLowerCase().includes(searchText)
     ) {
       matches = false;
@@ -99,7 +96,7 @@ const UserTable = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
-  const debouncedValue = useDebounce<string>(searchText, 400);
+  const debouncedValue = useDebounce<string>(searchText, 250);
 
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [numbers, setNumbers] = useState({
