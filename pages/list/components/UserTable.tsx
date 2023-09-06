@@ -15,21 +15,18 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
   Typography,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { DownloadTableExcel } from 'react-export-table-to-excel';
-/* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
- */
-import { User } from '@/models/user';
-import { LoadingButton } from '@mui/lab';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import variables from '@/config/variables';
-import { title } from 'process';
+
 import Loading from '@/components/Loading';
+import variables from '@/config/variables';
+import { User } from '@/models/user';
+import { useSelector } from 'react-redux';
+import { useDebounce } from 'usehooks-ts';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -48,9 +45,18 @@ interface Filters {
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
-const applyFilters = (users: User[], filters: Filters): any => {
+const applyFilters = (users: User[], filters: Filters, searchText): any => {
   return users.filter((user) => {
     let matches = true;
+    if (
+      !user?.name?.toLowerCase().includes(searchText) &&
+      !user?.rm_id?.toLowerCase().includes(searchText) &&
+      !user?.email?.toLowerCase().includes(searchText) &&
+      !user?.mobile_number?.toLowerCase().includes(searchText) &&
+      !user?.pw_id?.toLowerCase().includes(searchText)
+    ) {
+      matches = false;
+    }
     if (user.role === variables.role.ADMIN) {
       matches = false;
     }
@@ -92,6 +98,9 @@ const UserTable = () => {
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
+  const [searchText, setSearchText] = useState('');
+  const debouncedValue = useDebounce<string>(searchText, 400);
+
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
@@ -106,7 +115,7 @@ const UserTable = () => {
   const [kycList, setKycList] = useState<string | null>();
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
-  const filteredUsers = applyFilters(usersList, filters);
+  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   const checkTotal = () => {
@@ -452,6 +461,17 @@ const UserTable = () => {
           <CardHeader
             action={
               <Box display={'flex'} gap={'20px'}>
+                <Box display={'flex'} gap={'10px'}>
+                  <TextField
+                    fullWidth
+                    label="Search"
+                    variant="outlined"
+                    value={searchText}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                  />
+                </Box>
                 <Box
                   width={480}
                   display={'flex'}
