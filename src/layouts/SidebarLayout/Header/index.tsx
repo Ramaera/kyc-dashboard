@@ -60,33 +60,46 @@ function Header() {
   const user = useAppSelector((state) => state.user?.data);
 
   const checkTotal = () => {
-    let totalKyc = 0;
-    let totalHajipur = 0;
-    let totalAgra = 0;
+    let totalKycUsers = 0;
+    let totalHajipurUsers = 0;
+    let totalAgraUsers = 0;
     usersList.map((user) => {
-      if (user.role !== variables.role.ADMIN) {
-        totalKyc += 1;
+      let totalHajipur = 0;
+      let totalAgra = 0;
+
+      if (user.role === variables.role.ADMIN) {
+        return;
       }
-      let hajipur = -1;
-      let agra = -1;
+      if (user.role !== variables.role.ADMIN) {
+        totalKycUsers += 1;
+      }
+
       user?.documents?.map((doc) => {
-        if (doc.title.toLowerCase().includes(variables.project.HAJIPUR)) {
-          totalHajipur += 1;
-          hajipur += 1;
-          totalHajipur -= hajipur;
+        if (
+          doc.title
+            .toLowerCase()
+            .includes(variables.project.HAJIPUR.toLowerCase())
+        ) {
+          totalHajipur = +1;
         }
-        if (doc.title.toLowerCase().includes(variables.project.AGRA)) {
-          totalAgra += 1;
-          agra += 1;
-          totalAgra -= agra;
+        if (
+          doc.title.toLowerCase().includes(variables.project.AGRA.toLowerCase())
+        ) {
+          totalAgra = +1;
         }
       });
+      if (totalHajipur) {
+        totalHajipurUsers += 1;
+      }
+      if (totalAgra) {
+        totalAgraUsers += 1;
+      }
     });
     setNumbers({
       ...numbers,
-      totalKYC: totalKyc,
-      totalAgra: totalAgra,
-      totalHajipur: totalHajipur
+      totalKYC: totalKycUsers,
+      totalAgra: totalAgraUsers,
+      totalHajipur: totalHajipurUsers
     });
   };
 

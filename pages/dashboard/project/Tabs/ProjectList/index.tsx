@@ -244,7 +244,13 @@ const UserTable = ({ title }) => {
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase', width: '490px' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('total') ? '' : 'total'
@@ -295,7 +301,13 @@ const UserTable = ({ title }) => {
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase', width: '490px' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('pending') ? '' : 'pending'
@@ -346,7 +358,13 @@ const UserTable = ({ title }) => {
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase', width: '490px' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('completed') ? '' : 'completed'
