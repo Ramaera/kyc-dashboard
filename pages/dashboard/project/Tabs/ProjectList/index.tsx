@@ -68,14 +68,14 @@ const UserTable = ({ title }) => {
   const applyFilters = (users: User[], filters: Filters): any => {
     return users.filter((user) => {
       let matches = true;
+      if (user.role === variables.role.ADMIN) {
+        matches = false;
+      }
       if (
         !user.documents.find((doc) =>
           doc.title.toLowerCase().includes(title.toLowerCase())
         )
       ) {
-        matches = false;
-      }
-      if (user.role === variables.role.ADMIN) {
         matches = false;
       }
       if (
@@ -176,12 +176,12 @@ const UserTable = ({ title }) => {
     let w = text;
     return w.replace(regex, '*');
   };
-
+  let totalProject = filteredUsers.length;
   return (
     <>
       <Card sx={{ mb: 4 }}>
         <Box mx={2}>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+          <Box my={2} display={'flex'} gap={2}>
             <Button
               variant={
                 currentSelectedButton.includes('total')
@@ -197,12 +197,12 @@ const UserTable = ({ title }) => {
                 handleStatusChange('all');
               }}
             >
-              {`Total : ` + filteredUsers.length}
+              {/* {`Total ${title} : ` + filteredUsers.length} */}
+              {`Total ${title}`}
             </Button>
             {currentSelectedButton.includes('total') && (
               <Box display={'flex'} gap={2}>
                 <Button
-                  fullWidth
                   variant={
                     currentSelectedButton === 'totalAvdance'
                       ? 'contained'
@@ -227,12 +227,11 @@ const UserTable = ({ title }) => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                  fullWidth
                 >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
             )}
           </Box>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+          <Box my={2} display={'flex'} gap={2}>
             <Button
               variant={
                 currentSelectedButton.includes('pending')
@@ -253,7 +252,6 @@ const UserTable = ({ title }) => {
             {currentSelectedButton.includes('pending') && (
               <Box display={'flex'} gap={2}>
                 <Button
-                  fullWidth
                   variant={
                     currentSelectedButton === 'pendingAvdance'
                       ? 'contained'
@@ -280,12 +278,11 @@ const UserTable = ({ title }) => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                  fullWidth
                 >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
             )}
           </Box>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+          <Box my={2} display={'flex'} gap={2}>
             <Button
               variant={
                 currentSelectedButton.includes('completed')
@@ -306,7 +303,6 @@ const UserTable = ({ title }) => {
             {currentSelectedButton.includes('completed') && (
               <Box display={'flex'} gap={2}>
                 <Button
-                  fullWidth
                   variant={
                     currentSelectedButton === 'completedAvdance'
                       ? 'contained'
@@ -335,7 +331,6 @@ const UserTable = ({ title }) => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                  fullWidth
                 >{`BASIC SHARE HOLDER LIST`}</Button>
               </Box>
             )}
@@ -357,7 +352,7 @@ const UserTable = ({ title }) => {
                       }
                     }}
                   >
-                    {/* <FormControl fullWidth variant="outlined">
+                    {/* <FormControl   variant="outlined">
                       <InputLabel>KYC Status</InputLabel>
                       <Select
                         value={filters.status || 'all'}
@@ -375,7 +370,7 @@ const UserTable = ({ title }) => {
                         ))}
                       </Select>
                     </FormControl> */}
-                    {/*  <FormControl variant="outlined" fullWidth>
+                    {/*  <FormControl variant="outlined"  >
                   <InputLabel>Share Holder Type</InputLabel>
                   <Select
                     value={filters.membership || 'all'}

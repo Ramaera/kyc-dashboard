@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import UserTable from './components/UserTable';
+import Loading from '@/components/Loading';
 
 function DashboardTasks() {
   const dispatch = useDispatch();
@@ -34,19 +35,7 @@ function DashboardTasks() {
     refetch();
   }, [foundUser]);
   if (loading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '90vh',
-          alignItems: 'center'
-        }}
-      >
-        <h2>Loading...</h2>
-        <img src="" />
-      </div>
-    );
+    return <Loading />;
   }
   if (error) {
     console.log(error);

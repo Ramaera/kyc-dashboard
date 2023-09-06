@@ -15,6 +15,7 @@ import {
 import { useEffect } from 'react';
 import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import { useQuery } from '@apollo/client';
+import Loading from '@/components/Loading';
 
 function index() {
   const router = useRouter();
@@ -51,17 +52,7 @@ function index() {
 
   if (!usersList[0]) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '90vh',
-          alignItems: 'center'
-        }}
-      >
-        <h2>Loading...</h2>
-        <img src="" />
-      </div>
+      <Loading/>
     );
   }
   return (

@@ -1,4 +1,8 @@
 export default {
+  project: {
+    AGRA: 'agra',
+    HAJIPUR: 'hajipur'
+  },
   role: {
     ADMIN: 'ADMIN',
     AGENT: 'AGENT',
