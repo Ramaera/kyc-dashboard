@@ -276,10 +276,11 @@ const UserTable = ({ refetchData }) => {
     setLimit(parseInt(event.target.value === 'All' ? -1 : event.target.value));
   };
 
-  const censorMe = (text) => {
-    if (!text) {
-      return text;
+  const censorMe = (txt) => {
+    if (!txt || txt == 'NULL') {
+      return '';
     }
+    let text = txt.slice(0, 4) + txt.slice(-4, txt.length);
     let regex = /(?<!^).(?!$)/g;
     let w = text;
     return w.replace(regex, '*');
@@ -495,6 +496,7 @@ const UserTable = ({ refetchData }) => {
                   <TableCell align="center">Moibile No.</TableCell>
                   {/* <TableCell align="center">Email</TableCell> */}
                   <TableCell align="center">KYC Status</TableCell>
+                  <TableCell align="center">Demat</TableCell>
                   <TableCell align="center">Hajipur Project</TableCell>
                   <TableCell align="center">Agra Project</TableCell>
                 </TableRow>
@@ -548,7 +550,7 @@ const UserTable = ({ refetchData }) => {
                           noWrap
                           width={150}
                         >
-                          {user?.name}
+                          {user?.name === 'NULL' ? '' : user?.name}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -597,6 +599,17 @@ const UserTable = ({ refetchData }) => {
                           {user?.kyc === 'NOT_INITIALIZED'
                             ? 'NOT STARTED'
                             : user?.kyc}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {censorMe(user?.demat_account)}
                         </Typography>
                       </TableCell>
                       <TableCell align="right">
