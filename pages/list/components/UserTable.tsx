@@ -19,7 +19,7 @@ import {
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 /* import BulkActions from '../../src/content/Management/Transactions/BulkActions';
  */
@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import variables from '@/config/variables';
 import { title } from 'process';
+import Loading from '@/components/Loading';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -50,6 +51,9 @@ interface Filters {
 const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
+    if (user.role === variables.role.ADMIN) {
+      matches = false;
+    }
     if ((filters.membership && user?.membership) !== filters.membership) {
       matches = false;
     }
@@ -85,12 +89,15 @@ const applyPagination = (
 
 const UserTable = () => {
   const theme = useTheme();
-  const router = useRouter();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(20);
+  const [limit, setLimit] = useState<number>(100);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-
+  const [numbers, setNumbers] = useState({
+    totalKYC: 0,
+    totalAdvance: 0,
+    totalBasic: 0
+  });
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,
@@ -101,6 +108,32 @@ const UserTable = () => {
     useState<string>('');
   const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
+
+  const checkTotal = () => {
+    let totalKyc = 0;
+    let totalAdvance = 0;
+    let totalBasic = 0;
+    usersList.map((user) => {
+      if (user.role === variables.role.ADMIN) {
+        return;
+      }
+      if (user.role !== variables.role.ADMIN) {
+        totalKyc += 1;
+      }
+      if (user.membership === variables.membership.ADVANCE) totalAdvance += 1;
+      if (user.membership === variables.membership.BASIC) totalBasic += 1;
+    });
+    setNumbers({
+      ...numbers,
+      totalKYC: totalKyc,
+      totalAdvance: totalAdvance,
+      totalBasic: totalBasic
+    });
+  };
+
+  useEffect(() => {
+    checkTotal();
+  }, []);
 
   const membership = [
     {
@@ -246,18 +279,7 @@ const UserTable = () => {
   let index = -1;
 
   if (!usersList[0]) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '90vh',
-          alignItems: 'center'
-        }}
-      >
-        <h2>Loading...</h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -280,7 +302,7 @@ const UserTable = () => {
                 handleStatusChange('all');
               }}
             >
-              {`Total Subscribers: ` + usersList.length}
+              {`Total Subscribers: ` + numbers.totalKYC}
             </Button>
             {currentSelectedButton.includes('total') && (
               <Box display={'flex'} gap={2}>
@@ -296,7 +318,7 @@ const UserTable = () => {
                     );
                     handleMembershipChange(variables.membership.ADVANCE);
                   }}
-                >{`ADVANCE SHARE HOLDER LIST`}</Button>
+                >{`ADVANCE SHARE HOLDER LIST ${numbers.totalAdvance}`}</Button>
                 <Button
                   variant={
                     currentSelectedButton === 'totalBasic'
@@ -309,7 +331,7 @@ const UserTable = () => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                >{`BASIC SHARE HOLDER LIST`}</Button>
+                >{`BASIC SHARE HOLDER LIST ${numbers.totalBasic}`}</Button>
               </Box>
             )}
           </Box>
@@ -422,6 +444,7 @@ const UserTable = () => {
             )}
           </Box> */}
         </Box>
+
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
           <CardHeader
@@ -518,6 +541,27 @@ const UserTable = () => {
           </Box>
         </Box>
         <Divider /> */}
+        {(currentSelectedButton.includes('totalAvdance') ||
+          currentSelectedButton.includes('totalBasic')) && (
+          <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
+            <TablePagination
+              component="div"
+              count={filteredUsers.length}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleLimitChange}
+              page={page}
+              rowsPerPage={limit}
+              rowsPerPageOptions={[20, 100, 200, 'All']}
+            />
+            <DownloadTableExcel
+              filename={'KYC_LIST'}
+              sheet={'KYC_LIST'}
+              currentTableRef={tableRef.current}
+            >
+              <LoadingButton variant="contained">Download</LoadingButton>
+            </DownloadTableExcel>
+          </Box>
+        )}
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
           <TableContainer>
@@ -669,28 +713,6 @@ const UserTable = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        )}
-
-        {(currentSelectedButton.includes('totalAvdance') ||
-          currentSelectedButton.includes('totalBasic')) && (
-          <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
-            <TablePagination
-              component="div"
-              count={filteredUsers.length}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleLimitChange}
-              page={page}
-              rowsPerPage={limit}
-              rowsPerPageOptions={[20, 100, 200, 'All']}
-            />
-            <DownloadTableExcel
-              filename={'KYC_LIST'}
-              sheet={'KYC_LIST'}
-              currentTableRef={tableRef.current}
-            >
-              <LoadingButton variant="contained">Download</LoadingButton>
-            </DownloadTableExcel>
-          </Box>
         )}
       </Card>
     </>

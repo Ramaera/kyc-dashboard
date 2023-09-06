@@ -22,6 +22,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderUserbox from './Userbox';
+import variables from '@/config/variables';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -63,24 +64,21 @@ function Header() {
     let totalHajipur = 0;
     let totalAgra = 0;
     usersList.map((user) => {
-      if (user) {
+      if (user.role !== variables.role.ADMIN) {
         totalKyc += 1;
       }
+      let hajipur = -1;
+      let agra = -1;
       user?.documents?.map((doc) => {
-        /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
-          totalKyc += 1;
-        } */
-        if (
-          doc.title.toLowerCase() === 'hajipur_project_payment' &&
-          doc.status != 'REJECTED'
-        ) {
+        if (doc.title.toLowerCase().includes(variables.project.HAJIPUR)) {
           totalHajipur += 1;
+          hajipur += 1;
+          totalHajipur -= hajipur;
         }
-        if (
-          doc.title.toLowerCase() === 'agra_project_payment' &&
-          doc.status != 'REJECTED'
-        ) {
+        if (doc.title.toLowerCase().includes(variables.project.AGRA)) {
           totalAgra += 1;
+          agra += 1;
+          totalAgra -= agra;
         }
       });
     });
@@ -183,39 +181,45 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              my: 2,
-              [theme.breakpoints.down('sm')]: {
-                fontSize: 12
-              }
-            }}
-          >
-            Total Subscribers : {numbers.totalKYC}
-          </Typography>
-          <Typography
-            variant="h4"
-            sx={{
-              my: 2,
-              [theme.breakpoints.down('sm')]: {
-                fontSize: 12
-              }
-            }}
-          >
-            Hajipur Enrolled : {numbers.totalHajipur}
-          </Typography>
-          <Typography
-            variant="h4"
-            sx={{
-              my: 2,
-              [theme.breakpoints.down('sm')]: {
-                fontSize: 12
-              }
-            }}
-          >
-            Agra Enrolled : {numbers.totalAgra}
-          </Typography>
+          {numbers.totalKYC && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Total Subscribers : {numbers.totalKYC}
+            </Typography>
+          )}
+          {numbers.totalHajipur && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Hajipur Enrolled : {numbers.totalHajipur}
+            </Typography>
+          )}
+          {numbers.totalAgra && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Agra Enrolled : {numbers.totalAgra}
+            </Typography>
+          )}
         </Stack>
       )}
       {router.pathname === '/agency' && agencyCode && (
