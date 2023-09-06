@@ -27,6 +27,7 @@ import variables from '@/config/variables';
 import { User } from '@/models/user';
 import { useSelector } from 'react-redux';
 import { useDebounce } from 'usehooks-ts';
+import CachedIcon from '@mui/icons-material/Cached';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -90,7 +91,7 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 
-const UserTable = () => {
+const UserTable = ({ refetchData }) => {
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
@@ -293,15 +294,34 @@ const UserTable = () => {
   return (
     <>
       <Card>
-        <Box mx={2}>
-          <Box my={2} display={'flex'} gap={2}>
+        <Box
+          mx={2}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            [theme.breakpoints.down('sm')]: {
+              flexDirection: 'column'
+            }
+          }}
+        >
+          <Box
+            my={2}
+            display={'flex'}
+            gap={2}
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                display: 'flex',
+                flexDirection: 'column'
+              }
+            }}
+          >
             <Button
               variant={
                 currentSelectedButton.includes('total')
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase' }}
+              sx={{ textTransform: 'uppercase', padding: 2 }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('total') ? '' : 'total'
@@ -313,7 +333,16 @@ const UserTable = () => {
               {`Total Subscribers: ` + numbers.totalKYC}
             </Button>
             {currentSelectedButton.includes('total') && (
-              <Box display={'flex'} gap={2}>
+              <Box
+                display={'flex'}
+                gap={2}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }
+                }}
+              >
                 <Button
                   variant={
                     currentSelectedButton === 'totalAvdance'
@@ -326,7 +355,7 @@ const UserTable = () => {
                     );
                     handleMembershipChange(variables.membership.ADVANCE);
                   }}
-                >{`ADVANCE SHARE HOLDER LIST ${numbers.totalAdvance}`}</Button>
+                >{`ADVANCE SHARE HOLDER : ${numbers.totalAdvance}`}</Button>
                 <Button
                   variant={
                     currentSelectedButton === 'totalBasic'
@@ -339,118 +368,18 @@ const UserTable = () => {
                     );
                     handleMembershipChange(variables.membership.BASIC);
                   }}
-                >{`BASIC SHARE HOLDER LIST ${numbers.totalBasic}`}</Button>
+                >{`BASIC SHARE HOLDER : ${numbers.totalBasic}`}</Button>
               </Box>
             )}
           </Box>
-          {/*   <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
-            <Button
-              variant={
-                currentSelectedButton.includes('pending')
-                  ? 'contained'
-                  : 'outlined'
-              }
-              sx={{ textTransform: 'uppercase' }}
-              onClick={() => {
-                setCurrentSelectedButton((val) =>
-                  val.includes('pending') ? '' : 'pending'
-                );
-                handleMembershipChange('');
-                handleStatusChange(variables.status.ONGOING);
-              }}
-            >
-              {`Subscribers Pending Demat `}
-            </Button>
-            {currentSelectedButton.includes('pending') && (
-              <Box display={'flex'} gap={2}>
-                <Button
-                  fullWidth
-                  variant={
-                    currentSelectedButton === 'pendingAvdance'
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  onClick={() => {
-                    setCurrentSelectedButton((val) =>
-                      val.includes('pendingAvdance')
-                        ? 'pending'
-                        : 'pendingAvdance'
-                    );
-                    handleMembershipChange(variables.membership.ADVANCE);
-                  }}
-                >{`ADVANCE SHARE HOLDER LIST`}</Button>
-                <Button
-                  variant={
-                    currentSelectedButton === 'pendingBasic'
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  onClick={() => {
-                    setCurrentSelectedButton((val) =>
-                      val.includes('pendingBasic') ? 'pending' : 'pendingBasic'
-                    );
-                    handleMembershipChange(variables.membership.BASIC);
-                  }}
-                  fullWidth
-                >{`BASIC SHARE HOLDER LIST`}</Button>
-              </Box>
-            )}
+          <Box
+            sx={{ cursor: 'pointer' }}
+            onClick={refetchData}
+            my={4}
+            ml={'auto'}
+          >
+            <CachedIcon />
           </Box>
-          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
-            <Button
-              variant={
-                currentSelectedButton.includes('completed')
-                  ? 'contained'
-                  : 'outlined'
-              }
-              sx={{ textTransform: 'uppercase' }}
-              onClick={() => {
-                setCurrentSelectedButton((val) =>
-                  val.includes('completed') ? '' : 'completed'
-                );
-                handleMembershipChange('');
-                handleStatusChange(variables.status.APPROVED);
-              }}
-            >
-              {`Subscribers Completed Demat`}
-            </Button>
-            {currentSelectedButton.includes('completed') && (
-              <Box display={'flex'} gap={2}>
-                <Button
-                  fullWidth
-                  variant={
-                    currentSelectedButton === 'completedAvdance'
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  onClick={() => {
-                    setCurrentSelectedButton((val) =>
-                      val.includes('completedAvdance')
-                        ? 'completed'
-                        : 'completedAvdance'
-                    );
-                    handleMembershipChange(variables.membership.ADVANCE);
-                  }}
-                >{`ADVANCE SHARE HOLDER LIST`}</Button>
-                <Button
-                  variant={
-                    currentSelectedButton === 'completedBasic'
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  onClick={() => {
-                    setCurrentSelectedButton((val) =>
-                      val.includes('completedBasic')
-                        ? 'completed'
-                        : 'completedBasic'
-                    );
-                    handleMembershipChange(variables.membership.BASIC);
-                  }}
-                  fullWidth
-                >{`BASIC SHARE HOLDER LIST`}</Button>
-              </Box>
-            )}
-          </Box> */}
         </Box>
 
         {(currentSelectedButton.includes('totalAvdance') ||
@@ -475,7 +404,7 @@ const UserTable = () => {
                   gap={'10px'}
                   sx={{
                     [theme.breakpoints.down('sm')]: {
-                      width: '100%'
+                      display: 'none'
                     }
                   }}
                 >
@@ -531,35 +460,7 @@ const UserTable = () => {
           />
         )}
         <Divider />
-        {/*  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box m={1} width={150} display={'flex'}>
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel>Share Holder Type</InputLabel>
-              <Select
-                value={filters.membership || 'all'}
-                onChange={(e) => handleMembershipChange(e.target.value)}
-                label="Project"
-                autoWidth
-              >
-                {membership.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box m={2}>
-            <DownloadTableExcel
-              filename={kycList ? kycList + '_KYC' : 'ALL_KYC'}
-              sheet={kycList ? kycList + '_KYC' : 'ALL_KYC'}
-              currentTableRef={tableRef.current}
-            >
-              <LoadingButton variant="contained">Download</LoadingButton>
-            </DownloadTableExcel>
-          </Box>
-        </Box>
-        <Divider /> */}
+
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
           <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>

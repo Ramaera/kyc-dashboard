@@ -14,6 +14,7 @@ import Head from 'next/head';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
+import { useRouter } from 'next/router';
 
 const MainContent = styled(Box)(
   () => `
@@ -48,6 +49,8 @@ const ButtonSearch = styled(Button)(
 );
 
 function Status404() {
+  const route = useRouter();
+  route.push('/dashboard');
   return (
     <>
       <Head>
