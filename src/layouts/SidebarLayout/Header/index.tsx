@@ -259,7 +259,6 @@ function Header() {
         <Box
           component="span"
           sx={{
-            ml: 2,
             display: { lg: 'none', xs: 'inline-block' }
           }}
         >
