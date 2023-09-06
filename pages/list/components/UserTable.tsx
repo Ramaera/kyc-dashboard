@@ -133,7 +133,7 @@ const UserTable = () => {
 
   useEffect(() => {
     checkTotal();
-  }, []);
+  }, [usersList]);
 
   const membership = [
     {
@@ -263,7 +263,9 @@ const UserTable = () => {
     setPage(newPage);
   };
 
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleLimitChange = (
+    event: ChangeEvent<HTMLInputElement | any>
+  ): void => {
     setLimit(parseInt(event.target.value === 'All' ? -1 : event.target.value));
   };
 
@@ -553,13 +555,13 @@ const UserTable = () => {
               rowsPerPage={limit}
               rowsPerPageOptions={[20, 100, 200, 'All']}
             />
-            <DownloadTableExcel
+            {/*  <DownloadTableExcel
               filename={'KYC_LIST'}
               sheet={'KYC_LIST'}
               currentTableRef={tableRef.current}
             >
               <LoadingButton variant="contained">Download</LoadingButton>
-            </DownloadTableExcel>
+            </DownloadTableExcel> */}
           </Box>
         )}
         {(currentSelectedButton.includes('totalAvdance') ||
