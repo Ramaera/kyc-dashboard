@@ -26,6 +26,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ProjectList from '../ProjectList';
 import { AllBankDetails, AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@emotion/react';
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -39,6 +40,7 @@ const DocumentRow = ({
   projectTitle,
   hideAdditionalDocuments
 }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
@@ -273,11 +275,17 @@ const DocumentRow = ({
     <>
       <TableRow
         key={data.config.name}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 },
+          [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
       >
-        <TableCell component="th" scope="row" style={{ border: 'none' }}>
+        {/*   <TableCell component="th" scope="row" style={{ border: 'none' }}>
           {data.config.name} {data.isOptional ? '(Optional)' : ''}
-        </TableCell>
+        </TableCell> */}
 
         <TableCell
           style={{ display: 'flex', flexDirection: 'column', border: 'none' }}
@@ -286,8 +294,10 @@ const DocumentRow = ({
           {getPreview()}
         </TableCell>
 
-        <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
-        <TableCell style={{ border: 'none' }}>
+        <TableCell style={{ border: 'none' }} width={300}>
+          {getActionCell()}
+        </TableCell>
+        <TableCell style={{ border: 'none' }} width={300}>
           <LoadingButton
             loading={isLoading}
             // disabled={!isValidToClick()}
@@ -337,6 +347,7 @@ const DocumentRow = ({
   );
 };
 const InfoTab = ({ title }) => {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
@@ -508,10 +519,27 @@ const InfoTab = ({ title }) => {
                   setHidden({ ...isHidden, project: !isHidden.project })
                 }
               >
-                <Typography variant="h4">Project Details</Typography>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 12
+                    }
+                  }}
+                >
+                  Project Details
+                </Typography>
               </Button>
 
-              <Typography variant="h4">
+              <Typography
+                variant="h4"
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 12,
+                    textAlign: 'right'
+                  }
+                }}
+              >
                 Enrollment Status :{' '}
                 <span style={{ color: isEnrolled ? 'green' : 'red' }}>
                   {isEnrolled ? 'Enrolled' : 'Not Enrolled'}
@@ -705,8 +733,13 @@ const InfoTab = ({ title }) => {
           )}
           {proofImage && (
             <LoadingButton
-              sx={{ mb: 4 }}
               variant="contained"
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                },
+                mb: 4
+              }}
               onClick={() => {
                 setAdditionalDocuments(true);
               }}
