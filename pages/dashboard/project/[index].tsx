@@ -25,7 +25,13 @@ function index() {
 
   let usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
-  const getAllUser = useQuery(GET_ALL_USERS);
+  const getAllUser = useQuery(GET_ALL_USERS, {
+    variables: {
+      skip: 0,
+      take: 5000
+    }
+  });
+
   if (getAllUser.data && !usersList[0]) {
     dispatch(setAllTheUsers(getAllUser.data.getAllUser));
     dispatch(gotData(true));
@@ -51,9 +57,7 @@ function index() {
   }, [usersList]);
 
   if (!usersList[0]) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
   return (
     <ProtectedSSRoute>

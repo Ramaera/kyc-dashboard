@@ -1,14 +1,14 @@
+import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import Head from 'next/head';
-import { Container } from '@mui/material';
-import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import UserTable from './components/UserTable';
-import { useDispatch, useSelector } from 'react-redux';
-import { GET_ALL_USERS } from '@/apollo/queries/auth';
-import { setAllTheUsers, gotData } from '@/state/slice/allUsersSlice';
+import { gotData, setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
+import { Container } from '@mui/material';
+import Head from 'next/head';
+import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import UserTable from './components/UserTable';
 
 function index() {
   const [seed, setSeed] = useState(1);
@@ -16,7 +16,12 @@ function index() {
   let usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
   const dispatch = useDispatch();
-  const { data, refetch } = useQuery(GET_ALL_USERS);
+  const { data, refetch } = useQuery(GET_ALL_USERS, {
+    variables: {
+      skip: 0,
+      take: 5000
+    }
+  });
 
   const reset = () => {
     setSeed(Math.random());

@@ -1,6 +1,5 @@
-import { GET_AGENCY_CODE, GET_ALL_USERS, GetUser } from '@/apollo/queries/auth';
+import { GET_AGENCY_CODE, GetUser } from '@/apollo/queries/auth';
 import { useAppDispatch } from '@/hooks';
-import { setAllTheUsers, gotData } from '@/state/slice/allUsersSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';

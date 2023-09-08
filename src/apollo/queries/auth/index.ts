@@ -132,9 +132,8 @@ query GetUser {
   `);
 
 export const GET_ALL_USERS = gql(`
-
-query GetAllUser {
- getAllUser{
+query($skip: Int! $take: Int!) {
+  getAllUser(skip:$skip, take:$take) {
   alternate_mobile_number
   createdAt
   date_of_birth
@@ -169,6 +168,46 @@ query GetAllUser {
 }
   }
   `);
+
+export const SEARCH_USERS = gql(`
+query($searchTerm:String!){
+  searchUsers(input:{searchTerm:$searchTerm})
+  {
+   alternate_mobile_number
+  createdAt
+  date_of_birth
+  demat_account
+  membership
+  documents{
+    createdAt
+    updatedAt
+    id
+    title
+    url
+    userId
+    status
+    amount
+    utrNo
+  }
+  nominee{
+    id
+    name
+    relationship
+  }
+  email
+  father_or_husband_name
+  id
+  kyc
+  mobile_number
+  name
+  role
+  pw_id
+  rm_id
+  updatedAt
+}
+}
+`);
+
 export const GET_AGENCY_CODE = gql(`
   query($userID: String!) {
   kycAgency(userId: $userID) {

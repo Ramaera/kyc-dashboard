@@ -26,8 +26,9 @@ import Loading from '@/components/Loading';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
 import { useSelector } from 'react-redux';
-import { useDebounce } from 'usehooks-ts';
 import CachedIcon from '@mui/icons-material/Cached';
+import { useLazyQuery } from '@apollo/client';
+import { SEARCH_USERS } from '@/apollo/queries/auth';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -46,15 +47,15 @@ interface Filters {
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
-const applyFilters = (users: User[], filters: Filters, searchText): any => {
+const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
-    if (
+    /*  if (
       !user?.name?.toLowerCase().includes(searchText) &&
       !user?.pw_id?.toLowerCase().includes(searchText)
     ) {
       matches = false;
-    }
+    } */
     if (user.role === variables.role.ADMIN) {
       matches = false;
     }
@@ -97,7 +98,24 @@ const UserTable = ({ refetchData }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
-  const debouncedValue = useDebounce<string>(searchText, 250);
+  const [searchTextWait, setSearchTextWait] = useState('');
+  const [searchData, setSearchData] = useState([]);
+
+  const [search, { data }] = useLazyQuery(SEARCH_USERS, {
+    variables: {
+      searchTerm: searchText
+    }
+  });
+
+  const getSearchData = () => {
+    search();
+  };
+  useEffect(() => {
+    if (data) {
+      setSearchData(data.searchUsers);
+      console.log(data.searchUsers);
+    }
+  }, [data]);
 
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [numbers, setNumbers] = useState({
@@ -113,7 +131,7 @@ const UserTable = ({ refetchData }) => {
   const [kycList, setKycList] = useState<string | null>();
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
-  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
+  const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   const checkTotal = () => {
@@ -393,12 +411,21 @@ const UserTable = ({ refetchData }) => {
                     fullWidth
                     label="Search"
                     variant="outlined"
-                    value={searchText}
+                    value={searchTextWait}
                     onChange={(e) => {
-                      setSearchText(e.target.value);
+                      setSearchTextWait(e.target.value);
                     }}
                   />
                 </Box>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setSearchText(searchTextWait);
+                    getSearchData();
+                  }}
+                >
+                  Search
+                </Button>
                 <Box
                   width={480}
                   display={'flex'}
