@@ -1,12 +1,15 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import {
+  Box,
   Button,
   Card,
   CardHeader,
   Container,
   Divider,
-  Typography
+  TextField,
+  Typography,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -14,7 +17,9 @@ import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useState } from 'react';
 
 function index() {
+  const theme = useTheme();
   const [currentButton, setCurrentButton] = useState('');
+  const [supportText, setSupportText] = useState('');
   return (
     <ProtectedSSRoute>
       <Head>
@@ -30,7 +35,16 @@ function index() {
             }}
           />
           <Divider />
-          <Container style={{ padding: '2rem' }}>
+          <Box
+            sx={{
+              padding: '2rem',
+              display: 'flex',
+              gap: 2,
+              [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
+              }
+            }}
+          >
             <Link href="settings/change">
               <Button variant="contained">Change Password</Button>
             </Link>
@@ -39,7 +53,6 @@ function index() {
               onClick={() => {
                 setCurrentButton((val) => (val === 'nominee' ? '' : 'nominee'));
               }}
-              sx={{ ml: 2 }}
             >
               Request a Nominee Change
             </Button>
@@ -48,37 +61,65 @@ function index() {
               onClick={() => {
                 setCurrentButton((val) => (val === 'support' ? '' : 'support'));
               }}
-              sx={{ ml: 2 }}
             >
               Support
             </Button>
+          </Box>
+          <Box sx={{ marginBottom: 4, marginX: 4 }}>
             {currentButton === 'nominee' && (
-              <Typography
-                variant="h3"
-                component="h3"
-                sx={{
-                  marginTop: 2,
-                  marginBottom: 2
-                }}
-                gutterBottom
-              >
-                To change nominee Please Contact Us on 0120-4152818
-              </Typography>
+              <>
+                <Typography
+                  variant="h4"
+                  component="h4"
+                  sx={{
+                    marginTop: 2,
+                    marginBottom: 2
+                  }}
+                  gutterBottom
+                >
+                  To change nominee Please Contact Us on 0120-4152818
+                </Typography>
+              </>
             )}
             {currentButton === 'support' && (
-              <Typography
-                variant="h3"
-                component="h3"
-                sx={{
-                  marginTop: 2,
-                  marginBottom: 2
-                }}
-                gutterBottom
-              >
-                Please Contact Us on 0120-4152818
-              </Typography>
+              <Box>
+                <Typography
+                  variant="h4"
+                  component="h4"
+                  sx={{
+                    marginTop: 2,
+                    marginBottom: 2
+                  }}
+                  gutterBottom
+                >
+                  Please Contact Us on 0120-4152818
+                </Typography>
+                <TextField
+                  label="Type your queries here"
+                  multiline
+                  rows={8}
+                  value={supportText}
+                  onChange={(e) => {
+                    setSupportText(e.target.value);
+                  }}
+                  sx={{
+                    width: '50%',
+                    [theme.breakpoints.down('sm')]: {
+                      width: '100%'
+                    }
+                  }}
+                />
+                <br />
+                <Button
+                  variant="contained"
+                  sx={{ marginTop: 4 }}
+                  disabled={!supportText}
+                >
+                  Submit
+                </Button>
+              </Box>
             )}
-          </Container>
+          </Box>
         </Card>
       </Container>
       <Footer />

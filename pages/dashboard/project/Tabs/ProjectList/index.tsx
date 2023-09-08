@@ -17,9 +17,8 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { useSelector } from 'react-redux';
 
@@ -42,7 +41,11 @@ const UserTable = ({ title }) => {
   const [page, setPage] = useState<number>(0);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
-
+  const [numbers, setNumbers] = useState({
+    total: 0,
+    pending: 0,
+    completed: 0
+  });
   const [limit, setLimit] = useState<number>(20);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
@@ -176,19 +179,78 @@ const UserTable = ({ title }) => {
     let w = text;
     return w.replace(regex, '*');
   };
-  let totalProject = filteredUsers.length;
+
+  const checkTotal = () => {
+    let total = 0;
+    let pending = 0;
+    let completed = 0;
+    usersList.map((user) => {
+      if (user.role === variables.role.ADMIN) {
+        return;
+      } else {
+        let totalProject = 0;
+        let totalPending = 0;
+        let totalCompleted = 0;
+        user.documents.map((doc) => {
+          if (doc.title.toLowerCase().includes(title.toLowerCase())) {
+            totalProject = +1;
+          }
+          if (
+            doc.title.toLowerCase().includes(title.toLowerCase()) &&
+            (doc.status === variables.status.PENDING ||
+              doc.status === variables.status.ONGOING ||
+              doc.status === variables.status.NOT_INITIALIZED ||
+              doc.status === variables.status.REJECTED)
+          ) {
+            totalPending += 1;
+          }
+          if (
+            doc.title.toLowerCase().includes(title.toLowerCase()) &&
+            doc.status === variables.status.APPROVED
+          ) {
+            totalCompleted += 1;
+          }
+        });
+        if (totalProject) {
+          total += 1;
+        }
+        if (totalPending) {
+          pending += 1;
+        } else if (totalCompleted) {
+          completed += 1;
+        }
+      }
+    });
+    setNumbers({
+      ...numbers,
+      total: total,
+      pending: pending,
+      completed: completed
+    });
+  };
+
+  useEffect(() => {
+    checkTotal();
+  }, [usersList]);
+
   return (
     <>
       <Card sx={{ mb: 4 }}>
         <Box mx={2}>
-          <Box my={2} display={'flex'} gap={2}>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
             <Button
               variant={
                 currentSelectedButton.includes('total')
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('total') ? '' : 'total'
@@ -198,19 +260,20 @@ const UserTable = ({ title }) => {
               }}
             >
               {/* {`Total ${title} : ` + filteredUsers.length} */}
-              {`Total ${title}`}
+              {`Total Enrolled ${title} : ${numbers.total}`}
             </Button>
+
             {currentSelectedButton.includes('total') && (
               <Box display={'flex'} gap={2}>
                 <Button
                   variant={
-                    currentSelectedButton === 'totalAvdance'
+                    currentSelectedButton === 'totalAdvance'
                       ? 'contained'
                       : 'outlined'
                   }
                   onClick={() => {
                     setCurrentSelectedButton((val) =>
-                      val.includes('totalAvdance') ? 'total' : 'totalAvdance'
+                      val.includes('totalAdvance') ? 'total' : 'totalAdvance'
                     );
                     handleMembershipChange(variables.membership.ADVANCE);
                   }}
@@ -231,14 +294,20 @@ const UserTable = ({ title }) => {
               </Box>
             )}
           </Box>
-          <Box my={2} display={'flex'} gap={2}>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
             <Button
               variant={
                 currentSelectedButton.includes('pending')
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('pending') ? '' : 'pending'
@@ -247,21 +316,21 @@ const UserTable = ({ title }) => {
                 handleStatusChange(variables.status.ONGOING);
               }}
             >
-              {`${title} pending`}
+              {`${title} pending  : ${numbers.pending}`}
             </Button>
             {currentSelectedButton.includes('pending') && (
               <Box display={'flex'} gap={2}>
                 <Button
                   variant={
-                    currentSelectedButton === 'pendingAvdance'
+                    currentSelectedButton === 'pendingAdvance'
                       ? 'contained'
                       : 'outlined'
                   }
                   onClick={() => {
                     setCurrentSelectedButton((val) =>
-                      val.includes('pendingAvdance')
+                      val.includes('pendingAdvance')
                         ? 'pending'
-                        : 'pendingAvdance'
+                        : 'pendingAdvance'
                     );
                     handleMembershipChange(variables.membership.ADVANCE);
                   }}
@@ -282,14 +351,20 @@ const UserTable = ({ title }) => {
               </Box>
             )}
           </Box>
-          <Box my={2} display={'flex'} gap={2}>
+          <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
             <Button
               variant={
                 currentSelectedButton.includes('completed')
                   ? 'contained'
                   : 'outlined'
               }
-              sx={{ textTransform: 'uppercase' }}
+              sx={{
+                textTransform: 'uppercase',
+                width: '490px',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%'
+                }
+              }}
               onClick={() => {
                 setCurrentSelectedButton((val) =>
                   val.includes('completed') ? '' : 'completed'
@@ -298,21 +373,21 @@ const UserTable = ({ title }) => {
                 handleStatusChange(variables.status.APPROVED);
               }}
             >
-              {`${title} Completed`}
+              {`${title} Completed  : ${numbers.completed}`}
             </Button>
             {currentSelectedButton.includes('completed') && (
               <Box display={'flex'} gap={2}>
                 <Button
                   variant={
-                    currentSelectedButton === 'completedAvdance'
+                    currentSelectedButton === 'completedAdvance'
                       ? 'contained'
                       : 'outlined'
                   }
                   onClick={() => {
                     setCurrentSelectedButton((val) =>
-                      val.includes('completedAvdance')
+                      val.includes('completedAdvance')
                         ? 'completed'
-                        : 'completedAvdance'
+                        : 'completedAdvance'
                     );
                     handleMembershipChange(variables.membership.ADVANCE);
                   }}
@@ -337,7 +412,8 @@ const UserTable = ({ title }) => {
           </Box>
         </Box>
         <Divider />
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('Advance') ||
+          currentSelectedButton.includes('Basic')) && (
           <>
             <CardHeader
               action={
@@ -393,7 +469,8 @@ const UserTable = ({ title }) => {
             <Divider />
           </>
         )}
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('Advance') ||
+          currentSelectedButton.includes('Basic')) && (
           <TableContainer>
             <Table ref={tableRef}>
               <TableHead>
@@ -502,7 +579,8 @@ const UserTable = ({ title }) => {
             </Table>
           </TableContainer>
         )}
-        {currentSelectedButton && (
+        {(currentSelectedButton.includes('Advance') ||
+          currentSelectedButton.includes('Basic')) && (
           <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
             <TablePagination
               component="div"

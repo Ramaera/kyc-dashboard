@@ -70,26 +70,18 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
-  const avatarFetch = (userData) => {
-    let photoUrl = '';
-    userData.documents.forEach((doc) => {
-      if (doc.title === 'avatar') {
-        photoUrl = doc.url;
-      }
-    });
-    return photoUrl;
-  };
 
   return (
     <div>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
+        <Hidden smUp>
+          <img height={40} src="/static/images/logo/logo.png" />
+        </Hidden>
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body2">
               {user?.name || user?.rm_id}
             </UserBoxLabel>
-            <Stack spacing={8} direction="row" mt={1} ml={3}></Stack>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -110,14 +102,15 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox display="flex">
-          <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
-
           <UserBoxText>
             <UserBoxLabel variant="body1">
               {user?.name ? user?.name : ''}
             </UserBoxLabel>
             <UserBoxDescription variant="body2">
               {user && user?.rm_id}
+            </UserBoxDescription>
+            <UserBoxDescription variant="body2">
+              {user && user?.pw_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
