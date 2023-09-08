@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import CachedIcon from '@mui/icons-material/Cached';
 import { useLazyQuery } from '@apollo/client';
 import { SEARCH_USERS } from '@/apollo/queries/auth';
+import { useDebounce } from 'usehooks-ts';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -47,15 +48,15 @@ interface Filters {
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
-const applyFilters = (users: User[], filters: Filters): any => {
+const applyFilters = (users: User[], filters: Filters, searchText): any => {
   return users.filter((user) => {
     let matches = true;
-    /*  if (
+    if (
       !user?.name?.toLowerCase().includes(searchText) &&
       !user?.pw_id?.toLowerCase().includes(searchText)
     ) {
       matches = false;
-    } */
+    }
     if (user.role === variables.role.ADMIN) {
       matches = false;
     }
@@ -98,15 +99,16 @@ const UserTable = ({ refetchData }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
-  const [searchTextWait, setSearchTextWait] = useState('');
-  const [searchData, setSearchData] = useState([]);
+  // const [searchTextWait, setSearchTextWait] = useState('');
+  // const [searchData, setSearchData] = useState([]);
+  const debouncedValue = useDebounce<string>(searchText, 250);
 
   const [search, { data }] = useLazyQuery(SEARCH_USERS, {
     variables: {
       searchTerm: searchText
     }
   });
-
+  /* 
   const getSearchData = () => {
     search();
   };
@@ -115,7 +117,7 @@ const UserTable = ({ refetchData }) => {
       setSearchData(data.searchUsers);
       console.log(data.searchUsers);
     }
-  }, [data]);
+  }, [data]); */
 
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [numbers, setNumbers] = useState({
@@ -131,7 +133,7 @@ const UserTable = ({ refetchData }) => {
   const [kycList, setKycList] = useState<string | null>();
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
-  const filteredUsers = applyFilters(usersList, filters);
+  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   const checkTotal = () => {
@@ -406,7 +408,7 @@ const UserTable = ({ refetchData }) => {
           <CardHeader
             action={
               <Box display={'flex'} gap={'20px'}>
-                <Box display={'flex'} gap={'10px'}>
+                {/* <Box display={'flex'} gap={'10px'}>
                   <TextField
                     fullWidth
                     label="Search"
@@ -425,7 +427,18 @@ const UserTable = ({ refetchData }) => {
                   }}
                 >
                   Search
-                </Button>
+                </Button> */}
+                <Box display={'flex'} gap={'10px'}>
+                  <TextField
+                    fullWidth
+                    label="Search"
+                    variant="outlined"
+                    value={searchText}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                  />
+                </Box>
                 <Box
                   width={480}
                   display={'flex'}
