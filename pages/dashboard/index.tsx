@@ -33,14 +33,14 @@ function DashboardTasks() {
   );
   const mobile = useMediaQuery('(max-width:600px)');
 
-  const tabsAdvance = [
+  /*   const tabsAdvance = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' },
     { value: 'getAgency', label: 'KYC Agency' }
-  ];
+  ]; */
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
@@ -77,23 +77,14 @@ function DashboardTasks() {
             visibleScrollbar={true}
             indicatorColor="primary"
           >
-            {user?.membership === 'BASIC'
-              ? tabs.map((tab) => (
-                  <Tab
-                    style={{ fontSize: mobile ? 12 : 14 }}
-                    key={tab.value}
-                    label={tab.label}
-                    value={tab.value}
-                  />
-                ))
-              : tabsAdvance.map((tab) => (
-                  <Tab
-                    style={{ fontSize: mobile ? 12 : 14 }}
-                    key={tab.value}
-                    label={tab.label}
-                    value={tab.value}
-                  />
-                ))}
+            {tabs.map((tab) => (
+              <Tab
+                style={{ fontSize: mobile ? 12 : 14 }}
+                key={tab.value}
+                label={tab.label}
+                value={tab.value}
+              />
+            ))}
           </Tabs>
         </TabsContainerWrapper>
         <Card variant="outlined">

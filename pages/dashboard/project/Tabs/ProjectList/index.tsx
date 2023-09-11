@@ -75,7 +75,7 @@ const UserTable = ({ title }) => {
         matches = false;
       }
       if (
-        !user.documents.find((doc) =>
+        !user?.documents.find((doc) =>
           doc.title.toLowerCase().includes(title.toLowerCase())
         )
       ) {
@@ -191,7 +191,7 @@ const UserTable = ({ title }) => {
         let totalProject = 0;
         let totalPending = 0;
         let totalCompleted = 0;
-        user.documents.map((doc) => {
+        user?.documents.map((doc) => {
           if (doc.title.toLowerCase().includes(title.toLowerCase())) {
             totalProject = +1;
           }

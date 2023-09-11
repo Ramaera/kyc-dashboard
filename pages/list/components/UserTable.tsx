@@ -127,7 +127,9 @@ const UserTable = ({ refetchData }) => {
   }, [searchText]);
 
   useEffect(() => {
-    if (data) {
+    if (!data?.searchUsers[0]) {
+      // setUsersList([{ name: '' }]);
+    } else if (data?.searchUsers[0]) {
       setUsersList(data.searchUsers);
     }
   }, [data]);

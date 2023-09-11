@@ -42,7 +42,6 @@ const PaymentInfo = ({ docStatus }) => {
   const user = useAppSelector((state) => state.user?.data);
   const [isBankDetails, setBankDetails] = useState(false);
   const [isUPIDetails, setUPIDetails] = useState(false);
-
   const showBankDetails = () => {
     setBankDetails(true);
     setUPIDetails(false);
@@ -59,57 +58,60 @@ const PaymentInfo = ({ docStatus }) => {
 
   return (
     <>
-      {docStatus !== variables.status.APPROVED && (
-        <Typography variant="h4" sx={{ my: 2 }}>
-          Kindly Deposit Rs.{' '}
-          {user.documents.find(
-            (doc: Document) =>
-              doc.title === documentsConfig.payment_proof.id &&
-              parseInt(doc.createdAt.split('-').join('')) <
-                beforeAugustFifteenthTwentyTwentyThree &&
-              doc.amount === 1000 &&
-              doc.status === 'APPROVED'
-          )
-            ? '199,000'
-            : user.documents.find(
-                (doc: Document) =>
-                  doc.title === documentsConfig.payment_proof.id &&
-                  parseInt(doc.createdAt.split('-').join('')) >
-                    beforeAugustFifteenthTwentyTwentyThree &&
-                  doc.amount === 2000 &&
-                  doc.status === 'APPROVED'
-              )
-            ? '198,000'
-            : '200,000'}
-          /- and upload the payment slip as a proof!
-        </Typography>
+      {user?.membership === variables.membership.BASIC &&
+        docStatus !== variables.status.APPROVED && (
+          <Typography variant="h4" sx={{ my: 2 }}>
+            Kindly Deposit Rs.{' '}
+            {user?.documents.find(
+              (doc: Documen) =>
+                doc.title === documentsConfig.payment_proof.id &&
+                parseInt(doc.createdAt.split('-').join('')) <
+                  beforeAugustFifteenthTwentyTwentyThree &&
+                doc.amount === 1000 &&
+                doc.status === 'APPROVED'
+            )
+              ? '199,000'
+              : user?.documents.find(
+                  (doc: Document) =>
+                    doc.title === documentsConfig.payment_proof.id &&
+                    parseInt(doc.createdAt.split('-').join('')) >
+                      beforeAugustFifteenthTwentyTwentyThree &&
+                    doc.amount === 2000 &&
+                    doc.status === 'APPROVED'
+                )
+              ? '198,000'
+              : '200,000'}
+            /- and upload the payment slip as a proof!
+          </Typography>
+        )}
+      {user?.membership === variables.membership.BASIC && (
+        <div
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 10,
+            marginBottom: 10
+          }}
+        >
+          <Button
+            style={{ marginRight: 20 }}
+            variant="contained"
+            onClick={() => {
+              showBankDetails();
+            }}
+          >
+            Bank Details
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              showUPIDetails();
+            }}
+          >
+            UPI
+          </Button>
+        </div>
       )}
-      <div
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 10,
-          marginBottom: 10
-        }}
-      >
-        <Button
-          style={{ marginRight: 20 }}
-          variant="contained"
-          onClick={() => {
-            showBankDetails();
-          }}
-        >
-          Bank Details
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            showUPIDetails();
-          }}
-        >
-          UPI
-        </Button>
-      </div>
       {isBankDetails && (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 100 }} aria-label="simple table">

@@ -10,6 +10,7 @@ import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import PaymentInfo from './paymentDetails';
+import variables from '@/config/variables';
 
 export const rows = [
   {
@@ -421,7 +422,7 @@ const InfoTab = () => {
   };
   return (
     <>
-      {!upgradeToAdvance ? (
+      {!upgradeToAdvance && user?.membership === variables.membership.BASIC ? (
         <>
           <Button
             variant="contained"
@@ -453,8 +454,10 @@ const InfoTab = () => {
               <span
                 style={{
                   color: paymentDocument
-                    ? (paymentDocument.status === 'APPROVED' && 'green') ||
-                      (paymentDocument.status === 'REJECTED' && 'red')
+                    ? (paymentDocument.status === variables.status.APPROVED &&
+                        'green') ||
+                      (paymentDocument.status === variables.status.REJECTED &&
+                        'red')
                     : ''
                 }}
               >
@@ -462,7 +465,8 @@ const InfoTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.membership === variables.membership.ADVANCE &&
+          user?.kyc === variables.status.APPROVED ? null : (
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -470,14 +474,14 @@ const InfoTab = () => {
                   component="label"
                   style={{
                     cursor: paymentDocument
-                      ? paymentDocument.status === 'APPROVED'
+                      ? paymentDocument.status === variables.status.APPROVED
                         ? 'not-allowed'
                         : 'pointer'
                       : 'pointer'
                   }}
                   color={
                     paymentDocument
-                      ? paymentDocument.status === 'APPROVED'
+                      ? paymentDocument.status === variables.status.APPROVED
                         ? 'secondary'
                         : 'primary'
                       : 'primary'
@@ -521,7 +525,7 @@ const InfoTab = () => {
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
           )}
-          {proofImage && (
+          {user?.membership === variables.membership.BASIC && proofImage && (
             <LoadingButton
               variant="contained"
               onClick={() => {

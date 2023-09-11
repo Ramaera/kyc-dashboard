@@ -41,7 +41,7 @@ function index() {
       agra: ''
     };
     let zeroKyc = false;
-    user.documents.map((doc: any) => {
+    user?.documents.map((doc: any) => {
       doc.title.includes('payment') &&
         doc.status === 'APPROVED' &&
         docs.push(doc);
@@ -135,7 +135,7 @@ function index() {
     ));
   }; */
   useEffect(() => {
-    console.log(paymentTotals, user.documents);
+    console.log(paymentTotals, user?.documents);
   }, [paymentTotals]);
 
   const allCertificates = () => {
