@@ -13,6 +13,7 @@ const initialState = {
     totalAdvanceSubscribers: 0,
     totalHajipurSubscribers: 0
   },
+
   isData: false
 };
 
@@ -38,6 +39,7 @@ export const allUSersSlice = createSlice({
     setNumbers: (state, action) => {
       state.totalNumbers = action.payload;
     },
+
     setAllAgencyList: (state, action) => {
       state.allAgencyList = action.payload;
     }

@@ -99,3 +99,11 @@ query{
   }
 }
 `);
+export const GET_PROJECT_AMOUNTS = gql(`
+query{
+  getProjectsPayment{
+    ProjectAgraAmountReceived
+    ProjectHajipurAmountReceived
+  }
+}
+`);

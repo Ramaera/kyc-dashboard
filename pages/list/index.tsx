@@ -19,7 +19,8 @@ function index() {
   const { data, refetch } = useQuery(GET_ALL_USERS, {
     variables: {
       skip: 0,
-      take: 5000
+      take: 5000,
+      input: { searchTerm: 'ADVANCE' }
     }
   });
 
