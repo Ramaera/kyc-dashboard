@@ -387,7 +387,7 @@ const InfoTab = ({ title }) => {
   }));
 
   const diff = projectAmount / AllProjectDetails[projectTitle][0];
-  console.log('', AllProjectDetails[projectTitle]);
+  // console.log('', AllProjectDetails[projectTitle]);
   const risedFundPer = diff * 100;
 
   const validateSubmit = (imgUrl) => {

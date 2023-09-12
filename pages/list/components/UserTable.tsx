@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import CachedIcon from '@mui/icons-material/Cached';
 import { useLazyQuery } from '@apollo/client';
 import { SEARCH_USERS } from '@/apollo/queries/auth';
+import toast, { Toaster } from 'react-hot-toast';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -108,12 +109,21 @@ const UserTable = ({ refetchData }) => {
   });
 
   let _usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   const [usersList, setUsersList] = useState(_usersList);
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalAdvance: 0,
     totalBasic: 0
   });
+
+  useEffect(() => {
+    setNumbers({
+      totalKYC: _numbers.totalSubscribers,
+      totalAdvance: _numbers.totalAdvanceSubscribers,
+      totalBasic: _numbers.totalBasicSubscribers
+    });
+  }, [_numbers]);
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,
@@ -128,39 +138,13 @@ const UserTable = ({ refetchData }) => {
 
   useEffect(() => {
     if (!data?.searchUsers[0]) {
-      // setUsersList([{ name: '' }]);
+      // toast.error('Not Found');
     } else if (data?.searchUsers[0]) {
       setUsersList(data.searchUsers);
     }
-  }, [data]);
+  }, [data?.searchUsers]);
   const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
-
-  const checkTotal = () => {
-    let totalKyc = 0;
-    let totalAdvance = 0;
-    let totalBasic = 0;
-    usersList.map((user) => {
-      if (user.role === variables.role.ADMIN) {
-        return;
-      }
-      if (user.role !== variables.role.ADMIN) {
-        totalKyc += 1;
-      }
-      if (user.membership === variables.membership.ADVANCE) totalAdvance += 1;
-      if (user.membership === variables.membership.BASIC) totalBasic += 1;
-    });
-    setNumbers({
-      ...numbers,
-      totalKYC: totalKyc,
-      totalAdvance: totalAdvance,
-      totalBasic: totalBasic
-    });
-  };
-
-  useEffect(() => {
-    checkTotal();
-  }, [usersList]);
 
   const membership = [
     {
@@ -678,6 +662,7 @@ const UserTable = ({ refetchData }) => {
             </Table>
           </TableContainer>
         )}
+        <Toaster position="bottom-center" reverseOrder={false} />
       </Card>
     </>
   );

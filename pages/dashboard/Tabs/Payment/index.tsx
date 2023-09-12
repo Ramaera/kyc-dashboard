@@ -102,7 +102,7 @@ const DocumentRow = ({
     //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
-        console.log('data.config.items[i].id', data.config.items[i].id);
+        // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);

@@ -38,7 +38,7 @@ export default function SignupCard() {
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
         setValidPWID(res.data[0]);
       })
       .catch((err) => {

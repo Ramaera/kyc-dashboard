@@ -135,13 +135,13 @@ function index() {
     ));
   }; */
   useEffect(() => {
-    console.log(paymentTotals, user?.documents);
+    // console.log(paymentTotals, user?.documents);
   }, [paymentTotals]);
 
   const allCertificates = () => {
     let certificates: any = [];
     Object.keys(paymentTotals).forEach((key, index) => {
-      console.log('paymentTotals[key]', paymentTotals[key]);
+      // console.log('paymentTotals[key]', paymentTotals[key]);
       if (paymentTotals[key]) {
         certificates.push(
           <Certificate

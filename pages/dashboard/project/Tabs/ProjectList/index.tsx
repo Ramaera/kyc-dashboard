@@ -41,11 +41,13 @@ const UserTable = ({ title }) => {
   const [page, setPage] = useState<number>(0);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
+  const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   const [numbers, setNumbers] = useState({
     total: 0,
     pending: 0,
     completed: 0
   });
+
   const [limit, setLimit] = useState<number>(20);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
@@ -223,7 +225,6 @@ const UserTable = ({ title }) => {
     });
     setNumbers({
       ...numbers,
-      total: total,
       pending: pending,
       completed: completed
     });
@@ -232,6 +233,13 @@ const UserTable = ({ title }) => {
   useEffect(() => {
     checkTotal();
   }, [usersList]);
+
+  useEffect(() => {
+    setNumbers((val) => ({
+      ...val,
+      total: _numbers[`total${title}Subscribers`]
+    }));
+  }, [_numbers]);
 
   return (
     <>

@@ -1,5 +1,7 @@
 import { GET_AGENCY_CODE, GetUser } from '@/apollo/queries/auth';
+import { GET_NUMBERS } from '@/apollo/queries/updateUser';
 import { useAppDispatch } from '@/hooks';
+import { setNumbers } from '@/state/slice/allUsersSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -8,11 +10,15 @@ import { useEffect, useState } from 'react';
 const RamaeraRouter = ({ children }) => {
   const router = useRouter();
   const userResp = useQuery(GetUser);
+  const allNumbers = useQuery(GET_NUMBERS);
   const agencyCode = useQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
 
   const dispatch = useAppDispatch();
+  if (allNumbers?.data?.getAllUsersCount) {
+    dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
+  }
   if (agencyCode?.data?.kycAgency.agencyCode) {
     dispatch(setAgencyCode(agencyCode.data.kycAgency.agencyCode));
   }

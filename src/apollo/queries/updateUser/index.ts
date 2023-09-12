@@ -87,3 +87,15 @@ query{
   }
 }
 `);
+
+export const GET_NUMBERS = gql(`
+query{
+  getAllUsersCount{
+    totalSubscribers
+    totalAgraSubscribers
+    totalBasicSubscribers
+    totalAdvanceSubscribers
+    totalHajipurSubscribers
+  }
+}
+`);
