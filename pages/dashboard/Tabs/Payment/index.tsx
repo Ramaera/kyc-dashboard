@@ -10,6 +10,7 @@ import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import PaymentInfo from './paymentDetails';
+import variables from '@/config/variables';
 
 export const rows = [
   {
@@ -268,16 +269,18 @@ const DocumentRow = ({
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
         <TableCell style={{ border: 'none' }}>
-          <LoadingButton
-            loading={isLoading}
-            // disabled={!isValidToClick()}
-            variant="contained"
-            onClick={() => {
-              handleDocumentUpload();
-            }}
-          >
-            Upload
-          </LoadingButton>
+          {user?.kyc !== variables.status.APPROVED && (
+            <LoadingButton
+              loading={isLoading}
+              // disabled={!isValidToClick()}
+              variant="contained"
+              onClick={() => {
+                handleDocumentUpload();
+              }}
+            >
+              Upload
+            </LoadingButton>
+          )}
         </TableCell>
       </TableRow>
       {moreRow <= 3 && (
@@ -449,7 +452,7 @@ const InfoTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -493,17 +496,19 @@ const InfoTab = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <LoadingButton
-                  loading={isLoading}
-                  fullWidth
-                  variant="contained"
-                  disabled={!isSubmitButtonEnalbed}
-                  onClick={() => {
-                    handlePaymentSubmit();
-                  }}
-                >
-                  Submit
-                </LoadingButton>
+                {user?.kyc !== variables.status.APPROVED && (
+                  <LoadingButton
+                    loading={isLoading}
+                    fullWidth
+                    variant="contained"
+                    disabled={!isSubmitButtonEnalbed}
+                    onClick={() => {
+                      handlePaymentSubmit();
+                    }}
+                  >
+                    Submit
+                  </LoadingButton>
+                )}
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>

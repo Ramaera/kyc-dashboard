@@ -20,6 +20,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { rows } from './documentData';
+import variables from '@/config/variables';
 
 const DocumentRow = ({ data, documents = [], user }) => {
   const theme = useTheme();
@@ -228,16 +229,18 @@ const DocumentRow = ({ data, documents = [], user }) => {
 
       <TableCell>{getActionCell()}</TableCell>
       <TableCell>
-        <LoadingButton
-          loading={isLoading}
-          disabled={!isValidToClick()}
-          variant="contained"
-          onClick={() => {
-            handleDocumentUpload();
-          }}
-        >
-          Upload
-        </LoadingButton>
+        {user?.kyc !== variables.status.APPROVED && (
+          <LoadingButton
+            loading={isLoading}
+            disabled={!isValidToClick()}
+            variant="contained"
+            onClick={() => {
+              handleDocumentUpload();
+            }}
+          >
+            Upload
+          </LoadingButton>
+        )}
       </TableCell>
 
       <TableCell>

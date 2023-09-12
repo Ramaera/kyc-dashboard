@@ -270,16 +270,18 @@ const DocumentRow = ({
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
         <TableCell style={{ border: 'none' }}>
-          <LoadingButton
-            loading={isLoading}
-            // disabled={!isValidToClick()}
-            variant="contained"
-            onClick={() => {
-              handleDocumentUpload();
-            }}
-          >
-            Upload
-          </LoadingButton>
+          {user?.kyc !== variables.status.APPROVED && (
+            <LoadingButton
+              loading={isLoading}
+              // disabled={!isValidToClick()}
+              variant="contained"
+              onClick={() => {
+                handleDocumentUpload();
+              }}
+            >
+              Upload
+            </LoadingButton>
+          )}
         </TableCell>
       </TableRow>
       {moreRow <= 3 && (
@@ -510,17 +512,19 @@ const InfoTab = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <LoadingButton
-                  loading={isLoading}
-                  fullWidth
-                  variant="contained"
-                  disabled={!isSubmitButtonEnalbed}
-                  onClick={() => {
-                    handlePaymentSubmit();
-                  }}
-                >
-                  Submit
-                </LoadingButton>
+                {user?.kyc !== variables.status.APPROVED && (
+                  <LoadingButton
+                    loading={isLoading}
+                    fullWidth
+                    variant="contained"
+                    disabled={!isSubmitButtonEnalbed}
+                    onClick={() => {
+                      handlePaymentSubmit();
+                    }}
+                  >
+                    Submit
+                  </LoadingButton>
+                )}
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
