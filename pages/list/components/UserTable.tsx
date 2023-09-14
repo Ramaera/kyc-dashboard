@@ -22,14 +22,13 @@ import {
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
+import { ALL_KYC_USERS, SEARCH_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import CachedIcon from '@mui/icons-material/Cached';
-import { useLazyQuery } from '@apollo/client';
-import { SEARCH_USERS } from '@/apollo/queries/auth';
-import toast, { Toaster } from 'react-hot-toast';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -93,14 +92,20 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 
-const UserTable = ({ refetchData }) => {
+const UserTable = () => {
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
   const [searchTextInput, setSearchTextInput] = useState('');
-  // const debouncedValue = useDebounce<string>(searchText, 250);
+  const allKycUsers = useQuery(ALL_KYC_USERS, {
+    variables: {
+      skip: 0,
+      take: 50,
+      input: { searchTerm: 'ADVANCE' }
+    }
+  });
 
   const [search, { data }] = useLazyQuery(SEARCH_USERS, {
     variables: {
@@ -108,14 +113,25 @@ const UserTable = ({ refetchData }) => {
     }
   });
 
-  let _usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  /* 
+  let _usersList = useSelector(
+    (state: any) => state.allUsers.allTheUsersForList
+  ); */
   let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
-  const [usersList, setUsersList] = useState(_usersList);
+  let _usersList = [];
+  const [usersList, setUsersList] = useState([]);
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalAdvance: 0,
     totalBasic: 0
   });
+
+  useEffect(() => {
+    if (allKycUsers.data) {
+      setUsersList(allKycUsers.data.allKycUser);
+      _usersList = allKycUsers.data.allKycUser;
+    }
+  }, [allKycUsers]);
 
   useEffect(() => {
     setNumbers({
@@ -377,14 +393,14 @@ const UserTable = ({ refetchData }) => {
               </Box>
             )}
           </Box>
-          <Box
+          {/*    <Box
             sx={{ cursor: 'pointer' }}
             onClick={refetchData}
             my={4}
             ml={'auto'}
           >
             <CachedIcon />
-          </Box>
+          </Box> */}
         </Box>
 
         {(currentSelectedButton.includes('totalAvdance') ||
