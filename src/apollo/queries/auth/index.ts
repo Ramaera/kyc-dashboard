@@ -172,37 +172,26 @@ query($skip: Int! $take: Int!) {
 export const ALL_KYC_USERS = gql(`
 query($skip: Int!, $take: Int!, $input: SearchMembershipInput!) {
   allKycUser(skip: $skip, take: $take, input: $input) {
-    alternate_mobile_number
     createdAt
     date_of_birth
     demat_account
     membership
     documents {
-      createdAt
-      updatedAt
-      id
+     
       title
-      url
-      userId
+      
       status
-      amount
-      utrNo
+      
     }
-    nominee {
-      id
-      name
-      relationship
-    }
-    email
+   
+   
     father_or_husband_name
     id
     kyc
     mobile_number
     name
-    role
+   
     pw_id
-    rm_id
-    updatedAt
   }
 }
 `);

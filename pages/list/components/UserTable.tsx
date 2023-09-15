@@ -98,12 +98,22 @@ const UserTable = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
+  const [kycList, setKycList] = useState<string | null>();
+  const [currentSelectedButton, setCurrentSelectedButton] =
+    useState<string>('');
+
   const [searchTextInput, setSearchTextInput] = useState('');
   const allKycUsers = useQuery(ALL_KYC_USERS, {
     variables: {
-      skip: 0,
-      take: 50,
-      input: { searchTerm: 'ADVANCE' }
+      skip: page * limit,
+      take: limit,
+      input: {
+        searchTerm: currentSelectedButton.includes('totalAvdance')
+          ? 'ADVANCE'
+          : currentSelectedButton.includes('totalBasic')
+          ? 'BASIC'
+          : 'ADVANCE'
+      }
     }
   });
 
@@ -112,7 +122,7 @@ const UserTable = () => {
       searchTerm: searchText
     }
   });
-
+  console.log(allKycUsers.data);
   /* 
   let _usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
@@ -145,11 +155,13 @@ const UserTable = () => {
     hajipur: null,
     agra: null
   });
-  const [kycList, setKycList] = useState<string | null>();
-  const [currentSelectedButton, setCurrentSelectedButton] =
-    useState<string>('');
   useEffect(() => {
-    search();
+    if (
+      currentSelectedButton.includes('totalAvdance') ||
+      currentSelectedButton.includes('totalBasic')
+    ) {
+      search();
+    }
   }, [searchText]);
 
   useEffect(() => {
@@ -498,7 +510,12 @@ const UserTable = () => {
           <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
             <TablePagination
               component="div"
-              count={filteredUsers.length}
+              count={
+                currentSelectedButton.includes('totalAvdance')
+                  ? numbers.totalAdvance
+                  : currentSelectedButton.includes('totalBasic') &&
+                    numbers.totalBasic
+              }
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleLimitChange}
               page={page}

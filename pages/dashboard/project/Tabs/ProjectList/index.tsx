@@ -56,18 +56,18 @@ const UserTable = ({ title }) => {
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const dispatch = useDispatch();
 
-  const getAllUser = useQuery(GET_ALL_USERS, {
+  /*  const getAllUser = useQuery(GET_ALL_USERS, {
     variables: {
       skip: 0,
       take: 5000
     }
-  });
-
+  }); */
+  /* 
   if (getAllUser.data && !usersList[0]) {
     dispatch(setAllTheUsers(getAllUser.data.getAllUser));
     dispatch(gotData(true));
   }
-
+ */
   const checkProject = (docs, projectTitle) => {
     let statuses = [];
 
