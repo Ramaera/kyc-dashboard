@@ -174,6 +174,10 @@ const UserTable = () => {
   const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
+  useEffect(() => {
+    setLimit(100);
+  }, [currentSelectedButton]);
+
   const membership = [
     {
       id: 'all',
@@ -305,7 +309,9 @@ const UserTable = () => {
   const handleLimitChange = (
     event: ChangeEvent<HTMLInputElement | any>
   ): void => {
-    setLimit(parseInt(event.target.value === 'All' ? -1 : event.target.value));
+    setLimit(
+      parseInt(event.target.value === 'All' ? 5000 : event.target.value)
+    );
   };
 
   const censorMe = (txt) => {
