@@ -2,7 +2,6 @@ import { GET_ALL_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
-import { setAllTheUsers, gotData } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -43,6 +42,7 @@ const UserTable = ({ title }) => {
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
+  const [usersList, setUsersList] = useState([]);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
   const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
@@ -53,21 +53,21 @@ const UserTable = ({ title }) => {
   });
 
   const [limit, setLimit] = useState<number>(20);
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const dispatch = useDispatch();
 
-  /*  const getAllUser = useQuery(GET_ALL_USERS, {
+  const getAllUser = useQuery(GET_ALL_USERS, {
     variables: {
       skip: 0,
       take: 5000
     }
-  }); */
-  /* 
-  if (getAllUser.data && !usersList[0]) {
-    dispatch(setAllTheUsers(getAllUser.data.getAllUser));
-    dispatch(gotData(true));
-  }
- */
+  });
+
+  useEffect(() => {
+    if (getAllUser?.data?.getAllUser) {
+      setUsersList(getAllUser.data.getAllUser);
+    }
+  }, [getAllUser]);
+
   const checkProject = (docs, projectTitle) => {
     let statuses = [];
 

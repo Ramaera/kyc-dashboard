@@ -371,6 +371,7 @@ const InfoTab = ({ title }) => {
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isHidden, setHidden] = useState({ project: false });
   const [isEnrolled, setEnrolled] = useState(false);
+  const [loadList, startLoadingList] = useState(false);
   let projectTitle = title + 'ProjectDetails';
   const amountFromProject = `total${title}Amount`;
   const projectAmount = useSelector(
@@ -774,7 +775,31 @@ const InfoTab = ({ title }) => {
           ))}
         </>
       )}
-      {isEnrolled && <ProjectList title={title} />}
+      {isEnrolled && (
+        <>
+          {!loadList ? (
+            <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+              <Button
+                variant="outlined"
+                sx={{
+                  textTransform: 'uppercase',
+                  width: '490px',
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%'
+                  }
+                }}
+                onClick={() => {
+                  startLoadingList(true);
+                }}
+              >
+                Total Enrolled {title}
+              </Button>
+            </Box>
+          ) : (
+            <ProjectList title={title} />
+          )}
+        </>
+      )}
     </>
   );
 };
