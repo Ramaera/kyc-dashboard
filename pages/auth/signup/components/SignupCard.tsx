@@ -48,11 +48,11 @@ export default function SignupCard() {
   const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
-    /*  if (!validPWID) {
+    if (!validPWID) {
       toast.error('Please Enter a valid PWID');
 
       return;
-    } */
+    }
     if (!PWId) {
       toast.error('PW ID is not valid!');
 
@@ -128,7 +128,7 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              //checkPWID(e.target.value);
+              checkPWID(e.target.value);
             }}
           />
 
