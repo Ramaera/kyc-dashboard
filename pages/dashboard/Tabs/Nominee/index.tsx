@@ -4,6 +4,7 @@ import {
   UPSERTNOMINEE
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
@@ -245,7 +246,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Button
               variant="contained"
               style={{
@@ -313,7 +314,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Button
               variant="contained"
               style={{

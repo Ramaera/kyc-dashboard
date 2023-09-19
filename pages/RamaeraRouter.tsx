@@ -1,6 +1,11 @@
-import { GET_AGENCY_CODE, GET_ALL_USERS, GetUser } from '@/apollo/queries/auth';
+import { GET_AGENCY_CODE, GetUser } from '@/apollo/queries/auth';
+import { GET_NUMBERS, GET_PROJECT_AMOUNTS } from '@/apollo/queries/updateUser';
 import { useAppDispatch } from '@/hooks';
-import { setAllTheUsers, gotData } from '@/state/slice/allUsersSlice';
+import {
+  setNumbers,
+  setTotalAgraAmount,
+  setTotalHajipurAmount
+} from '@/state/slice/allUsersSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -9,11 +14,31 @@ import { useEffect, useState } from 'react';
 const RamaeraRouter = ({ children }) => {
   const router = useRouter();
   const userResp = useQuery(GetUser);
+  const allNumbers = useQuery(GET_NUMBERS);
+  const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
   const agencyCode = useQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
 
   const dispatch = useAppDispatch();
+  if (allProjectAmounts?.data?.getProjectsPayment) {
+    dispatch(
+      setTotalHajipurAmount(
+        allProjectAmounts?.data?.getProjectsPayment.ProjectHajipurAmountReceived
+      )
+    );
+    dispatch(
+      setTotalAgraAmount(
+        allProjectAmounts?.data?.getProjectsPayment.ProjectAgraAmountReceived
+      )
+    );
+  }
+  if (allNumbers?.data?.getAllUsersCount) {
+    dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
+  }
+  if (allNumbers?.data?.getAllUsersCount) {
+    dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
+  }
   if (agencyCode?.data?.kycAgency.agencyCode) {
     dispatch(setAgencyCode(agencyCode.data.kycAgency.agencyCode));
   }

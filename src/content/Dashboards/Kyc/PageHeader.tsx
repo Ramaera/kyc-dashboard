@@ -100,7 +100,7 @@ function PageHeader() {
                 Welcome, {user?.name ? user?.name : user?.rm_id}!
               </Typography>
               <Typography variant="h5" component="h5" align="left">
-              Share Holder Type :{' '}
+                Share Holder Type :{' '}
                 <Badge
                   badgeContent={user?.membership}
                   sx={{

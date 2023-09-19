@@ -44,9 +44,8 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
-  const dispatch = useDispatch();
   const agencyCode = useSelector((state: any) => state.user?.agencyCode);
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   const mobile = useMediaQuery('(max-width:600px)');
 
   const [numbers, setNumbers] = useState({
@@ -54,58 +53,18 @@ function Header() {
     totalHajipur: 0,
     totalAgra: 0
   });
+  useEffect(() => {
+    setNumbers({
+      totalKYC: _numbers.totalSubscribers,
+      totalHajipur: _numbers.totalHajipurSubscribers,
+      totalAgra: _numbers.totalAgraSubscribers
+    });
+  }, [_numbers]);
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const router = useRouter();
   const user = useAppSelector((state) => state.user?.data);
 
-  const checkTotal = () => {
-    let totalKycUsers = 0;
-    let totalHajipurUsers = 0;
-    let totalAgraUsers = 0;
-    usersList.map((user) => {
-      let totalHajipur = 0;
-      let totalAgra = 0;
-
-      if (user.role === variables.role.ADMIN) {
-        return;
-      }
-      if (user.role !== variables.role.ADMIN) {
-        totalKycUsers += 1;
-      }
-
-      user?.documents?.map((doc) => {
-        if (
-          doc.title
-            .toLowerCase()
-            .includes(variables.project.HAJIPUR.toLowerCase())
-        ) {
-          totalHajipur = +1;
-        }
-        if (
-          doc.title.toLowerCase().includes(variables.project.AGRA.toLowerCase())
-        ) {
-          totalAgra = +1;
-        }
-      });
-      if (totalHajipur) {
-        totalHajipurUsers += 1;
-      }
-      if (totalAgra) {
-        totalAgraUsers += 1;
-      }
-    });
-    setNumbers({
-      ...numbers,
-      totalKYC: totalKycUsers,
-      totalAgra: totalAgraUsers,
-      totalHajipur: totalHajipurUsers
-    });
-  };
-
-  useEffect(() => {
-    checkTotal();
-  }, [usersList]);
   return (
     <HeaderWrapper
       display="flex"

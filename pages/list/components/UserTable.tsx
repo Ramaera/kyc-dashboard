@@ -22,12 +22,13 @@ import {
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
+import { ALL_KYC_USERS, SEARCH_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { useDebounce } from 'usehooks-ts';
-import CachedIcon from '@mui/icons-material/Cached';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -46,15 +47,15 @@ interface Filters {
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
-const applyFilters = (users: User[], filters: Filters, searchText): any => {
+const applyFilters = (users: User[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
-    if (
+    /*  if (
       !user?.name?.toLowerCase().includes(searchText) &&
       !user?.pw_id?.toLowerCase().includes(searchText)
     ) {
       matches = false;
-    }
+    } */
     if (user.role === variables.role.ADMIN) {
       matches = false;
     }
@@ -91,56 +92,91 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 
-const UserTable = ({ refetchData }) => {
+const UserTable = () => {
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
-  const debouncedValue = useDebounce<string>(searchText, 250);
+  const [kycList, setKycList] = useState<string | null>();
+  const [currentSelectedButton, setCurrentSelectedButton] =
+    useState<string>('');
 
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const [searchTextInput, setSearchTextInput] = useState('');
+  const allKycUsers = useQuery(ALL_KYC_USERS, {
+    variables: {
+      skip: page * limit,
+      take: limit,
+      input: {
+        searchTerm: currentSelectedButton.includes('totalAvdance')
+          ? 'ADVANCE'
+          : currentSelectedButton.includes('totalBasic')
+          ? 'BASIC'
+          : 'ADVANCE'
+      }
+    }
+  });
+
+  const [search, { data }] = useLazyQuery(SEARCH_USERS, {
+    variables: {
+      searchTerm: searchText
+    }
+  });
+  console.log(allKycUsers.data);
+  /* 
+  let _usersList = useSelector(
+    (state: any) => state.allUsers.allTheUsersForList
+  ); */
+  let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
+  let _usersList = [];
+  const [usersList, setUsersList] = useState([]);
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalAdvance: 0,
     totalBasic: 0
   });
+
+  useEffect(() => {
+    if (allKycUsers.data) {
+      setUsersList(allKycUsers.data.allKycUser);
+      _usersList = allKycUsers.data.allKycUser;
+    }
+  }, [allKycUsers]);
+
+  useEffect(() => {
+    setNumbers({
+      totalKYC: _numbers.totalSubscribers,
+      totalAdvance: _numbers.totalAdvanceSubscribers,
+      totalBasic: _numbers.totalBasicSubscribers
+    });
+  }, [_numbers]);
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,
     agra: null
   });
-  const [kycList, setKycList] = useState<string | null>();
-  const [currentSelectedButton, setCurrentSelectedButton] =
-    useState<string>('');
-  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
-  const paginatedUsers = applyPagination(filteredUsers, page, limit);
-
-  const checkTotal = () => {
-    let totalKyc = 0;
-    let totalAdvance = 0;
-    let totalBasic = 0;
-    usersList.map((user) => {
-      if (user.role === variables.role.ADMIN) {
-        return;
-      }
-      if (user.role !== variables.role.ADMIN) {
-        totalKyc += 1;
-      }
-      if (user.membership === variables.membership.ADVANCE) totalAdvance += 1;
-      if (user.membership === variables.membership.BASIC) totalBasic += 1;
-    });
-    setNumbers({
-      ...numbers,
-      totalKYC: totalKyc,
-      totalAdvance: totalAdvance,
-      totalBasic: totalBasic
-    });
-  };
+  useEffect(() => {
+    if (
+      currentSelectedButton.includes('totalAvdance') ||
+      currentSelectedButton.includes('totalBasic')
+    ) {
+      search();
+    }
+  }, [searchText]);
 
   useEffect(() => {
-    checkTotal();
-  }, [usersList]);
+    if (!data?.searchUsers[0]) {
+      // toast.error('Not Found');
+    } else if (data?.searchUsers[0]) {
+      setUsersList(data.searchUsers);
+    }
+  }, [data?.searchUsers]);
+  const filteredUsers = applyFilters(usersList, filters);
+  const paginatedUsers = applyPagination(filteredUsers, page, limit);
+
+  useEffect(() => {
+    setLimit(100);
+  }, [currentSelectedButton]);
 
   const membership = [
     {
@@ -273,7 +309,9 @@ const UserTable = ({ refetchData }) => {
   const handleLimitChange = (
     event: ChangeEvent<HTMLInputElement | any>
   ): void => {
-    setLimit(parseInt(event.target.value === 'All' ? -1 : event.target.value));
+    setLimit(
+      parseInt(event.target.value === 'All' ? 5000 : event.target.value)
+    );
   };
 
   const censorMe = (txt) => {
@@ -373,14 +411,14 @@ const UserTable = ({ refetchData }) => {
               </Box>
             )}
           </Box>
-          <Box
+          {/*    <Box
             sx={{ cursor: 'pointer' }}
             onClick={refetchData}
             my={4}
             ml={'auto'}
           >
             <CachedIcon />
-          </Box>
+          </Box> */}
         </Box>
 
         {(currentSelectedButton.includes('totalAvdance') ||
@@ -393,11 +431,22 @@ const UserTable = ({ refetchData }) => {
                     fullWidth
                     label="Search"
                     variant="outlined"
-                    value={searchText}
+                    value={searchTextInput}
                     onChange={(e) => {
-                      setSearchText(e.target.value);
+                      setSearchTextInput(e.target.value);
+                      if (e.target.value === '') {
+                        setUsersList(_usersList);
+                      }
                     }}
                   />
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setSearchText(searchTextInput);
+                    }}
+                  >
+                    Search
+                  </Button>
                 </Box>
                 <Box
                   width={480}
@@ -467,7 +516,12 @@ const UserTable = ({ refetchData }) => {
           <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
             <TablePagination
               component="div"
-              count={filteredUsers.length}
+              count={
+                currentSelectedButton.includes('totalAvdance')
+                  ? numbers.totalAdvance
+                  : currentSelectedButton.includes('totalBasic') &&
+                    numbers.totalBasic
+              }
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleLimitChange}
               page={page}
@@ -647,6 +701,7 @@ const UserTable = ({ refetchData }) => {
             </Table>
           </TableContainer>
         )}
+        <Toaster position="bottom-center" reverseOrder={false} />
       </Card>
     </>
   );

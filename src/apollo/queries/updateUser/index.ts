@@ -87,3 +87,23 @@ query{
   }
 }
 `);
+
+export const GET_NUMBERS = gql(`
+query{
+  getAllUsersCount{
+    totalSubscribers
+    totalAgraSubscribers
+    totalBasicSubscribers
+    totalAdvanceSubscribers
+    totalHajipurSubscribers
+  }
+}
+`);
+export const GET_PROJECT_AMOUNTS = gql(`
+query{
+  getProjectsPayment{
+    ProjectAgraAmountReceived
+    ProjectHajipurAmountReceived
+  }
+}
+`);

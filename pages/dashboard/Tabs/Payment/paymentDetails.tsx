@@ -50,7 +50,6 @@ const PaymentInfo = ({ docStatus }) => {
     setBankDetails(false);
     setUPIDetails(true);
   };
-  console.log(docStatus);
   return (
     <>
       {docStatus !== variables.status.APPROVED && (

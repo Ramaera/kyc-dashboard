@@ -4,6 +4,7 @@ import {
   UPDATEUSERDETAILS
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
@@ -160,7 +161,7 @@ const DematTab = () => {
           </span>
         </Typography>
       )}
-      {user?.kyc === 'APPROVED' ? null : (
+      {user?.kyc !== variables.status.APPROVED && (
         <Grid container pt={3} pb={2} pr={2} spacing={2}>
           <Grid item xs={12} sm={6} md={4} lg={3.5}>
             <Button

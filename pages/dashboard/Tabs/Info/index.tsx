@@ -1,8 +1,9 @@
 import { UPDATEUSERDETAILS } from '@/apollo/queries/auth';
-import { useAppSelector, useAppDispatch } from '@/hooks';
+import variables from '@/config/variables';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import { useMutation } from '@apollo/client';
-import { DesktopDatePicker, LoadingButton } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -34,7 +35,6 @@ const InfoTab = () => {
     const mobileNumberRegex = /^\d{10}$/;
     return mobileNumberRegex.test(mobile_number);
   };
-
   const handleSubmit = async () => {
     if (!validateMobileNumber(mobileNumber)) {
       setErrors({
@@ -228,7 +228,7 @@ const InfoTab = () => {
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        {user?.kyc === 'APPROVED' ? null : (
+        {user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={4}>
             <Box component="form">
               <LoadingButton

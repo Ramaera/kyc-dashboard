@@ -1,5 +1,8 @@
+import { GET_ALL_USERS } from '@/apollo/queries/auth';
+import Loading from '@/components/Loading';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -20,7 +23,7 @@ import {
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface Filters {
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
@@ -39,15 +42,31 @@ const UserTable = ({ title }) => {
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
+  const [usersList, setUsersList] = useState([]);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
+  const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   const [numbers, setNumbers] = useState({
     total: 0,
     pending: 0,
     completed: 0
   });
+
   const [limit, setLimit] = useState<number>(20);
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const dispatch = useDispatch();
+
+  const getAllUser = useQuery(GET_ALL_USERS, {
+    variables: {
+      skip: 0,
+      take: 5000
+    }
+  });
+
+  useEffect(() => {
+    if (getAllUser?.data?.getAllUser) {
+      setUsersList(getAllUser.data.getAllUser);
+    }
+  }, [getAllUser]);
 
   const checkProject = (docs, projectTitle) => {
     let statuses = [];
@@ -75,7 +94,7 @@ const UserTable = ({ title }) => {
         matches = false;
       }
       if (
-        !user.documents.find((doc) =>
+        !user?.documents.find((doc) =>
           doc.title.toLowerCase().includes(title.toLowerCase())
         )
       ) {
@@ -101,43 +120,6 @@ const UserTable = ({ title }) => {
   });
   const filteredUsers = applyFilters(usersList, filters);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
-
-  const membership = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'ADVANCE',
-      name: 'ADVANCE'
-    },
-    {
-      id: 'BASIC',
-      name: 'BASIC'
-    }
-  ];
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'NOT_INITIALIZED',
-      name: 'Not Started'
-    },
-    {
-      id: 'REJECTED',
-      name: 'Rejected'
-    },
-    {
-      id: 'ONGOING',
-      name: 'Ongoing'
-    },
-    {
-      id: 'APPROVED',
-      name: 'Approved'
-    }
-  ];
 
   const handleMembershipChange = (val) => {
     let value = null;
@@ -191,7 +173,7 @@ const UserTable = ({ title }) => {
         let totalProject = 0;
         let totalPending = 0;
         let totalCompleted = 0;
-        user.documents.map((doc) => {
+        user?.documents.map((doc) => {
           if (doc.title.toLowerCase().includes(title.toLowerCase())) {
             totalProject = +1;
           }
@@ -223,7 +205,6 @@ const UserTable = ({ title }) => {
     });
     setNumbers({
       ...numbers,
-      total: total,
       pending: pending,
       completed: completed
     });
@@ -233,6 +214,16 @@ const UserTable = ({ title }) => {
     checkTotal();
   }, [usersList]);
 
+  useEffect(() => {
+    setNumbers((val) => ({
+      ...val,
+      total: _numbers[`total${title}Subscribers`]
+    }));
+  }, [_numbers]);
+
+  if (!usersList[0]) {
+    return <Loading />;
+  }
   return (
     <>
       <Card sx={{ mb: 4 }}>
