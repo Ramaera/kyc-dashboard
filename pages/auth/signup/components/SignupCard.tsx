@@ -21,7 +21,7 @@ export default function SignupCard() {
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
-  const [validPWID, setValidPWID] = React.useState<any>();
+  const [validPWID, setValidPWID] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState(false);
 
   const checkPWID = (text: any) => {
@@ -38,8 +38,13 @@ export default function SignupCard() {
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        // console.log(res.data[0]);
-        setValidPWID(res.data[0]);
+        setValidPWID(
+          res.data[0]['AC_Status'] === 'InActive'
+            ? false
+            : res.data[0]['AC_Status'] === 'Active'
+            ? true
+            : false
+        );
       })
       .catch((err) => {
         console.log('ERROR: ====', err);
