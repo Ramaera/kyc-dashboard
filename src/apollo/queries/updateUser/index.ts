@@ -99,6 +99,12 @@ query{
   }
 }
 `);
+export const GET_RLI = gql(`
+query{
+  ChangeAmountOfRamaeraLegalInfoTech{name}
+}
+`);
+
 export const GET_PROJECT_AMOUNTS = gql(`
 query{
   getProjectsPayment{
