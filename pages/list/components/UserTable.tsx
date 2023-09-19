@@ -7,21 +7,22 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Pagination,
   Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   TextField,
   Typography,
+  useMediaQuery,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-
 import { ALL_KYC_USERS, SEARCH_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
 import variables from '@/config/variables';
@@ -84,18 +85,20 @@ const applyFilters = (users: User[], filters: Filters): any => {
   });
 };
 
-const applyPagination = (
+/* const applyPagination = (
   users: User[],
   page: number,
   limit: number
 ): User[] => {
   return users.slice(page * limit, page * limit + limit);
-};
+}; */
 
 const UserTable = () => {
+  const matches = useMediaQuery('(min-width:600px)');
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(100);
   const [searchText, setSearchText] = useState('');
   const [kycList, setKycList] = useState<string | null>();
@@ -122,7 +125,7 @@ const UserTable = () => {
       searchTerm: searchText
     }
   });
-  console.log(allKycUsers.data);
+  // console.log(allKycUsers.data);
   /* 
   let _usersList = useSelector(
     (state: any) => state.allUsers.allTheUsersForList
@@ -172,10 +175,12 @@ const UserTable = () => {
     }
   }, [data?.searchUsers]);
   const filteredUsers = applyFilters(usersList, filters);
-  const paginatedUsers = applyPagination(filteredUsers, page, limit);
+  // const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   useEffect(() => {
     setLimit(100);
+    setSearchText('');
+    setSearchTextInput('');
   }, [currentSelectedButton]);
 
   const membership = [
@@ -302,9 +307,9 @@ const UserTable = () => {
       agra: value
     }));
   };
-  const handlePageChange = (_event: any, newPage: number): void => {
+  /*   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
-  };
+  }; */
 
   const handleLimitChange = (
     event: ChangeEvent<HTMLInputElement | any>
@@ -434,9 +439,6 @@ const UserTable = () => {
                     value={searchTextInput}
                     onChange={(e) => {
                       setSearchTextInput(e.target.value);
-                      if (e.target.value === '') {
-                        setUsersList(_usersList);
-                      }
                     }}
                   />
                   <Button
@@ -506,28 +508,60 @@ const UserTable = () => {
                 </Box>
               </Box>
             }
-            title="DASHBOARD"
+            title={matches ? 'DASHBOARD' : ''}
           />
         )}
+
         <Divider />
 
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
-          <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
-            <TablePagination
-              component="div"
-              count={
-                currentSelectedButton.includes('totalAvdance')
-                  ? numbers.totalAdvance
-                  : currentSelectedButton.includes('totalBasic') &&
-                    numbers.totalBasic
-              }
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleLimitChange}
-              page={page}
-              rowsPerPage={limit}
-              rowsPerPageOptions={[20, 100, 200, 'All']}
-            />
+          <Box
+            p={2}
+            gap={2}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Stack spacing={2}>
+              <Pagination
+                count={Math.ceil(
+                  (currentSelectedButton.includes('Avdance') &&
+                    numbers.totalAdvance / limit) ||
+                    (currentSelectedButton.includes('Basic') &&
+                      numbers.totalBasic / limit)
+                )}
+                page={currentPage}
+                color="primary"
+                onChange={(event, selectedPage) => {
+                  setCurrentPage(selectedPage);
+                  setPage(selectedPage - 1);
+                  setSearchText('');
+                  setSearchTextInput('');
+                }}
+              />
+            </Stack>
+            <Box width={80} display={'flex'} gap={'10px'}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Rows</InputLabel>
+                <Select
+                  value={limit}
+                  onChange={(e) => {
+                    if (e.target.value === 5000) {
+                      setCurrentPage(1);
+                    }
+                    setLimit(e.target.value);
+                  }}
+                  label="Rows"
+                  fullWidth
+                >
+                  <MenuItem value={20}>20</MenuItem>
+                  <MenuItem value={100}>100</MenuItem>
+                  <MenuItem value={5000}>All</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
             {/*  <DownloadTableExcel
               filename={'KYC_LIST'}
               sheet={'KYC_LIST'}
@@ -556,7 +590,7 @@ const UserTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {paginatedUsers.map((user) => {
+                {filteredUsers.map((user) => {
                   if (user?.membership === kycList) {
                     return;
                   }
