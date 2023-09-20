@@ -41,9 +41,6 @@ const RamaeraRouter = ({ children }) => {
   if (allNumbers?.data?.getAllUsersCount) {
     dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
   }
-  if (allNumbers?.data?.getAllUsersCount) {
-    dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
-  }
   if (agencyCode?.data?.kycAgency.agencyCode) {
     dispatch(setAgencyCode(agencyCode.data.kycAgency.agencyCode));
   }

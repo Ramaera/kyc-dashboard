@@ -79,7 +79,7 @@ function Forms() {
           docs="https://material-ui.com/components/text-fields/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

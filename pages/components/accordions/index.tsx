@@ -31,7 +31,7 @@ function Accordions() {
           docs="https://material-ui.com/components/accordion/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"
