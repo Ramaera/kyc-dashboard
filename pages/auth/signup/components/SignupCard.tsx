@@ -78,7 +78,7 @@ export default function SignupCard() {
       try {
         const resp = await signup({
           variables: {
-            pw_id: PWId,
+            pw_id: PWId.toUpperCase(),
             membership: membership,
             password: password,
             referralAgencyCode: referral
