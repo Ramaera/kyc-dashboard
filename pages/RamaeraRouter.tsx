@@ -1,5 +1,9 @@
 import { GET_AGENCY_CODE, GetUser } from '@/apollo/queries/auth';
-import { GET_NUMBERS, GET_PROJECT_AMOUNTS } from '@/apollo/queries/updateUser';
+import {
+  GET_NUMBERS,
+  GET_PROJECT_AMOUNTS,
+  GET_RLI
+} from '@/apollo/queries/updateUser';
 import { useAppDispatch } from '@/hooks';
 import {
   setNumbers,
@@ -14,6 +18,7 @@ import { useEffect, useState } from 'react';
 const RamaeraRouter = ({ children }) => {
   const router = useRouter();
   const userResp = useQuery(GetUser);
+  const RamaLegalIT = useQuery(GET_RLI);
   const allNumbers = useQuery(GET_NUMBERS);
   const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
   const agencyCode = useQuery(GET_AGENCY_CODE, {
@@ -32,9 +37,6 @@ const RamaeraRouter = ({ children }) => {
         allProjectAmounts?.data?.getProjectsPayment.ProjectAgraAmountReceived
       )
     );
-  }
-  if (allNumbers?.data?.getAllUsersCount) {
-    dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
   }
   if (allNumbers?.data?.getAllUsersCount) {
     dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));

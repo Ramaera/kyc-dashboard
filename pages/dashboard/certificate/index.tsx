@@ -180,7 +180,7 @@ function index() {
       <Head>
         <title>Certificate</title>
       </Head>
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
+      <Container maxWidth={false} sx={{ mt: 2 }}>
         <Card variant="outlined">
           <CardHeader
             title={'CERTIFICATE'}

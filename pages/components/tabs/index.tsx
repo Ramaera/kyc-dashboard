@@ -70,7 +70,7 @@ function TabsDemo() {
           docs="https://material-ui.com/components/tabs/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

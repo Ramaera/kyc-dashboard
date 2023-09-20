@@ -21,7 +21,7 @@ export default function SignupCard() {
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
-  const [validPWID, setValidPWID] = React.useState<any>();
+  const [validPWID, setValidPWID] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState(false);
 
   const checkPWID = (text: any) => {
@@ -38,8 +38,13 @@ export default function SignupCard() {
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        // console.log(res.data[0]);
-        setValidPWID(res.data[0]);
+        setValidPWID(
+          res.data[0]['AC_Status'] === 'InActive'
+            ? false
+            : res.data[0]['AC_Status'] === 'Active'
+            ? true
+            : false
+        );
       })
       .catch((err) => {
         console.log('ERROR: ====', err);
@@ -48,11 +53,11 @@ export default function SignupCard() {
   const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
-    /*  if (!validPWID) {
+    if (!validPWID) {
       toast.error('Please Enter a valid PWID');
 
       return;
-    } */
+    }
     if (!PWId) {
       toast.error('PW ID is not valid!');
 
@@ -73,7 +78,7 @@ export default function SignupCard() {
       try {
         const resp = await signup({
           variables: {
-            pw_id: PWId,
+            pw_id: PWId.toUpperCase(),
             membership: membership,
             password: password,
             referralAgencyCode: referral
@@ -128,7 +133,7 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              //checkPWID(e.target.value);
+              checkPWID(e.target.value);
             }}
           />
 

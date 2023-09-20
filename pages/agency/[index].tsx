@@ -144,7 +144,7 @@ function DashboardTasks() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <TabsContainerWrapper>
           <Tabs
             onChange={handleTabsChange}

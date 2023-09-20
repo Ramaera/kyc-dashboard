@@ -107,7 +107,7 @@ function Modals() {
           docs="https://material-ui.com/components/dialogs/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

@@ -44,7 +44,7 @@ function ChangePassword() {
     <ProtectedSSRoute>
       <Toaster position="bottom-center" reverseOrder={false} />
 
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
+      <Container maxWidth={false} sx={{ mt: 2 }}>
         <Card variant="outlined">
           <Grid maxWidth={500} mx={'auto'}>
             <Box

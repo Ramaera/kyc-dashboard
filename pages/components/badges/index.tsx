@@ -52,7 +52,7 @@ function Badges() {
           docs="https://material-ui.com/components/badges/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

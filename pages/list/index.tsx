@@ -11,7 +11,7 @@ function index() {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <Container sx={{ mt: 2 }} maxWidth="lg">
+      <Container sx={{ mt: 2 }} maxWidth={false}>
         <UserTable />
       </Container>
       <Footer />

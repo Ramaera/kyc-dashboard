@@ -91,7 +91,7 @@ const NextJsAvatar = styled(Box)(
 
 function Hero() {
   return (
-    <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
+    <Container maxWidth={false} sx={{ textAlign: 'center' }}>
       <Grid
         spacing={{ xs: 6, md: 10 }}
         justifyContent="center"
