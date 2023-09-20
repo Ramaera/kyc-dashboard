@@ -77,7 +77,7 @@ function Overview() {
       </HeaderWrapper>
       <Hero /> */}
 
-      <Container maxWidth="lg" sx={{ mt: 8 }}></Container>
+      <Container maxWidth={false} sx={{ mt: 8 }}></Container>
     </OverviewWrapper>
   );
 }

@@ -29,7 +29,7 @@ function ManagementUserProfile() {
       <Head>
         <title>User Details - Management</title>
       </Head>
-      <Container sx={{ mt: 3 }} maxWidth="lg">
+      <Container sx={{ mt: 3 }} maxWidth={false}>
         <Grid
           container
           direction="row"
