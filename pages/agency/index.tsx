@@ -66,7 +66,7 @@ function DashboardTasks() {
           Agency Dashboard
         </Typography>
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <UserTable />
       </Container>
       <Footer />

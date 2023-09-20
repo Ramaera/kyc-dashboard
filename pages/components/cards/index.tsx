@@ -72,7 +72,7 @@ function Cards() {
           docs="https://material-ui.com/components/cards/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

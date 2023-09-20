@@ -29,7 +29,7 @@ function Buttons() {
           docs="https://material-ui.com/components/buttons/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"
