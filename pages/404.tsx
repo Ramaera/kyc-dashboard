@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Head from 'next/head';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import type { ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 import { useRouter } from 'next/router';
 
@@ -50,7 +50,10 @@ const ButtonSearch = styled(Button)(
 
 function Status404() {
   const route = useRouter();
-  route.push('/dashboard');
+  useEffect(() => {
+    route.push('/dashboard');
+  }, []);
+  return <></>;
   return (
     <>
       <Head>

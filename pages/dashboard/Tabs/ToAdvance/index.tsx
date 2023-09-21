@@ -400,6 +400,7 @@ const InfoTab = () => {
       }
     } catch (err) {}
     setLoading(false);
+    setSubmitButtonEnabled(false);
   };
   useEffect(() => {
     getDocNum();

@@ -483,6 +483,7 @@ const InfoTab = ({ title }) => {
       }
     } catch (err) {}
     setLoading(false);
+    setSubmitButtonEnabled(false);
   };
   useEffect(() => {
     setPaymentDocument(null);

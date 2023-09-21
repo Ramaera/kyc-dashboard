@@ -1,6 +1,6 @@
 import { CREATEDOCUMENT, UPDATEDOCUMENT } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
-import { useAppSelector, useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
@@ -52,6 +52,12 @@ const index = () => {
   const [agencyProofImage, aetAgencyProofImage] = useState<any | null>(null);
   const [isBankDetails, setBankDetails] = useState(false);
   const [isUPIDetails, setUPIDetails] = useState(false);
+  const [agencyPaymentDocument, setAgencyPaymentDocument] =
+    useState<DocumentType>();
+  const [isImageChanged, setImageChanged] = useState(false);
+  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
+  const [createDocument] = useMutation(CREATEDOCUMENT);
+  const [updateDocument] = useMutation(UPDATEDOCUMENT);
 
   const showBankDetails = () => {
     setBankDetails(true);
@@ -61,12 +67,6 @@ const index = () => {
     setBankDetails(false);
     setUPIDetails(true);
   };
-  const [agencyPaymentDocument, setAgencyPaymentDocument] =
-    useState<DocumentType>();
-  const [isImageChanged, setImageChanged] = useState(false);
-  const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
-  const [createDocument] = useMutation(CREATEDOCUMENT);
-  const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
       alert('Invalid Image');
@@ -87,6 +87,7 @@ const index = () => {
     });
     return { ...newUser, documents: newDocs };
   };
+
   const handlePaymentSubmit = async () => {
     const isValid = validateSubmit(agencyProofImage);
     if (!isValid) {
@@ -102,7 +103,6 @@ const index = () => {
         imgUrl = agencyProofImage;
       }
 
-      toast.success('Payment Slip Updated ');
       if (agencyPaymentDocument) {
         await updateDocument({
           variables: {
@@ -111,6 +111,7 @@ const index = () => {
             id: agencyPaymentDocument.id
           }
         });
+        toast.success('Payment Slip Updated ');
 
         dispatch(setOrUpdateUser(updateUser(agencyPaymentDocument.id, imgUrl)));
       } else {
@@ -123,6 +124,7 @@ const index = () => {
       }
     } catch (err) {}
     setLoading(false);
+    setSubmitButtonEnabled(false);
   };
 
   useEffect(() => {
