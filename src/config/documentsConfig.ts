@@ -1,3 +1,16 @@
+// export default {
+//     AADHAR_CARD_FRONT:"aadhar_front",
+//     AADHAR_CARD_BACK:"aadhar_back",
+//     PASSPORT_SIZE_PHOTO:"passport_size_photo",
+//     PAN_CARD:"pancard",
+//     PAYMENT_PROOF:"payment_proof",
+//     // ADDITIONAL_DOCUMENT:"payment_proof",
+//     PASSBOOK:"passbook",
+//     DRIVING_LICENSE:"driving_license",
+//     VOTER_ID:"voter_id",
+
+// }
+
 export default {
   aadhar: {
     id: 'aadhar',
@@ -94,7 +107,7 @@ export default {
       }
     ]
   },
-  additional_documents: {
+  additional_payment_documents: {
     name: 'Additional Payment Document',
     id: 'additional_payment_doc',
     items: [
@@ -197,28 +210,7 @@ export default {
       }
     ]
   },
-  payment_additional_documents: {
-    name: 'Additional Payment Document',
-    id: 'additional_payment_doc',
-    items: [
-      {
-        id: 'additional_payment_doc2',
-        name: 'Payment Document'
-      },
-      {
-        id: 'additional_payment_doc3',
-        name: 'Payment Document'
-      },
-      {
-        id: 'additional_payment_doc4',
-        name: 'Payment Document'
-      },
-      {
-        id: 'additional_payment_doc5',
-        name: 'Payment Document'
-      }
-    ]
-  },
+
   project_payment: {
     name: 'Project Payment',
     id: 'project_payment',

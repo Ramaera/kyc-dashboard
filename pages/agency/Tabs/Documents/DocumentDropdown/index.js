@@ -1,18 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { Dropdown } from 'primereact/dropdown';
-import { FileUpload } from 'primereact/fileupload';
-
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
+import { useRef, useState } from 'react';
 
-// import './style.css';
 const DocumentDropDown = ({ items }) => {
   const [selectedOption, setSelectedOption] = useState();
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState([]);
-
-  /*  const handleUpload = (event) => {
-    console.log("handleUpload", event.files);
-  }; */
 
   const onChangePicture = (e) => {
     setSelectedFile([...selectedFile, URL.createObjectURL(e.target.files[0])]);

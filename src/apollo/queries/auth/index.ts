@@ -247,6 +247,7 @@ query($agencyCode: String!) {
   GetAllKycAgencyUser(agencyCode: $agencyCode) {
     alternate_mobile_number
     createdAt
+    referralAgencyCode
     date_of_birth
     demat_account
     membership
@@ -259,6 +260,7 @@ query($agencyCode: String!) {
       userId
       status
       amount
+      utrNo
     }
     nominee {
       id

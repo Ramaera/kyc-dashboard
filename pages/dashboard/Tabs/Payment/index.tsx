@@ -398,6 +398,7 @@ const InfoTab = () => {
         });
       }
     } catch (err) {}
+    setSubmitButtonEnabled(false);
     setLoading(false);
   };
   useEffect(() => {

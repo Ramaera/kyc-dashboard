@@ -18,6 +18,7 @@ import { UPDATE_KYC_BY_ADMIN } from '@/apollo/queries/updateUser';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import variables from '@/config/variables';
 
 function PageHeader() {
   const user = useAppSelector((state) => state.user?.data);
@@ -28,6 +29,84 @@ function PageHeader() {
   const currentUser = useSelector((state: any) => state.foundUser.foundUser);
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const checkApprovalParameters = () => {
+    let hasUserDatails = false;
+    let hasPayment = false;
+    let hasPhoto = false;
+    let hasAadhaarFront = false;
+    let hasAadhaarBack = false;
+    let hasPan = false;
+    let hasPassbook = false;
+    let hasNomineeAadhaarFront = false;
+
+    if (
+      user?.name &&
+      user?.email &&
+      user?.mobile_number &&
+      user?.date_of_birth &&
+      user?.nominee.name &&
+      user?.nominee.relationship
+    ) {
+      hasUserDatails = true;
+    }
+
+    user?.documents?.map((doc) => {
+      if (
+        doc.title.includes('payment_proof') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPayment = true;
+      }
+      if (
+        doc.title.includes('avatar') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPhoto = true;
+      }
+      if (
+        doc.title.includes('aadhar_front') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasAadhaarFront = true;
+      }
+      if (
+        doc.title.includes('aadhar_back') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasAadhaarBack = true;
+      }
+      if (
+        doc.title.includes('pancard') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPan = true;
+      }
+      if (
+        doc.title.includes('passbook') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPassbook = true;
+      }
+      if (
+        doc.title.includes('nominee_aadhar_front') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasNomineeAadhaarFront = true;
+      }
+    });
+
+    return (
+      hasUserDatails &&
+      hasPayment &&
+      hasPhoto &&
+      hasAadhaarFront &&
+      hasAadhaarBack &&
+      hasPan &&
+      hasPassbook &&
+      hasNomineeAadhaarFront
+    );
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -216,7 +295,7 @@ function PageHeader() {
                   // handleStatus('APPROVED');
                 }}
                 variant="outlined"
-                // disabled={checkStatus()}
+                disabled={!checkApprovalParameters()}
                 color="success"
                 sx={{ ml: 2 }}
               >

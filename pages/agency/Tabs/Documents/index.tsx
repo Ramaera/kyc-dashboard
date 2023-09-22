@@ -1,9 +1,16 @@
+import {
+  UPDATE_BY_ADMIN,
+  UPDATE_STATUS_BY_ADMIN
+} from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
+import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
 import DocumentType from '@/state/types/document';
+import allUsersUpdater from '@/utils/updateUserList';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Hidden, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,15 +23,8 @@ import 'primereact/resources/primereact.min.css'; //core css
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  UPDATE_BY_ADMIN,
-  UPDATE_STATUS_BY_ADMIN
-} from '@/apollo/queries/updateUser';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
-import { setAllTheUsers } from '@/state/slice/allUsersSlice';
-import allUsersUpdater from '@/utils/updateUserList';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { useDispatch, useSelector } from 'react-redux';
 
 const rows = [
   {
@@ -56,14 +56,13 @@ const rows = [
 ];
 
 const DocumentRow = ({ user, data, documents = [] }) => {
-  const theme = useTheme();
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const dispatch = useDispatch();
+  /* if (!documents[0]) {
+    return null;
+  } */
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
-  const dispatch = useDispatch();
-  if (!documents[0]) {
-    return null;
-  }
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   //const [createDocument] = useMutation(CREATEDOCUMENT);
@@ -73,7 +72,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   const updateUserStatus = (docId, docStatus) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === docId) {
         newDocs.push({ ...item, status: docStatus });
       } else {
@@ -86,7 +85,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -127,7 +126,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   }; */
 
   const changeDocumentStatus = async (docId, docStatus) => {
-    const respStatus = await updateDocumentStatusByAdmin({
+    await updateDocumentStatusByAdmin({
       variables: {
         id: docId,
         status: docStatus
@@ -146,9 +145,9 @@ const DocumentRow = ({ user, data, documents = [] }) => {
     title: string,
     url: string
   ) => {
-    const respData = await updateDataByAdmin({
+    await updateDataByAdmin({
       variables: {
-        id: user?.id,
+        id: user.id,
         documentId: id,
         url: url
       }
@@ -188,7 +187,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
             await handleUpdateDocument(_document.id, documentTitle, imgUrl);
             // location.reload()
           } else {
-            console.log("can't create documents");
+            // console.log("can't create documents");
             /*  //create document
             await handleCreateDocument(documentTitle, imgUrl);
             // location.reload() */
@@ -204,6 +203,9 @@ const DocumentRow = ({ user, data, documents = [] }) => {
     const views = [];
     const items = data.config.items;
     for (let i = 0; i < items.length; i++) {
+      if (!documents[i]) {
+        return;
+      }
       views.push(
         <>
           <Button component="label">
@@ -277,13 +279,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   return (
     <TableRow
       key={data.config.name}
-      sx={{
-        '&:last-child td, &:last-child th': { border: 0 },
-        [theme.breakpoints.down('sm')]: {
-          display: 'flex',
-          flexDirection: 'column'
-        }
-      }}
+      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell component="th" scope="row">
         {data.config.name} {data.isOptional ? '(Optional)' : ''}
@@ -305,16 +301,31 @@ const DocumentRow = ({ user, data, documents = [] }) => {
         </LoadingButton>
       </TableCell>
       <TableCell>
-        <span
-          style={{
-            color: documents[0]
-              ? (documents[0].status === 'APPROVED' && 'green') ||
-                (documents[0].status === 'REJECTED' && 'red')
-              : ''
-          }}
-        >
-          {documents[0] && documents[0].status}
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 50 }}>
+          <span
+            style={{
+              color: documents[0]
+                ? (documents[0].status === 'APPROVED' && 'limegreen') ||
+                  (documents[0].status === 'REJECTED' && 'red')
+                : ''
+            }}
+          >
+            {documents[0] && documents[0].status}
+          </span>
+
+          {documents[1] && (
+            <span
+              style={{
+                color: documents[1]
+                  ? (documents[1].status === 'APPROVED' && 'limegreen') ||
+                    (documents[1].status === 'REJECTED' && 'red')
+                  : ''
+              }}
+            >
+              {documents[1] && documents[1].status}
+            </span>
+          )}
+        </div>
       </TableCell>
     </TableRow>
   );
@@ -324,9 +335,9 @@ const DocumentTab = () => {
 
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user?.documents) {
+    if (user && user.documents) {
       for (let config of configs) {
-        const document = user?.documents?.find((doc: DocumentType) => {
+        const document = user.documents.find((doc: DocumentType) => {
           // console.log('docccccc', doc);
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
             return true;
@@ -346,14 +357,12 @@ const DocumentTab = () => {
           <TableHead>
             <TableRow>
               <TableCell>Document Name</TableCell>
-              <Hidden smDown>
-                <TableCell>Preview</TableCell>
-                <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
-                <TableCell style={{ padding: '0 0 0 0' }}>
-                  Upload Action
-                </TableCell>
-                <TableCell>Status</TableCell>
-              </Hidden>{' '}
+              <TableCell>Preview</TableCell>
+              <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
+              <TableCell style={{ padding: '0 0 0 0' }}>
+                Upload Action
+              </TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

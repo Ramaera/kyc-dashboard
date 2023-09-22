@@ -27,6 +27,7 @@ import ProjectList from '../ProjectList';
 import { AllBankDetails, AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@emotion/react';
+import Image from 'next/image';
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -482,6 +483,7 @@ const InfoTab = ({ title }) => {
       }
     } catch (err) {}
     setLoading(false);
+    setSubmitButtonEnabled(false);
   };
   useEffect(() => {
     setPaymentDocument(null);
@@ -556,37 +558,54 @@ const InfoTab = ({ title }) => {
               </Typography>
             </Box>
             {isHidden.project && (
-              <TableContainer component={Paper} sx={{ mt: 2 }}>
-                <Table sx={{ minWidth: 100 }} aria-label="simple table">
-                  <TableBody>
-                    {AllProjectDetails[projectTitle].map((row) => {
-                      if (!row.key) {
-                        return;
-                      }
-                      return (
-                        <TableRow
-                          key={row.key}
-                          sx={{
-                            '&:last-child td, &:last-child th': { border: 0 }
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            {row.key}
-                          </TableCell>
-                          <TableCell align="right">
-                            {row.key === 'Till Raised Fund'
-                              ? projectAmount
-                              : row.key === 'Remain Funding'
-                              ? AllProjectDetails[projectTitle][0] -
-                                projectAmount
-                              : row.info}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <>
+                {title === 'Hajipur' && (
+                  <a
+                    href="https://kyc.ramaera.com/Docs/Spice_Project.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      style={{ transform: 'scale(0.75)' }}
+                      src="/pdf.png"
+                      alt="pdf"
+                      height={60}
+                      width={60}
+                    />
+                  </a>
+                )}
+                <TableContainer component={Paper} sx={{ mt: 2 }}>
+                  <Table sx={{ minWidth: 100 }} aria-label="simple table">
+                    <TableBody>
+                      {AllProjectDetails[projectTitle].map((row) => {
+                        if (!row.key) {
+                          return;
+                        }
+                        return (
+                          <TableRow
+                            key={row.key}
+                            sx={{
+                              '&:last-child td, &:last-child th': { border: 0 }
+                            }}
+                          >
+                            <TableCell component="th" scope="row">
+                              {row.key}
+                            </TableCell>
+                            <TableCell align="right">
+                              {row.key === 'Till Raised Fund'
+                                ? projectAmount
+                                : row.key === 'Remain Funding'
+                                ? AllProjectDetails[projectTitle][0] -
+                                  projectAmount
+                                : row.info}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </>
             )}
 
             <Box sx={{ flexGrow: 1, my: 2 }}>
