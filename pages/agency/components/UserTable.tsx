@@ -99,7 +99,7 @@ const UserTable = () => {
   /*   const [sortByCreatedAt, setSortByCreatedAt] = useState(true);
   const [sortByUpdatedAt, setSortByUpdatedAt] = useState(true); */
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState('');
   const debouncedValue = useDebounce<string>(searchText, 400);
   const [filters, setFilters] = useState<Filters>({});
@@ -545,7 +545,7 @@ const UserTable = () => {
             onRowsPerPageChange={handleLimitChange}
             page={page}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25, 30]}
+            rowsPerPageOptions={[5, 20, 50, 200]}
           />
         </Box>
       </Card>
