@@ -1,12 +1,8 @@
 import { GET_ALL_AGENCY_USERS } from '@/apollo/queries/auth';
-import { GET_ALL_KYC_HANDLER } from '@/apollo/queries/updateUser';
 import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import {
-  setAllKycHandlerList,
-  setAllTheUsers
-} from '@/state/slice/allUsersSlice';
+import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
 import { Container, Typography } from '@mui/material';
 import Head from 'next/head';
@@ -27,8 +23,6 @@ function DashboardTasks() {
       agencyCode: agencyCode
     }
   });
-  const kycHandlersList = useQuery(GET_ALL_KYC_HANDLER);
-
   // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
   // console.log(useSelector((state) => state.allUsers.allTheUsers));
   useEffect(() => {
@@ -43,10 +37,6 @@ function DashboardTasks() {
   }
   if (data) {
     dispatch(setAllTheUsers(data.GetAllKycAgencyUser));
-  }
-  if (kycHandlersList.data) {
-    // console.log('kycHandlersList', kycHandlersList.data.getAllKycHandler);
-    dispatch(setAllKycHandlerList(kycHandlersList.data.getAllKycHandler));
   }
 
   //console.log(helloW)

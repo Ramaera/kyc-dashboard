@@ -6,13 +6,20 @@ import {
   TableCell,
   TableRow,
   TextField,
-  Typography
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 //import { CREATEDOCUMENT } from '@/apollo/queries/auth';
 // import { useAppSelector } from '@/hooks';
 import {
   UPDATE_BY_ADMIN,
+  UPDATE_MEMBERSHIP_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
@@ -28,7 +35,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export const rows = [
   {
-    config: documentsConfig.additional_payment_documents
+    config: documentsConfig.to_advance_additional_documents
   }
 ];
 // let statusUpdate = [];
@@ -38,13 +45,13 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(0);
   const [statusUpdate, setStatusUpdate] = useState([]);
+  const [additionalUtr, setAdditionalUtr] = useState(['', '', '', '']);
   const [additionalAmounts, setAdditionalAmounts] = useState([
     null,
     null,
     null,
     null
   ]);
-  const [additionalUtr, setAdditionalUtr] = useState(['', '', '', '']);
   useEffect(() => {
     setMoreRow(rowNo);
   }, [rowNo]);
@@ -61,18 +68,13 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     }
     setImages(_imgs);
     let newArr = [null, null, null, null];
-    let newArrUtr = ['', '', '', ''];
-    setAdditionalUtr(newArrUtr);
-    setAdditionalAmounts(newArr);
     data.config.items.map((docTitle) => {
       user.documents.map((doc) => {
         if (doc.title === docTitle.id) {
-          newArr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.amount || '';
-          newArrUtr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.utrNo || '';
+          newArr[parseInt(docTitle.id.slice(33, 35)) - 2] = doc.amount;
         }
       });
     });
-    setAdditionalUtr(newArrUtr);
     setAdditionalAmounts(newArr);
   }, [documents, user]);
   const handleCreateDocument = async () => {};
@@ -104,8 +106,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
           variables: {
             id: user.id,
             documentId: findDocId(documentTitle),
-            amount: additionalAmounts[i],
-            utrNo: additionalUtr[i]
+            amount: additionalAmounts[i]
           }
         });
         toast.success(`Details Updated`);
@@ -235,8 +236,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              marginBottom: '10px',
-              width: 500
+              marginBottom: '10px'
             }}
           >
             <Grid>
@@ -260,7 +260,6 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               >
                 Reject
               </Button>
-
               <TextField
                 sx={{ width: 120 }}
                 id="outlined"
@@ -433,10 +432,24 @@ const InfoTab = () => {
   //const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
+  const [updateMembership] = useMutation(UPDATE_MEMBERSHIP_BY_ADMIN);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  // console.log(user);
+  /* const handleImageUpload = async () => {
+    return 'https://upload.wikimedia.org/wikipedia/commons/d/d7/Einstein-with-habicht-and-solovine.jpg';
+  }; */
   const getDocNum = async () => {
     let count = 0;
     user.documents.map((doc) => {
-      if (doc.title.slice(0, 22) === 'additional_payment_doc') {
+      if (doc.title.slice(0, 33) === 'to_advance_additional_payment_doc') {
         count += 1;
       }
     });
@@ -580,12 +593,94 @@ const InfoTab = () => {
     // setLoading(false);
   };
 
+  const upgradeToAdvance = async () => {
+    toast.success('Membership Upgraded to ADVANCE');
+    await updateMembership({
+      variables: {
+        id: user.id,
+        membsership: 'ADVANCE'
+      }
+    });
+  };
+
+  const checkLakh = () => {
+    let total = 0;
+    user.documents.map((doc) => {
+      if (
+        doc.title === 'to_advance_payment_proof' &&
+        doc.amount &&
+        doc.status === 'APPROVED'
+      ) {
+        total += doc.amount;
+      }
+      if (
+        doc.title.slice(0, 33) === 'to_advance_additional_payment_doc' &&
+        doc.amount &&
+        doc.status === 'APPROVED'
+      ) {
+        total += doc.amount;
+      }
+    });
+    // if (total < parameters.ADVANCE_KYC_AMOUNT) {
+    //   return;
+    // }
+    return (
+      <Grid item sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        {paymentDocument && (
+          <Button
+            variant="contained"
+            component="label"
+            onClick={() => {
+              handleClickOpen();
+            }}
+          >
+            Upgrade to ADVANCE
+          </Button>
+        )}
+
+        <div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Upgrade to Advance Kyc'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure upgrade to Advance Kyc?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Dismiss</Button>
+              <Button
+                onClick={() => {
+                  upgradeToAdvance();
+                  handleClose();
+                }}
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Grid>
+    );
+  };
+
   useEffect(() => {
+    setPaymentDocument(null);
+    setProofImage(null);
+    setAmount(null);
+    setUtrNumber(null);
     if (user && user.documents && user.documents.length > 0) {
       user.documents.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
-          documentsConfig.payment_proof.items[0].id
+          documentsConfig.to_advance_payment_proof.items[0].id
         ) {
           setPaymentDocument(document);
           setProofImage(document.url);
@@ -597,6 +692,27 @@ const InfoTab = () => {
   }, [user]);
   return (
     <>
+      {/*  <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 100 }} aria-label="simple table">
+          <TableBody>
+            {rows.map((row) => {
+              return (
+                <TableRow
+                  key={row.name}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer> */}
+      {user?.membership === 'ADVANCE' && <>Advance KYC Member</>}
+      {user?.membership === 'BASIC' && checkLakh()}
       {proofImage ? (
         <PhotoProvider>
           <PhotoView
@@ -686,7 +802,7 @@ const InfoTab = () => {
           <Grid>
             <Button
               fullWidth
-              disabled={!amount || !utrNumber}
+              disabled={!amount && !utrNumber}
               variant="contained"
               component="label"
               onClick={() => {

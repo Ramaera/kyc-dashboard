@@ -1,25 +1,25 @@
-import { Grid, Box, useTheme, Divider, TextField, Button } from '@mui/material';
-import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
-import 'primereact/resources/primereact.min.css'; //core css
-import 'primeicons/primeicons.css'; //icons
 import { LoadingButton } from '@mui/lab';
+import { Box, Button, Divider, Grid, TextField } from '@mui/material';
+import 'primeicons/primeicons.css'; //icons
+import 'primereact/resources/primereact.min.css'; //core css
+import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 // import {  CREATEDOCUMENT,  UPDATEDOCUMENT,UPSERTNOMINEE} from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
 // import { useAppSelector } from '@/hooks';
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
-import toast, { Toaster } from 'react-hot-toast';
 import {
   UPDATE_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
-import { useSelector, useDispatch } from 'react-redux';
-import handleImageUpload from '@/utils/upload';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
+import documentsConfig from '@/config/documentsConfig';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
+import DocumentType from '@/state/types/document';
 import allUsersUpdater from '@/utils/updateUserList';
+import handleImageUpload from '@/utils/upload';
+import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { useDispatch, useSelector } from 'react-redux';
 
 const NomineeTab = () => {
   const dispatch = useDispatch();
@@ -33,11 +33,6 @@ const NomineeTab = () => {
   const [nomineeName, setNomineeName] = useState('');
   const [relationship, setRelationship] = useState('');
   const [isLoading, setLoading] = useState(false);
-  //const [createDocument] = useMutation(CREATEDOCUMENT);
-  // const [updateDocument] = useMutation(UPDATEDOCUMENT);
-  // const [createOrUpdateNominee] = useMutation(UPSERTNOMINEE);
-  const theme = useTheme();
-
   const [isFrontImageChanged, setFrontImageChanged] = useState<boolean>(false);
   const [isBackImageChanged, setBackImageChanged] = useState<boolean>(false);
   const [aadharFront, setAadharFront] = useState<any>('');
@@ -80,7 +75,7 @@ const NomineeTab = () => {
   const updateUserObj = (docId, docStatus) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === docId) {
         newDocs.push({ ...item, status: docStatus });
       } else {
@@ -92,7 +87,7 @@ const NomineeTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -117,10 +112,10 @@ const NomineeTab = () => {
     );
   };
   const handleUpdateDocument = async (id: string, url: string) => {
-    // console.log('idurl', user?.id, id, url);
+    // console.log('idurl', user.id, id, url);
     const resp = await updateDataByAdmin({
       variables: {
-        id: user?.id,
+        id: user.id,
         documentId: id,
         url: url
       }
@@ -148,17 +143,13 @@ const NomineeTab = () => {
       return;
     }
     const baseDocument = isFront ? aadharFront : aadharBack;
-
     const baseDocumenter = isFront ? aadharFrontDocument : aadharBackDocument;
-    const documentTitle = isFront
-      ? documentsConfig.nominee_aadhar.items[0].id
-      : documentsConfig.nominee_aadhar.items[1].id;
     let imgUrl = await handleImageUpload(baseDocument);
     // console.log('baseDocument', baseDocument, 'imgUrl', imgUrl);
     if (baseDocument) {
       await handleUpdateDocument(baseDocumenter.id, imgUrl);
     } else {
-      console.log('docs can only be updated, not created');
+      // console.log('docs can only be updated, not created');
       // await handleCreateDocument(imgUrl, documentTitle);
     }
   };
@@ -172,7 +163,7 @@ const NomineeTab = () => {
     try {
       await updateDataByAdmin({
         variables: {
-          id: user?.id,
+          id: user.id,
           nomineeName: nomineeName,
           nomineeRelationship: relationship
         }
@@ -222,16 +213,16 @@ const NomineeTab = () => {
   }, [data]);
   useEffect(() => {
     if (user) {
-      if (user?.nomineeName) {
-        setNomineeName(user?.nomineeName);
-        setRelationship(user?.nomineeRelationship);
-      } else if (user?.nominee) {
-        setNomineeName(user?.nominee.name);
-        setRelationship(user?.nominee.relationship);
+      if (user.nomineeName) {
+        setNomineeName(user.nomineeName);
+        setRelationship(user.nomineeRelationship);
+      } else if (user.nominee) {
+        setNomineeName(user.nominee.name);
+        setRelationship(user.nominee.relationship);
       }
 
-      if (user?.documents && user?.documents?.length > 0) {
-        user?.documents?.find((document: DocumentType) => {
+      if (user.documents && user.documents.length > 0) {
+        user.documents.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===
             documentsConfig.nominee_aadhar.items[1].id
@@ -254,8 +245,8 @@ const NomineeTab = () => {
 
   return (
     <>
-      <Grid container p={2} spacing={2}>
-        <Grid item xs={12} sm={4}>
+      <Grid container p={0} spacing={2}>
+        <Grid item xs={4}>
           <TextField
             id="outlined"
             label="Full Name*"
@@ -268,7 +259,7 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={4}>
           <TextField
             label="Relationship"
             variant="outlined"
@@ -283,7 +274,7 @@ const NomineeTab = () => {
         <Grid item xs={4}></Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={4}>
           {aadharFront && (
             <>
               <PhotoProvider>
@@ -313,7 +304,7 @@ const NomineeTab = () => {
                   style={{
                     color: aadharFrontDocument
                       ? (aadharFrontDocument.status === 'APPROVED' &&
-                          'green') ||
+                          'limegreen') ||
                         (aadharFrontDocument.status === 'REJECTED' && 'red')
                       : ''
                   }}
@@ -372,7 +363,7 @@ const NomineeTab = () => {
             </>
           )}
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={4}>
           {aadharBack && (
             <>
               <PhotoProvider>
@@ -401,7 +392,8 @@ const NomineeTab = () => {
                 <span
                   style={{
                     color: aadharBackDocument
-                      ? (aadharBackDocument.status === 'APPROVED' && 'green') ||
+                      ? (aadharBackDocument.status === 'APPROVED' &&
+                          'limegreen') ||
                         (aadharBackDocument.status === 'REJECTED' && 'red')
                       : ''
                   }}
@@ -465,9 +457,10 @@ const NomineeTab = () => {
         </Grid>
         <Grid item xs={4}></Grid>
         <Divider />
-        <Box component="form" mt={2}>
+        <Box component="form" mt={1}>
           <LoadingButton
             loading={isLoading}
+            sx={{ paddingX: 17 }}
             variant="contained"
             component="label"
             disabled={!isSubmitButtonEnalbed}
@@ -477,6 +470,7 @@ const NomineeTab = () => {
           >
             Submit
           </LoadingButton>
+
           <Toaster position="bottom-center" reverseOrder={false} />
         </Box>
       </Grid>

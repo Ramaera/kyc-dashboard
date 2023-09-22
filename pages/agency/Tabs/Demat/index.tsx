@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const DematTab = () => {
   const dispatch = useDispatch();
+
+  // const user = useAppSelector((state) => state.user.data);
   const user = useSelector((state: any) => state.foundUser.foundUser);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
@@ -29,6 +31,9 @@ const DematTab = () => {
   const [isImageChanged, setImageChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
+  // const [createDocument] = useMutation(CREATEDOCUMENT);
+  // const [updateDocument] = useMutation(UPDATEDOCUMENT);
+  // const [updatedetails] = useMutation(UPDATEUSERDETAILS);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin, { data }] = useMutation(
     UPDATE_STATUS_BY_ADMIN
@@ -37,7 +42,7 @@ const DematTab = () => {
   const updateUser = (dematId, imgUrl, dematAccount) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, url: imgUrl });
       } else {
@@ -46,11 +51,10 @@ const DematTab = () => {
     });
     return { ...newUser, documents: newDocs, demat_account: dematAccount };
   };
-
   const updateUserStatus = (dematId, status) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, status: status });
       } else {
@@ -59,7 +63,6 @@ const DematTab = () => {
     });
     return { ...newUser, documents: newDocs };
   };
-
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
       alert('Invalid Image');
@@ -86,7 +89,6 @@ const DematTab = () => {
       )
     );
   };
-
   const handleSubmit = async () => {
     const isValid = validateSubmit(dematDocumentImage);
     if (!isValid) {
@@ -98,7 +100,7 @@ const DematTab = () => {
       if (dematAccount) {
         await updateDataByAdmin({
           variables: {
-            id: user?.id,
+            id: user.id,
             demat_account: dematAccount
           }
         });
@@ -119,7 +121,7 @@ const DematTab = () => {
       if (dematDocument) {
         await updateDataByAdmin({
           variables: {
-            id: user?.id,
+            id: user.id,
             documentId: dematDocument.id,
             url: imgUrl
           }
@@ -138,7 +140,7 @@ const DematTab = () => {
 
         toast.success('Demat Details Updated ');
       } else {
-        console.log("can't create document");
+        // console.log("can't create document");
         /* await createDocument({
           variables: {
             title: documentsConfig.demat_document.items[0].id,
@@ -149,13 +151,12 @@ const DematTab = () => {
     } catch (err) {}
     setLoading(false);
   };
-
   useEffect(() => {
     if (user) {
-      setDematAccount(user?.demat_account);
+      setDematAccount(user.demat_account);
     }
-    if (user && user?.documents && user?.documents?.length > 0) {
-      user?.documents?.find((document: DocumentType) => {
+    if (user && user.documents && user.documents.length > 0) {
+      user.documents.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.demat_document.items[0].id
@@ -169,7 +170,8 @@ const DematTab = () => {
 
   return (
     <>
-      <Grid item xs={12} sm={6}>
+      {/* <Grid container p={2} spacing={2}> */}
+      <Grid item xs={12} sm={6} md={4}>
         <TextField
           id="outlined"
           label="Demat Account No."
@@ -211,7 +213,7 @@ const DematTab = () => {
             <span
               style={{
                 color: dematDocument
-                  ? (dematDocument.status === 'APPROVED' && 'green') ||
+                  ? (dematDocument.status === 'APPROVED' && 'limegreen') ||
                     (dematDocument.status === 'REJECTED' && 'red')
                   : ''
               }}
@@ -279,6 +281,7 @@ const DematTab = () => {
               onClick={() => {
                 handleSubmit();
               }}
+              sx={{ paddingX: 20.5 }}
             >
               Submit
             </LoadingButton>

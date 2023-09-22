@@ -15,6 +15,7 @@ mutation updateDataByAdmin(
   $documentId: String
   $url: String
   $amount: Int
+  $utrNo: String
 ) {
   updateDataByAdmin(
     data: {
@@ -31,15 +32,37 @@ mutation updateDataByAdmin(
       documentId: $documentId
       url: $url
       amount: $amount
+      utrNo: $utrNo
     }
   ) {
     name
     documents {
+      createdAt
+    updatedAt
       id
       title
       url
+      userId
+      status
       amount
+      utrNo
     }
+  }
+}`);
+
+export const UPDATE_MEMBERSHIP_BY_ADMIN = gql(`
+mutation updateMembership (
+$id: String!,
+$membsership:Membership!,
+){updateMembership(
+  data: 
+  { 
+      id: $id,
+      membsership:$membsership
+  })
+  {  
+      id
+      membership 
   }
 }`);
 
