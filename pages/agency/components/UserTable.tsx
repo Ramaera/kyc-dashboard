@@ -292,7 +292,7 @@ const UserTable = () => {
                 </TableCell>
                 <TableCell>RMID</TableCell>
                 <TableCell>KYC Status</TableCell>
-                <TableCell>KYC Handler</TableCell>
+                {/* <TableCell>KYC Handler</TableCell> */}
                 <TableCell>Share Holder Type</TableCell>
                 <TableCell>Mobile No.</TableCell>
                 <TableCell>Email</TableCell>
@@ -382,7 +382,7 @@ const UserTable = () => {
                           {user?.kyc}
                         </Typography>
                       </TableCell>
-                      <TableCell align="left">
+                      {/*  <TableCell align="left">
                         <Typography
                           width="120px"
                           variant="body1"
@@ -393,14 +393,15 @@ const UserTable = () => {
                           {kycHandlerCheck(user?.id)}
                         </Typography>
                       </TableCell>
-
+ */}
                       <TableCell align="left">
                         <Typography
                           variant="body1"
+                          textAlign="center"
                           fontWeight="bold"
                           color="text.primary"
                           gutterBottom
-                          width="80px"
+                          width="150px"
                           noWrap
                         >
                           {user?.membership}
