@@ -14,6 +14,7 @@ import GetAgency from './Tabs/GetAgency';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
+import DSC from './Tabs/DSC';
 import ToAdvance from './Tabs/ToAdvance';
 
 const TabsContainerWrapper = styled(Box)(
@@ -48,6 +49,7 @@ function DashboardTasks() {
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' },
+    { value: 'dsc', label: 'DSC' },
     { value: 'getAgency', label: 'KYC Agency' }
   ];
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -143,6 +145,13 @@ function DashboardTasks() {
               <Grid item xs={12}>
                 <Box p={4}>
                   <DematTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'dsc' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <DSC />
                 </Box>
               </Grid>
             )}

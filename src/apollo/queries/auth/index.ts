@@ -104,6 +104,11 @@ query GetUser {
   date_of_birth
   membership
   demat_account
+  DSCDetails {
+      dscStatus
+      DscExpiryDate
+      DscCreatedDate
+    }
   documents{
     createdAt
     updatedAt
