@@ -210,8 +210,8 @@ const DocumentRow = ({
           </div>
           <Button
             style={{
-              cursor: documents[0]
-                ? documents[0].status === 'APPROVED'
+              cursor: documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'not-allowed'
                   : 'pointer'
                 : 'pointer',
@@ -219,8 +219,8 @@ const DocumentRow = ({
             }}
             component="label"
             color={
-              documents[0]
-                ? documents[0].status === 'APPROVED'
+              documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'secondary'
                   : 'primary'
                 : 'primary'
@@ -232,14 +232,13 @@ const DocumentRow = ({
               accept="image/*"
               hidden
               disabled={
-                documents[0]
-                  ? documents[0].status === 'APPROVED'
+                documents[i]
+                  ? documents[i].status === 'APPROVED'
                     ? true
                     : false
                   : false
               }
               onChange={(f) => {
-                console.log(i);
                 if (f.target.files.length > 0) {
                   const _images = [...images];
                   _images[i] = f.target.files[0];
