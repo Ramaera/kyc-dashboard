@@ -14,7 +14,7 @@ import variables from '@/config/variables';
 
 export const rows = [
   {
-    config: documentsConfig.additional_documents
+    config: documentsConfig.additional_payment_documents
   }
 ];
 const DocumentRow = ({
