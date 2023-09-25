@@ -246,7 +246,7 @@ const NomineeTab = () => {
   return (
     <>
       <Grid container p={0} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             label="Full Name*"
@@ -259,7 +259,7 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             label="Relationship"
             variant="outlined"
@@ -271,10 +271,10 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={12} sm={4}></Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           {aadharFront && (
             <>
               <PhotoProvider>
@@ -363,7 +363,7 @@ const NomineeTab = () => {
             </>
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           {aadharBack && (
             <>
               <PhotoProvider>
@@ -455,7 +455,7 @@ const NomineeTab = () => {
             </>
           )}
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={12} sm={4}></Grid>
         <Divider />
         <Box component="form" mt={1}>
           <LoadingButton

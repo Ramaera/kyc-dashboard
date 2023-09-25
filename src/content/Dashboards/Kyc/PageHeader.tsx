@@ -291,8 +291,6 @@ function PageHeader() {
                 onClick={() => {
                   handleClickOpen();
                   setStatus('AGENT_APPROVED');
-
-                  // handleStatus('APPROVED');
                 }}
                 variant="outlined"
                 disabled={!checkApprovalParameters()}
@@ -301,19 +299,7 @@ function PageHeader() {
               >
                 Approve
               </Button>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('ONGOING');
 
-                  // handleStatus('ONGOING');
-                }}
-                variant="outlined"
-                color="warning"
-                sx={{ ml: 2 }}
-              >
-                Ongoing
-              </Button>
               <Button
                 onClick={() => {
                   handleClickOpen();

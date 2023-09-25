@@ -786,7 +786,7 @@ const InfoTab = ({ to }) => {
       )}
       <Grid container p={2} pl={0} spacing={2}>
         {paymentDocument && (
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Button variant="contained" component="label">
               Select Payment Slip
               <input

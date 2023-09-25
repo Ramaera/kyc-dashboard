@@ -73,7 +73,7 @@ const InfoTab = () => {
   return (
     <>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             label="Full Name*"
@@ -87,7 +87,7 @@ const InfoTab = () => {
           />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             label="Father's/Husband's Name*"
             variant="outlined"
@@ -99,7 +99,7 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             hidden
@@ -116,7 +116,7 @@ const InfoTab = () => {
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             type="number"
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -130,7 +130,7 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             type="number"
@@ -145,7 +145,7 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             type="email"
             label="Email ID*"
@@ -158,7 +158,7 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             type="referral"
             label="Referral Code*"
@@ -171,7 +171,7 @@ const InfoTab = () => {
       </Grid>
 
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Box component="form">
             <LoadingButton
               loading={isLoading}
@@ -187,7 +187,8 @@ const InfoTab = () => {
           </Box>
         </Grid>
 
-        <Grid item xs={4} />
+        <Grid item xs={12} sm={4} />
+
         <Toaster position="bottom-center" reverseOrder={false} />
       </Grid>
     </>

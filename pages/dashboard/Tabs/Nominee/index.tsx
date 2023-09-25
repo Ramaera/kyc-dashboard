@@ -215,7 +215,8 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        {/* <Grid item xs={4}></Grid> */}
+        {/*         <Grid item xs={12} sm={4}>
+</Grid> */}
       </Grid>
 
       <Grid container pt={1} pb={2} spacing={15}>
@@ -356,7 +357,8 @@ const NomineeTab = () => {
             </Button>
           )}
         </Grid>
-        {/* <Grid item xs={4}></Grid>
+        {/*         <Grid item xs={12} sm={4}>
+</Grid>
         <Divider /> */}
       </Grid>
       {user?.kyc === 'APPROVED' ? null : (

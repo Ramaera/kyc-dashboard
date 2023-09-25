@@ -229,7 +229,7 @@ const InfoTab = () => {
       </Grid>
       <Grid container p={2} spacing={2}>
         {user?.kyc !== variables.status.APPROVED && (
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Box component="form">
               <LoadingButton
                 loading={isLoading}
