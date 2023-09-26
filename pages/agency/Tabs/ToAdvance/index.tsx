@@ -32,6 +32,7 @@ import { LoadingButton } from '@mui/lab';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 
 export const rows = [
   {
@@ -239,56 +240,58 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               marginBottom: '10px'
             }}
           >
-            <Grid>
-              <Button
-                onClick={() => {
-                  changeDocumentStatus(documents[i].id, 'APPROVED');
-                }}
-                variant="outlined"
-                color="success"
-                sx={{ paddingY: '12px' }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(documents[i].id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ mx: 2, paddingY: '12px' }}
-              >
-                Reject
-              </Button>
-              <TextField
-                sx={{ width: 120 }}
-                id="outlined"
-                label="UTR No.*"
-                value={additionalUtr[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArrUtr[i] = e.target.value)
-                    : (newArrUtr[i] = null);
-                  setAdditionalUtr(newArrUtr);
-                }}
-              />
-              <TextField
-                sx={{ width: 120, ml: 2 }}
-                id="outlined"
-                label="Amount*"
-                value={additionalAmounts[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArr[i] = parseInt(e.target.value))
-                    : (newArr[i] = null);
-                  setAdditionalAmounts(newArr);
-                }}
-              />
-            </Grid>
+            {user.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  onClick={() => {
+                    changeDocumentStatus(documents[i].id, 'APPROVED');
+                  }}
+                  variant="outlined"
+                  color="success"
+                  sx={{ paddingY: '12px' }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(documents[i].id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ mx: 2, paddingY: '12px' }}
+                >
+                  Reject
+                </Button>
+                <TextField
+                  sx={{ width: 120 }}
+                  id="outlined"
+                  label="UTR No.*"
+                  value={additionalUtr[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArrUtr[i] = e.target.value)
+                      : (newArrUtr[i] = null);
+                    setAdditionalUtr(newArrUtr);
+                  }}
+                />
+                <TextField
+                  sx={{ width: 120, ml: 2 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={additionalAmounts[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArr[i] = parseInt(e.target.value))
+                      : (newArr[i] = null);
+                    setAdditionalAmounts(newArr);
+                  }}
+                />
+              </Grid>
+            )}
           </Box>
           <Button
             fullWidth
@@ -711,7 +714,6 @@ const InfoTab = () => {
           </TableBody>
         </Table>
       </TableContainer> */}
-      {user?.membership === 'ADVANCE' && <>Advance KYC Member</>}
       {user?.membership === 'BASIC' && checkLakh()}
       {proofImage ? (
         <PhotoProvider>
@@ -750,34 +752,36 @@ const InfoTab = () => {
               {paymentDocument && paymentDocument.status}
             </span>
           </Typography>
-          <Box>
-            <Grid>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
-          </Box>
+          {user.kyc !== variables.status.APPROVED && (
+            <Box>
+              <Grid>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            </Box>
+          )}
         </>
       )}
-      {proofImage && (
+      {proofImage && user.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"
@@ -816,7 +820,7 @@ const InfoTab = () => {
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && (
+        {paymentDocument && user.kyc !== variables.status.APPROVED && (
           <Grid item xs={0}>
             <Button variant="contained" component="label">
               Select Payment Slip
@@ -835,7 +839,7 @@ const InfoTab = () => {
             </Button>
           </Grid>
         )}
-        {proofImage && (
+        {proofImage && user.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth

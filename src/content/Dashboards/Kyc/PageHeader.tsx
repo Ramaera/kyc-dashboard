@@ -154,9 +154,6 @@ function PageHeader() {
           justifyContent="space-between"
         >
           <Box display="flex" alignItems="center">
-            {/* <AvatarPageTitle variant="rounded">
-          <AddAlertTwoToneIcon fontSize="large" />
-        </AvatarPageTitle> */}
             <Box>
               {/* <Grid> */}
               <Typography

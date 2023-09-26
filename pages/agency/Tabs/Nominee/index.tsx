@@ -252,6 +252,7 @@ const NomineeTab = () => {
             id="outlined"
             label="Full Name*"
             fullWidth
+            disabled={user.kyc === variables.status.APPROVED}
             value={nomineeName}
             variant="outlined"
             onChange={(e) => {
@@ -264,6 +265,7 @@ const NomineeTab = () => {
           <TextField
             label="Relationship"
             variant="outlined"
+            disabled={user.kyc === variables.status.APPROVED}
             fullWidth
             value={relationship}
             onChange={(e) => {
@@ -465,22 +467,24 @@ const NomineeTab = () => {
         </Grid>
         <Grid item xs={12} sm={4}></Grid>
         <Divider />
-        <Box component="form" mt={1}>
-          <LoadingButton
-            loading={isLoading}
-            sx={{ paddingX: 17 }}
-            variant="contained"
-            component="label"
-            disabled={!isSubmitButtonEnalbed}
-            onClick={() => {
-              handleNomineeSubmit();
-            }}
-          >
-            Submit
-          </LoadingButton>
+        {user.kyc !== variables.status.APPROVED && (
+          <Box component="form" mt={1}>
+            <LoadingButton
+              loading={isLoading}
+              sx={{ paddingX: 17 }}
+              variant="contained"
+              component="label"
+              disabled={!isSubmitButtonEnalbed}
+              onClick={() => {
+                handleNomineeSubmit();
+              }}
+            >
+              Submit
+            </LoadingButton>
 
-          <Toaster position="bottom-center" reverseOrder={false} />
-        </Box>
+            <Toaster position="bottom-center" reverseOrder={false} />
+          </Box>
+        )}
       </Grid>
     </>
   );

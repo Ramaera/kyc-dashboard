@@ -178,6 +178,7 @@ const DematTab = () => {
           label="Demat Account No."
           type="text"
           fullWidth
+          disabled={user.kyc === variables.status.APPROVED}
           value={dematAccount}
           variant="outlined"
           onChange={(e) => {
