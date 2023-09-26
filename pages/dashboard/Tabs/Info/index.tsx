@@ -110,6 +110,7 @@ const InfoTab = () => {
             required
             id="outlined"
             label="Full Name"
+            disabled={user.kyc === variables.status.APPROVED}
             fullWidth
             value={fullName}
             variant="outlined"
@@ -123,6 +124,7 @@ const InfoTab = () => {
             required
             label="Father's/Husband's Name"
             variant="outlined"
+            disabled={user.kyc === variables.status.APPROVED}
             fullWidth
             value={fatherHusbandName}
             onChange={(e) => {
@@ -150,6 +152,7 @@ const InfoTab = () => {
             label="Date of Birth"
             variant="outlined"
             fullWidth
+            disabled={user.kyc === variables.status.APPROVED}
             placeholder=""
             value={dob}
             onChange={(e) => {
@@ -165,6 +168,7 @@ const InfoTab = () => {
             label="Mobile Number"
             variant="outlined"
             fullWidth
+            disabled={user.kyc === variables.status.APPROVED}
             value={mobileNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               SetMobileNumber(e.target.value);
@@ -185,6 +189,7 @@ const InfoTab = () => {
           <TextField
             required
             id="outlined"
+            disabled={user.kyc === variables.status.APPROVED}
             label="Alternate Number"
             fullWidth
             variant="outlined"
@@ -208,6 +213,7 @@ const InfoTab = () => {
         <Grid item xs={12} sm={4}>
           <TextField
             required
+            disabled={user.kyc === variables.status.APPROVED}
             label="Email ID"
             variant="outlined"
             fullWidth

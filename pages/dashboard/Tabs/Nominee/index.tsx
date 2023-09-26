@@ -194,6 +194,7 @@ const NomineeTab = () => {
           <TextField
             id="outlined"
             label="Full Name*"
+            disabled={user.kyc === variables.status.APPROVED}
             fullWidth
             value={nomineeName}
             variant="outlined"
@@ -207,6 +208,7 @@ const NomineeTab = () => {
           <TextField
             label="Relationship"
             variant="outlined"
+            disabled={user.kyc === variables.status.APPROVED}
             fullWidth
             value={relationship}
             onChange={(e) => {
