@@ -25,6 +25,7 @@ import { LoadingButton } from '@mui/lab';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 
 export const rows = [
   {
@@ -291,32 +292,34 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               />
             </Grid>
           </Box>
-          <Button
-            fullWidth
-            style={{
-              marginTop: '10px'
-            }}
-            component="label"
-          >
-            Choose {items[i].name}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(f) => {
-                // console.log(i);
-                if (f.target.files.length > 0) {
-                  const _images = [...images];
-                  _images[i] = f.target.files[0];
-                  setImages(_images);
-                  // console.log('imageChanged', _images[i]);
-                  const _imagesChanged = [...imagesChanged];
-                  _imagesChanged[i] = true;
-                  setImagesChange(_imagesChanged);
-                }
+          {user.kyc !== variables.status.APPROVED && (
+            <Button
+              fullWidth
+              style={{
+                marginTop: '10px'
               }}
-            />
-          </Button>
+              component="label"
+            >
+              Choose {items[i].name}
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(f) => {
+                  // console.log(i);
+                  if (f.target.files.length > 0) {
+                    const _images = [...images];
+                    _images[i] = f.target.files[0];
+                    setImages(_images);
+                    // console.log('imageChanged', _images[i]);
+                    const _imagesChanged = [...imagesChanged];
+                    _imagesChanged[i] = true;
+                    setImagesChange(_imagesChanged);
+                  }
+                }}
+              />
+            </Button>
+          )}
         </div>
       );
     }
@@ -381,19 +384,6 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               Update
             </LoadingButton>
           </TableCell>
-
-          {/*  <TableCell>
-          <span
-            style={{
-              color: documents[0]
-                ? (documents[0].status === 'APPROVED' && 'limegreen') ||
-                  (documents[0].status === 'REJECTED' && 'red')
-                : ''
-            }}
-          >
-            {documents[0] && documents[0].status}
-          </span>
-        </TableCell> */}
         </TableRow>
       )}
     </>
@@ -635,33 +625,35 @@ const InfoTab = () => {
             </span>
           </Typography>
           <Box>
-            <Grid>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
         </>
       )}
-      {proofImage && (
+      {proofImage && user.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"

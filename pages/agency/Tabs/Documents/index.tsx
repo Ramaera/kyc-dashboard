@@ -3,6 +3,7 @@ import {
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
 import DocumentType from '@/state/types/document';
@@ -229,6 +230,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
               }}
             />
           </Button>
+
           <Box display="flex">
             <Button
               onClick={() => changeDocumentStatus(documents[i].id, 'APPROVED')}
@@ -248,6 +250,9 @@ const DocumentRow = ({ user, data, documents = [] }) => {
           </Box>
         </>
       );
+    }
+    if (user.kyc === variables.status.APPROVED) {
+      return;
     }
     return views;
   };

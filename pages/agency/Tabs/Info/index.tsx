@@ -1,4 +1,5 @@
 import { UPDATE_BY_ADMIN } from '@/apollo/queries/updateUser';
+import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
 import allUsersUpdater from '@/utils/updateUserList';
@@ -171,21 +172,23 @@ const InfoTab = () => {
       </Grid>
 
       <Grid container p={2} spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <Box component="form">
-            <LoadingButton
-              loading={isLoading}
-              fullWidth
-              disabled={!isSubmitButtonEnalbed}
-              variant="contained"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Update Details
-            </LoadingButton>
-          </Box>
-        </Grid>
+        {user.kyc !== variables.status.APPROVED && (
+          <Grid item xs={12} sm={4}>
+            <Box component="form">
+              <LoadingButton
+                loading={isLoading}
+                fullWidth
+                disabled={!isSubmitButtonEnalbed}
+                variant="contained"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                Update Details
+              </LoadingButton>
+            </Box>
+          </Grid>
+        )}
 
         <Grid item xs={12} sm={4} />
 
