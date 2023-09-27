@@ -72,14 +72,14 @@ function DashboardTasks() {
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
-            variant="scrollable"
+            variant="fullWidth"
             textColor="primary"
             visibleScrollbar={true}
             indicatorColor="primary"
           >
             {tabs.map((tab) => (
               <Tab
-                style={{ fontSize: mobile ? 12 : 14 }}
+                style={{ fontSize: mobile ? 8 : 14 }}
                 key={tab.value}
                 label={tab.label}
                 value={tab.value}
