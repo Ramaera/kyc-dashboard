@@ -38,9 +38,9 @@ const DematTab = () => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <DesktopDatePicker
-            label="Expiry Date"
+            label="Created Date"
             inputFormat="dd/MM/yyyy"
-            value={dscDetails.expiryDate}
+            value={dscDetails.createdDate}
             // disableFuture
             disabled
             onChange={() => {}}
