@@ -20,6 +20,7 @@ export default function SignupCard() {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
+  const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
   const [validPWID, setValidPWID] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState(false);
@@ -53,8 +54,8 @@ export default function SignupCard() {
   const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
-    if (!validPWID) {
-      toast.error('Please Enter a valid PWID');
+    if (aadhaarNumber.length !== 12) {
+      toast.error('Enter Valid Aadhaar Number!');
 
       return;
     }
@@ -66,6 +67,11 @@ export default function SignupCard() {
 
     if (!password || password.length < 8) {
       toast.error('Password is not valid!');
+      return;
+    }
+    if (!validPWID) {
+      toast.error('Please Enter a valid PWID');
+
       return;
     }
     return true;
@@ -80,6 +86,7 @@ export default function SignupCard() {
           variables: {
             pw_id: PWId.toUpperCase(),
             membership: membership,
+            aadharCardNumber: aadhaarNumber,
             password: password,
             referralAgencyCode: referral
           }
@@ -96,11 +103,6 @@ export default function SignupCard() {
     }
     setLoading(false);
   };
-  // React.useEffect(()=>{
-  //   console.log("dataatsignup",{user})
-  //   // setMembership(user?.membership)
-  // },[user])
-
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -166,6 +168,16 @@ export default function SignupCard() {
             label="Agency Referral Code (optional)"
             onChange={(e) => {
               setReferral(e.target.value);
+              //checkPWID(e.target.value);
+            }}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Aadhaar Number "
+            required
+            onChange={(e) => {
+              setAadhaarNumber(e.target.value);
               //checkPWID(e.target.value);
             }}
           />

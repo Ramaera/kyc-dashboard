@@ -20,17 +20,32 @@ mutation changePassword($oldpassword:String!,$newPassword:String!) {
 }`);
 
 export const SIGNUP = gql(`
-mutation AuthUser($pw_id:String!,$membership:Membership!,$password:String!,$referralAgencyCode:String) {
-  signup(data: { pw_id:$pw_id, membership:$membership ,password:$password,referralAgencyCode:$referralAgencyCode}) {
+mutation AuthUser(
+  $pw_id: String!
+  $membership: Membership!
+  $password: String!
+  $referralAgencyCode: String
+  $aadharCardNumber: String
+) {
+  signup(
+    data: {
+      pw_id: $pw_id
+      membership: $membership
+      password: $password
+      referralAgencyCode: $referralAgencyCode
+      aadharCardNumber: $aadharCardNumber
+    }
+  ) {
     accessToken
-    user{
-     createdAt
-     membership
-     pw_id
+    user {
+      createdAt
+      membership
+      pw_id
     }
     refreshToken
   }
-}`);
+}
+`);
 
 export const RESETPASSWORD = gql(`
 mutation forgetPasswordWithPrivateKey($pwId: String!, $newPassword: String!) {
