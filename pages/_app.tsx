@@ -1,5 +1,4 @@
 import { ReactElement, ReactNode } from 'react';
-
 import { getApolloClient } from '@/apollo';
 import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
@@ -52,6 +51,24 @@ function TokyoApp(props: TokyoAppProps) {
         <CacheProvider value={emotionCache}>
           <Head>
             <title>Ramaera Dashboard</title>
+            <link rel="shortcut icon" href="/images/logo.png" />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/images/logo.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/images/logo.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/images/logo.png"
+            />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no"
