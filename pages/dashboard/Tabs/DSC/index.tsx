@@ -28,11 +28,10 @@ const DematTab = () => {
 
   useEffect(() => {
     if (user.DSCDetails) {
-      console.log(user.DSCDetails[0]);
       setDscDetails({
-        dscStatus: user.DSCDetails[0].dscStatus,
-        createdDate: user.DSCDetails[0].DscCreatedDate,
-        expiryDate: user.DSCDetails[0].DscExpiryDate
+        dscStatus: user?.DSCDetails[0].dscStatus,
+        createdDate: user?.DSCDetails[0].DscCreatedDate,
+        expiryDate: user?.DSCDetails[0].DscExpiryDate
       });
     }
   }, [user]);
