@@ -78,7 +78,7 @@ const InfoTab = () => {
           <TextField
             id="outlined"
             label="Full Name*"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fullName}
             variant="outlined"
@@ -93,7 +93,7 @@ const InfoTab = () => {
           <TextField
             label="Father's/Husband's Name*"
             variant="outlined"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fatherHusbandName}
             onChange={(e) => {
@@ -107,7 +107,7 @@ const InfoTab = () => {
             required
             hidden
             label="Date of Birth"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             variant="outlined"
             fullWidth
             placeholder=""
@@ -123,7 +123,7 @@ const InfoTab = () => {
         <Grid item xs={12} sm={4}>
           <TextField
             type="number"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             label="Mobile Number*"
             variant="outlined"
@@ -139,7 +139,7 @@ const InfoTab = () => {
           <TextField
             id="outlined"
             type="number"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             label="Alternate Number*"
             fullWidth
@@ -156,7 +156,7 @@ const InfoTab = () => {
             type="email"
             label="Email ID*"
             variant="outlined"
-            disabled={user.kyc === variables.status.APPROVED}
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={email}
             onChange={(e) => {

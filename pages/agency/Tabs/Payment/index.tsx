@@ -32,7 +32,6 @@ export const rows = [
     config: documentsConfig.additional_payment_documents
   }
 ];
-// let statusUpdate = [];
 
 const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [images, setImages] = useState([]);
