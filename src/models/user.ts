@@ -17,6 +17,9 @@ export interface User {
   updatedAt?: String;
   membership?: Membership;
   documents?: DocumentType;
+  Address?: String;
+  aadharCardNumber?: String;
+  panCardNumber?: String;
   kyc?: KYC;
   role: ROLE;
 }
