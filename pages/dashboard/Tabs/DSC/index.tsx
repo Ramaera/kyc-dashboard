@@ -1,17 +1,8 @@
 import { useAppSelector } from '@/hooks';
-import { useMutation } from '@apollo/client';
-import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField
-} from '@mui/material';
+import { DesktopDatePicker } from '@mui/lab';
+import { Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 const DematTab = () => {
   const user = useAppSelector((state) => state.user?.data);
@@ -20,11 +11,6 @@ const DematTab = () => {
     createdDate: '',
     expiryDate: ''
   });
-
-  const dscStatus = [
-    { id: 'RECEIVED', name: 'RECEIVED' },
-    { id: 'NOT_RECEIVED', name: 'NOT_RECEIVED' }
-  ];
 
   useEffect(() => {
     if (user.DSCDetails) {
@@ -35,16 +21,6 @@ const DematTab = () => {
       });
     }
   }, [user]);
-
-  useEffect(() => {
-    if (
-      dscDetails.createdDate &&
-      dscDetails.dscStatus &&
-      dscDetails.expiryDate
-    ) {
-      setSubmitButtonEnabled(true);
-    }
-  }, [dscDetails]);
 
   return (
     <>
@@ -61,7 +37,18 @@ const DematTab = () => {
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField
+          <DesktopDatePicker
+            label="Expiry Date"
+            inputFormat="dd/MM/yyyy"
+            value={dscDetails.expiryDate}
+            // disableFuture
+            disabled
+            onChange={() => {}}
+            renderInput={(params) => (
+              <TextField {...params} sx={{ width: '100%' }} />
+            )}
+          />
+          {/* <TextField
             disabled
             id="outlined"
             label="Created Date"
@@ -69,10 +56,21 @@ const DematTab = () => {
             fullWidth
             value={dscDetails.createdDate}
             variant="outlined"
-          />
+          /> */}
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField
+          <DesktopDatePicker
+            label="Expiry Date"
+            inputFormat="dd/MM/yyyy"
+            onChange={() => {}}
+            value={dscDetails.expiryDate}
+            // disableFuture
+            disabled
+            renderInput={(params) => (
+              <TextField {...params} sx={{ width: '100%' }} />
+            )}
+          />
+          {/*  <TextField
             disabled
             id="outlined"
             label="Expiry Date"
@@ -80,7 +78,7 @@ const DematTab = () => {
             fullWidth
             value={dscDetails.expiryDate}
             variant="outlined"
-          />
+          /> */}
         </Grid>
       </Grid>
 
