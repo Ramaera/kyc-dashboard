@@ -72,7 +72,7 @@ function DashboardTasks() {
           <Tabs
             onChange={handleTabsChange}
             value={currentTab}
-            variant="fullWidth"
+            variant={mobile ? 'fullWidth' : 'scrollable'}
             textColor="primary"
             visibleScrollbar={true}
             indicatorColor="primary"
