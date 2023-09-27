@@ -65,9 +65,15 @@ mutation updateUser(
   $alternate_mobile_number: String
   $email: String
   $demat_account: String
+  $Address: String
+  $aadharCardNumber: String
+  $panCardNumber: String
 ) {
   updateUser(
     data: {
+      Address: $Address
+      aadharCardNumber: $aadharCardNumber
+      panCardNumber: $panCardNumber
       name: $name
       father_or_husband_name: $father_or_husband_name
       date_of_birth: $date_of_birth
@@ -77,12 +83,20 @@ mutation updateUser(
       demat_account: $demat_account
     }
   ) {
+    Address
+    aadharCardNumber
+    panCardNumber
     updatedAt
     name
+    father_or_husband_name
     email
+    date_of_birth
     demat_account
+    mobile_number
+    alternate_mobile_number
   }
-}`);
+}
+`);
 
 export const CREATEDOCUMENT =
   gql(`mutation createDocument($title: String!, $url: String!) {
@@ -112,44 +126,46 @@ mutation upsertNominee($name: String!, $relationship: String!) {
 
 export const GetUser = gql(`
 query GetUser {
- me{
-  alternate_mobile_number
-  createdAt
-  referralAgencyCode
-  date_of_birth
-  membership
-  demat_account
-  DSCDetails {
+  me {
+    aadharCardNumber
+    Address
+    panCardNumber
+    alternate_mobile_number
+    createdAt
+    referralAgencyCode
+    date_of_birth
+    membership
+    demat_account
+    DSCDetails {
       dscStatus
       DscExpiryDate
       DscCreatedDate
     }
-  documents{
-    createdAt
-    updatedAt
+    documents {
+      createdAt
+      updatedAt
+      id
+      title
+      url
+      status
+      amount
+    }
+    nominee {
+      id
+      name
+      relationship
+    }
+    email
+    father_or_husband_name
     id
-    title
-    url
-    status
-    amount
-  }
-  nominee{
-    id
+    kyc
+    mobile_number
     name
-    relationship
+    pw_id
+    rm_id
+    updatedAt
   }
-  email
-  father_or_husband_name
-  id
-  kyc
-  mobile_number
-  name
-  pw_id
-  rm_id
-  updatedAt
-}
-  }
-  `);
+}`);
 
 export const GET_ALL_USERS = gql(`
 query($skip: Int! $take: Int!) {

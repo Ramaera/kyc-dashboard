@@ -22,6 +22,11 @@ const InfoTab = () => {
   const [isLoading, setLoading] = useState(false);
   const [updatedetails] = useMutation(UPDATEUSERDETAILS);
   const [demat, setDemat] = useState<any | null>(null);
+  const [moreDetails, setMoreDetails] = useState<any | null>({
+    address: '',
+    aadhaar: '',
+    pan: ''
+  });
   const [errors, setErrors] = useState({
     mobileNumber: null,
     AlternateMobileNumber: null,
@@ -68,7 +73,10 @@ const InfoTab = () => {
           mobile_number: mobileNumber,
           alternate_mobile_number: AlternateMobileNumber,
           demat_account: demat,
-          email: email
+          email: email,
+          Address: moreDetails.address,
+          aadharCardNumber: moreDetails.aadhaar,
+          panCardNumber: moreDetails.pan
         }
       });
       dispatch(
@@ -80,7 +88,10 @@ const InfoTab = () => {
           mobile_number: mobileNumber,
           alternate_mobile_number: AlternateMobileNumber,
           demat_account: demat,
-          email: email
+          email: email,
+          Address: moreDetails.address,
+          aadharCardNumber: moreDetails.aadhaar,
+          panCardNumber: moreDetails.pan
         })
       );
       toast.success('Details Updated');
@@ -99,6 +110,11 @@ const InfoTab = () => {
       setAlternateMobileNumber(user?.alternate_mobile_number);
       setEmail(user?.email);
       setDemat(user?.demat_account);
+      setMoreDetails({
+        address: user?.Address,
+        aadhaar: user?.aadharCardNumber,
+        pan: user?.panCardNumber
+      });
     }
   }, [user]);
 
@@ -231,6 +247,48 @@ const InfoTab = () => {
             }}
           />
           {errors.email && <p>{errors.email}</p>}
+        </Grid>
+      </Grid>
+      <Grid container pr={2} pb={2} pl={2} spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            label="Address"
+            variant="outlined"
+            fullWidth
+            // disabled={user?.kyc === variables.status.APPROVED}
+            value={moreDetails.address}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, address: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="outlined"
+            // disabled={user?.kyc === variables.status.APPROVED}
+            label="Aadhaar Number"
+            fullWidth
+            variant="outlined"
+            value={moreDetails.aadhaar}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, aadhaar: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            // disabled={user?.kyc === variables.status.APPROVED}
+            label="PanCard Number"
+            variant="outlined"
+            fullWidth
+            value={moreDetails.pan}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, pan: e.target.value });
+            }}
+          />
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
