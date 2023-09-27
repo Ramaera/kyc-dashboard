@@ -17,7 +17,8 @@ import {
   TablePagination,
   TableRow,
   TextField,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -91,6 +92,7 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
+  const theme = useTheme();
   const [usersList, setUsersList] = useState(
     useSelector((state: any) => state.allUsers.allTheUsers)
   );
@@ -251,8 +253,22 @@ const UserTable = () => {
     <>
       <Card>
         <CardHeader
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              display: 'flex',
+              flexDirection: 'column'
+            }
+          }}
           action={
-            <Box display={'flex'} gap={'20px'}>
+            <Box
+              display={'flex'}
+              gap={'20px'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column'
+                }
+              }}
+            >
               <Box display={'flex'} gap={'10px'}>
                 <TextField
                   fullWidth
@@ -264,59 +280,70 @@ const UserTable = () => {
                   }}
                 />
               </Box>
-              <Box width={'120px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Share Holder Type</InputLabel>
-                  <Select
-                    value={filters.membership || 'all'}
-                    onChange={handleMembershipChange}
-                    label="Share Holder Type"
-                    autoWidth
-                  >
-                    {membershipOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box width={'120px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>KYC Status</InputLabel>
-                  <Select
-                    value={filters.status || 'all'}
-                    onChange={handleStatusChange}
-                    label="Status"
-                    autoWidth
-                  >
-                    {statusOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box width={'150px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Demat Status</InputLabel>
-                  <Select
-                    sx={{
-                      bgcolor: filters.demat && '#8c7cf040'
-                    }}
-                    value={filters.demat || 'all'}
-                    onChange={handleDematChange}
-                    label="Deat"
-                    autoWidth
-                  >
-                    {deamtOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '10px',
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'space-between'
+                  }
+                }}
+              >
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Share Holder Type</InputLabel>
+                    <Select
+                      value={filters.membership || 'all'}
+                      onChange={handleMembershipChange}
+                      label="Share Holder Type"
+                      autoWidth
+                    >
+                      {membershipOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>KYC Status</InputLabel>
+                    <Select
+                      value={filters.status || 'all'}
+                      onChange={handleStatusChange}
+                      label="Status"
+                      autoWidth
+                    >
+                      {statusOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Demat Status</InputLabel>
+                    <Select
+                      sx={{
+                        bgcolor: filters.demat && '#8c7cf040'
+                      }}
+                      value={filters.demat || 'all'}
+                      onChange={handleDematChange}
+                      label="Deat"
+                      autoWidth
+                    >
+                      {deamtOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
               </Box>
             </Box>
           }

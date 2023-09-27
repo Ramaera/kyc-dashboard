@@ -29,6 +29,7 @@ import { LoadingButton } from '@mui/lab';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -245,56 +246,58 @@ const DocumentRow = ({
               marginBottom: '10px'
             }}
           >
-            <Grid>
-              <TextField
-                sx={{ width: 120 }}
-                id="outlined"
-                label="UTR No.*"
-                value={additionalUtr[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArrUtr[i] = e.target.value)
-                    : (newArrUtr[i] = null);
-                  setAdditionalUtr(newArrUtr);
-                }}
-              />
-              <TextField
-                sx={{ width: 120, ml: 2 }}
-                id="outlined"
-                label="Amount*"
-                value={additionalAmounts[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArr[i] = parseInt(e.target.value))
-                    : (newArr[i] = null);
-                  setAdditionalAmounts(newArr);
-                }}
-              />
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(documents[i].id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-                sx={{ ml: 2 }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(documents[i].id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <TextField
+                  sx={{ width: 120 }}
+                  id="outlined"
+                  label="UTR No.*"
+                  value={additionalUtr[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArrUtr[i] = e.target.value)
+                      : (newArrUtr[i] = null);
+                    setAdditionalUtr(newArrUtr);
+                  }}
+                />
+                <TextField
+                  sx={{ width: 120, ml: 2 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={additionalAmounts[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArr[i] = parseInt(e.target.value))
+                      : (newArr[i] = null);
+                    setAdditionalAmounts(newArr);
+                  }}
+                />
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(documents[i].id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                  sx={{ ml: 2 }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(documents[i].id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
 
           <Button
@@ -378,31 +381,24 @@ const DocumentRow = ({
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell width={300}>{getPreview()}</TableCell>
-
-        <TableCell style={{}}>{getActionCell()}</TableCell>
-        <TableCell>
-          {/* <div
-            style={{
-              color: documents[0]
-                ? (documents[0].status === 'APPROVED' && 'limegreen') ||
-                  (documents[0].status === 'REJECTED' && 'red')
-                : ''
-            }}
-          >
-            {documents[0] && documents[0].status}
-          </div> */}
-          <LoadingButton
-            loading={isLoading}
-            // disabled={!isValidToClick()}
-            variant="contained"
-            onClick={() => {
-              handleDocumentUpload();
-              handleAmountChange();
-            }}
-          >
-            Update
-          </LoadingButton>
-        </TableCell>
+        {user.kyc !== variables.status.APPROVED && (
+          <>
+            <TableCell style={{}}>{getActionCell()}</TableCell>
+            <TableCell>
+              <LoadingButton
+                loading={isLoading}
+                // disabled={!isValidToClick()}
+                variant="contained"
+                onClick={() => {
+                  handleDocumentUpload();
+                  handleAmountChange();
+                }}
+              >
+                Update
+              </LoadingButton>
+            </TableCell>
+          </>
+        )}
       </TableRow>
     </>
   );
@@ -720,33 +716,35 @@ const InfoTab = ({ to }) => {
             </span>
           </Typography>
           <Box>
-            <Grid>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
         </>
       )}
-      {proofImage && (
+      {proofImage && user.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"
@@ -785,8 +783,8 @@ const InfoTab = ({ to }) => {
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && (
-          <Grid item xs={4}>
+        {paymentDocument && user.kyc !== variables.status.APPROVED && (
+          <Grid item xs={12} sm={4}>
             <Button variant="contained" component="label">
               Select Payment Slip
               <input
@@ -804,7 +802,7 @@ const InfoTab = ({ to }) => {
             </Button>
           </Grid>
         )}
-        {paymentDocument && (
+        {paymentDocument && user.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth

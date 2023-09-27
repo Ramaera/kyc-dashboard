@@ -194,6 +194,7 @@ const NomineeTab = () => {
           <TextField
             id="outlined"
             label="Full Name*"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={nomineeName}
             variant="outlined"
@@ -207,6 +208,7 @@ const NomineeTab = () => {
           <TextField
             label="Relationship"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={relationship}
             onChange={(e) => {
@@ -215,7 +217,8 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        {/* <Grid item xs={4}></Grid> */}
+        {/*         <Grid item xs={12} sm={4}>
+</Grid> */}
       </Grid>
 
       <Grid container pt={1} pb={2} spacing={15}>
@@ -356,7 +359,8 @@ const NomineeTab = () => {
             </Button>
           )}
         </Grid>
-        {/* <Grid item xs={4}></Grid>
+        {/*         <Grid item xs={12} sm={4}>
+</Grid>
         <Divider /> */}
       </Grid>
       {user?.kyc === 'APPROVED' ? null : (

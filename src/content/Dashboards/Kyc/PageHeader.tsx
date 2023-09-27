@@ -39,14 +39,16 @@ function PageHeader() {
     let hasPan = false;
     let hasPassbook = false;
     let hasNomineeAadhaarFront = false;
+    let hasDemat = false;
 
     if (
-      user?.name &&
-      user?.email &&
-      user?.mobile_number &&
-      user?.date_of_birth &&
-      user?.nominee.name &&
-      user?.nominee.relationship
+      currentUser?.name &&
+      currentUser?.email &&
+      currentUser?.mobile_number &&
+      currentUser?.date_of_birth &&
+      currentUser?.nominee.name &&
+      currentUser?.nominee.relationship &&
+      currentUser?.demat_account
     ) {
       hasUserDatails = true;
     }
@@ -94,6 +96,12 @@ function PageHeader() {
       ) {
         hasNomineeAadhaarFront = true;
       }
+      if (
+        doc.title.includes('demat') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasDemat = true;
+      }
     });
 
     return (
@@ -104,7 +112,8 @@ function PageHeader() {
       hasAadhaarBack &&
       hasPan &&
       hasPassbook &&
-      hasNomineeAadhaarFront
+      hasNomineeAadhaarFront &&
+      hasDemat
     );
   };
 
@@ -135,22 +144,6 @@ function PageHeader() {
     }
     setResponse(resp.data.updateStatus.kyc);
   };
-  const checkStatus = () => {
-    if (currentUser) {
-      let dis = false;
-      currentUser.documents.map((doc) => {
-        if (
-          doc.status === 'REJECTED' ||
-          doc.status === 'PENDING' ||
-          doc.status === 'NOT_ININTIALISED'
-        ) {
-          // console.log(doc.status);
-          dis = true;
-        }
-      });
-      return dis;
-    }
-  };
   return (
     <>
       {router.pathname === '/dashboard' && (
@@ -161,9 +154,6 @@ function PageHeader() {
           justifyContent="space-between"
         >
           <Box display="flex" alignItems="center">
-            {/* <AvatarPageTitle variant="rounded">
-          <AddAlertTwoToneIcon fontSize="large" />
-        </AvatarPageTitle> */}
             <Box>
               {/* <Grid> */}
               <Typography
@@ -287,44 +277,34 @@ function PageHeader() {
                   </span>
                 </Typography>
               </Box>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('AGENT_APPROVED');
+              {currentUser.kyc !== variables.status.APPROVED && (
+                <>
+                  <Button
+                    onClick={() => {
+                      handleClickOpen();
+                      setStatus('AGENT_APPROVED');
+                    }}
+                    variant="outlined"
+                    disabled={!checkApprovalParameters()}
+                    color="success"
+                    sx={{ ml: 2 }}
+                  >
+                    Approve
+                  </Button>
 
-                  // handleStatus('APPROVED');
-                }}
-                variant="outlined"
-                disabled={!checkApprovalParameters()}
-                color="success"
-                sx={{ ml: 2 }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('ONGOING');
-
-                  // handleStatus('ONGOING');
-                }}
-                variant="outlined"
-                color="warning"
-                sx={{ ml: 2 }}
-              >
-                Ongoing
-              </Button>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('REJECTED');
-                }}
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
+                  <Button
+                    onClick={() => {
+                      handleClickOpen();
+                      setStatus('REJECTED');
+                    }}
+                    variant="outlined"
+                    color="error"
+                    sx={{ ml: 2 }}
+                  >
+                    Reject
+                  </Button>
+                </>
+              )}
               <div>
                 <Dialog
                   open={open}

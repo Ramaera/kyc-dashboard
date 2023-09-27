@@ -6,10 +6,17 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Button,
+  Grid,
+  TableCell,
+  TableRow,
+  Typography,
+  useTheme
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import PaymentInfo from './paymentDetails';
+import PaymentInfo from '../paymentDetails';
 import variables from '@/config/variables';
 
 export const rows = [
@@ -24,6 +31,7 @@ const DocumentRow = ({
   rowNo,
   hideAdditionalDocuments
 }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
@@ -256,7 +264,16 @@ const DocumentRow = ({
   };
   return (
     <>
-      <TableRow key={data.config.name} sx={{}}>
+      <TableRow
+        key={data.config.name}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 },
+          [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
+      >
         <TableCell component="th" scope="row" style={{ border: 'none' }}>
           {data.config.name} {data.isOptional ? '(Optional)' : ''}
         </TableCell>
@@ -329,7 +346,7 @@ const InfoTab = () => {
   const getDocNum = () => {
     let count = 0;
     user?.documents?.map((doc) => {
-      if (doc.title.slice(0, 22) === 'additional_payment_doc') {
+      if (doc.title.includes('to_advance_additional_payment')) {
         count += 1;
       }
       setRowNo(count);
@@ -537,7 +554,7 @@ const InfoTab = () => {
                 setAdditionalDocuments(true);
               }}
             >
-              Add/See Additional Documents
+              Additional Documents
             </LoadingButton>
           )}
         </>

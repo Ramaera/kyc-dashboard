@@ -25,13 +25,13 @@ import { LoadingButton } from '@mui/lab';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 
 export const rows = [
   {
     config: documentsConfig.additional_payment_documents
   }
 ];
-// let statusUpdate = [];
 
 const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [images, setImages] = useState([]);
@@ -65,7 +65,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     setAdditionalUtr(newArrUtr);
     setAdditionalAmounts(newArr);
     data.config.items.map((docTitle) => {
-      user.documents.map((doc) => {
+      user?.documents?.map((doc) => {
         if (doc.title === docTitle.id) {
           newArr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.amount || '';
           newArrUtr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.utrNo || '';
@@ -89,7 +89,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
 
   const findDocId = (title) => {
     let id;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (doc.title === title) {
         id = doc.id;
       }
@@ -231,92 +231,96 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             </span>
           </div>
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '10px',
-              width: 500
-            }}
-          >
-            <Grid>
-              <Button
-                onClick={() => {
-                  changeDocumentStatus(documents[i].id, 'APPROVED');
-                }}
-                variant="outlined"
-                color="success"
-                sx={{ paddingY: '12px' }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(documents[i].id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ mx: 2, paddingY: '12px' }}
-              >
-                Reject
-              </Button>
-
-              <TextField
-                sx={{ width: 120 }}
-                id="outlined"
-                label="UTR No.*"
-                value={additionalUtr[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArrUtr[i] = e.target.value)
-                    : (newArrUtr[i] = null);
-                  setAdditionalUtr(newArrUtr);
-                }}
-              />
-              <TextField
-                sx={{ width: 120, ml: 2 }}
-                id="outlined"
-                label="Amount*"
-                value={additionalAmounts[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArr[i] = parseInt(e.target.value))
-                    : (newArr[i] = null);
-                  setAdditionalAmounts(newArr);
-                }}
-              />
-            </Grid>
-          </Box>
-          <Button
-            fullWidth
-            style={{
-              marginTop: '10px'
-            }}
-            component="label"
-          >
-            Choose {items[i].name}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(f) => {
-                // console.log(i);
-                if (f.target.files.length > 0) {
-                  const _images = [...images];
-                  _images[i] = f.target.files[0];
-                  setImages(_images);
-                  // console.log('imageChanged', _images[i]);
-                  const _imagesChanged = [...imagesChanged];
-                  _imagesChanged[i] = true;
-                  setImagesChange(_imagesChanged);
-                }
+          {user.kyc !== variables.status.APPROVED && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '10px',
+                width: 500
               }}
-            />
-          </Button>
+            >
+              <Grid>
+                <Button
+                  onClick={() => {
+                    changeDocumentStatus(documents[i].id, 'APPROVED');
+                  }}
+                  variant="outlined"
+                  color="success"
+                  sx={{ paddingY: '12px' }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(documents[i].id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ mx: 2, paddingY: '12px' }}
+                >
+                  Reject
+                </Button>
+
+                <TextField
+                  sx={{ width: 120 }}
+                  id="outlined"
+                  label="UTR No.*"
+                  value={additionalUtr[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArrUtr[i] = e.target.value)
+                      : (newArrUtr[i] = null);
+                    setAdditionalUtr(newArrUtr);
+                  }}
+                />
+                <TextField
+                  sx={{ width: 120, ml: 2 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={additionalAmounts[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArr[i] = parseInt(e.target.value))
+                      : (newArr[i] = null);
+                    setAdditionalAmounts(newArr);
+                  }}
+                />
+              </Grid>
+            </Box>
+          )}
+          {user.kyc !== variables.status.APPROVED && (
+            <Button
+              fullWidth
+              style={{
+                marginTop: '10px'
+              }}
+              component="label"
+            >
+              Choose {items[i].name}
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(f) => {
+                  // console.log(i);
+                  if (f.target.files.length > 0) {
+                    const _images = [...images];
+                    _images[i] = f.target.files[0];
+                    setImages(_images);
+                    // console.log('imageChanged', _images[i]);
+                    const _imagesChanged = [...imagesChanged];
+                    _imagesChanged[i] = true;
+                    setImagesChange(_imagesChanged);
+                  }
+                }}
+              />
+            </Button>
+          )}
         </div>
       );
     }
@@ -365,35 +369,25 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
           <TableCell width={300}>{getPreview()}</TableCell>
-
           <TableCell style={{}}>{getActionCell()}</TableCell>
-          <TableCell>
-            <LoadingButton
-              loading={isLoading}
-              // disabled={!isValidToClick()}
-              variant="contained"
-              onClick={() => {
-                handleDocumentUpload();
-                handleAmountChange();
-              }}
-              sx={{ paddingX: 8 }}
-            >
-              Update
-            </LoadingButton>
-          </TableCell>
-
-          {/*  <TableCell>
-          <span
-            style={{
-              color: documents[0]
-                ? (documents[0].status === 'APPROVED' && 'limegreen') ||
-                  (documents[0].status === 'REJECTED' && 'red')
-                : ''
-            }}
-          >
-            {documents[0] && documents[0].status}
-          </span>
-        </TableCell> */}
+          {user.kyc !== variables.status.APPROVED && (
+            <>
+              <TableCell>
+                <LoadingButton
+                  loading={isLoading}
+                  // disabled={!isValidToClick()}
+                  variant="contained"
+                  onClick={() => {
+                    handleDocumentUpload();
+                    handleAmountChange();
+                  }}
+                  sx={{ paddingX: 8 }}
+                >
+                  Update
+                </LoadingButton>
+              </TableCell>
+            </>
+          )}
         </TableRow>
       )}
     </>
@@ -435,7 +429,7 @@ const InfoTab = () => {
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   const getDocNum = async () => {
     let count = 0;
-    user.documents.map((doc) => {
+    user?.documents?.map((doc) => {
       if (doc.title.slice(0, 22) === 'additional_payment_doc') {
         count += 1;
       }
@@ -635,33 +629,35 @@ const InfoTab = () => {
             </span>
           </Typography>
           <Box>
-            <Grid>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
         </>
       )}
-      {proofImage && (
+      {proofImage && user.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"
@@ -700,7 +696,7 @@ const InfoTab = () => {
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && (
+        {paymentDocument && user.kyc !== variables.status.APPROVED && (
           <Grid item xs={0}>
             <Button variant="contained" component="label">
               Select Payment Slip
@@ -719,7 +715,7 @@ const InfoTab = () => {
             </Button>
           </Grid>
         )}
-        {proofImage && (
+        {proofImage && user.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth

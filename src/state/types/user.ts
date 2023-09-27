@@ -19,12 +19,24 @@ type UserType = {
   password?: String;
   nominee?: NomineeType | undefined;
   documents?: [DocumentType] | [];
+  avatar?: String;
+  referralAgencyCode?: String;
+  Address?: String;
+  aadharCardNumber?: String;
+  panCardNumber?: String;
+  role: ROLE;
 };
 
 enum Membership {
   BASIC = 'BASIC',
   ADVANCE = 'ADVANCE'
 }
+enum ROLE {
+  ADMIN = 'ADMIN',
+  AGENT = 'AGENT',
+  USER = 'USER'
+}
+
 enum KYCType {
   ONGOING = 'ONGOING',
   APPROVED = 'APPROVED',

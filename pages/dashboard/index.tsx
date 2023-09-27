@@ -10,11 +10,12 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
-import GetAgency from './Tabs/GetAgency';
+import GetAgency from './getAgency/Tabs';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
-import ToAdvance from './Tabs/ToAdvance';
+import DSC from './Tabs/DSC';
+import ToAdvance from './toAdvance/Advance';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -44,11 +45,10 @@ function DashboardTasks() {
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
-    { value: 'upgradeKyc', label: 'Upgrade KYC' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
     { value: 'demat', label: 'Demat Account Details' },
-    { value: 'getAgency', label: 'KYC Agency' }
+    { value: 'dsc', label: 'DSC' }
   ];
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
@@ -109,20 +109,6 @@ function DashboardTasks() {
                 </Box>
               </Grid>
             )}
-            {currentTab === 'upgradeKyc' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <ToAdvance />
-                </Box>
-              </Grid>
-            )}
-            {currentTab === 'getAgency' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <GetAgency />
-                </Box>
-              </Grid>
-            )}
 
             {currentTab === 'documents' && (
               <Grid item xs={12}>
@@ -143,6 +129,13 @@ function DashboardTasks() {
               <Grid item xs={12}>
                 <Box p={4}>
                   <DematTab />
+                </Box>
+              </Grid>
+            )}
+            {currentTab === 'dsc' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <DSC />
                 </Box>
               </Grid>
             )}

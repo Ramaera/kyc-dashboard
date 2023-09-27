@@ -3,6 +3,7 @@ import {
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
 import DocumentType from '@/state/types/document';
@@ -10,7 +11,7 @@ import allUsersUpdater from '@/utils/updateUserList';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -56,6 +57,8 @@ const rows = [
 ];
 
 const DocumentRow = ({ user, data, documents = [] }) => {
+  const theme = useTheme();
+
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const dispatch = useDispatch();
   /* if (!documents[0]) {
@@ -227,6 +230,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
               }}
             />
           </Button>
+
           <Box display="flex">
             <Button
               onClick={() => changeDocumentStatus(documents[i].id, 'APPROVED')}
@@ -246,6 +250,9 @@ const DocumentRow = ({ user, data, documents = [] }) => {
           </Box>
         </>
       );
+    }
+    if (user.kyc === variables.status.APPROVED) {
+      return;
     }
     return views;
   };
@@ -279,7 +286,13 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   return (
     <TableRow
       key={data.config.name}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        [theme.breakpoints.down('sm')]: {
+          display: 'flex',
+          flexDirection: 'column'
+        }
+      }}
     >
       <TableCell component="th" scope="row">
         {data.config.name} {data.isOptional ? '(Optional)' : ''}

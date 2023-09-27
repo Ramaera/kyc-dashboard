@@ -6,7 +6,15 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  TableCell,
+  TableRow,
+  Typography,
+  useTheme
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import PaymentInfo from './paymentDetails';
@@ -24,6 +32,7 @@ const DocumentRow = ({
   rowNo,
   hideAdditionalDocuments
 }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
@@ -156,7 +165,16 @@ const DocumentRow = ({
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       views.push(
-        <div style={{ height: 160, marginTop: 10 }}>
+        <Box
+          sx={{
+            height: 160,
+            marginTop: 10,
+            [theme.breakpoints.down('sm')]: {
+              height: 60
+            }
+          }}
+        >
+          {' '}
           <div style={{ marginBottom: 10 }}>
             Status:{' '}
             <span
@@ -179,8 +197,8 @@ const DocumentRow = ({
           </div>
           <Button
             style={{
-              cursor: documents[0]
-                ? documents[0].status === 'APPROVED'
+              cursor: documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'not-allowed'
                   : 'pointer'
                 : 'pointer',
@@ -192,8 +210,8 @@ const DocumentRow = ({
             }
             component="label"
             color={
-              documents[0]
-                ? documents[0].status === 'APPROVED'
+              documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'secondary'
                   : 'primary'
                 : 'primary'
@@ -205,8 +223,8 @@ const DocumentRow = ({
               accept="image/*"
               hidden
               disabled={
-                documents[0]
-                  ? documents[0].status === 'APPROVED'
+                documents[i]
+                  ? documents[i].status === 'APPROVED'
                     ? true
                     : false
                   : false
@@ -225,7 +243,7 @@ const DocumentRow = ({
               }}
             />
           </Button>
-        </div>
+        </Box>
       );
     }
     return views;
@@ -255,7 +273,16 @@ const DocumentRow = ({
   };
   return (
     <>
-      <TableRow key={data.config.name} sx={{}}>
+      <TableRow
+        key={data.config.name}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 },
+          [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
+      >
         <TableCell component="th" scope="row" style={{ border: 'none' }}>
           {data.config.name} {data.isOptional ? '(Optional)' : ''}
         </TableCell>
@@ -521,7 +548,7 @@ const InfoTab = () => {
                 setAdditionalDocuments(true);
               }}
             >
-              Add/See Additional Documents
+              Additional Documents
             </LoadingButton>
           )}
         </>

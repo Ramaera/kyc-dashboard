@@ -20,6 +20,7 @@ import handleImageUpload from '@/utils/upload';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 
 const NomineeTab = () => {
   const dispatch = useDispatch();
@@ -246,11 +247,12 @@ const NomineeTab = () => {
   return (
     <>
       <Grid container p={0} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             label="Full Name*"
             fullWidth
+            disabled={user?.kyc === variables.status.APPROVED}
             value={nomineeName}
             variant="outlined"
             onChange={(e) => {
@@ -259,10 +261,11 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             label="Relationship"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={relationship}
             onChange={(e) => {
@@ -271,10 +274,10 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={12} sm={4}></Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           {aadharFront && (
             <>
               <PhotoProvider>
@@ -318,52 +321,55 @@ const NomineeTab = () => {
                     : null}
                 </span>
               </Box>
-
-              <Button
-                variant="contained"
-                component="label"
-                sx={{ margin: '10px 0' }}
-              >
-                Upload Aadhar Card Front
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(f) => {
-                    // console.log('aadhaar front', f.target.files[0]);
-                    if (f.target.files.length > 0) {
-                      setAadharFront(f.target.files[0]);
-                      setFrontImageChanged(true);
-                    }
-                  }}
-                />
-              </Button>
-              <Grid>
-                <Button
-                  variant="outlined"
-                  onClick={() =>
-                    changeDocumentStatus(aadharFrontDocument.id, 'APPROVED')
-                  }
-                  color="success"
-                  sx={{ ml: 2 }}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() =>
-                    changeDocumentStatus(aadharFrontDocument.id, 'REJECTED')
-                  }
-                  color="error"
-                  sx={{ ml: 2 }}
-                >
-                  Reject
-                </Button>
-              </Grid>
+              {user.kyc !== variables.status.APPROVED && (
+                <>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ margin: '10px 0' }}
+                  >
+                    Upload Aadhar Card Front
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={(f) => {
+                        // console.log('aadhaar front', f.target.files[0]);
+                        if (f.target.files.length > 0) {
+                          setAadharFront(f.target.files[0]);
+                          setFrontImageChanged(true);
+                        }
+                      }}
+                    />
+                  </Button>
+                  <Grid>
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        changeDocumentStatus(aadharFrontDocument.id, 'APPROVED')
+                      }
+                      color="success"
+                      sx={{ ml: 2 }}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        changeDocumentStatus(aadharFrontDocument.id, 'REJECTED')
+                      }
+                      color="error"
+                      sx={{ ml: 2 }}
+                    >
+                      Reject
+                    </Button>
+                  </Grid>
+                </>
+              )}
             </>
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           {aadharBack && (
             <>
               <PhotoProvider>
@@ -411,68 +417,74 @@ const NomineeTab = () => {
               ? aadharBackDocument.status
               : null} */}
               </Box>
-              <Button
-                variant="contained"
-                component="label"
-                sx={{ margin: '10px 0' }}
-              >
-                Upload Aadhar Card Back
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(f) => {
-                    if (f.target.files.length > 0) {
-                      setAadharBack(f.target.files[0]);
-                      setBackImageChanged(true);
-                      setSubmitButtonEnabled(true);
-                    }
-                  }}
-                />
-              </Button>
-              <Grid>
-                <Button
-                  variant="outlined"
-                  onClick={() =>
-                    changeDocumentStatus(aadharBackDocument.id, 'APPROVED')
-                  }
-                  color="success"
-                  sx={{ ml: 2 }}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() =>
-                    changeDocumentStatus(aadharBackDocument.id, 'REJECTED')
-                  }
-                  color="error"
-                  sx={{ ml: 2 }}
-                >
-                  Reject
-                </Button>
-              </Grid>
+              {user.kyc !== variables.status.APPROVED && (
+                <>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ margin: '10px 0' }}
+                  >
+                    Upload Aadhar Card Back
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={(f) => {
+                        if (f.target.files.length > 0) {
+                          setAadharBack(f.target.files[0]);
+                          setBackImageChanged(true);
+                          setSubmitButtonEnabled(true);
+                        }
+                      }}
+                    />
+                  </Button>
+                  <Grid>
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        changeDocumentStatus(aadharBackDocument.id, 'APPROVED')
+                      }
+                      color="success"
+                      sx={{ ml: 2 }}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        changeDocumentStatus(aadharBackDocument.id, 'REJECTED')
+                      }
+                      color="error"
+                      sx={{ ml: 2 }}
+                    >
+                      Reject
+                    </Button>
+                  </Grid>
+                </>
+              )}
             </>
           )}
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={12} sm={4}></Grid>
         <Divider />
-        <Box component="form" mt={1}>
-          <LoadingButton
-            loading={isLoading}
-            sx={{ paddingX: 17 }}
-            variant="contained"
-            component="label"
-            disabled={!isSubmitButtonEnalbed}
-            onClick={() => {
-              handleNomineeSubmit();
-            }}
-          >
-            Submit
-          </LoadingButton>
+        {user.kyc !== variables.status.APPROVED && (
+          <Box component="form" mt={1}>
+            <LoadingButton
+              loading={isLoading}
+              sx={{ paddingX: 17 }}
+              variant="contained"
+              component="label"
+              disabled={!isSubmitButtonEnalbed}
+              onClick={() => {
+                handleNomineeSubmit();
+              }}
+            >
+              Submit
+            </LoadingButton>
 
-          <Toaster position="bottom-center" reverseOrder={false} />
-        </Box>
+            <Toaster position="bottom-center" reverseOrder={false} />
+          </Box>
+        )}
       </Grid>
     </>
   );
