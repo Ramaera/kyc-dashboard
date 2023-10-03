@@ -17,13 +17,16 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
   Typography,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import sortObjectsArray from 'sort-objects-array';
+import { useDebounce } from 'usehooks-ts';
 
 interface Filters {
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
@@ -39,6 +42,7 @@ const applyPagination = (
 };
 
 const UserTable = ({ title }) => {
+  const [sortByName, setSortByName] = useState(true);
   const theme = useTheme();
   const tableRef = useRef(null);
   const [page, setPage] = useState<number>(0);
@@ -53,7 +57,9 @@ const UserTable = ({ title }) => {
   });
 
   const [limit, setLimit] = useState<number>(20);
-  const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState('');
+  const debouncedValue = useDebounce<string>(searchText, 400);
+
 
   const getAllUser = useQuery(GET_ALL_USERS, {
     variables: {
@@ -87,9 +93,17 @@ const UserTable = ({ title }) => {
     }
   };
 
-  const applyFilters = (users: User[], filters: Filters): any => {
+  const applyFilters = (users: User[], filters: Filters,searchTexts):User[] => {
+    let searchText = searchTexts.toLowerCase();
+
     return users.filter((user) => {
       let matches = true;
+      if (
+        !user?.name?.toLowerCase().includes(searchText) &&
+        !user?.pw_id?.toLowerCase().includes(searchText)
+      ) {
+        matches = false;
+      }
       if (user.role === variables.role.ADMIN) {
         matches = false;
       }
@@ -118,8 +132,18 @@ const UserTable = ({ title }) => {
     status: null,
     membership: null
   });
-  const filteredUsers = applyFilters(usersList, filters);
+  const filteredUsers = applyFilters(usersList, filters,debouncedValue);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
+
+  const sortName = () => {
+    let order = 'desc';
+    if (sortByName) {
+      order = '';
+    }
+    let sorted = sortObjectsArray(usersList, 'name', { order: order });
+    setUsersList(sorted);
+    setSortByName(!sortByName);
+  };
 
   const handleMembershipChange = (val) => {
     let value = null;
@@ -213,6 +237,7 @@ const UserTable = ({ title }) => {
   useEffect(() => {
     checkTotal();
   }, [usersList]);
+  
 
   useEffect(() => {
     setNumbers((val) => ({
@@ -419,39 +444,17 @@ const UserTable = ({ title }) => {
                       }
                     }}
                   >
-                    {/* <FormControl   variant="outlined">
-                      <InputLabel>KYC Status</InputLabel>
-                      <Select
-                        value={filters.status || 'all'}
-                        onChange={(e) => handleStatusChange(e.target.value)}
-                        label="Status"
-                        autoWidth
-                      >
-                        {statusOptions.map((statusOption) => (
-                          <MenuItem
-                            key={statusOption.id}
-                            value={statusOption.id}
-                          >
-                            {statusOption.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl> */}
-                    {/*  <FormControl variant="outlined"  >
-                  <InputLabel>Share Holder Type</InputLabel>
-                  <Select
-                    value={filters.membership || 'all'}
-                    onChange={handleMembershipChange}
-                    label="Project"
-                    autoWidth
-                  >
-                    {membership.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl> */}
+                
+                <TextField
+                  fullWidth
+                  label="Search"
+                  variant="outlined"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
+                />
+             
                   </Box>
                 </Box>
               }
@@ -467,10 +470,11 @@ const UserTable = ({ title }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
+                  <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
+                  Name{sortByName ? '⬇' : '⬆'}
+                </TableCell>                  <TableCell>Father's Name</TableCell>
                   <TableCell>PW ID</TableCell>
                   <TableCell>Share Holder Type</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Father's Name</TableCell>
                   <TableCell align="center">Moibile No.</TableCell>
                   {/* <TableCell align="center">Email</TableCell> */}
                   <TableCell align="center">Enrollment Status</TableCell>
@@ -500,6 +504,18 @@ const UserTable = ({ title }) => {
                           color="text.primary"
                           gutterBottom
                           noWrap
+                          width={150}
+                        >
+                          {user?.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
                           width={100}
                         >
                           {user?.pw_id}
@@ -517,18 +533,7 @@ const UserTable = ({ title }) => {
                           {user?.membership}
                         </Typography>
                       </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={150}
-                        >
-                          {user?.name}
-                        </Typography>
-                      </TableCell>
+                    
                       <TableCell>
                         <Typography
                           variant="body1"

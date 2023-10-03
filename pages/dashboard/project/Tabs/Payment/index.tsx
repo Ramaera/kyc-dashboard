@@ -566,7 +566,7 @@ const InfoTab = ({ title }) => {
                   >
                     <Image
                       style={{ transform: 'scale(0.75)' }}
-                      src="/pdf.png"
+                      src="/images/pdf.png"
                       alt="pdf"
                       height={60}
                       width={60}
