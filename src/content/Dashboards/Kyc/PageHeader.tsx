@@ -53,7 +53,7 @@ function PageHeader() {
       hasUserDatails = true;
     }
 
-    user?.documents?.map((doc) => {
+    currentUser?.documents?.map((doc) => {
       if (
         doc.title.includes('payment_proof') &&
         doc.status === variables.status.APPROVED
@@ -94,6 +94,7 @@ function PageHeader() {
         doc.title.includes('nominee_aadhar_front') &&
         doc.status === variables.status.APPROVED
       ) {
+        
         hasNomineeAadhaarFront = true;
       }
       if (

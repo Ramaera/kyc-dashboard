@@ -17,7 +17,6 @@ import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import Projects from './Tabs/Projects';
-import ToAdvance from './Tabs/ToAdvance';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -124,7 +123,6 @@ function DashboardTasks() {
   const tabs = [
     { value: 'basicInfo', label: 'Basic Info' },
     { value: 'payment', label: 'Payment' },
-    { value: 'upgradeKyc', label: 'Upgrade KYC' },
     { value: 'projects', label: 'Projects' },
     { value: 'documents', label: 'Documents' },
     { value: 'nominee', label: 'Nominee' },
