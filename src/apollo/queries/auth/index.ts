@@ -8,6 +8,7 @@ mutation AuthUser($pw_id:String!,$password:String!) {
      createdAt
      pw_id
     }
+
     refreshToken
   }
 }`);
@@ -137,7 +138,7 @@ query GetUser {
     membership
     demat_account
     DSCDetails {
-      dscStatus
+      DSCStatus
       DscExpiryDate
       DscCreatedDate
     }

@@ -59,6 +59,8 @@ const RamaeraRouter = ({ children }) => {
   const loadUser = async () => {
     try {
       const resp = await userResp.refetch();
+      console.log('resp', resp);
+
       return resp.data.me;
     } catch (err) {
       if (userResp.error && userResp.error.graphQLErrors) {

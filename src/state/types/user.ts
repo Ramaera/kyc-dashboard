@@ -1,4 +1,5 @@
 import DocumentType from './document';
+import DSCType from './dsc';
 import NomineeType from './nominee';
 
 type UserType = {
@@ -19,6 +20,7 @@ type UserType = {
   password?: String;
   nominee?: NomineeType | undefined;
   documents?: [DocumentType] | [];
+  DSCDetails?: [DSCType] | [];
   avatar?: String;
   referralAgencyCode?: String;
   Address?: String;
