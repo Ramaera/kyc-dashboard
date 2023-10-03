@@ -450,7 +450,7 @@ const InfoTab = () => {
               setUpgradeToAdvance(true);
             }}
           >
-            Upgrade to ADVANCE (Profit Sharing Partner)
+            Upgrade to ADVANCE ( 30% Net Profit Sharing Partner)
           </Button>
         </>
       ) : !additionalDocuments ? (
