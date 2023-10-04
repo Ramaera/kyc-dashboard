@@ -21,8 +21,8 @@ function index() {
         recievedFrom="Sudhanshu Kumar Dwivedi Ji"
         identityNumber="000001"
         amount="1000"
-        amountPaidFor={'basicSubscription'}
-        paymentSource={'UPI'}
+        amountPaidFor="project"
+        paymentSource="upi"
         utrNumber="02394823904"
         receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
         AgencyCode="934934"

@@ -242,14 +242,17 @@ const Certificate = ({
                 Amount Paid For : Basic Subscription{' '}
                 <div
                   style={{
-                    width: '13px',
-                    height: '13px',
+                    width: '32px',
+                    marginTop: '0px',
+                    marginLeft: '5px',
+                    height: '20px',
                     border: '1px solid black',
-                    marginTop: '7px',
-                    marginLeft: '5px'
+                    textAlign: 'center',
+                    paddingBottom: '25px',
+                    fontWeight: 'bold'
                   }}
                 >
-                  {' '}
+                  {amountPaidFor === 'basic' ? '✓' : ''}
                 </div>
               </div>
               <div style={{ marginLeft: '80px', display: 'flex' }}>
@@ -263,23 +266,29 @@ const Certificate = ({
                     height: '20px',
                     border: '1px solid black',
                     textAlign: 'center',
-                    paddingBottom: '25px'
+                    paddingBottom: '25px',
+                    fontWeight: 'bold'
                   }}
                 >
-                  ✓
+                  {amountPaidFor === 'advance' ? '✓' : ''}
                 </div>
               </div>
               <div style={{ marginLeft: '80px', display: 'flex' }}>
                 Industrial Project
                 <div
                   style={{
-                    width: '13px',
-                    marginTop: '7px',
+                    width: '32px',
+                    marginTop: '0px',
                     marginLeft: '5px',
-                    height: '13px',
-                    border: '1px solid black'
+                    height: '20px',
+                    border: '1px solid black',
+                    textAlign: 'center',
+                    paddingBottom: '25px',
+                    fontWeight: 'bold'
                   }}
-                ></div>{' '}
+                >
+                  {amountPaidFor === 'project' ? '✓' : ''}
+                </div>
               </div>
             </div>
 
@@ -301,61 +310,86 @@ const Certificate = ({
                     Payment Source: Cheque
                     <div
                       style={{
-                        width: '13px',
-                        marginTop: '7px',
+                        width: '32px',
+                        marginTop: '0px',
+                        height: '20px',
+                        border: '1px solid black',
+                        textAlign: 'center',
                         marginLeft: '5px',
-                        height: '13px',
-                        border: '1px solid black'
+                        paddingBottom: '25px',
+                        fontWeight: 'bold'
                       }}
-                    ></div>
+                    >
+                      {paymentSource === 'cheque' ? '✓' : ''}
+                    </div>
                   </div>
-                  <div style={{ marginLeft: '50px', display: 'flex' }}>
+                  <div style={{ marginLeft: '20px', display: 'flex' }}>
                     UPI
                     <div
                       style={{
-                        width: '13px',
-                        marginTop: '7px',
+                        width: '32px',
+                        marginTop: '0px',
+                        height: '20px',
+                        border: '1px solid black',
+                        textAlign: 'center',
                         marginLeft: '5px',
-                        height: '13px',
-                        border: '1px solid black'
+                        paddingBottom: '25px',
+                        fontWeight: 'bold'
                       }}
-                    ></div>
+                    >
+                      {paymentSource === 'upi' ? '✓' : ''}
+                    </div>
                   </div>
-                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                  <div style={{ marginLeft: '20px', display: 'flex' }}>
                     Cash Deposit
                     <div
                       style={{
-                        width: '13px',
-                        marginTop: '7px',
+                        width: '32px',
+                        marginTop: '0px',
+                        height: '20px',
+                        border: '1px solid black',
+                        textAlign: 'center',
                         marginLeft: '5px',
-                        height: '13px',
-                        border: '1px solid black'
+                        paddingBottom: '25px',
+                        fontWeight: 'bold'
                       }}
-                    ></div>
+                    >
+                      {paymentSource === 'deposit' ? '✓' : ''}
+                    </div>
                   </div>
-                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                  <div style={{ marginLeft: '20px', display: 'flex' }}>
                     Bank Transfer
                     <div
                       style={{
-                        width: '13px',
-                        marginTop: '7px',
+                        width: '32px',
+                        marginTop: '0px',
+                        height: '20px',
+                        border: '1px solid black',
+                        textAlign: 'center',
                         marginLeft: '5px',
-                        height: '13px',
-                        border: '1px solid black'
+                        paddingBottom: '25px',
+                        fontWeight: 'bold'
                       }}
-                    ></div>
+                    >
+                      {paymentSource === 'bank' ? '✓' : ''}
+                    </div>
                   </div>
-                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                  <div style={{ marginLeft: '20px', display: 'flex' }}>
                     Other
                     <div
                       style={{
-                        width: '13px',
-                        marginTop: '7px',
+                        width: '32px',
+                        marginTop: '0px',
+                        height: '20px',
+                        border: '1px solid black',
+                        textAlign: 'center',
                         marginLeft: '5px',
-                        height: '13px',
-                        border: '1px solid black'
+                        paddingBottom: '25px',
+                        fontWeight: 'bold'
                       }}
-                    ></div>
+                    >
+                      {paymentSource === 'other' ? '✓' : ''}
+                    </div>
                   </div>
                 </div>
                 <div
@@ -367,7 +401,7 @@ const Certificate = ({
                     borderBottom: '2px solid black'
                   }}
                 >
-                  UTR NO. / Transaction No.
+                  UTR NO. / Transaction No <span>{' . : ' + utrNumber}</span>
                 </div>
                 <div
                   style={{
@@ -380,10 +414,9 @@ const Certificate = ({
                   }}
                 >
                   <p style={{ marginTop: '30px' }}>
-                    {' '}
-                    Received By{' '}
+                    Received By
                     <strong style={{ marginLeft: '150px' }}>
-                      RAMAERA INDUSTRIES LTD. (Account Dept.)
+                      {receivedBy}
                     </strong>
                   </p>
                 </div>
@@ -417,7 +450,7 @@ const Certificate = ({
                 borderBottom: '2px solid black'
               }}
             >
-              Agency Code
+              Agency Code <span>{' : ' + AgencyCode}</span>
             </div>
 
             <div
