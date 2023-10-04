@@ -1,16 +1,22 @@
 import amountToWords from '../utils/amountToWords';
 import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Button } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
 const Certificate = ({
-  username,
-  membership,
-  digit,
-  description,
-  time = '',
-  id
+  id,
+  receiptSerialNumber,
+  date,
+  recievedFrom,
+  identityNumber,
+  amount,
+  amountPaidFor,
+  paymentSource,
+  utrNumber,
+  receivedBy,
+  AgencyCode
 }: any) => {
+  const theme = useTheme();
   const generatePDF = async () => {
     toast.success('Downloading');
     const pdf = new JsPDF('landscape', 'pt', 'a4');
@@ -26,108 +32,415 @@ const Certificate = ({
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
-      <div
+      <Box
         id={id}
-        style={{
-          fontSize: '16px',
-          height: 768,
-          color: '#000',
-          width: 1080,
-          fontWeight: 400
+        sx={{
+          scale: '0.9',
+          transformOrigin: 'left',
+          padding: '20px',
+          backgroundColor: 'white',
+          width: '1180px',
+          borderRadius: '20px',
+          [theme.breakpoints.down('sm')]: {
+            transformOrigin: 'left top',
+            scale: '0.25',
+            height: '800px'
+          }
         }}
       >
         <div
           style={{
-            backgroundImage: 'url("/certificateAssets/bg.png")',
-            backgroundPosition: 'left',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
-            padding: '6rem 8rem'
+            border: '2px solid #301100',
+            borderRadius: '20px',
+            overflow: 'clip',
+            fontWeight: '450'
           }}
         >
-          <p
-            style={{
-              fontSize: '64px',
-              color: '#FFA502',
-              textAlign: 'center',
-              margin: 0
-            }}
-          >
-            RAMAERA INDUSTRIES LTD
-          </p>
-          <p style={{ fontSize: '1.4rem', textTransform: 'capitalize' }}>
-            Received From <span style={{ fontWeight: 600 }}>{username}</span>
-          </p>
-
-          <span style={{ fontSize: '1.6rem' }}>
-            We have Received the sum of rupees{' '}
-            <span style={{ color: 'red' }}>
-              {digit} ({amountToWords(digit)} ONLY )
-            </span>
-          </span>
-          <span style={{ fontSize: '1.6rem' }}>
-            {membership === 'kyc' || membership === 'advanceKyc'
-              ? ', For your '
-              : ', For '}
-            <span style={{ color: '#1FAE47', textTransform: 'uppercase' }}>
-              {membership === 'kyc'
-                ? 'basic'
-                : membership === 'advanceKyc'
-                ? 'advance'
-                : membership}
-            </span>
-            {(membership === 'kyc' || membership === 'advanceKyc') && ' KYC'}
-          </span>
-          {/*   ,
-          <p style={{ fontSize: '1.6rem' }}>
-            {membership === 'BASIC' || membership === 'ADVANCE'
-              ? ', For Your '
-              : ', For '}
-            <span style={{ color: '#1FAE47' }}>{membership}</span>
-            {(membership === 'BASIC' || membership === 'ADVANCE') && ' KYC'}
-          </p> */}
-          <p
-            style={{
-              // width: '780px',
-              color: 'white',
-              fontSize: '1.8rem',
-              backgroundColor: 'green',
-              textAlign: 'center',
-              border: 'solid 2px black',
-              margin: 0
-            }}
-          >
-            {description}
-          </p>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'right',
-              flexDirection: 'column',
-              margin: ' 0 0 0 600px'
+              color: 'white',
+              backgroundColor: '#301100',
+              height: '100px',
+              marginLeft: '0px',
+              display: 'flex'
             }}
           >
             <img
-              style={{
-                width: '200px',
-                transform: 'scale(80%)'
-              }}
-              src="/certificateAssets/stamp1.png"
+              style={{ width: '130px', height: '130px' }}
+              src="/images/logo.png"
               alt=""
             />
-            <span
+            <div>
+              <div style={{ height: '20px' }}>
+                <p
+                  style={{
+                    fontSize: '40px',
+                    marginTop: '30px',
+                    fontFamily: 'dash'
+                  }}
+                >
+                  RAMAERA INDUSTRIES LTD
+                </p>
+              </div>
+              <div style={{ marginTop: '5px' }}>
+                <p style={{ fontSize: '20px' }}>
+                  CIN No. U74110UP2022PLC168553
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              color: 'white',
+              marginTop: '0px',
+              backgroundColor: '#301100',
+              display: 'flex',
+              marginLeft: '0px',
+              height: '118px'
+            }}
+          >
+            <div
               style={{
-                width: '200px',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                fontSize: '0.8rem'
+                width: '400px',
+                border: '1px solid white',
+                height: '50px',
+                marginTop: '55px',
+                marginLeft: '270px',
+                display: 'flex'
               }}
             >
-              Authorized Stamp
-            </span>
+              <p
+                style={{
+                  fontSize: '38px',
+                  marginLeft: '42px',
+                  padding: '0px',
+                  marginTop: '0px'
+                }}
+              >
+                PAYMENT RECEIPT
+              </p>
+            </div>
+            <div
+              style={{
+                width: '300px',
+                justifyContent: 'flex-start',
+                marginLeft: '100px',
+                marginTop: '0px'
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    borderBottom: '2px solid white',
+                    fontSize: '20px'
+                  }}
+                >
+                  Receipt Sr. No. : {receiptSerialNumber}
+                </p>
+              </div>
+              <div>
+                <p
+                  style={{
+                    borderBottom: '2px solid white',
+                    fontSize: '20px'
+                  }}
+                >
+                  Date : {date}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              width: '1105px',
+              height: '540px',
+              backgroundColor: 'white',
+              marginLeft: '0px'
+            }}
+          >
+            <div
+              style={{
+                borderBottom: '2px solid black',
+                display: 'flex',
+                justifyContent: 'space-between',
+                color: 'black',
+                marginLeft: '40px',
+                height: '45px'
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '18px',
+                  marginLeft: '0px',
+                  marginTop: '20px'
+                }}
+              >
+                Received From :{' '}
+                <span style={{ fontWeight: 'bold' }}>{recievedFrom}</span>
+              </p>
+              <p style={{ fontSize: '18px' }}>
+                RM/PW Number :{' '}
+                <span style={{ fontWeight: 'bold' }}>{identityNumber}</span>
+              </p>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                borderBottom: '2px solid black',
+                marginLeft: '40px'
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '18px',
+                  color: 'black',
+                  marginLeft: '0px',
+                  display: 'flex'
+                }}
+              >
+                Amount
+              </div>
+              <div
+                style={{
+                  width: '200px',
+                  height: '100px',
+                  marginLeft: '749px'
+                }}
+              >
+                <div
+                  style={{
+                    width: '200px',
+                    height: '70px',
+                    border: '2px solid black',
+                    marginLeft: '43px',
+                    borderBottom: '0px',
+                    marginTop: '30px',
+                    paddingTop: '20px',
+                    color: 'black',
+                    textAlign: 'center',
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {amount && 'Rs.' + amount + '/-'}
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                fontSize: '18px',
+                color: 'black',
+                marginTop: '20px',
+                display: 'flex',
+                marginLeft: '40px',
+                borderBottom: '2px solid black'
+              }}
+            >
+              <div style={{ display: 'flex' }}>
+                {' '}
+                Amount Paid For : Basic Subscription{' '}
+                <div
+                  style={{
+                    width: '13px',
+                    height: '13px',
+                    border: '1px solid black',
+                    marginTop: '7px',
+                    marginLeft: '5px'
+                  }}
+                >
+                  {' '}
+                </div>
+              </div>
+              <div style={{ marginLeft: '80px', display: 'flex' }}>
+                {' '}
+                Profit sharing partner
+                <div
+                  style={{
+                    width: '32px',
+                    marginTop: '0px',
+                    marginLeft: '5px',
+                    height: '20px',
+                    border: '1px solid black',
+                    textAlign: 'center',
+                    paddingBottom: '25px'
+                  }}
+                >
+                  ✓
+                </div>
+              </div>
+              <div style={{ marginLeft: '80px', display: 'flex' }}>
+                Industrial Project
+                <div
+                  style={{
+                    width: '13px',
+                    marginTop: '7px',
+                    marginLeft: '5px',
+                    height: '13px',
+                    border: '1px solid black'
+                  }}
+                ></div>{' '}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex' }}>
+              <div
+                style={{
+                  fontSize: '17px',
+                  color: 'black',
+                  marginTop: '20px',
+                  marginLeft: '40px',
+                  borderBottom: '2px solid black',
+                  width: '853px'
+                }}
+              >
+                <div
+                  style={{ display: 'flex', borderBottom: '2px solid black' }}
+                >
+                  <div style={{ marginLeft: '0px', display: 'flex' }}>
+                    Payment Source: Cheque
+                    <div
+                      style={{
+                        width: '13px',
+                        marginTop: '7px',
+                        marginLeft: '5px',
+                        height: '13px',
+                        border: '1px solid black'
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ marginLeft: '50px', display: 'flex' }}>
+                    UPI
+                    <div
+                      style={{
+                        width: '13px',
+                        marginTop: '7px',
+                        marginLeft: '5px',
+                        height: '13px',
+                        border: '1px solid black'
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                    Cash Deposit
+                    <div
+                      style={{
+                        width: '13px',
+                        marginTop: '7px',
+                        marginLeft: '5px',
+                        height: '13px',
+                        border: '1px solid black'
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                    Bank Transfer
+                    <div
+                      style={{
+                        width: '13px',
+                        marginTop: '7px',
+                        marginLeft: '5px',
+                        height: '13px',
+                        border: '1px solid black'
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ marginLeft: '60px', display: 'flex' }}>
+                    Other
+                    <div
+                      style={{
+                        width: '13px',
+                        marginTop: '7px',
+                        marginLeft: '5px',
+                        height: '13px',
+                        border: '1px solid black'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    fontSize: '18px',
+                    color: 'black',
+                    marginTop: '20px',
+                    display: 'flex',
+                    borderBottom: '2px solid black'
+                  }}
+                >
+                  UTR NO. / Transaction No.
+                </div>
+                <div
+                  style={{
+                    height: '45px',
+                    fontSize: '20px',
+                    color: 'black',
+                    marginTop: '6px',
+                    display: 'flex',
+                    alignItems: 'baseline'
+                  }}
+                >
+                  <p style={{ marginTop: '30px' }}>
+                    {' '}
+                    Received By{' '}
+                    <strong style={{ marginLeft: '150px' }}>
+                      RAMAERA INDUSTRIES LTD. (Account Dept.)
+                    </strong>
+                  </p>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  height: '159px',
+                  width: '210px',
+                  border: '2px solid black',
+                  borderTop: '0px',
+                  color: 'black',
+                  textAlign: 'center',
+                  marginLeft: '0px'
+                }}
+              >
+                {' '}
+                <p style={{ fontSize: '18px', marginTop: '130px' }}>
+                  Sign & Stamp
+                </p>
+              </div>
+            </div>
+
+            <div
+              style={{
+                fontSize: '18px',
+                color: 'black',
+                marginTop: '20px',
+                display: 'flex',
+                marginLeft: '40px',
+                borderBottom: '2px solid black'
+              }}
+            >
+              Agency Code
+            </div>
+
+            <div
+              style={{
+                backgroundColor: '#301100',
+                width: '980px',
+                height: '100px',
+                clipPath:
+                  'polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0% 80%, 0% 20%)',
+                fontSize: '30px',
+                marginLeft: '60px',
+                marginTop: '20px',
+                borderLeft: '10px solid white',
+                textAlign: 'center'
+              }}
+            >
+              Address: H150, Ground Floor, Sector 63, Noida, Uttar Pradesh
+              201301 GST No. 09AAMCR0782R1ZF
+            </div>
           </div>
         </div>
-      </div>
+      </Box>
+
       <Button sx={{ mb: 2 }} variant="outlined" onClick={generatePDF}>
         Print
       </Button>

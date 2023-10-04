@@ -7,7 +7,8 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import { projectData } from './projectDetails';
 import { logout } from '@/state/slice/userSlice';
 
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import variables from '@/config/variables';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -128,6 +129,7 @@ const SubMenuWrapper = styled(Box)(
 `
 );
 function SidebarMenu() {
+  const user = useAppSelector((state) => state.user?.data);
   const { closeSidebar } = useContext(SidebarContext);
   const agencyCode = useSelector((state: any) => state.user?.agencyCode);
   const router = useRouter();
@@ -250,37 +252,41 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              <ListItem component="div">
-                <Button
-                  className={
-                    currentRoute.includes('/dashboard/project') ? 'active' : ''
-                  }
-                  style={{
-                    color: currentRoute.includes('/dashboard/project')
-                      ? '#7063C0'
-                      : ''
-                  }}
-                  onClick={() => {
-                    setListVisible(!listVisible);
-                    setShareList(false);
-                  }}
-                  startIcon={
-                    <span
-                      style={{
-                        color: currentRoute.includes('/dashboard/project')
-                          ? '#7063C0'
-                          : ''
-                      }}
-                    >
-                      &#x2022;
-                    </span>
-                  }
-                >
-                  PROJECTS
-                </Button>
-              </ListItem>
+              {user.kyc === variables.status.APPROVED && (
+                <ListItem component="div">
+                  <Button
+                    className={
+                      currentRoute.includes('/dashboard/project')
+                        ? 'active'
+                        : ''
+                    }
+                    style={{
+                      color: currentRoute.includes('/dashboard/project')
+                        ? '#7063C0'
+                        : ''
+                    }}
+                    onClick={() => {
+                      setListVisible(!listVisible);
+                      setShareList(false);
+                    }}
+                    startIcon={
+                      <span
+                        style={{
+                          color: currentRoute.includes('/dashboard/project')
+                            ? '#7063C0'
+                            : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    PROJECTS
+                  </Button>
+                </ListItem>
+              )}
 
-              {listVisible ? (
+              {user.kyc === variables.status.APPROVED && listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
