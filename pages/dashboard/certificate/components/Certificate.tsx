@@ -450,7 +450,8 @@ const Certificate = ({
                 borderBottom: '2px solid black'
               }}
             >
-              Agency Code <span>{' : ' + AgencyCode}</span>
+              Agency Code{' '}
+              <span style={{ fontWeight: 'bold' }}>{' : ' + AgencyCode}</span>
             </div>
 
             <div
@@ -459,11 +460,10 @@ const Certificate = ({
                 width: '980px',
                 height: '100px',
                 clipPath:
-                  'polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0% 80%, 0% 20%)',
+                  'polygon(2.5% 0, 97.5% 0, 100% 20%, 100% 80%, 97.5% 100%, 2.5% 100%, 0% 80%, 0% 20%)',
                 fontSize: '30px',
                 marginLeft: '60px',
                 marginTop: '20px',
-                borderLeft: '10px solid white',
                 textAlign: 'center'
               }}
             >
