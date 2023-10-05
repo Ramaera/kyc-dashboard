@@ -251,7 +251,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
         </>
       );
     }
-    if (user.kyc === variables.status.APPROVED) {
+    if (user?.kyc === variables.status.APPROVED) {
       return;
     }
     return views;

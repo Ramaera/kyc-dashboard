@@ -321,7 +321,7 @@ const NomineeTab = () => {
                     : null}
                 </span>
               </Box>
-              {user.kyc !== variables.status.APPROVED && (
+              {user?.kyc !== variables.status.APPROVED && (
                 <>
                   <Button
                     variant="contained"
@@ -417,7 +417,7 @@ const NomineeTab = () => {
               ? aadharBackDocument.status
               : null} */}
               </Box>
-              {user.kyc !== variables.status.APPROVED && (
+              {user?.kyc !== variables.status.APPROVED && (
                 <>
                   <Button
                     variant="contained"
@@ -467,7 +467,7 @@ const NomineeTab = () => {
         </Grid>
         <Grid item xs={12} sm={4}></Grid>
         <Divider />
-        {user.kyc !== variables.status.APPROVED && (
+        {user?.kyc !== variables.status.APPROVED && (
           <Box component="form" mt={1}>
             <LoadingButton
               loading={isLoading}

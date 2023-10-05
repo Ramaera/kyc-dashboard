@@ -46,8 +46,8 @@ function PageHeader() {
       currentUser?.email &&
       currentUser?.mobile_number &&
       currentUser?.date_of_birth &&
-      currentUser?.nominee.name &&
-      currentUser?.nominee.relationship &&
+      currentUser?.nominee?.name &&
+      currentUser?.nominee?.relationship &&
       currentUser?.demat_account
     ) {
       hasUserDatails = true;
@@ -94,7 +94,6 @@ function PageHeader() {
         doc.title.includes('nominee_aadhar_front') &&
         doc.status === variables.status.APPROVED
       ) {
-        
         hasNomineeAadhaarFront = true;
       }
       if (

@@ -5,12 +5,21 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import PaymentTab from './Tabs/Payment';
+import { useEffect } from 'react';
+import { useAppSelector } from '@/hooks';
+import variables from '@/config/variables';
 
 function index() {
+  const user = useAppSelector((state) => state.user?.data);
+
   const router = useRouter();
   let title =
     router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
-
+  useEffect(() => {
+    if (user?.kyc !== variables.status.APPROVED) {
+      router.replace('/dashboard');
+    }
+  }, []);
   return (
     <ProtectedSSRoute>
       <Head>

@@ -231,7 +231,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             </span>
           </div>
 
-          {user.kyc !== variables.status.APPROVED && (
+          {user?.kyc !== variables.status.APPROVED && (
             <Box
               sx={{
                 display: 'flex',
@@ -293,7 +293,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
               </Grid>
             </Box>
           )}
-          {user.kyc !== variables.status.APPROVED && (
+          {user?.kyc !== variables.status.APPROVED && (
             <Button
               fullWidth
               style={{
@@ -370,7 +370,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
         >
           <TableCell width={300}>{getPreview()}</TableCell>
           <TableCell style={{}}>{getActionCell()}</TableCell>
-          {user.kyc !== variables.status.APPROVED && (
+          {user?.kyc !== variables.status.APPROVED && (
             <>
               <TableCell>
                 <LoadingButton
@@ -629,7 +629,7 @@ const InfoTab = () => {
             </span>
           </Typography>
           <Box>
-            {user.kyc !== variables.status.APPROVED && (
+            {user?.kyc !== variables.status.APPROVED && (
               <Grid>
                 <Button
                   // disabled={!isAmountSubmitted}
@@ -657,7 +657,7 @@ const InfoTab = () => {
           </Box>
         </>
       )}
-      {proofImage && user.kyc !== variables.status.APPROVED && (
+      {proofImage && user?.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"
@@ -696,7 +696,7 @@ const InfoTab = () => {
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && user.kyc !== variables.status.APPROVED && (
+        {paymentDocument && user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={0}>
             <Button variant="contained" component="label">
               Select Payment Slip
@@ -715,7 +715,7 @@ const InfoTab = () => {
             </Button>
           </Grid>
         )}
-        {proofImage && user.kyc !== variables.status.APPROVED && (
+        {proofImage && user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth

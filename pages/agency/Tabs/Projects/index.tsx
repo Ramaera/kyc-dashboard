@@ -246,7 +246,7 @@ const DocumentRow = ({
               marginBottom: '10px'
             }}
           >
-            {user.kyc !== variables.status.APPROVED && (
+            {user?.kyc !== variables.status.APPROVED && (
               <Grid>
                 <TextField
                   sx={{ width: 120 }}
@@ -381,7 +381,7 @@ const DocumentRow = ({
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
         <TableCell width={300}>{getPreview()}</TableCell>
-        {user.kyc !== variables.status.APPROVED && (
+        {user?.kyc !== variables.status.APPROVED && (
           <>
             <TableCell style={{}}>{getActionCell()}</TableCell>
             <TableCell>
@@ -716,7 +716,7 @@ const InfoTab = ({ to }) => {
             </span>
           </Typography>
           <Box>
-            {user.kyc !== variables.status.APPROVED && (
+            {user?.kyc !== variables.status.APPROVED && (
               <Grid>
                 <Button
                   // disabled={!isAmountSubmitted}
@@ -744,7 +744,7 @@ const InfoTab = ({ to }) => {
           </Box>
         </>
       )}
-      {proofImage && user.kyc !== variables.status.APPROVED && (
+      {proofImage && user?.kyc !== variables.status.APPROVED && (
         <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
           <TextField
             id="outlined"
@@ -783,7 +783,7 @@ const InfoTab = ({ to }) => {
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && user.kyc !== variables.status.APPROVED && (
+        {paymentDocument && user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={12} sm={4}>
             <Button variant="contained" component="label">
               Select Payment Slip
@@ -802,7 +802,7 @@ const InfoTab = ({ to }) => {
             </Button>
           </Grid>
         )}
-        {paymentDocument && user.kyc !== variables.status.APPROVED && (
+        {paymentDocument && user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth
