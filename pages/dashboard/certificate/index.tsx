@@ -20,7 +20,7 @@ function index() {
         certificates.push(
           <Certificate
             id={doc.id}
-            receiptSerialNumber="000001"
+            receiptSerialNumber=""
             date={doc.createdAt.slice(0, 10)}
             recievedFrom={user?.name || ''}
             identityNumber={user.rm_id + '/' + user.pw_id}
