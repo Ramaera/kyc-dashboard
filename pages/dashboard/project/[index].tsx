@@ -16,7 +16,7 @@ function index() {
   let title =
     router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
   useEffect(() => {
-    if (user.kyc !== variables.status.APPROVED) {
+    if (user?.kyc !== variables.status.APPROVED) {
       router.replace('/dashboard');
     }
   }, []);

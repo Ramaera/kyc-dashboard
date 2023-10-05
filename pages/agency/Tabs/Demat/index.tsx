@@ -228,7 +228,7 @@ const DematTab = () => {
             </span>
           </Box>
           <Box>
-            {user.kyc !== variables.status.APPROVED && (
+            {user?.kyc !== variables.status.APPROVED && (
               <Grid>
                 <Button
                   onClick={() =>
@@ -254,7 +254,7 @@ const DematTab = () => {
           </Box>
         </>
       )}
-      {user.kyc !== variables.status.APPROVED && (
+      {user?.kyc !== variables.status.APPROVED && (
         <>
           <Grid container pt={3} pb={2} pr={2} spacing={2}>
             {dematDocumentImage && (

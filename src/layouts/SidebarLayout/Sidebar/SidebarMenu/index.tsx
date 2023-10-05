@@ -252,7 +252,7 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              {user.kyc === variables.status.APPROVED && (
+              {user?.kyc === variables.status.APPROVED && (
                 <ListItem component="div">
                   <Button
                     className={
@@ -286,7 +286,7 @@ function SidebarMenu() {
                 </ListItem>
               )}
 
-              {user.kyc === variables.status.APPROVED && listVisible ? (
+              {user?.kyc === variables.status.APPROVED && listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
