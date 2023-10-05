@@ -18,7 +18,7 @@ const Certificate = ({
 }: any) => {
   const theme = useTheme();
   const generatePDF = async () => {
-    toast.success('Downloading');
+    const toastId = toast.loading('Downloading');
     const pdf = new JsPDF('landscape', 'pt', 'a4');
     const data = await html2canvas(document.querySelector('#' + id));
     const img = data.toDataURL('image/png');
@@ -26,6 +26,8 @@ const Certificate = ({
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
     pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    toast.dismiss(toastId);
+    toast.success('Downloaded');
     pdf.save('certificate.pdf');
   };
 
@@ -35,7 +37,7 @@ const Certificate = ({
       <Box
         id={id}
         sx={{
-          scale: '0.9',
+          scale: '1',
           transformOrigin: 'left',
           padding: '20px',
           backgroundColor: 'white',
