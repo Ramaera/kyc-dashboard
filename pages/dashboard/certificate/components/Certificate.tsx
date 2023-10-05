@@ -44,9 +44,9 @@ const Certificate = ({
           width: '1180px',
           borderRadius: '20px',
           [theme.breakpoints.down('sm')]: {
-            transformOrigin: 'left top',
-            scale: '0.25',
-            height: '800px'
+            // transformOrigin: 'left top',
+            // scale: '0.25',
+            // height: '800px'
           }
         }}
       >
