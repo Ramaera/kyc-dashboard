@@ -287,18 +287,18 @@ const DocumentRow = ({
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
         <TableCell style={{ border: 'none' }}>
-          {user?.kyc !== variables.status.APPROVED && (
-            <LoadingButton
-              loading={isLoading}
-              // disabled={!isValidToClick()}
-              variant="contained"
-              onClick={() => {
-                handleDocumentUpload();
-              }}
-            >
-              Upload
-            </LoadingButton>
-          )}
+          {/* {user?.kyc !== variables.status.APPROVED && ( */}
+          <LoadingButton
+            loading={isLoading}
+            // disabled={!isValidToClick()}
+            variant="contained"
+            onClick={() => {
+              handleDocumentUpload();
+            }}
+          >
+            Upload
+          </LoadingButton>
+          {/* )} */}
         </TableCell>
       </TableRow>
       {moreRow <= 3 && (
@@ -323,6 +323,7 @@ const DocumentRow = ({
     </>
   );
 };
+
 const InfoTab = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
@@ -547,7 +548,7 @@ const InfoTab = () => {
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
           )}
-          {user?.membership === variables.membership.BASIC && proofImage && (
+          {proofImage && (
             <LoadingButton
               variant="contained"
               onClick={() => {
