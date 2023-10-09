@@ -443,7 +443,7 @@ const InfoTab = () => {
   };
   return (
     <>
-      {!upgradeToAdvance && user?.membership === variables.membership.BASIC ? (
+      {!upgradeToAdvance ? (
         <>
           <Button
             variant="contained"
@@ -486,8 +486,7 @@ const InfoTab = () => {
               </span>
             </Typography>
           )}
-          {user?.membership === variables.membership.ADVANCE &&
-          user?.kyc === variables.status.APPROVED ? null : (
+          {
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -547,7 +546,7 @@ const InfoTab = () => {
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
-          )}
+          }
           {proofImage && (
             <LoadingButton
               variant="contained"
