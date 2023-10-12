@@ -612,7 +612,7 @@ const InfoTab = ({ title }) => {
                 Total Funding Completed :{' '}
                 {`₹ ${
                   title.toLowerCase() === 'hajipur' ? '20000000' : projectAmount
-                }`}
+                } /₹20000000`}
               </Typography>
               <BorderLinearProgress
                 variant="determinate"
