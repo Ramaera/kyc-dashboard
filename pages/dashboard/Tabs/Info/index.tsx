@@ -1,15 +1,16 @@
 import { UPDATEUSERDETAILS } from '@/apollo/queries/auth';
-import { useAppSelector, useAppDispatch } from '@/hooks';
+import variables from '@/config/variables';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import { useMutation } from '@apollo/client';
-import { DesktopDatePicker, LoadingButton } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const InfoTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [fullName, setFullName] = useState<any | null>(null);
   const [fatherHusbandName, setFatherHusbandName] = useState<any | null>(null);
   const [dob, setDob] = useState<any | null>(null);
@@ -21,6 +22,11 @@ const InfoTab = () => {
   const [isLoading, setLoading] = useState(false);
   const [updatedetails] = useMutation(UPDATEUSERDETAILS);
   const [demat, setDemat] = useState<any | null>(null);
+  const [moreDetails, setMoreDetails] = useState<any | null>({
+    address: '',
+    aadhaar: '',
+    pan: ''
+  });
   const [errors, setErrors] = useState({
     mobileNumber: null,
     AlternateMobileNumber: null,
@@ -34,7 +40,6 @@ const InfoTab = () => {
     const mobileNumberRegex = /^\d{10}$/;
     return mobileNumberRegex.test(mobile_number);
   };
-
   const handleSubmit = async () => {
     if (!validateMobileNumber(mobileNumber)) {
       setErrors({
@@ -68,7 +73,10 @@ const InfoTab = () => {
           mobile_number: mobileNumber,
           alternate_mobile_number: AlternateMobileNumber,
           demat_account: demat,
-          email: email
+          email: email,
+          Address: moreDetails.address,
+          aadharCardNumber: moreDetails.aadhaar,
+          panCardNumber: moreDetails.pan
         }
       });
       dispatch(
@@ -80,7 +88,10 @@ const InfoTab = () => {
           mobile_number: mobileNumber,
           alternate_mobile_number: AlternateMobileNumber,
           demat_account: demat,
-          email: email
+          email: email,
+          Address: moreDetails.address,
+          aadharCardNumber: moreDetails.aadhaar,
+          panCardNumber: moreDetails.pan
         })
       );
       toast.success('Details Updated');
@@ -92,13 +103,18 @@ const InfoTab = () => {
   };
   useEffect(() => {
     if (user) {
-      setFullName(user.name);
-      setFatherHusbandName(user.father_or_husband_name);
-      setDob(user.date_of_birth?.slice(0, 10));
-      SetMobileNumber(user.mobile_number);
-      setAlternateMobileNumber(user.alternate_mobile_number);
-      setEmail(user.email);
-      setDemat(user.demat_account);
+      setFullName(user?.name);
+      setFatherHusbandName(user?.father_or_husband_name);
+      setDob(user?.date_of_birth?.slice(0, 10));
+      SetMobileNumber(user?.mobile_number);
+      setAlternateMobileNumber(user?.alternate_mobile_number);
+      setEmail(user?.email);
+      setDemat(user?.demat_account);
+      setMoreDetails({
+        address: user?.Address,
+        aadhaar: user?.aadharCardNumber,
+        pan: user?.panCardNumber
+      });
     }
   }, [user]);
 
@@ -110,6 +126,7 @@ const InfoTab = () => {
             required
             id="outlined"
             label="Full Name"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fullName}
             variant="outlined"
@@ -123,6 +140,7 @@ const InfoTab = () => {
             required
             label="Father's/Husband's Name"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fatherHusbandName}
             onChange={(e) => {
@@ -150,6 +168,7 @@ const InfoTab = () => {
             label="Date of Birth"
             variant="outlined"
             fullWidth
+            disabled={user?.kyc === variables.status.APPROVED}
             placeholder=""
             value={dob}
             onChange={(e) => {
@@ -165,6 +184,7 @@ const InfoTab = () => {
             label="Mobile Number"
             variant="outlined"
             fullWidth
+            disabled={user?.kyc === variables.status.APPROVED}
             value={mobileNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               SetMobileNumber(e.target.value);
@@ -185,6 +205,7 @@ const InfoTab = () => {
           <TextField
             required
             id="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             label="Alternate Number"
             fullWidth
             variant="outlined"
@@ -208,6 +229,7 @@ const InfoTab = () => {
         <Grid item xs={12} sm={4}>
           <TextField
             required
+            disabled={user?.kyc === variables.status.APPROVED}
             label="Email ID"
             variant="outlined"
             fullWidth
@@ -227,9 +249,51 @@ const InfoTab = () => {
           {errors.email && <p>{errors.email}</p>}
         </Grid>
       </Grid>
+      <Grid container pr={2} pb={2} pl={2} spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            label="Address"
+            variant="outlined"
+            fullWidth
+            // disabled={user?.kyc === variables.status.APPROVED}
+            value={moreDetails.address}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, address: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="outlined"
+            // disabled={user?.kyc === variables.status.APPROVED}
+            label="Aadhaar Number"
+            fullWidth
+            variant="outlined"
+            value={moreDetails.aadhaar}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, aadhaar: e.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            // disabled={user?.kyc === variables.status.APPROVED}
+            label="PanCard Number"
+            variant="outlined"
+            fullWidth
+            value={moreDetails.pan}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setMoreDetails({ ...moreDetails, pan: e.target.value });
+            }}
+          />
+        </Grid>
+      </Grid>
       <Grid container p={2} spacing={2}>
-        {user?.kyc === 'APPROVED' ? null : (
-          <Grid item xs={4}>
+        {user?.kyc !== variables.status.APPROVED && (
+          <Grid item xs={12} sm={4}>
             <Box component="form">
               <LoadingButton
                 loading={isLoading}

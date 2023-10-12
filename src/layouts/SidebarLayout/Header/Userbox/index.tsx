@@ -17,7 +17,9 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { logout } from '@/state/slice/userSlice';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/router';
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -54,7 +56,8 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = useAppSelector((state) => state.user.data);
+  const router = useRouter();
+  const user = useAppSelector((state) => state.user?.data);
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -67,26 +70,18 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
-  const avatarFetch = (userData) => {
-    let photoUrl = '';
-    userData.documents.forEach((doc) => {
-      if (doc.title === 'avatar') {
-        photoUrl = doc.url;
-      }
-    });
-    return photoUrl;
-  };
 
   return (
     <div>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
+        <Hidden smUp>
+          <img height={40} src="/static/images/logo/logo.png" />
+        </Hidden>
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body2">
               {user?.name || user?.rm_id}
             </UserBoxLabel>
-            <Stack spacing={8} direction="row" mt={1} ml={3}></Stack>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -107,14 +102,15 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox display="flex">
-          <Avatar variant="rounded" src={user ? avatarFetch(user) : ''} />
-
           <UserBoxText>
             <UserBoxLabel variant="body1">
               {user?.name ? user?.name : ''}
             </UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user && user.rm_id}
+              {user && user?.rm_id}
+            </UserBoxDescription>
+            <UserBoxDescription variant="body2">
+              {user && user?.pw_id}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -131,6 +127,20 @@ function HeaderUserbox() {
           >
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
+          </Button>
+        </Box>
+        <Divider />
+        <Box sx={{ m: 1 }}>
+          <Button
+            color="primary"
+            fullWidth
+            onClick={() => {
+              router.push('/settings');
+              handleClose();
+            }}
+          >
+            <SettingsIcon sx={{ mr: 1 }} />
+            Settings
           </Button>
         </Box>
       </Popover>

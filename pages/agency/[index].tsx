@@ -1,23 +1,22 @@
-import 'react-photo-view/dist/react-photo-view.css';
-import Head from 'next/head';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import { ChangeEvent, useEffect, useState } from 'react';
-import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import Footer from '@/components/Footer';
+import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
+import SidebarLayout from '@/layouts/SidebarLayout';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-
+import { ChangeEvent, useEffect, useState } from 'react';
+import 'react-photo-view/dist/react-photo-view.css';
 // import userData from '../data.json';
-import { Grid, Tab, Tabs, Container, Card, Box, styled } from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import InfoTab from './Tabs/Info';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
+import { Box, Card, Container, Grid, Tab, Tabs, styled } from '@mui/material';
+import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import { useDispatch, useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
+import DocumentTab from './Tabs/Documents';
+import InfoTab from './Tabs/Info';
+import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import Projects from './Tabs/Projects';
-import DocumentTab from './Tabs/Documents';
-import NomineeTab from './Tabs/Nominee';
-import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -104,14 +103,20 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   const router = useRouter();
   const dispatch = useDispatch();
+  // console.log(router?.query?.payment);
+  //const usersList = userData;
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  //spread ... userList and add the updated user to itthen change it
   const { index } = router.query;
   const foundUser = usersList.find((user) => user.id === index);
+  // console.log(foundUser.date_of_birth.length);
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));
     }
   }, []);
+
+  // console.log('foundUser [index]', foundUser);
 
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
@@ -128,6 +133,10 @@ function DashboardTasks() {
     setCurrentTab(value);
   };
 
+  useEffect(() => {
+    router.query.payment && setCurrentTab('projects');
+  }, []);
+
   return (
     <ProtectedSSRoute>
       <Head>
@@ -136,7 +145,7 @@ function DashboardTasks() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <TabsContainerWrapper>
           <Tabs
             onChange={handleTabsChange}
@@ -174,10 +183,17 @@ function DashboardTasks() {
                 </Box>
               </Grid>
             )}
+            {currentTab === 'upgradeKyc' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <ToAdvance />
+                </Box>
+              </Grid>
+            )}
             {currentTab === 'projects' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                  <Projects />
+                  <Projects to={router.query.payment} />
                 </Box>
               </Grid>
             )}

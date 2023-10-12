@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, CardHeader, Container, Grid } from '@mui/material';
+import { Box, Card, CardHeader, Container, Divider, Grid } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import PaymentTab from './Tabs/Payment';
@@ -15,16 +15,16 @@ function index() {
       <Head>
         <title>KYC Share</title>
       </Head>
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
+      <Container maxWidth={false} sx={{ mt: 2 }}>
         <Card variant="outlined">
           <CardHeader
             title={title}
             sx={{
               ml: 2,
-              textTransform: 'uppercase',
-              textDecoration: 'underline'
+              textTransform: 'uppercase'
             }}
           />
+          <Divider sx={{ mb: 2 }} />
           <Grid
             container
             direction="row"

@@ -60,7 +60,7 @@ function Avatars() {
           docs="https://material-ui.com/components/avatars/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

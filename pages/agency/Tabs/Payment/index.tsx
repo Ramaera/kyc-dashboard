@@ -1,38 +1,37 @@
+import { useMutation } from '@apollo/client';
 import {
-  Grid,
-  Button,
   Box,
-  Divider,
-  Typography,
-  TableRow,
+  Button,
+  Grid,
   TableCell,
-  TextField
+  TableRow,
+  TextField,
+  Typography
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
 //import { CREATEDOCUMENT } from '@/apollo/queries/auth';
 // import { useAppSelector } from '@/hooks';
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
-import toast, { Toaster } from 'react-hot-toast';
 import {
   UPDATE_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
-import handleImageUpload from '@/utils/upload';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
+import documentsConfig from '@/config/documentsConfig';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
+import DocumentType from '@/state/types/document';
 import allUsersUpdater from '@/utils/updateUserList';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
+import handleImageUpload from '@/utils/upload';
 import { LoadingButton } from '@mui/lab';
+import toast, { Toaster } from 'react-hot-toast';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { useDispatch, useSelector } from 'react-redux';
+import variables from '@/config/variables';
 
 export const rows = [
   {
-    config: documentsConfig.additional_documents
+    config: documentsConfig.additional_payment_documents
   }
 ];
-// let statusUpdate = [];
 
 const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [images, setImages] = useState([]);
@@ -45,6 +44,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     null,
     null
   ]);
+  const [additionalUtr, setAdditionalUtr] = useState(['', '', '', '']);
   useEffect(() => {
     setMoreRow(rowNo);
   }, [rowNo]);
@@ -61,23 +61,21 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     }
     setImages(_imgs);
     let newArr = [null, null, null, null];
+    let newArrUtr = ['', '', '', ''];
+    setAdditionalUtr(newArrUtr);
+    setAdditionalAmounts(newArr);
     data.config.items.map((docTitle) => {
       user?.documents?.map((doc) => {
         if (doc.title === docTitle.id) {
-          newArr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.amount;
+          newArr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.amount || '';
+          newArrUtr[parseInt(docTitle.id.slice(22, 24)) - 2] = doc.utrNo || '';
         }
       });
     });
+    setAdditionalUtr(newArrUtr);
     setAdditionalAmounts(newArr);
   }, [documents, user]);
-  const handleCreateDocument = async (title: string, url: string) => {
-    /* return await createDocument({
-      variables: {
-        title,
-        url
-      }
-    }); */
-  };
+  const handleCreateDocument = async () => {};
 
   const handleUpdateDocument = async (id: string, url: string) => {
     return await updateDataByAdmin({
@@ -87,29 +85,6 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
         url: url
       }
     });
-  };
-
-  const isValidToClick = () => {
-    const hasSomethingChanged = imagesChanged.find((img) => {
-      if (img) {
-        return true;
-      }
-    });
-    if (rowNo == data.config.items.length && hasSomethingChanged) {
-      return true;
-    }
-  };
-  const updateUser = (id, title, imgUrl) => {
-    let newUser = user;
-    let newDocs = [];
-    user?.documents?.map((item) => {
-      if (item.id === id) {
-        newDocs.push({ ...item, title: 'avatar' });
-      } else if (item.title !== title) {
-        newDocs.push(item);
-      }
-    });
-    return { ...newUser, documents: newDocs };
   };
 
   const findDocId = (title) => {
@@ -125,14 +100,15 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     for (let i = 0; i < moreRow; i++) {
       const documentTitle = data.config.items[i].id;
       if (additionalAmounts[i]) {
-        const resp = await updateDataByAdmin({
+        await updateDataByAdmin({
           variables: {
             id: user.id,
             documentId: findDocId(documentTitle),
-            amount: additionalAmounts[i]
+            amount: additionalAmounts[i],
+            utrNo: additionalUtr[i]
           }
         });
-        toast.success(`Amount Updated`);
+        toast.success(`Details Updated`);
       }
     }
   };
@@ -163,7 +139,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     }
   };
   const statusCheck = (docId) => {
-    let updatedStatus = false;
+    let updatedStatus = null;
     statusUpdate?.map((stat) => {
       if (docId === stat.id) {
         updatedStatus = stat.status;
@@ -204,15 +180,17 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             // location.reload();
 
             const listAfterRemovingExistingDocument = userAllDocuments.filter(
-              (doc: any) => {
-                return doc.id !== document.id;
+              (doc) => {
+                return doc.id;
+                // return doc.id !== document.id;
+                //type removed
               }
             );
             listAfterRemovingExistingDocument.push(resp.data.updateDocument);
             userAllDocuments = listAfterRemovingExistingDocument;
           } else {
             //create document
-            const resp = await handleCreateDocument(documentTitle, imgUrl);
+            const resp: any = await handleCreateDocument();
             toast.success(`${documentTitle} Uploaded`);
             userAllDocuments = [...userAllDocuments, resp.data.createDocument];
           }
@@ -231,6 +209,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       let newArr = [...additionalAmounts];
+      let newArrUtr = [...additionalUtr];
       views.push(
         <div style={{ height: 160, marginTop: 10 }}>
           <div style={{ marginBottom: 10 }}>
@@ -238,89 +217,110 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
             <span
               style={{
                 color:
-                  statusCheck(documents[i].id) === 'APPROVED'
-                    ? 'green'
-                    : statusCheck(documents[i].id) === 'REJECTED'
+                  statusCheck(documents[i]?.id) === 'APPROVED'
+                    ? 'limegreen'
+                    : statusCheck(documents[i]?.id) === 'REJECTED'
                     ? 'red'
                     : documents[i]
-                    ? (documents[i].status === 'APPROVED' && 'green') ||
+                    ? (documents[i].status === 'APPROVED' && 'limegreen') ||
                       (documents[i].status === 'REJECTED' && 'red')
                     : ''
               }}
             >
-              {statusCheck(documents[i].id) || documents[i]?.status}
+              {statusCheck(documents[i]?.id) || documents[i]?.status}
             </span>
           </div>
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '10px'
-            }}
-          >
-            <Grid>
-              <TextField
-                id="outlined"
-                label="Amount*"
-                value={additionalAmounts[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  e.target.value
-                    ? (newArr[i] = parseInt(e.target.value))
-                    : (newArr[i] = null);
-                  setAdditionalAmounts(newArr);
+          {user?.kyc !== variables.status.APPROVED && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '10px',
+                width: 500
+              }}
+            >
+              <Grid>
+                <Button
+                  onClick={() => {
+                    changeDocumentStatus(documents[i].id, 'APPROVED');
+                  }}
+                  variant="outlined"
+                  color="success"
+                  sx={{ paddingY: '12px' }}
+                >
+                  Approve
+                </Button>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(documents[i].id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ mx: 2, paddingY: '12px' }}
+                >
+                  Reject
+                </Button>
+
+                <TextField
+                  sx={{ width: 120 }}
+                  id="outlined"
+                  label="UTR No.*"
+                  value={additionalUtr[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArrUtr[i] = e.target.value)
+                      : (newArrUtr[i] = null);
+                    setAdditionalUtr(newArrUtr);
+                  }}
+                />
+                <TextField
+                  sx={{ width: 120, ml: 2 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={additionalAmounts[i]}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    e.target.value
+                      ? (newArr[i] = parseInt(e.target.value))
+                      : (newArr[i] = null);
+                    setAdditionalAmounts(newArr);
+                  }}
+                />
+              </Grid>
+            </Box>
+          )}
+          {user?.kyc !== variables.status.APPROVED && (
+            <Button
+              fullWidth
+              style={{
+                marginTop: '10px'
+              }}
+              component="label"
+            >
+              Choose {items[i].name}
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(f) => {
+                  // console.log(i);
+                  if (f.target.files.length > 0) {
+                    const _images = [...images];
+                    _images[i] = f.target.files[0];
+                    setImages(_images);
+                    // console.log('imageChanged', _images[i]);
+                    const _imagesChanged = [...imagesChanged];
+                    _imagesChanged[i] = true;
+                    setImagesChange(_imagesChanged);
+                  }
                 }}
               />
-              <Button
-                onClick={() => {
-                  changeDocumentStatus(documents[i].id, 'APPROVED');
-                }}
-                variant="outlined"
-                color="success"
-                sx={{ ml: 2 }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(documents[i].id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
-          </Box>
-          <Button
-            fullWidth
-            style={{
-              marginTop: '10px'
-            }}
-            component="label"
-          >
-            Choose {items[i].name}
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(f) => {
-                // console.log(i);
-                if (f.target.files.length > 0) {
-                  const _images = [...images];
-                  _images[i] = f.target.files[0];
-                  setImages(_images);
-                  // console.log('imageChanged', _images[i]);
-                  const _imagesChanged = [...imagesChanged];
-                  _imagesChanged[i] = true;
-                  setImagesChange(_imagesChanged);
-                }
-              }}
-            />
-          </Button>
+            </Button>
+          )}
         </div>
       );
     }
@@ -369,34 +369,25 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
           <TableCell width={300}>{getPreview()}</TableCell>
-
           <TableCell style={{}}>{getActionCell()}</TableCell>
-          <TableCell>
-            <LoadingButton
-              loading={isLoading}
-              // disabled={!isValidToClick()}
-              variant="contained"
-              onClick={() => {
-                handleDocumentUpload();
-                handleAmountChange();
-              }}
-            >
-              Update
-            </LoadingButton>
-          </TableCell>
-
-          {/*  <TableCell>
-          <span
-            style={{
-              color: documents[0]
-                ? (documents[0].status === 'APPROVED' && 'green') ||
-                  (documents[0].status === 'REJECTED' && 'red')
-                : ''
-            }}
-          >
-            {documents[0] && documents[0].status}
-          </span>
-        </TableCell> */}
+          {user?.kyc !== variables.status.APPROVED && (
+            <>
+              <TableCell>
+                <LoadingButton
+                  loading={isLoading}
+                  // disabled={!isValidToClick()}
+                  variant="contained"
+                  onClick={() => {
+                    handleDocumentUpload();
+                    handleAmountChange();
+                  }}
+                  sx={{ paddingX: 8 }}
+                >
+                  Update
+                </LoadingButton>
+              </TableCell>
+            </>
+          )}
         </TableRow>
       )}
     </>
@@ -408,7 +399,7 @@ const getDocumentsByConfig = (configs) => {
   const documents = [];
   if (user && user.documents) {
     for (let config of configs) {
-      const document = user?.documents?.find((doc: DocumentType) => {
+      const document = user.documents.find((doc: DocumentType) => {
         if (doc.title.toLowerCase() === config.id.toLowerCase()) {
           return true;
         }
@@ -426,21 +417,16 @@ const InfoTab = () => {
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const [rowNo, setRowNo] = useState(0);
   // const theme = useTheme();
-  const [isLoading, setLoading] = useState(false);
-  const [isBasicMember, setBasicMember] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
   const [proofImage, setProofImage] = useState<any>('');
-  const [isAmountSubmitted, setAmountSubmitted] = useState<boolean>(false);
   const [amount, setAmount] = useState<Number | any>();
+  const [utrNumber, setUtrNumber] = useState<String>();
   const [paymentDocument, setPaymentDocument] = useState<DocumentType>();
   const [isImageChanged, setImageChanged] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
   //const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
-  // console.log(user);
-  /* const handleImageUpload = async () => {
-    return 'https://upload.wikimedia.org/wikipedia/commons/d/d7/Einstein-with-habicht-and-solovine.jpg';
-  }; */
   const getDocNum = async () => {
     let count = 0;
     user?.documents?.map((doc) => {
@@ -457,7 +443,7 @@ const InfoTab = () => {
   const updateUser = (id, imgUrl) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
         // newDocs.push(...item, url:imgUrl);
@@ -467,12 +453,12 @@ const InfoTab = () => {
     });
     return { ...newUser, documents: newDocs };
   };
-  const updateUserAmount = (id, amount) => {
+  const updateUserAmount = (id, amount, utrNumber) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === id) {
-        newDocs.push({ ...item, amount: amount });
+        newDocs.push({ ...item, amount: amount, utrNo: utrNumber });
         // newDocs.push(...item, url:imgUrl);
       } else {
         newDocs.push(item);
@@ -483,7 +469,7 @@ const InfoTab = () => {
   const updateUserStatus = (id, status) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, status: status });
       } else {
@@ -494,7 +480,7 @@ const InfoTab = () => {
   };
 
   const changeDocumentStatus = async (docId, docStatus) => {
-    const response = await updateDocumentStatusByAdmin({
+    await updateDocumentStatusByAdmin({
       variables: {
         id: docId,
         status: docStatus
@@ -511,44 +497,38 @@ const InfoTab = () => {
     );
   };
 
-  const validateSubmit = (imgUrl) => {
-    if (!imgUrl) {
-      alert('Invalid Image');
-      return false;
-    }
-
-    return true;
-  };
-
   const handleAmountSubmit = async () => {
     try {
-      const resp = await updateDataByAdmin({
+      await updateDataByAdmin({
         variables: {
           id: user.id,
           documentId: paymentDocument.id,
-          amount: parseInt(amount)
+          amount: parseInt(amount),
+          utrNo: utrNumber
         }
       });
       dispatch(
-        setFoundUser(updateUserAmount(paymentDocument.id, parseInt(amount)))
+        setFoundUser(
+          updateUserAmount(paymentDocument.id, parseInt(amount), utrNumber)
+        )
       );
       dispatch(
         setAllTheUsers(
           allUsersUpdater(
             usersList,
-            updateUserAmount(paymentDocument.id, parseInt(amount))
+            updateUserAmount(paymentDocument.id, parseInt(amount), utrNumber)
           )
         )
       );
 
-      toast.success('Amount Updated');
+      toast.success('Details Updated');
     } catch (err) {
       toast.error(err);
     }
-    setLoading(false);
+    // setLoading(false);
   };
   const handlePaymentSubmit = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     try {
       let imgUrl = '';
@@ -556,7 +536,8 @@ const InfoTab = () => {
         try {
           imgUrl = await handleImageUpload(proofImage);
         } catch (err) {
-          imgUrl = 'lorem';
+          // imgUrl = 'lorem';
+          toast.error('Error, Try Again!');
         }
       } else {
         imgUrl = proofImage;
@@ -577,7 +558,7 @@ const InfoTab = () => {
           )
         );
       } else {
-        console.log('we need access token of user to create any doc');
+        // console.log('we need access token of user to create any doc');
         /* const respDocument = await createDocument({
           variables: {
             id: foundUser.id,
@@ -590,11 +571,12 @@ const InfoTab = () => {
     } catch (err) {
       toast.error(err);
     }
-    setLoading(false);
+    // setLoading(false);
   };
+
   useEffect(() => {
-    if (user && user.documents && user?.documents?.length > 0) {
-      user?.documents?.find((document: DocumentType) => {
+    if (user && user.documents && user.documents.length > 0) {
+      user.documents.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.payment_proof.items[0].id
@@ -602,31 +584,13 @@ const InfoTab = () => {
           setPaymentDocument(document);
           setProofImage(document.url);
           setAmount(document.amount);
+          setUtrNumber(document.utrNo);
         }
       });
     }
   }, [user]);
   return (
     <>
-      {/*  <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 100 }} aria-label="simple table">
-          <TableBody>
-            {rows.map((row) => {
-              return (
-                <TableRow
-                  key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.value}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer> */}
       {proofImage ? (
         <PhotoProvider>
           <PhotoView
@@ -656,7 +620,7 @@ const InfoTab = () => {
             <span
               style={{
                 color: paymentDocument
-                  ? (paymentDocument.status === 'APPROVED' && 'green') ||
+                  ? (paymentDocument.status === 'APPROVED' && 'limegreen') ||
                     (paymentDocument.status === 'REJECTED' && 'red')
                   : ''
               }}
@@ -665,34 +629,46 @@ const InfoTab = () => {
             </span>
           </Typography>
           <Box>
-            <Grid>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                // disabled={!isAmountSubmitted}
-                onClick={() =>
-                  changeDocumentStatus(paymentDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user?.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  // disabled={!isAmountSubmitted}
+                  onClick={() =>
+                    changeDocumentStatus(paymentDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
         </>
       )}
-      {proofImage && (
-        <Grid container p={2} mt={2} pl={0} spacing={2}>
+      {proofImage && user?.kyc !== variables.status.APPROVED && (
+        <Grid container p={2} mt={2} ml={0} pl={0} gap={2} spacing={2}>
+          <TextField
+            id="outlined"
+            label="UTR No.*"
+            value={utrNumber}
+            variant="outlined"
+            type="number"
+            onChange={(e) => {
+              setUtrNumber(e.target.value);
+            }}
+          />
           <TextField
             id="outlined"
             label="Amount*"
@@ -700,27 +676,28 @@ const InfoTab = () => {
             variant="outlined"
             type="number"
             onChange={(e) => {
-              // setAmountSubmitted(true);
               setAmount(e.target.value);
             }}
           />
-          <Grid item>
+          <Grid>
             <Button
               fullWidth
+              disabled={!amount || !utrNumber}
               variant="contained"
               component="label"
               onClick={() => {
                 handleAmountSubmit();
               }}
+              sx={{ padding: '14px' }}
             >
-              Submit Amount
+              Submit
             </Button>
           </Grid>
         </Grid>
       )}
       <Grid container p={2} pl={0} spacing={2}>
-        {paymentDocument && (
-          <Grid item xs={4}>
+        {paymentDocument && user?.kyc !== variables.status.APPROVED && (
+          <Grid item xs={0}>
             <Button variant="contained" component="label">
               Select Payment Slip
               <input
@@ -738,7 +715,7 @@ const InfoTab = () => {
             </Button>
           </Grid>
         )}
-        {proofImage && (
+        {proofImage && user?.kyc !== variables.status.APPROVED && (
           <Grid item xs={2}>
             <Button
               fullWidth

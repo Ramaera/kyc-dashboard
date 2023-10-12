@@ -16,7 +16,12 @@ export interface User {
   referralAgencyCode?: String;
   updatedAt?: String;
   membership?: Membership;
+  documents?: DocumentType;
+  Address?: String;
+  aadharCardNumber?: String;
+  panCardNumber?: String;
   kyc?: KYC;
+  role: ROLE;
 }
 export type DocumentType = {
   id: String;
@@ -24,10 +29,17 @@ export type DocumentType = {
   url: String;
   updatedAt: String;
   createdAt: String;
+  amount: String;
+  status: String;
 };
 enum Membership {
   BASIC = 'BASIC',
   ADVANCE = 'ADVANCE'
+}
+enum ROLE {
+  ADMIN = 'ADMIN',
+  AGENT = 'AGENT',
+  USER = 'USER'
 }
 enum KYC {
   APPROVED = 'APPROVED',

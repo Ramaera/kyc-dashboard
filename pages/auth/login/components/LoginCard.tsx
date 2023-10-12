@@ -29,7 +29,8 @@ export default function LoginCard() {
       toast.error('PW ID is not valid!');
       return;
     }
-    if (!password || password.length < 8) {
+    // if (!password || password.length < 8) {
+    if (!password) {
       toast.error('Password is not valid!');
       return;
     }
@@ -87,9 +88,7 @@ export default function LoginCard() {
             margin="normal"
             required
             fullWidth
-            id="referralId"
-            label="PlanetWay Refferal Id"
-            name="referralId"
+            label="PW ID"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
@@ -122,6 +121,17 @@ export default function LoginCard() {
               )
             }}
           />
+          {/*   <Grid item xs>
+            <Link href="#">
+              <a
+                onClick={() => {
+                  setForgotPasswordShow(true);
+                }}
+              >
+                Forgot Password
+              </a>
+            </Link>
+          </Grid> */}
           <LoadingButton
             loading={isLoading}
             fullWidth
@@ -138,18 +148,6 @@ export default function LoginCard() {
           <Typography variant="body1" color="text.secondary" text-align="left">
             Don't Have An Account?
           </Typography>
-          <Grid item xs>
-            <Link href="#">
-              <a
-                onClick={() => {
-                  setForgotPasswordShow(true);
-                }}
-              >
-                {' '}
-                Forgot Password
-              </a>
-            </Link>
-          </Grid>
 
           <Button
             onClick={() => {

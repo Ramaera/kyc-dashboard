@@ -22,16 +22,6 @@ export const getApolloClient = () => {
   if (typeof window !== 'undefined') {
     ACCESSTOKEN = localStorage.getItem('accessToken');
   }
-  // if(ACCESSTOKEN){
-  //   return new ApolloClient({
-  //     link: authLink.concat(httpLink),
-  //     cache: new InMemoryCache()
-  //   });
-  // }
-  // return new ApolloClient({
-  //   uri: CONFIG.SERVER_URL,
-  //   cache: new InMemoryCache()
-  // });
 
   return new ApolloClient({
     link: authLink.concat(httpLink),

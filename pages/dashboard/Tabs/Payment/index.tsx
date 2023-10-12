@@ -6,14 +6,23 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  TableCell,
+  TableRow,
+  Typography,
+  useTheme
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import PaymentInfo from './paymentDetails';
+import variables from '@/config/variables';
 
 export const rows = [
   {
-    config: documentsConfig.additional_documents
+    config: documentsConfig.additional_payment_documents
   }
 ];
 const DocumentRow = ({
@@ -23,6 +32,7 @@ const DocumentRow = ({
   rowNo,
   hideAdditionalDocuments
 }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
@@ -92,7 +102,6 @@ const DocumentRow = ({
         newDocs.push(item);
       }
     });
-    console.log(imgUrl, { ...newUser, documents: newDocs });
     return { ...newUser, documents: newDocs };
   };
 
@@ -103,7 +112,7 @@ const DocumentRow = ({
     //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
-        console.log('data.config.items[i].id', data.config.items[i].id);
+        // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
@@ -112,7 +121,7 @@ const DocumentRow = ({
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -156,7 +165,16 @@ const DocumentRow = ({
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       views.push(
-        <div style={{ height: 160, marginTop: 10 }}>
+        <Box
+          sx={{
+            height: 160,
+            marginTop: 10,
+            [theme.breakpoints.down('sm')]: {
+              height: 60
+            }
+          }}
+        >
+          {' '}
           <div style={{ marginBottom: 10 }}>
             Status:{' '}
             <span
@@ -179,8 +197,8 @@ const DocumentRow = ({
           </div>
           <Button
             style={{
-              cursor: documents[0]
-                ? documents[0].status === 'APPROVED'
+              cursor: documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'not-allowed'
                   : 'pointer'
                 : 'pointer',
@@ -192,8 +210,8 @@ const DocumentRow = ({
             }
             component="label"
             color={
-              documents[0]
-                ? documents[0].status === 'APPROVED'
+              documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'secondary'
                   : 'primary'
                 : 'primary'
@@ -205,8 +223,8 @@ const DocumentRow = ({
               accept="image/*"
               hidden
               disabled={
-                documents[0]
-                  ? documents[0].status === 'APPROVED'
+                documents[i]
+                  ? documents[i].status === 'APPROVED'
                     ? true
                     : false
                   : false
@@ -225,7 +243,7 @@ const DocumentRow = ({
               }}
             />
           </Button>
-        </div>
+        </Box>
       );
     }
     return views;
@@ -255,7 +273,16 @@ const DocumentRow = ({
   };
   return (
     <>
-      <TableRow key={data.config.name} sx={{}}>
+      <TableRow
+        key={data.config.name}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 },
+          [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
+      >
         <TableCell component="th" scope="row" style={{ border: 'none' }}>
           {data.config.name} {data.isOptional ? '(Optional)' : ''}
         </TableCell>
@@ -269,16 +296,18 @@ const DocumentRow = ({
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
         <TableCell style={{ border: 'none' }}>
-          <LoadingButton
-            loading={isLoading}
-            // disabled={!isValidToClick()}
-            variant="contained"
-            onClick={() => {
-              handleDocumentUpload();
-            }}
-          >
-            Upload
-          </LoadingButton>
+          {user?.kyc !== variables.status.APPROVED && (
+            <LoadingButton
+              loading={isLoading}
+              // disabled={!isValidToClick()}
+              variant="contained"
+              onClick={() => {
+                handleDocumentUpload();
+              }}
+            >
+              Upload
+            </LoadingButton>
+          )}
         </TableCell>
       </TableRow>
       {moreRow <= 3 && (
@@ -305,7 +334,7 @@ const DocumentRow = ({
 };
 const InfoTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
@@ -334,7 +363,7 @@ const InfoTab = () => {
   };
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
@@ -396,6 +425,7 @@ const InfoTab = () => {
         });
       }
     } catch (err) {}
+    setSubmitButtonEnabled(false);
     setLoading(false);
   };
   useEffect(() => {
@@ -403,7 +433,7 @@ const InfoTab = () => {
   }, []);
 
   useEffect(() => {
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
@@ -422,7 +452,7 @@ const InfoTab = () => {
     <>
       {!additionalDocuments ? (
         <>
-          <PaymentInfo />
+          <PaymentInfo docStatus={paymentDocument?.status} />
 
           {proofImage ? (
             <img
@@ -450,7 +480,7 @@ const InfoTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Grid container py={2} spacing={2}>
               <Grid item xs={12} sm={5} md={3} lg={3}>
                 <Button
@@ -494,17 +524,19 @@ const InfoTab = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <LoadingButton
-                  loading={isLoading}
-                  fullWidth
-                  variant="contained"
-                  disabled={!isSubmitButtonEnalbed}
-                  onClick={() => {
-                    handlePaymentSubmit();
-                  }}
-                >
-                  Submit
-                </LoadingButton>
+                {user?.kyc !== variables.status.APPROVED && (
+                  <LoadingButton
+                    loading={isLoading}
+                    fullWidth
+                    variant="contained"
+                    disabled={!isSubmitButtonEnalbed}
+                    onClick={() => {
+                      handlePaymentSubmit();
+                    }}
+                  >
+                    Submit
+                  </LoadingButton>
+                )}
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
@@ -516,7 +548,7 @@ const InfoTab = () => {
                 setAdditionalDocuments(true);
               }}
             >
-              Add/See Additional Documents
+              Additional Documents
             </LoadingButton>
           )}
         </>

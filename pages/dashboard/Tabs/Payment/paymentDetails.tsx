@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
+import variables from '@/config/variables';
 const rows = [
   {
     name: 'Company Name',
@@ -18,7 +19,7 @@ const rows = [
 
   {
     name: 'Bank Name',
-    value: 'KOTAK MAHINDRA BANK '
+    value: 'ICICI BANK'
   },
 
   {
@@ -28,16 +29,16 @@ const rows = [
 
   {
     name: 'A/C No.',
-    value: '4747237385'
+    value: '081605012239'
   },
 
   {
     name: 'IFSC CODE ',
-    value: 'KKBK0000180'
+    value: 'ICIC0000816'
   }
 ];
-const PaymentInfo = () => {
-  const user = useAppSelector((state) => state.user.data);
+const PaymentInfo = ({ docStatus }) => {
+  const user = useAppSelector((state) => state.user?.data);
   const [isBankDetails, setBankDetails] = useState(false);
   const [isUPIDetails, setUPIDetails] = useState(false);
 
@@ -49,14 +50,15 @@ const PaymentInfo = () => {
     setBankDetails(false);
     setUPIDetails(true);
   };
-
   return (
     <>
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Kindly Deposit Rs.{' '}
-        {user?.membership === 'BASIC' ? '1,000/-' : '1,00,000/-'} and upload the
-        payment slip as a proof!
-      </Typography>
+      {docStatus !== variables.status.APPROVED && (
+        <Typography variant="h4" sx={{ my: 2 }}>
+          Kindly Deposit Rs.{' '}
+          {user?.membership === 'BASIC' ? '2,000' : '2,00,000'}
+          /- and upload the payment slip as a proof!
+        </Typography>
+      )}
       <div
         style={{
           flexDirection: 'row',
@@ -114,14 +116,14 @@ const PaymentInfo = () => {
                   borderRadius: '20px',
                   padding: '10px'
                 }}
-                src="/images/upi.jpg"
+                src="/images/ICICI_UPI.png"
               />
               <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
                 OR
               </Typography>
               <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
-                <a href="upi://pay?pa=ramaerakotak@ibl&amp;pn=Ramaera  K&amp;cu=INR">
-                  UPI ID : ramaerakotak@ibl
+                <a href="upi://pay?pa=ramaeraindustries@icici&amp;pn=Ramaera  K&amp;cu=INR">
+                  UPI ID : ramaeraindustries@icici
                 </a>
               </Typography>
             </TableBody>

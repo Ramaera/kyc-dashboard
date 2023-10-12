@@ -1,28 +1,28 @@
-import { useContext, useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks';
 import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import {
-  alpha,
   Box,
   Divider,
   IconButton,
-  lighten,
-  Typography,
   Stack,
-  styled,
   Tooltip,
-  useTheme,
-  Button
+  Typography,
+  alpha,
+  lighten,
+  styled,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import HeaderUserbox from './Userbox';
-import { useDispatch, useSelector } from 'react-redux';
-import { upgradeKYC } from '@/state/slice/foundUserSlice';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import HeaderUserbox from './Userbox';
+import variables from '@/config/variables';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -44,58 +44,27 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
-  const dispatch = useDispatch();
-  const agencyCode = useSelector((state: any) => state.user.agencyCode);
-  const usersList = useSelector(
-    (state: any) => state.allUsers.allTheUsersForList
-  );
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
+  const mobile = useMediaQuery('(max-width:600px)');
+
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalHajipur: 0,
     totalAgra: 0
   });
+  useEffect(() => {
+    setNumbers({
+      totalKYC: _numbers.totalSubscribers,
+      totalHajipur: _numbers.totalHajipurSubscribers,
+      totalAgra: _numbers.totalAgraSubscribers
+    });
+  }, [_numbers]);
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const router = useRouter();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
 
-  const checkTotal = () => {
-    let totalKyc = 0;
-    let totalHajipur = 0;
-    let totalAgra = 0;
-    usersList.map((user) => {
-      if (user) {
-        totalKyc += 1;
-      }
-      user?.documents?.map((doc) => {
-        /*  if (doc.title === 'payment_proof' && doc.status != 'REJECTED') {
-          totalKyc += 1;
-        } */
-        if (
-          doc.title.toLowerCase() === 'hajipur_project_payment' &&
-          doc.status != 'REJECTED'
-        ) {
-          totalHajipur += 1;
-        }
-        if (
-          doc.title.toLowerCase() === 'agra_project_payment' &&
-          doc.status != 'REJECTED'
-        ) {
-          totalAgra += 1;
-        }
-      });
-    });
-    setNumbers({
-      ...numbers,
-      totalKYC: totalKyc,
-      totalAgra: totalAgra,
-      totalHajipur: totalHajipur
-    });
-  };
-
-  useEffect(() => {
-    checkTotal();
-  }, [usersList]);
   return (
     <HeaderWrapper
       display="flex"
@@ -131,14 +100,40 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
-            RM ID : {user && user.rm_id}
-          </Typography>
+          {!mobile && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 10,
+                  width: 90
+                }
+              }}
+            >
+              RM ID : {user && user?.rm_id}
+            </Typography>
+          )}
           {agencyCode && (
-            <Typography variant="h4" sx={{ my: 2 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 10,
+                  width: 90
+                }
+              }}
+            >
               Agency Code :{' '}
               <span
-                style={{ cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 10,
+                    width: 90
+                  }
+                }}
                 onClick={() => {
                   toast.success(`Agency Code Copied`);
                   navigator.clipboard.writeText(agencyCode);
@@ -147,17 +142,6 @@ function Header() {
                 {agencyCode}
               </span>
             </Typography>
-          )}
-          {user?.membership !== 'ADVANCE' && (
-            <Button
-              style={{ marginRight: 20 }}
-              variant="contained"
-              onClick={() => {
-                dispatch(upgradeKYC(true));
-              }}
-            >
-              Upgrade to ADVANCE KYC
-            </Button>
           )}
         </Stack>
       )}
@@ -169,15 +153,45 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Total KYC : {numbers.totalKYC}
-          </Typography>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Hajipur Enrolled : {numbers.totalHajipur}
-          </Typography>
-          <Typography variant="h4" sx={{ my: 2 }}>
-            Agra Enrolled : {numbers.totalAgra}
-          </Typography>
+          {numbers.totalKYC && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Total Subscribers : {numbers.totalKYC}
+            </Typography>
+          )}
+          {numbers.totalHajipur && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Hajipur Enrolled : {numbers.totalHajipur}
+            </Typography>
+          )}
+          {numbers.totalAgra && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Agra Enrolled : {numbers.totalAgra}
+            </Typography>
+          )}
         </Stack>
       )}
       {router.pathname === '/agency' && agencyCode && (
@@ -188,11 +202,21 @@ function Header() {
           justifyContent="flex-end"
           spacing={2}
         >
-          <Typography variant="h4" sx={{ my: 2 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              my: 2,
+              [theme.breakpoints.down('sm')]: {
+                fontSize: 10,
+                width: 90
+              }
+            }}
+          >
             Agency Code :{' '}
             <span
               style={{ cursor: 'pointer' }}
               onClick={() => {
+                toast.success(`Agency Code Copied`);
                 navigator.clipboard.writeText(agencyCode);
               }}
             >
@@ -207,7 +231,6 @@ function Header() {
         <Box
           component="span"
           sx={{
-            ml: 2,
             display: { lg: 'none', xs: 'inline-block' }
           }}
         >

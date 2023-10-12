@@ -8,7 +8,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  useTheme
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import toast from 'react-hot-toast';
@@ -17,16 +18,104 @@ import { UPDATE_KYC_BY_ADMIN } from '@/apollo/queries/updateUser';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import variables from '@/config/variables';
 
 function PageHeader() {
-  const user = useAppSelector((state) => state.user.data);
-
+  const user = useAppSelector((state) => state.user?.data);
+  const theme = useTheme();
   const [updateStatus] = useMutation(UPDATE_KYC_BY_ADMIN);
   const [response, setResponse] = useState('');
   const [status, setStatus] = useState('');
   const currentUser = useSelector((state: any) => state.foundUser.foundUser);
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const checkApprovalParameters = () => {
+    let hasUserDatails = false;
+    let hasPayment = false;
+    let hasPhoto = false;
+    let hasAadhaarFront = false;
+    let hasAadhaarBack = false;
+    let hasPan = false;
+    let hasPassbook = false;
+    let hasNomineeAadhaarFront = false;
+    let hasDemat = false;
+
+    if (
+      currentUser?.name &&
+      currentUser?.email &&
+      currentUser?.mobile_number &&
+      currentUser?.date_of_birth &&
+      currentUser?.nominee?.name &&
+      currentUser?.nominee?.relationship &&
+      currentUser?.demat_account
+    ) {
+      hasUserDatails = true;
+    }
+
+    currentUser?.documents?.map((doc) => {
+      if (
+        doc.title.includes('payment_proof') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPayment = true;
+      }
+      if (
+        doc.title.includes('avatar') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPhoto = true;
+      }
+      if (
+        doc.title.includes('aadhar_front') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasAadhaarFront = true;
+      }
+      if (
+        doc.title.includes('aadhar_back') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasAadhaarBack = true;
+      }
+      if (
+        doc.title.includes('pancard') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPan = true;
+      }
+      if (
+        doc.title.includes('passbook') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasPassbook = true;
+      }
+      if (
+        doc.title.includes('nominee_aadhar_front') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasNomineeAadhaarFront = true;
+      }
+      if (
+        doc.title.includes('demat') &&
+        doc.status === variables.status.APPROVED
+      ) {
+        hasDemat = true;
+      }
+    });
+
+    return (
+      hasUserDatails &&
+      hasPayment &&
+      hasPhoto &&
+      hasAadhaarFront &&
+      hasAadhaarBack &&
+      hasPan &&
+      hasPassbook &&
+      hasNomineeAadhaarFront &&
+      hasDemat
+    );
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,22 +144,6 @@ function PageHeader() {
     }
     setResponse(resp.data.updateStatus.kyc);
   };
-  const checkStatus = () => {
-    if (currentUser) {
-      let dis = false;
-      currentUser.documents.map((doc) => {
-        if (
-          doc.status === 'REJECTED' ||
-          doc.status === 'PENDING' ||
-          doc.status === 'NOT_ININTIALISED'
-        ) {
-          // console.log(doc.status);
-          dis = true;
-        }
-      });
-      return dis;
-    }
-  };
   return (
     <>
       {router.pathname === '/dashboard' && (
@@ -81,16 +154,22 @@ function PageHeader() {
           justifyContent="space-between"
         >
           <Box display="flex" alignItems="center">
-            {/* <AvatarPageTitle variant="rounded">
-          <AddAlertTwoToneIcon fontSize="large" />
-        </AvatarPageTitle> */}
             <Box>
               {/* <Grid> */}
-              <Typography variant="h3" component="h3" gutterBottom>
+              <Typography
+                variant="h3"
+                component="h3"
+                gutterBottom
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 20
+                  }
+                }}
+              >
                 Welcome, {user?.name ? user?.name : user?.rm_id}!
               </Typography>
               <Typography variant="h5" component="h5" align="left">
-                Membership Type :{' '}
+                Share Holder Type :{' '}
                 <Badge
                   badgeContent={user?.membership}
                   sx={{
@@ -99,7 +178,15 @@ function PageHeader() {
                   color="success"
                 ></Badge>
               </Typography>
-              <Typography variant="subtitle2" mt={1}>
+              <Typography
+                variant="subtitle2"
+                mt={1}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 12
+                  }
+                }}
+              >
                 {user?.kyc === 'APPROVED'
                   ? 'Your KYC has been Approved'
                   : 'Complete Your KYC By Filling the form below'}
@@ -190,44 +277,34 @@ function PageHeader() {
                   </span>
                 </Typography>
               </Box>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('AGENT_APPROVED');
+              {currentUser.kyc !== variables.status.APPROVED && (
+                <>
+                  <Button
+                    onClick={() => {
+                      handleClickOpen();
+                      setStatus('AGENT_APPROVED');
+                    }}
+                    variant="outlined"
+                    disabled={!checkApprovalParameters()}
+                    color="success"
+                    sx={{ ml: 2 }}
+                  >
+                    Approve
+                  </Button>
 
-                  // handleStatus('APPROVED');
-                }}
-                variant="outlined"
-                // disabled={checkStatus()}
-                color="success"
-                sx={{ ml: 2 }}
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('ONGOING');
-
-                  // handleStatus('ONGOING');
-                }}
-                variant="outlined"
-                color="warning"
-                sx={{ ml: 2 }}
-              >
-                Ongoing
-              </Button>
-              <Button
-                onClick={() => {
-                  handleClickOpen();
-                  setStatus('REJECTED');
-                }}
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
+                  <Button
+                    onClick={() => {
+                      handleClickOpen();
+                      setStatus('REJECTED');
+                    }}
+                    variant="outlined"
+                    color="error"
+                    sx={{ ml: 2 }}
+                  >
+                    Reject
+                  </Button>
+                </>
+              )}
               <div>
                 <Dialog
                   open={open}

@@ -20,8 +20,9 @@ export default function SignupCard() {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
+  const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
-  const [validPWID, setValidPWID] = React.useState<any>();
+  const [validPWID, setValidPWID] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState(false);
 
   const checkPWID = (text: any) => {
@@ -38,8 +39,13 @@ export default function SignupCard() {
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        console.log(res.data[0]);
-        setValidPWID(res.data[0]);
+        setValidPWID(
+          res.data[0]['AC_Status'] === 'InActive'
+            ? false
+            : res.data[0]['AC_Status'] === 'Active'
+            ? true
+            : false
+        );
       })
       .catch((err) => {
         console.log('ERROR: ====', err);
@@ -48,11 +54,11 @@ export default function SignupCard() {
   const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
-    /*  if (!validPWID) {
-      toast.error('Please Enter a valid PWID');
+    if (aadhaarNumber.length !== 12) {
+      toast.error('Enter Valid Aadhaar Number!');
 
       return;
-    } */
+    }
     if (!PWId) {
       toast.error('PW ID is not valid!');
 
@@ -61,6 +67,11 @@ export default function SignupCard() {
 
     if (!password || password.length < 8) {
       toast.error('Password is not valid!');
+      return;
+    }
+    if (!validPWID) {
+      toast.error('Please Enter a valid PWID');
+
       return;
     }
     return true;
@@ -73,8 +84,9 @@ export default function SignupCard() {
       try {
         const resp = await signup({
           variables: {
-            pw_id: PWId,
+            pw_id: PWId.toUpperCase(),
             membership: membership,
+            aadharCardNumber: aadhaarNumber,
             password: password,
             referralAgencyCode: referral
           }
@@ -91,11 +103,6 @@ export default function SignupCard() {
     }
     setLoading(false);
   };
-  // React.useEffect(()=>{
-  //   console.log("dataatsignup",{user})
-  //   // setMembership(user.membership)
-  // },[user])
-
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -124,13 +131,11 @@ export default function SignupCard() {
             margin="normal"
             required
             fullWidth
-            id="referralId"
             label="PlanetWay Refferal Id"
-            name="referralId"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              //checkPWID(e.target.value);
+              checkPWID(e.target.value);
             }}
           />
 
@@ -139,7 +144,7 @@ export default function SignupCard() {
             textAlign="left"
             fontWeight="normal"
           >
-            Select Membership Type*:
+            Select Share Holder Type*:
           </Typography>
           <RadioGroup
             row
@@ -154,17 +159,25 @@ export default function SignupCard() {
             <FormControlLabel
               value="ADVANCE"
               control={<Radio />}
-              label="Advance"
+              label="Advance (Profit Sharing Partner)"
             />
           </RadioGroup>
           <TextField
             margin="normal"
             fullWidth
-            id="referralId"
             label="Agency Referral Code (optional)"
-            name="referralId"
             onChange={(e) => {
               setReferral(e.target.value);
+              //checkPWID(e.target.value);
+            }}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Aadhaar Number "
+            required
+            onChange={(e) => {
+              setAadhaarNumber(e.target.value);
               //checkPWID(e.target.value);
             }}
           />

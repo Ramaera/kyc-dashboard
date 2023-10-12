@@ -1,30 +1,31 @@
-import { ChangeEvent, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { User } from '@/models/user';
 import {
-  TextField,
-  Divider,
+  Avatar,
   Box,
+  Card,
+  CardHeader,
+  Divider,
   FormControl,
   InputLabel,
-  Card,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
-  Avatar,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  TableContainer,
-  Select,
-  MenuItem,
+  TextField,
   Typography,
-  CardHeader
+  useTheme
 } from '@mui/material';
-import { User } from '@/models/user';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import { ChangeEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import sortObjectsArray from 'sort-objects-array';
-import JsonSearch from 'search-array';
+import { useDebounce } from 'usehooks-ts';
 
 interface Filters {
   status?:
@@ -34,17 +35,48 @@ interface Filters {
     | 'ONGOING'
     | 'REJECTED'
     | 'SUBMITTED';
+  demat?:
+    | 'all'
+    | 'APPROVED'
+    | 'NOT_RECIEVED'
+    | 'ONGOING'
+    | 'REJECTED'
+    | 'SUBMITTED';
   membership?: 'all' | 'BASIC' | 'ADVANCE';
 }
 
-const applyFilters = (users: User[], filters: Filters): User[] => {
+const checkDemat = (user) => {
+  let status = 'NOT_RECIEVED';
+  user.documents.map((doc) => {
+    if (doc.title.includes('demat')) {
+      status = doc.status;
+    }
+  });
+  return status;
+};
+
+const applyFilters = (users: User[], filters: Filters, searchTexts): User[] => {
+  let searchText = searchTexts.toLowerCase();
   return users.filter((user) => {
     let matches = true;
+
+    if (
+      !user?.name?.toLowerCase().includes(searchText) &&
+      !user?.rm_id?.toLowerCase().includes(searchText) &&
+      !user?.email?.toLowerCase().includes(searchText) &&
+      !user?.mobile_number?.toLowerCase().includes(searchText) &&
+      !user?.pw_id?.toLowerCase().includes(searchText)
+    ) {
+      matches = false;
+    }
 
     if (filters.status && user?.kyc !== filters.status) {
       matches = false;
     }
-    if (filters.membership && user.membership !== filters.membership) {
+    if (filters.membership && user?.membership !== filters.membership) {
+      matches = false;
+    }
+    if (filters.demat && checkDemat(user) !== filters.demat) {
       matches = false;
     }
 
@@ -60,12 +92,7 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
-  const initialusersList = useSelector(
-    (state: any) => state.allUsers.allTheUsers
-  );
-  const initialKycHandlerList = useSelector(
-    (state: any) => state.allUsers.allKycHandlerList
-  );
+  const theme = useTheme();
   const [usersList, setUsersList] = useState(
     useSelector((state: any) => state.allUsers.allTheUsers)
   );
@@ -74,8 +101,9 @@ const UserTable = () => {
   /*   const [sortByCreatedAt, setSortByCreatedAt] = useState(true);
   const [sortByUpdatedAt, setSortByUpdatedAt] = useState(true); */
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(20);
   const [searchText, setSearchText] = useState('');
+  const debouncedValue = useDebounce<string>(searchText, 400);
   const [filters, setFilters] = useState<Filters>({});
 
   const statusOptions = [
@@ -87,6 +115,7 @@ const UserTable = () => {
       id: 'NOT_INITIALIZED',
       name: 'Not Initialized'
     },
+
     {
       id: 'REJECTED',
       name: 'Rejected'
@@ -100,6 +129,31 @@ const UserTable = () => {
       name: 'Approved'
     }
   ];
+
+  const deamtOptions = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'NOT_RECIEVED',
+      name: 'Not Recieved'
+    },
+
+    {
+      id: 'REJECTED',
+      name: 'Rejected'
+    },
+    {
+      id: 'PENDING',
+      name: 'Pending'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    }
+  ];
+
   const membershipOptions = [
     {
       id: 'all',
@@ -128,6 +182,20 @@ const UserTable = () => {
       status: value
     }));
   };
+
+  const handleDematChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      demat: value
+    }));
+  };
+
   const handleMembershipChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
@@ -159,7 +227,7 @@ const UserTable = () => {
     return photoUrl;
   };
 
-  const filteredUsers = applyFilters(usersList, filters);
+  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   const sortName = () => {
@@ -180,64 +248,27 @@ const UserTable = () => {
     setUsersList(sorted);
     setSortByPWID(!sortByPWID);
   };
-  /*   const sortCreatedAt = () => {
-    let order = 'desc';
-    if (sortByCreatedAt) {
-      order = '';
-    }
-    let sorted = sortObjectsArray(usersList, 'createdAt', { order: order });
-    setUsersList(sorted);
-    setSortByCreatedAt(!sortByCreatedAt);
-  }; */
-  /*   const sortUpdatedAt = () => {
-    let order = 'desc';
-    if (sortByUpdatedAt) {
-      order = '';
-    }
-    let sorted = sortObjectsArray(usersList, 'updatedAt', { order: order });
-    setUsersList(sorted);
-    setSortByUpdatedAt(!sortByUpdatedAt);
-  }; */
-  const searcher = new JsonSearch(usersList, {
-    indice: {
-      pw_id: 'pw_id',
-      rm_id: 'rm_id',
-      email: 'email',
-      name: 'name',
-      kyc: 'kyc',
-      mobile_number: 'mobile_number'
-    }
-  });
-  const handlerNameCheck = (handlerId) => {
-    let kychandlerName;
-    initialusersList.map((user) => {
-      if (user.id === handlerId) {
-        kychandlerName = user.name;
-      }
-    });
-    return kychandlerName;
-  };
 
-  const kycHandlerCheck = (id) => {
-    let handlers;
-    initialKycHandlerList.map((kyc) => {
-      if (id === kyc.userId) {
-        handlers = handlerNameCheck(kyc.handlerId);
-      }
-    });
-    return handlers;
-  };
-
-  useEffect(() => {
-    setUsersList(searcher.query(searchText));
-    // console.log(searchText);
-  }, [searchText]);
   return (
     <>
       <Card>
         <CardHeader
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              display: 'flex',
+              flexDirection: 'column'
+            }
+          }}
           action={
-            <Box display={'flex'} gap={'20px'}>
+            <Box
+              display={'flex'}
+              gap={'20px'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column'
+                }
+              }}
+            >
               <Box display={'flex'} gap={'10px'}>
                 <TextField
                   fullWidth
@@ -246,60 +277,77 @@ const UserTable = () => {
                   value={searchText}
                   onChange={(e) => {
                     setSearchText(e.target.value);
-                    if (!e.target.value) {
-                      setUsersList(initialusersList);
-                      setSearchText('');
-                    }
                   }}
                 />
-                {/*  <Button
-                  onClick={() => {
-                    setUsersList(initialusersList);
-                    setSearchText('');
-                  }}
-                  variant="outlined"
-                  sx={{ ml: 2 }}
-                >
-                  Clear
-                </Button> */}
               </Box>
-              <Box width={'150px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Membership Type</InputLabel>
-                  <Select
-                    value={filters.membership || 'all'}
-                    onChange={handleMembershipChange}
-                    label="Membership"
-                    autoWidth
-                  >
-                    {membershipOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box width={'150px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>KYC Status</InputLabel>
-                  <Select
-                    value={filters.status || 'all'}
-                    onChange={handleStatusChange}
-                    label="Status"
-                    autoWidth
-                  >
-                    {statusOptions.map((statusOption) => (
-                      <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '10px',
+                  [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'space-between'
+                  }
+                }}
+              >
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Share Holder Type</InputLabel>
+                    <Select
+                      value={filters.membership || 'all'}
+                      onChange={handleMembershipChange}
+                      label="Share Holder Type"
+                      autoWidth
+                    >
+                      {membershipOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>KYC Status</InputLabel>
+                    <Select
+                      value={filters.status || 'all'}
+                      onChange={handleStatusChange}
+                      label="Status"
+                      autoWidth
+                    >
+                      {statusOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box width={'120px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Demat Status</InputLabel>
+                    <Select
+                      sx={{
+                        bgcolor: filters.demat && '#8c7cf040'
+                      }}
+                      value={filters.demat || 'all'}
+                      onChange={handleDematChange}
+                      label="Deat"
+                      autoWidth
+                    >
+                      {deamtOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
               </Box>
             </Box>
           }
-          title="User List"
+          title="Users List"
         />
 
         <Divider />
@@ -317,29 +365,23 @@ const UserTable = () => {
                 </TableCell>
                 <TableCell>RMID</TableCell>
                 <TableCell>KYC Status</TableCell>
-                <TableCell>KYC Handler</TableCell>
-                <TableCell>Membership</TableCell>
+                <TableCell>Demat Status</TableCell>
+                <TableCell>Share Holder Type</TableCell>
                 <TableCell>Mobile No.</TableCell>
                 <TableCell>Email</TableCell>
-                {/* <TableCell sx={{ cursor: 'pointer' }} onClick={sortCreatedAt}>
-                  Created{sortByCreatedAt ? '⬇' : '⬆'}
-                </TableCell>
-                <TableCell sx={{ cursor: 'pointer' }} onClick={sortUpdatedAt}>
-                  Updated{sortByUpdatedAt ? '⬇' : '⬆'}
-                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
               {paginatedUsers.map((user) => {
                 return (
-                  <Link href={'agency/' + user.id}>
-                    <TableRow hover key={user.id} sx={{ cursor: 'pointer' }}>
+                  <Link href={'agency/' + user?.id}>
+                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
                       {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isUserSelected}
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                          handleSelectOneUser(event, user.id)
+                          handleSelectOneUser(event, user?.id)
                         }
                         value={isUserSelected}
                       />
@@ -348,7 +390,7 @@ const UserTable = () => {
                       <TableCell>
                         <Avatar alt="Avatar" src={`${avatarFetch(user)}`} />
                         {/* <Typography variant="body2" color="text.secondary" noWrap>
-                        {format(user.orderDate, 'MMMM dd yyyy')}
+                        {format(user?.orderDate, 'MMMM dd yyyy')}
                       </Typography> */}
                       </TableCell>
                       <TableCell>
@@ -360,7 +402,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user.name}
+                          {user?.name}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -371,7 +413,7 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {user.pw_id}
+                          {user?.pw_id}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -382,7 +424,7 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {user.rm_id}
+                          {user?.rm_id}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -415,20 +457,22 @@ const UserTable = () => {
                           color="text.primary"
                           noWrap
                         >
-                          {kycHandlerCheck(user.id)}
+                          {checkDemat(user) || (
+                            <span style={{ color: 'red' }}>NOT RECIEVED</span>
+                          )}
                         </Typography>
                       </TableCell>
-
                       <TableCell align="left">
                         <Typography
                           variant="body1"
+                          textAlign="center"
                           fontWeight="bold"
                           color="text.primary"
                           gutterBottom
-                          width="80px"
+                          width="150px"
                           noWrap
                         >
-                          {user.membership}
+                          {user?.membership}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -440,7 +484,7 @@ const UserTable = () => {
                           width="100px"
                           noWrap
                         >
-                          {user.mobile_number}
+                          {user?.mobile_number}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -451,7 +495,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user.email}
+                          {user?.email}
                         </Typography>
                       </TableCell>
                       {/* <TableCell align="left">
@@ -463,7 +507,7 @@ const UserTable = () => {
                           noWrap
                         >
                           {changeDate(
-                            format(new Date(user.createdAt), 'MM/dd/yyyy')
+                            format(new Date(user?.createdAt), 'MM/dd/yyyy')
                           )}
                         </Typography>
                       </TableCell>
@@ -476,12 +520,12 @@ const UserTable = () => {
                           noWrap
                         >
                           {changeDate(
-                            format(new Date(user.updatedAt), 'MM/dd/yyyy')
+                            format(new Date(user?.updatedAt), 'MM/dd/yyyy')
                           )}
                         </Typography>
                       </TableCell> 
                        <TableCell align="right">
-                      {getStatusLabel(user.status)}
+                      {getStatusLabel(user?.status)}
                     </TableCell> 
                      <TableCell align="right">
                       <Tooltip title="Edit Order" arrow>
@@ -528,7 +572,7 @@ const UserTable = () => {
             onRowsPerPageChange={handleLimitChange}
             page={page}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25, 30]}
+            rowsPerPageOptions={[5, 20, 50, 200]}
           />
         </Box>
       </Card>

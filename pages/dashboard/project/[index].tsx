@@ -1,44 +1,41 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, CardHeader, Container, Grid } from '@mui/material';
+import { Box, Card, CardHeader, Container, Divider, Grid } from '@mui/material';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import PaymentTab from './Tabs/Payment';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useAppSelector } from '@/hooks';
+import variables from '@/config/variables';
 
 function index() {
+  const user = useAppSelector((state) => state.user?.data);
+
   const router = useRouter();
   let title =
     router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
+  useEffect(() => {
+    if (user?.kyc !== variables.status.APPROVED) {
+      router.replace('/dashboard');
+    }
+  }, []);
   return (
     <ProtectedSSRoute>
       <Head>
         <title>KYC Dashboard</title>
       </Head>
-      {/* <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper> */}
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
-        {/*  <TabsContainerWrapper>
-          <Tabs
-            value={title}
-            variant="scrollable"
-            scrollButtons="auto"
-            textColor="primary"
-            indicatorColor="primary"
-          >
-            <Tab key={title} label={title} value={title} />
-          </Tabs>
-        </TabsContainerWrapper> */}
+
+      <Container maxWidth={false} sx={{ mt: 2 }}>
         <Card variant="outlined">
           <CardHeader
             title={title}
             sx={{
               ml: 2,
-              textTransform: 'uppercase',
-              textDecoration: 'underline'
+              textTransform: 'uppercase'
             }}
           />
+          <Divider sx={{ mb: 2 }} />
           <Grid
             container
             direction="row"

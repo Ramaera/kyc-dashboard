@@ -28,7 +28,7 @@ function Tooltips() {
           docs="https://material-ui.com/components/tooltips/"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Grid
           container
           direction="row"

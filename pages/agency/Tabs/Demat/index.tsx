@@ -1,20 +1,21 @@
-import documentsConfig from '@/config/documentsConfig';
-import DocumentType from '@/state/types/document';
-import handleImageUpload from '@/utils/upload';
-import { useMutation } from '@apollo/client';
-import { LoadingButton } from '@mui/lab';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import {
   UPDATE_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
+import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
+import DocumentType from '@/state/types/document';
 import allUsersUpdater from '@/utils/updateUserList';
+import handleImageUpload from '@/utils/upload';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Box, Button, Grid, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { useDispatch, useSelector } from 'react-redux';
 
 const DematTab = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const DematTab = () => {
   const updateUser = (dematId, imgUrl, dematAccount) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, url: imgUrl });
       } else {
@@ -54,7 +55,7 @@ const DematTab = () => {
   const updateUserStatus = (dematId, status) => {
     let newUser = user;
     let newDocs = [];
-    user?.documents?.map((item) => {
+    user.documents.map((item) => {
       if (item.id === dematId) {
         newDocs.push({ ...item, status: status });
       } else {
@@ -73,7 +74,7 @@ const DematTab = () => {
   };
 
   const changeDocumentStatus = async (docId, docStatus) => {
-    const dataaa = await updateDocumentStatusByAdmin({
+    await updateDocumentStatusByAdmin({
       variables: {
         id: docId,
         status: docStatus
@@ -140,7 +141,7 @@ const DematTab = () => {
 
         toast.success('Demat Details Updated ');
       } else {
-        console.log("can't create document");
+        // console.log("can't create document");
         /* await createDocument({
           variables: {
             title: documentsConfig.demat_document.items[0].id,
@@ -155,8 +156,8 @@ const DematTab = () => {
     if (user) {
       setDematAccount(user.demat_account);
     }
-    if (user && user.documents && user?.documents?.length > 0) {
-      user?.documents?.find((document: DocumentType) => {
+    if (user && user.documents && user.documents.length > 0) {
+      user.documents.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
           documentsConfig.demat_document.items[0].id
@@ -177,6 +178,7 @@ const DematTab = () => {
           label="Demat Account No."
           type="text"
           fullWidth
+          disabled={user?.kyc === variables.status.APPROVED}
           value={dematAccount}
           variant="outlined"
           onChange={(e) => {
@@ -213,7 +215,7 @@ const DematTab = () => {
             <span
               style={{
                 color: dematDocument
-                  ? (dematDocument.status === 'APPROVED' && 'green') ||
+                  ? (dematDocument.status === 'APPROVED' && 'limegreen') ||
                     (dematDocument.status === 'REJECTED' && 'red')
                   : ''
               }}
@@ -226,68 +228,75 @@ const DematTab = () => {
             </span>
           </Box>
           <Box>
-            <Grid>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(dematDocument.id, 'APPROVED')
-                }
-                variant="outlined"
-                color="success"
-              >
-                Approve
-              </Button>
-              <Button
-                onClick={() =>
-                  changeDocumentStatus(dematDocument.id, 'REJECTED')
-                }
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-              >
-                Reject
-              </Button>
-            </Grid>
+            {user?.kyc !== variables.status.APPROVED && (
+              <Grid>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(dematDocument.id, 'APPROVED')
+                  }
+                  variant="outlined"
+                  color="success"
+                >
+                  Approve
+                </Button>
+                <Button
+                  onClick={() =>
+                    changeDocumentStatus(dematDocument.id, 'REJECTED')
+                  }
+                  variant="outlined"
+                  color="error"
+                  sx={{ ml: 2 }}
+                >
+                  Reject
+                </Button>
+              </Grid>
+            )}
           </Box>
         </>
       )}
-      <Grid container pt={3} pb={2} pr={2} spacing={2}>
-        {dematDocumentImage && (
-          <Grid item xs={12} sm={6} md={4} lg={3.5}>
-            <Button variant="contained" component="label">
-              Upload Demat Account Details
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(f) => {
-                  if (f.target.files.length > 0) {
-                    setDematDocumentImage(f.target.files[0]);
-                    setImageChanged(true);
-                    setSubmitButtonEnabled(true);
-                  }
-                }}
-              />
-            </Button>
-          </Grid>
-        )}
+      {user?.kyc !== variables.status.APPROVED && (
+        <>
+          <Grid container pt={3} pb={2} pr={2} spacing={2}>
+            {dematDocumentImage && (
+              <Grid item xs={12} sm={6} md={4} lg={3.5}>
+                <Button variant="contained" component="label">
+                  Upload Demat Account Details
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(f) => {
+                      if (f.target.files.length > 0) {
+                        setDematDocumentImage(f.target.files[0]);
+                        setImageChanged(true);
+                        setSubmitButtonEnabled(true);
+                      }
+                    }}
+                  />
+                </Button>
+              </Grid>
+            )}
 
-        <Grid item xs={12} sm={6} md={4} lg={3.5}>
-          <Box component="form">
-            <LoadingButton
-              loading={isLoading}
-              fullWidth
-              disabled={!isSubmitButtonEnalbed}
-              variant="contained"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Submit
-            </LoadingButton>
-          </Box>
-        </Grid>
-        <Toaster position="bottom-right" reverseOrder={false} />
-      </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>
+              <Box component="form">
+                <LoadingButton
+                  loading={isLoading}
+                  fullWidth
+                  disabled={!isSubmitButtonEnalbed}
+                  variant="contained"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  sx={{ paddingX: 20.5 }}
+                >
+                  Submit
+                </LoadingButton>
+              </Box>
+            </Grid>
+            <Toaster position="bottom-right" reverseOrder={false} />
+          </Grid>
+        </>
+      )}
       <Grid item xs={4} />
       {/* </Grid> */}
     </>

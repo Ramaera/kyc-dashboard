@@ -5,7 +5,10 @@ import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import { projectData } from './projectDetails';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { logout } from '@/state/slice/userSlice';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import variables from '@/config/variables';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -126,10 +129,13 @@ const SubMenuWrapper = styled(Box)(
 `
 );
 function SidebarMenu() {
+  const user = useAppSelector((state) => state.user?.data);
   const { closeSidebar } = useContext(SidebarContext);
-  const agencyCode = useSelector((state: any) => state.user.agencyCode);
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
   const router = useRouter();
   const currentRoute = router.pathname;
+  const currentQuery = router.query;
+  const dispatch = useAppDispatch();
   const [listVisible, setListVisible] = useState(false);
   const [shareList, setShareList] = useState(false);
 
@@ -148,7 +154,11 @@ function SidebarMenu() {
                     }}
                     disableRipple
                     component="a"
-                    onClick={closeSidebar}
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
                     startIcon={
                       <span
                         style={{
@@ -159,7 +169,7 @@ function SidebarMenu() {
                       </span>
                     }
                   >
-                    KYC LIST
+                    DASHBOARD
                   </Button>
                 </NextLink>
               </ListItem>
@@ -187,7 +197,11 @@ function SidebarMenu() {
                             : ''
                       }}
                       component="a"
-                      onClick={closeSidebar}
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
                       startIcon={
                         <span
                           style={{
@@ -217,7 +231,11 @@ function SidebarMenu() {
                     }}
                     disableRipple
                     component="a"
-                    onClick={closeSidebar}
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
                     // startIcon={<DesignServicesTwoToneIcon />}
                     startIcon={
                       <span
@@ -234,20 +252,18 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
-              {currentRoute.slice(0, 10) === '/dashboard' && (
+              {user?.kyc === variables.status.APPROVED && (
                 <ListItem component="div">
                   <Button
                     className={
-                      currentRoute.slice(0, 18) === '/dashboard/project'
+                      currentRoute.includes('/dashboard/project')
                         ? 'active'
                         : ''
                     }
                     style={{
-                      fontWeight: 500,
-                      color:
-                        currentRoute.slice(0, 18) === '/dashboard/project'
-                          ? '#7063C0'
-                          : ''
+                      color: currentRoute.includes('/dashboard/project')
+                        ? '#7063C0'
+                        : ''
                     }}
                     onClick={() => {
                       setListVisible(!listVisible);
@@ -256,13 +272,12 @@ function SidebarMenu() {
                     startIcon={
                       <span
                         style={{
-                          color:
-                            currentRoute.slice(0, 18) === '/dashboard/project'
-                              ? '#7063C0'
-                              : ''
+                          color: currentRoute.includes('/dashboard/project')
+                            ? '#7063C0'
+                            : ''
                         }}
                       >
-                        {' '}
+                        &#x2022;
                       </span>
                     }
                   >
@@ -270,7 +285,8 @@ function SidebarMenu() {
                   </Button>
                 </ListItem>
               )}
-              {currentRoute.slice(0, 10) === '/dashboard' && listVisible ? (
+
+              {user?.kyc === variables.status.APPROVED && listVisible ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   {projectData.map((project) => {
                     return (
@@ -280,12 +296,25 @@ function SidebarMenu() {
                           passHref
                         >
                           <Button
+                            onClick={closeSidebar}
                             style={{
+                              color: currentQuery?.index?.includes(
+                                `${project.navigateTo}`
+                              )
+                                ? '#7063C0'
+                                : '',
                               fontWeight: 500,
                               fontSize: '12px',
                               textAlign: 'right',
                               padding: '10px 15px'
                             }}
+                            className={
+                              currentQuery?.index?.includes(
+                                `${project.navigateTo}`
+                              )
+                                ? 'active'
+                                : ''
+                            }
                           >
                             {project.projectName}
                           </Button>
@@ -297,20 +326,123 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
-              {currentRoute.slice(0, 10) === '/dashboard' && (
+              <ListItem component="div">
+                <NextLink href="/dashboard/toAdvance" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/dashboard/toAdvance' ? 'active' : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/dashboard/toAdvance' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/dashboard/toAdvance'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    UPGRADE MEMBERSHIP
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
+                <NextLink href="/dashboard/getAgency" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/dashboard/getAgency' ? 'active' : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/dashboard/getAgency' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/dashboard/getAgency'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    GET AGENCY
+                  </Button>
+                </NextLink>
+              </ListItem>
+              {/*   {
+                <ListItem component="div">
+                  <NextLink href={`/dashboard/certificate`} passHref>
+                    <Button
+                      className={
+                        currentRoute.includes('/dashboard/certificate')
+                          ? 'active'
+                          : ''
+                      }
+                      style={{
+                        color: currentRoute.includes('/dashboard/certificate')
+                          ? '#7063C0'
+                          : ''
+                      }}
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                      }}
+                      startIcon={
+                        <span
+                          style={{
+                            color: currentRoute.includes(
+                              '/dashboard/certificate'
+                            )
+                              ? '#7063C0'
+                              : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      CERTIFICATE
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              } */}
+              {
                 <ListItem component="div">
                   <Button
                     className={
-                      currentRoute.slice(0, 16) === '/dashboard/share'
-                        ? 'active'
-                        : ''
+                      currentRoute.includes('/dashboard/share') ? 'active' : ''
                     }
                     style={{
-                      fontWeight: 500,
-                      color:
-                        currentRoute.slice(0, 16) === '/dashboard/share'
-                          ? '#7063C0'
-                          : ''
+                      color: currentRoute.includes('/dashboard/share')
+                        ? '#7063C0'
+                        : ''
                     }}
                     onClick={() => {
                       setShareList(!shareList);
@@ -319,31 +451,39 @@ function SidebarMenu() {
                     startIcon={
                       <span
                         style={{
-                          color:
-                            currentRoute.slice(0, 16) === '/dashboard/share'
-                              ? '#7063C0'
-                              : ''
+                          color: currentRoute.includes('/dashboard/share')
+                            ? '#7063C0'
+                            : ''
                         }}
                       >
-                        {' '}
+                        &#x2022;
                       </span>
                     }
                   >
                     SHARES
                   </Button>
                 </ListItem>
-              )}
-              {currentRoute.slice(0, 10) === '/dashboard' && shareList ? (
+              }
+
+              {shareList ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   <ListItem component="div" onClick={closeSidebar}>
                     <NextLink href={`/dashboard/share/ramaera`} passHref>
                       <Button
                         style={{
+                          color: currentQuery?.index?.includes(`ramaera`)
+                            ? '#7063C0'
+                            : '',
                           fontWeight: 500,
                           fontSize: '12px',
                           textAlign: 'right',
                           padding: '10px 15px'
                         }}
+                        className={
+                          currentQuery?.index?.includes(`ramaera`)
+                            ? 'active'
+                            : ''
+                        }
                       >
                         Ramaera
                       </Button>
@@ -358,11 +498,23 @@ function SidebarMenu() {
                         >
                           <Button
                             style={{
+                              color: currentQuery?.index?.includes(
+                                `${project.navigateTo}`
+                              )
+                                ? '#7063C0'
+                                : '',
                               fontWeight: 500,
                               fontSize: '12px',
                               textAlign: 'right',
                               padding: '10px 15px'
                             }}
+                            className={
+                              currentQuery?.index?.includes(
+                                `${project.navigateTo}`
+                              )
+                                ? 'active'
+                                : ''
+                            }
                           >
                             {project.projectName}
                           </Button>
@@ -375,29 +527,48 @@ function SidebarMenu() {
                 ''
               )}
               <ListItem component="div">
-                <NextLink href="/setting" passHref>
+                <NextLink href="/settings" passHref>
                   <Button
-                    className={currentRoute === '/setting' ? 'active' : ''}
+                    className={currentRoute === '/settings' ? 'active' : ''}
                     style={{
-                      color: currentRoute === '/setting' ? '#7063C0' : ''
+                      color: currentRoute === '/settings' ? '#7063C0' : ''
                     }}
                     disableRipple
                     component="a"
-                    onClick={closeSidebar}
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
                     // startIcon={<DesignServicesTwoToneIcon />}
                     startIcon={
                       <span
                         style={{
-                          color: currentRoute === '/setting' ? '#7063C0' : ''
+                          color: currentRoute === '/settings' ? '#7063C0' : ''
                         }}
                       >
-                        <SettingsIcon />
+                        &#x2022;
                       </span>
                     }
                   >
-                    Account Setting
+                    SETTINGS
                   </Button>
                 </NextLink>
+              </ListItem>
+
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component="a"
+                  onClick={() => {
+                    setListVisible(false);
+                    setShareList(false);
+                    closeSidebar();
+                    dispatch(logout());
+                  }}
+                >
+                  LOGOUT
+                </Button>
               </ListItem>
             </List>
           </SubMenuWrapper>

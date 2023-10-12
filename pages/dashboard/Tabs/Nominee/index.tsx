@@ -4,6 +4,7 @@ import {
   UPSERTNOMINEE
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
+import variables from '@/config/variables';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
@@ -18,7 +19,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const NomineeTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [nomineeName, setNomineeName] = useState('');
   const [relationship, setRelationship] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -142,7 +143,7 @@ const NomineeTab = () => {
         setOrUpdateUser({
           ...user,
           nominee: {
-            ...user.nominee,
+            ...user?.nominee,
             name: nomineeName,
             relationship: relationship
           }
@@ -159,11 +160,11 @@ const NomineeTab = () => {
   };
   useEffect(() => {
     if (user) {
-      if (user.nominee) {
-        setNomineeName(user.nominee.name);
-        setRelationship(user.nominee.relationship);
+      if (user?.nominee) {
+        setNomineeName(user?.nominee.name);
+        setRelationship(user?.nominee.relationship);
       }
-      if (user.documents && user?.documents?.length > 0) {
+      if (user?.documents && user?.documents?.length > 0) {
         user?.documents?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===
@@ -193,6 +194,7 @@ const NomineeTab = () => {
           <TextField
             id="outlined"
             label="Full Name*"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={nomineeName}
             variant="outlined"
@@ -206,6 +208,7 @@ const NomineeTab = () => {
           <TextField
             label="Relationship"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={relationship}
             onChange={(e) => {
@@ -214,7 +217,8 @@ const NomineeTab = () => {
             }}
           />
         </Grid>
-        {/* <Grid item xs={4}></Grid> */}
+        {/*         <Grid item xs={12} sm={4}>
+</Grid> */}
       </Grid>
 
       <Grid container pt={1} pb={2} spacing={15}>
@@ -245,7 +249,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Button
               variant="contained"
               style={{
@@ -313,7 +317,7 @@ const NomineeTab = () => {
               </span>
             </Typography>
           )}
-          {user?.kyc === 'APPROVED' ? null : (
+          {user?.kyc !== variables.status.APPROVED && (
             <Button
               variant="contained"
               style={{
@@ -355,7 +359,8 @@ const NomineeTab = () => {
             </Button>
           )}
         </Grid>
-        {/* <Grid item xs={4}></Grid>
+        {/*         <Grid item xs={12} sm={4}>
+</Grid>
         <Divider /> */}
       </Grid>
       {user?.kyc === 'APPROVED' ? null : (

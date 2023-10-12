@@ -1,13 +1,14 @@
-import { Grid, Box, TextField } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { Toaster, toast } from 'react-hot-toast';
 import { UPDATE_BY_ADMIN } from '@/apollo/queries/updateUser';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFoundUser } from '@/state/slice/foundUserSlice';
+import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
+import { setFoundUser } from '@/state/slice/foundUserSlice';
 import allUsersUpdater from '@/utils/updateUserList';
+import { useMutation } from '@apollo/client';
+import { LoadingButton } from '@mui/lab';
+import { Box, Grid, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 
 const InfoTab = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const InfoTab = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [AlternateMobileNumber, setAlternateMobileNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [referral, setReferral] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
 
@@ -58,23 +60,25 @@ const InfoTab = () => {
 
   useEffect(() => {
     if (user) {
-      setUserID(user.id);
-      setFullName(user.name);
-      setDob(user?.date_of_birth?.slice(0, 10));
-      setFatherHusbandName(user.father_or_husband_name);
-      setMobileNumber(user.mobile_number);
-      setAlternateMobileNumber(user.alternate_mobile_number);
-      setEmail(user.email);
+      setUserID(user.id || '');
+      setFullName(user.name || '');
+      setDob(user?.date_of_birth?.slice(0, 10) || '');
+      setFatherHusbandName(user.father_or_husband_name || '');
+      setMobileNumber(user.mobile_number || '');
+      setAlternateMobileNumber(user.alternate_mobile_number || '');
+      setEmail(user.email || '');
+      setReferral(user.referralAgencyCode || '');
     }
   }, [user]);
 
   return (
     <>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             label="Full Name*"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fullName}
             variant="outlined"
@@ -85,10 +89,11 @@ const InfoTab = () => {
           />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             label="Father's/Husband's Name*"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={fatherHusbandName}
             onChange={(e) => {
@@ -97,11 +102,12 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             hidden
             label="Date of Birth"
+            disabled={user?.kyc === variables.status.APPROVED}
             variant="outlined"
             fullWidth
             placeholder=""
@@ -111,54 +117,13 @@ const InfoTab = () => {
               setSubmitButtonEnabled(true);
             }}
           />
-          {/* <DesktopDatePicker
-            label="Date of Birth"
-            inputFormat="dd/MM/yyyy"
-            value={dob}
-            disableFuture
-            onChange={(e) => {
-              console.log('dob', e);
-              setDob(e);
-              setSubmitButtonEnabled(true);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-          <DesktopDatePicker
-            label="Date of Birth"
-            inputFormat="dd/MM/yyyy"
-            value={dob}
-            // disableFuture
-            onChange={(e) => {
-              setDob(e);
-
-              console.log(changeDate(e));
-              setSubmitButtonEnabled(true);
-            }}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ width: '100%' }} />
-            )}
-          />  
-          <TextField
-            type="date"
-            label="Date of Birth"
-            inputFormat="dd/MM/yyyy"
-            label="DOB(DD/MM/YYYY)"
-            variant="outlined"
-            placeholder="DOB(DD/MM/YYYY)*"
-            fullWidth
-            value={dob}
-            onChange={(e) => {
-              setDob(e.target.value);
-              // console.log(e.target.value, dob);
-              setSubmitButtonEnabled(true);
-            }}
-          /> */}
         </Grid>
       </Grid>
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             type="number"
+            disabled={user?.kyc === variables.status.APPROVED}
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             label="Mobile Number*"
             variant="outlined"
@@ -170,10 +135,11 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             id="outlined"
             type="number"
+            disabled={user?.kyc === variables.status.APPROVED}
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             label="Alternate Number*"
             fullWidth
@@ -185,11 +151,12 @@ const InfoTab = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <TextField
             type="email"
             label="Email ID*"
             variant="outlined"
+            disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={email}
             onChange={(e) => {
@@ -198,26 +165,39 @@ const InfoTab = () => {
             }}
           />
         </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            type="referral"
+            label="Referral Code*"
+            variant="outlined"
+            fullWidth
+            disabled
+            value={referral}
+          />
+        </Grid>
       </Grid>
 
       <Grid container p={2} spacing={2}>
-        <Grid item xs={4}>
-          <Box component="form">
-            <LoadingButton
-              loading={isLoading}
-              fullWidth
-              disabled={!isSubmitButtonEnalbed}
-              variant="contained"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Update Details
-            </LoadingButton>
-          </Box>
-        </Grid>
+        {user?.kyc !== variables.status.APPROVED && (
+          <Grid item xs={12} sm={4}>
+            <Box component="form">
+              <LoadingButton
+                loading={isLoading}
+                fullWidth
+                disabled={!isSubmitButtonEnalbed}
+                variant="contained"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                Update Details
+              </LoadingButton>
+            </Box>
+          </Grid>
+        )}
 
-        <Grid item xs={4} />
+        <Grid item xs={12} sm={4} />
+
         <Toaster position="bottom-center" reverseOrder={false} />
       </Grid>
     </>

@@ -5,7 +5,7 @@ import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
-import { Button, Typography } from '@mui/material';
+import { Button, Hidden, Typography, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -20,8 +20,10 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { rows } from './documentData';
+import variables from '@/config/variables';
 
 const DocumentRow = ({ data, documents = [], user }) => {
+  const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [createDocument] = useMutation(CREATEDOCUMENT);
@@ -79,7 +81,6 @@ const DocumentRow = ({ data, documents = [], user }) => {
         newDocs.push(item);
       }
     });
-    console.log(imgUrl, { ...newUser, documents: newDocs });
     return { ...newUser, documents: newDocs };
   };
 
@@ -98,7 +99,7 @@ const DocumentRow = ({ data, documents = [], user }) => {
               return true;
             }
           });
-          let userAllDocuments = user.documents;
+          let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
           }
@@ -212,7 +213,13 @@ const DocumentRow = ({ data, documents = [], user }) => {
   return (
     <TableRow
       key={data.config.name}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        [theme.breakpoints.down('sm')]: {
+          display: 'flex',
+          flexDirection: 'column'
+        }
+      }}
     >
       <TableCell component="th" scope="row">
         {data.config.name} {data.isOptional ? '(Optional)' : ''}
@@ -222,16 +229,18 @@ const DocumentRow = ({ data, documents = [], user }) => {
 
       <TableCell>{getActionCell()}</TableCell>
       <TableCell>
-        <LoadingButton
-          loading={isLoading}
-          disabled={!isValidToClick()}
-          variant="contained"
-          onClick={() => {
-            handleDocumentUpload();
-          }}
-        >
-          Upload
-        </LoadingButton>
+        {user?.kyc !== variables.status.APPROVED && (
+          <LoadingButton
+            loading={isLoading}
+            disabled={!isValidToClick()}
+            variant="contained"
+            onClick={() => {
+              handleDocumentUpload();
+            }}
+          >
+            Upload
+          </LoadingButton>
+        )}
       </TableCell>
 
       <TableCell>
@@ -251,12 +260,12 @@ const DocumentRow = ({ data, documents = [], user }) => {
 };
 
 const DocumentTab = () => {
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   // console.log(user);
-  // console.log('----------------------', user.documents);
+  // console.log('----------------------', user?.documents);
   const getDocumentsByConfig = (configs) => {
     const documents = [];
-    if (user && user.documents) {
+    if (user && user?.documents) {
       for (let config of configs) {
         const document = user?.documents?.find((doc: DocumentType) => {
           if (doc.title.toLowerCase() === config.id.toLowerCase()) {
@@ -280,12 +289,14 @@ const DocumentTab = () => {
           <TableHead>
             <TableRow>
               <TableCell>Document Name</TableCell>
-              <TableCell>Preview</TableCell>
-              <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
-              <TableCell style={{ padding: '0 0 0 2rem' }}>
-                Upload Action
-              </TableCell>
-              <TableCell>Status</TableCell>
+              <Hidden smDown>
+                <TableCell>Preview</TableCell>
+                <TableCell style={{ padding: '0 0 0 2rem' }}>Action</TableCell>
+                <TableCell style={{ padding: '0 0 0 2rem' }}>
+                  Upload Action
+                </TableCell>
+                <TableCell>Status</TableCell>
+              </Hidden>
             </TableRow>
           </TableHead>
           <TableBody>

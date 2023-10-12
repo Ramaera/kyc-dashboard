@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 const DematTab = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.data);
+  const user = useAppSelector((state) => state.user?.data);
   const [dematAccount, setDematAccount] = useState<any | null>(null);
   const [dematDocumentImage, setDematDocumentImage] = useState<any | null>(
     null
@@ -99,9 +99,9 @@ const DematTab = () => {
   };
   useEffect(() => {
     if (user) {
-      setDematAccount(user.demat_account);
+      setDematAccount(user?.demat_account);
     }
-    if (user && user.documents && user?.documents?.length > 0) {
+    if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
           document.title.toLowerCase() ===
@@ -160,68 +160,67 @@ const DematTab = () => {
           </span>
         </Typography>
       )}
-      {user?.kyc === 'APPROVED' ? null : (
-        <Grid container pt={3} pb={2} pr={2} spacing={2}>
-          <Grid item xs={12} sm={6} md={4} lg={3.5}>
-            <Button
-              variant="contained"
-              style={{
-                cursor: dematDocument
-                  ? dematDocument.status === 'APPROVED'
-                    ? 'not-allowed'
-                    : 'pointer'
+      <Grid container pt={3} pb={2} pr={2} spacing={2}>
+        <Grid item xs={12} sm={6} md={4} lg={3.5}>
+          <Button
+            variant="contained"
+            style={{
+              cursor: dematDocument
+                ? dematDocument.status === 'APPROVED'
+                  ? 'not-allowed'
                   : 'pointer'
-              }}
-              component="label"
-              color={
+                : 'pointer'
+            }}
+            component="label"
+            color={
+              dematDocument
+                ? dematDocument.status === 'APPROVED'
+                  ? 'secondary'
+                  : 'primary'
+                : 'primary'
+            }
+          >
+            Upload Demat Account Details
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              disabled={
                 dematDocument
                   ? dematDocument.status === 'APPROVED'
-                    ? 'secondary'
-                    : 'primary'
-                  : 'primary'
-              }
-            >
-              Upload Demat Account Details
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                disabled={
-                  dematDocument
-                    ? dematDocument.status === 'APPROVED'
-                      ? true
-                      : false
+                    ? true
                     : false
+                  : false
+              }
+              onChange={(f) => {
+                if (f.target.files.length > 0) {
+                  setDematDocumentImage(f.target.files[0]);
+                  setImageChanged(true);
+                  setSubmitButtonEnabled(true);
                 }
-                onChange={(f) => {
-                  if (f.target.files.length > 0) {
-                    setDematDocumentImage(f.target.files[0]);
-                    setImageChanged(true);
-                    setSubmitButtonEnabled(true);
-                  }
-                }}
-              />
-            </Button>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4} lg={3.5}>
-            <Box component="form">
-              <LoadingButton
-                loading={isLoading}
-                fullWidth
-                disabled={!isSubmitButtonEnalbed}
-                variant="contained"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              >
-                Submit
-              </LoadingButton>
-            </Box>
-          </Grid>
-          <Toaster position="bottom-right" reverseOrder={false} />
+              }}
+            />
+          </Button>
         </Grid>
-      )}
+
+        <Grid item xs={12} sm={6} md={4} lg={3.5}>
+          <Box component="form">
+            <LoadingButton
+              loading={isLoading}
+              fullWidth
+              disabled={!isSubmitButtonEnalbed}
+              variant="contained"
+              onClick={() => {
+                handleSubmit();
+              }}
+            >
+              Submit
+            </LoadingButton>
+          </Box>
+        </Grid>
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </Grid>
+
       <Grid item xs={4} />
       {/* </Grid> */}
     </>
