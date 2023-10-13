@@ -521,6 +521,7 @@ const InfoTab = () => {
                     }
                     onChange={(f) => {
                       if (f.target.files.length > 0) {
+                        console.log('here');
                         setSubmitButtonEnabled(true);
                         setProofImage(f.target.files[0]);
                         setImageChanged(true);
@@ -530,7 +531,7 @@ const InfoTab = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                {user?.kyc !== variables.status.APPROVED && (
+                {
                   <LoadingButton
                     loading={isLoading}
                     fullWidth
@@ -542,7 +543,7 @@ const InfoTab = () => {
                   >
                     Submit
                   </LoadingButton>
-                )}
+                }
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
