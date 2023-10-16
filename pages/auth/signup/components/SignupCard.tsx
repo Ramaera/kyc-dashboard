@@ -1,5 +1,5 @@
 import { SIGNUP } from '@/apollo/queries/auth';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IconButton, InputAdornment, Radio, RadioGroup } from '@mui/material';
@@ -13,9 +13,11 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
 
 export default function SignupCard() {
   const router = useRouter();
+  const [signup] = useMutation(SIGNUP);
   const [PWId, setPWId] = React.useState('');
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
@@ -24,6 +26,9 @@ export default function SignupCard() {
   const [membership, setMembership] = React.useState('BASIC');
   const [validPWID, setValidPWID] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState(false);
+  const [agentName, setAgentName] = React.useState('ersferfsd');
+  const [allAgents, setAllAgents] = React.useState([]);
+  const { loading, error, data } = useQuery(GET_ALL_AGENCY);
 
   const checkPWID = (text: any) => {
     const postData = {
@@ -51,7 +56,6 @@ export default function SignupCard() {
         console.log('ERROR: ====', err);
       });
   };
-  const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
     if (aadhaarNumber.length !== 12) {
@@ -103,6 +107,17 @@ export default function SignupCard() {
     }
     setLoading(false);
   };
+
+  const checkIfAgentExists = () => {};
+
+  React.useEffect(() => {
+    setAllAgents(data.AllKycAgency);
+  }, [data]);
+
+  React.useEffect(() => {
+    checkIfAgentExists();
+  }, [referral]);
+
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -171,6 +186,9 @@ export default function SignupCard() {
               //checkPWID(e.target.value);
             }}
           />
+          {agentName && (
+            <Typography>{'Referral Code Of : ' + agentName}</Typography>
+          )}
           <TextField
             margin="normal"
             fullWidth
