@@ -581,6 +581,7 @@ function SidebarMenu() {
           </SubMenuWrapper>
         </List>
       </MenuWrapper>
+      <ListItem component="div"></ListItem>
     </>
   );
 }

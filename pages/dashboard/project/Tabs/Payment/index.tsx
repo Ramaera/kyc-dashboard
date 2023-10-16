@@ -19,7 +19,9 @@ import {
   TableRow,
   Typography,
   linearProgressClasses,
-  styled
+  styled,
+  Tab,
+  Tabs
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -28,6 +30,16 @@ import { AllBankDetails, AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@emotion/react';
 import Image from 'next/image';
+
+const TabsContainerWrapper = styled(Box)(
+  ({ theme }) => `
+      .MuiTabs-scrollableX {
+        overflow-x: auto !important;
+      }
+      
+  `
+);
+
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -377,6 +389,7 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
+  const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 20,
@@ -517,305 +530,407 @@ const InfoTab = ({ title }) => {
     setAdditionalDocuments(false);
   };
 
+  const tabs = [
+    { value: 'basicInfo', label: 'Basic Info' },
+    { value: 'enrolledAmt', label: 'Enrolled Amount' }
+  ];
+  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+    setCurrentTab(value);
+  };
+
+  let totalfund = 20000000;
+  let proAmt = projectAmount;
+  const ramaeraFund = totalfund - proAmt;
+
   return (
     <>
-      {!additionalDocuments ? (
-        <>
-          <>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button
-                variant="outlined"
-                onClick={() =>
-                  setHidden({ ...isHidden, project: !isHidden.project })
-                }
-              >
-                <Typography
-                  variant="h4"
-                  sx={{
-                    [theme.breakpoints.down('sm')]: {
-                      fontSize: 12
-                    }
-                  }}
-                >
-                  Project Details
-                </Typography>
-              </Button>
-
-              <Typography
-                variant="h4"
-                sx={{
-                  [theme.breakpoints.down('sm')]: {
-                    fontSize: 12,
-                    textAlign: 'right'
-                  }
-                }}
-              >
-                Enrollment Status :{' '}
-                <span style={{ color: isEnrolled ? 'green' : 'red' }}>
-                  {isEnrolled ? 'Enrolled' : 'Not Enrolled'}
-                </span>{' '}
-              </Typography>
-            </Box>
-            {isHidden.project && (
-              <>
-                {title === 'Hajipur' && (
-                  <a
-                    href="https://kyc.ramaera.com/Docs/Spice_Project.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+      <div>
+        <TabsContainerWrapper sx={{ marginBottom: 4 }}>
+          <Tabs
+            onChange={handleTabsChange}
+            value={currentTab}
+            // variant={mobile ? 'fullWidth' : 'scrollable'}
+            textColor="primary"
+            visibleScrollbar={true}
+            indicatorColor="primary"
+          >
+            {tabs.map((tab) => (
+              <Tab
+                // style={{ fontSize: mobile ? 8 : 14 }}
+                key={tab.value}
+                label={tab.label}
+                value={tab.value}
+              />
+            ))}
+          </Tabs>
+        </TabsContainerWrapper>
+      </div>
+      {currentTab === 'basicInfo' && (
+        <div>
+          {!additionalDocuments ? (
+            <>
+              <div>
+                <>
+                  <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
                   >
-                    <Image
-                      style={{ transform: 'scale(0.75)' }}
-                      src="/images/pdf.png"
-                      alt="pdf"
-                      height={60}
-                      width={60}
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        setHidden({ ...isHidden, project: !isHidden.project })
+                      }
+                    >
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 12
+                          }
+                        }}
+                      >
+                        Project Details
+                      </Typography>
+                    </Button>
+
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        [theme.breakpoints.down('sm')]: {
+                          fontSize: 12,
+                          textAlign: 'right'
+                        }
+                      }}
+                    >
+                      Enrollment Status :{' '}
+                      <span style={{ color: isEnrolled ? 'green' : 'red' }}>
+                        {isEnrolled ? 'Enrolled' : 'Not Enrolled'}
+                      </span>{' '}
+                    </Typography>
+                  </Box>
+                  {isHidden.project && (
+                    <>
+                      {title === 'Hajipur' && (
+                        <a
+                          href="https://kyc.ramaera.com/Docs/Spice_Project.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Image
+                            style={{ transform: 'scale(0.75)' }}
+                            src="/images/pdf.png"
+                            alt="pdf"
+                            height={60}
+                            width={60}
+                          />
+                        </a>
+                      )}
+                      <TableContainer component={Paper} sx={{ mt: 2 }}>
+                        <Table sx={{ minWidth: 100 }} aria-label="simple table">
+                          <TableBody>
+                            {AllProjectDetails[projectTitle].map((row) => {
+                              if (!row.key) {
+                                return;
+                              }
+                              return (
+                                <TableRow
+                                  key={row.key}
+                                  sx={{
+                                    '&:last-child td, &:last-child th': {
+                                      border: 0
+                                    }
+                                  }}
+                                >
+                                  <TableCell component="th" scope="row">
+                                    {row.key}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.key === 'Till Raised Fund'
+                                      ? projectAmount
+                                      : row.key === 'Remain Funding'
+                                      ? AllProjectDetails[projectTitle][0] -
+                                        projectAmount
+                                      : row.info}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </>
+                  )}
+
+                  <Box sx={{ flexGrow: 1, my: 2 }}>
+                    <Typography variant="h6" mb={2} textTransform={'uppercase'}>
+                      Total Funding Completed :{' '}
+                      {`₹ ${
+                        title.toLowerCase() === 'hajipur'
+                          ? '20000000 / ₹20000000'
+                          : `${projectAmount} / ₹3300000`
+                      } `}
+                    </Typography>
+                    <BorderLinearProgress
+                      variant="determinate"
+                      value={risedFundPer}
                     />
-                  </a>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      style={{
+                        display: 'flex',
+                        position: 'absolute',
+                        marginTop: '-20px',
+                        marginLeft: '50px',
+                        fontWeight: 'bold',
+                        color: 'white'
+                      }}
+                    >{`${Math.round(risedFundPer)}%`}</Typography>
+                  </Box>
+                </>
+                {enrollNow && (
+                  <>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setBankDetails(!showBankDetails)}
+                    >
+                      <Typography variant="h4">Bank Details</Typography>
+                    </Button>
+                    <br />
+                  </>
                 )}
+                {proofImage ? (
+                  <img
+                    src={
+                      typeof proofImage == 'object'
+                        ? URL.createObjectURL(proofImage)
+                        : proofImage
+                    }
+                    style={{ marginTop: '10px', maxWidth: '100%' }}
+                    height={200}
+                  />
+                ) : null}
+                {paymentDocument && paymentDocument.status && (
+                  <Typography variant="h4" sx={{ my: 2 }}>
+                    Status :{' '}
+                    <span
+                      style={{
+                        color: paymentDocument
+                          ? (paymentDocument.status === 'APPROVED' &&
+                              'green') ||
+                            (paymentDocument.status === 'REJECTED' && 'red')
+                          : ''
+                      }}
+                    >
+                      {paymentDocument && paymentDocument.status}
+                    </span>
+                  </Typography>
+                )}
+                {!enrollNow && (
+                  <Button
+                    variant="contained"
+                    sx={{ mb: 2 }}
+                    onClick={() => setEnrollNow(true)}
+                  >
+                    Enroll Now
+                  </Button>
+                )}
+              </div>
+
+              {showBankDetails && (
                 <TableContainer component={Paper} sx={{ mt: 2 }}>
                   <Table sx={{ minWidth: 100 }} aria-label="simple table">
                     <TableBody>
-                      {AllProjectDetails[projectTitle].map((row) => {
-                        if (!row.key) {
-                          return;
-                        }
+                      {AllBankDetails[title + 'BankDetails'].map((bankData) => {
                         return (
                           <TableRow
-                            key={row.key}
+                            key={bankData.key}
                             sx={{
                               '&:last-child td, &:last-child th': { border: 0 }
                             }}
                           >
                             <TableCell component="th" scope="row">
-                              {row.key}
+                              {bankData.key}
                             </TableCell>
-                            <TableCell align="right">
-                              {row.key === 'Till Raised Fund'
-                                ? projectAmount
-                                : row.key === 'Remain Funding'
-                                ? AllProjectDetails[projectTitle][0] -
-                                  projectAmount
-                                : row.info}
-                            </TableCell>
+                            <TableCell align="right">{bankData.info}</TableCell>
                           </TableRow>
                         );
                       })}
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </>
-            )}
-
-            <Box sx={{ flexGrow: 1, my: 2 }}>
-              <Typography variant="h6" mb={2} textTransform={'uppercase'}>
-                Total Funding Completed :{' '}
-                {`₹ ${
-                  title.toLowerCase() === 'hajipur' ? '20000000' : projectAmount
-                }`}
-              </Typography>
-              <BorderLinearProgress
-                variant="determinate"
-                value={risedFundPer}
-              />
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                style={{
-                  display: 'flex',
-                  position: 'absolute',
-                  marginTop: '-20px',
-                  marginLeft: '50px',
-                  fontWeight: 'bold',
-                  color: 'white'
-                }}
-              >{`${Math.round(risedFundPer)}%`}</Typography>
-            </Box>
-          </>
-          {enrollNow && (
+              )}
+              {enrollNow && (
+                <Grid container py={2} spacing={2}>
+                  <Grid item xs={12} sm={5} md={3} lg={3}>
+                    <Button
+                      variant="contained"
+                      component="label"
+                      style={{
+                        cursor: paymentDocument
+                          ? paymentDocument.status === 'APPROVED'
+                            ? 'not-allowed'
+                            : 'pointer'
+                          : 'pointer'
+                      }}
+                      color={
+                        paymentDocument
+                          ? paymentDocument.status === 'APPROVED'
+                            ? 'secondary'
+                            : 'primary'
+                          : 'primary'
+                      }
+                    >
+                      Select Payment Slip
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        disabled={
+                          paymentDocument
+                            ? paymentDocument.status === 'APPROVED'
+                              ? true
+                              : false
+                            : false
+                        }
+                        onChange={(f) => {
+                          if (f.target.files.length > 0) {
+                            setSubmitButtonEnabled(true);
+                            setProofImage(f.target.files[0]);
+                            setImageChanged(true);
+                          }
+                        }}
+                      />
+                    </Button>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <LoadingButton
+                      loading={isLoading}
+                      fullWidth
+                      variant="contained"
+                      disabled={!isSubmitButtonEnalbed}
+                      onClick={() => {
+                        handlePaymentSubmit();
+                      }}
+                    >
+                      Submit
+                    </LoadingButton>
+                  </Grid>
+                  <Toaster position="bottom-center" reverseOrder={false} />
+                </Grid>
+              )}
+              {proofImage && (
+                <LoadingButton
+                  variant="contained"
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 12
+                    },
+                    mb: 4
+                  }}
+                  onClick={() => {
+                    setAdditionalDocuments(true);
+                  }}
+                >
+                  Additional Documents
+                </LoadingButton>
+              )}
+            </>
+          ) : (
             <>
-              <Button
-                variant="outlined"
-                onClick={() => setBankDetails(!showBankDetails)}
-              >
-                <Typography variant="h4">Bank Details</Typography>
-              </Button>
-              <br />
+              {rows.map((row, index) => (
+                <DocumentRow
+                  hideAdditionalDocuments={hideAdditionalDocuments}
+                  data={row}
+                  rowNo={rowNo}
+                  key={index}
+                  projectTitle={title}
+                  user={user}
+                  documents={getDocumentsByConfig(row.config.items)}
+                />
+              ))}
             </>
           )}
-          {proofImage ? (
-            <img
-              src={
-                typeof proofImage == 'object'
-                  ? URL.createObjectURL(proofImage)
-                  : proofImage
-              }
-              style={{ marginTop: '10px', maxWidth: '100%' }}
-              height={200}
-            />
-          ) : null}
-          {paymentDocument && paymentDocument.status && (
-            <Typography variant="h4" sx={{ my: 2 }}>
-              Status :{' '}
-              <span
-                style={{
-                  color: paymentDocument
-                    ? (paymentDocument.status === 'APPROVED' && 'green') ||
-                      (paymentDocument.status === 'REJECTED' && 'red')
-                    : ''
-                }}
-              >
-                {paymentDocument && paymentDocument.status}
-              </span>
-            </Typography>
-          )}
-          {!enrollNow && (
-            <Button
-              variant="contained"
-              sx={{ mb: 2 }}
-              onClick={() => setEnrollNow(true)}
-            >
-              Enroll Now
-            </Button>
-          )}
-
-          {showBankDetails && (
-            <TableContainer component={Paper} sx={{ mt: 2 }}>
-              <Table sx={{ minWidth: 100 }} aria-label="simple table">
-                <TableBody>
-                  {AllBankDetails[title + 'BankDetails'].map((bankData) => {
-                    return (
-                      <TableRow
-                        key={bankData.key}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 }
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {bankData.key}
-                        </TableCell>
-                        <TableCell align="right">{bankData.info}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-          {enrollNow && (
-            <Grid container py={2} spacing={2}>
-              <Grid item xs={12} sm={5} md={3} lg={3}>
-                <Button
-                  variant="contained"
-                  component="label"
-                  style={{
-                    cursor: paymentDocument
-                      ? paymentDocument.status === 'APPROVED'
-                        ? 'not-allowed'
-                        : 'pointer'
-                      : 'pointer'
-                  }}
-                  color={
-                    paymentDocument
-                      ? paymentDocument.status === 'APPROVED'
-                        ? 'secondary'
-                        : 'primary'
-                      : 'primary'
-                  }
-                >
-                  Select Payment Slip
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    disabled={
-                      paymentDocument
-                        ? paymentDocument.status === 'APPROVED'
-                          ? true
-                          : false
-                        : false
-                    }
-                    onChange={(f) => {
-                      if (f.target.files.length > 0) {
-                        setSubmitButtonEnabled(true);
-                        setProofImage(f.target.files[0]);
-                        setImageChanged(true);
-                      }
-                    }}
-                  />
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <LoadingButton
-                  loading={isLoading}
-                  fullWidth
-                  variant="contained"
-                  disabled={!isSubmitButtonEnalbed}
-                  onClick={() => {
-                    handlePaymentSubmit();
-                  }}
-                >
-                  Submit
-                </LoadingButton>
-              </Grid>
-              <Toaster position="bottom-center" reverseOrder={false} />
-            </Grid>
-          )}
-          {proofImage && (
-            <LoadingButton
-              variant="contained"
-              sx={{
-                [theme.breakpoints.down('sm')]: {
-                  fontSize: 12
-                },
-                mb: 4
-              }}
-              onClick={() => {
-                setAdditionalDocuments(true);
-              }}
-            >
-              Additional Documents
-            </LoadingButton>
-          )}
-        </>
-      ) : (
-        <>
-          {rows.map((row, index) => (
-            <DocumentRow
-              hideAdditionalDocuments={hideAdditionalDocuments}
-              data={row}
-              rowNo={rowNo}
-              key={index}
-              projectTitle={title}
-              user={user}
-              documents={getDocumentsByConfig(row.config.items)}
-            />
-          ))}
-        </>
+        </div>
       )}
-      {isEnrolled && (
+      {currentTab === 'enrolledAmt' && (
         <>
-          {!loadList ? (
-            <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
-              <Button
-                variant="outlined"
+          <Box display={'flex'} flexDirection={'row'}>
+            <Box
+              my={2}
+              mr={2}
+              display={'flex'}
+              gap={2}
+              flexDirection={'column'}
+              fontSize={20}
+              color={'#8C7CF0'}
+              borderRadius={1}
+              border={1}
+              justifyContent={'center'}
+              textAlign={'center'}
+              sx={{
+                padding: '4%',
+                [theme.breakpoints.down('sm')]: {
+                  padding: '2%'
+                }
+              }}
+            >
+              Public Fund
+              <br />₹ {projectAmount}
+            </Box>
+            {title === 'Hajipur' ? (
+              <Box
+                my={2}
+                ml={2}
+                display={'flex'}
+                gap={2}
+                flexDirection={'column'}
+                fontSize={20}
+                color={'#8C7CF0'}
+                borderRadius={1}
+                border={1}
+                justifyContent={'center'}
+                textAlign={'center'}
                 sx={{
-                  textTransform: 'uppercase',
-                  width: '490px',
+                  padding: '4%',
                   [theme.breakpoints.down('sm')]: {
-                    width: '100%'
+                    padding: '2%'
                   }
                 }}
-                onClick={() => {
-                  startLoadingList(true);
-                }}
               >
-                Total Enrolled {title}
-              </Button>
-            </Box>
-          ) : (
-            <ProjectList title={title} />
-          )}
+                Ramaera Legal Infotech Fund
+                <br />₹ {ramaeraFund}
+              </Box>
+            ) : (
+              ''
+            )}
+          </Box>
+          <div>
+            {isEnrolled && (
+              <>
+                {!loadList ? (
+                  <Box my={2} display={'flex'} gap={2} flexDirection={'column'}>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        textTransform: 'uppercase',
+                        width: '490px',
+                        [theme.breakpoints.down('sm')]: {
+                          width: '100%'
+                        }
+                      }}
+                      onClick={() => {
+                        startLoadingList(true);
+                      }}
+                    >
+                      Total Enrolled {title}
+                    </Button>
+                  </Box>
+                ) : (
+                  <ProjectList title={title} />
+                )}
+              </>
+            )}
+          </div>
         </>
       )}
     </>
