@@ -1,5 +1,5 @@
 import { SIGNUP } from '@/apollo/queries/auth';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IconButton, InputAdornment, Radio, RadioGroup } from '@mui/material';
@@ -9,11 +9,12 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
-import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
+// import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
+import { CHECK_AGENCY } from '@/apollo/queries/updateUser';
 
 export default function SignupCard() {
   const router = useRouter();
@@ -22,13 +23,18 @@ export default function SignupCard() {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
+  const [debouncedReferral, setDebouncedReferral] = React.useState('');
+  // const [referral, setReferral] = React.useState('');
   const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
   const [validPWID, setValidPWID] = React.useState<boolean>(false);
+  const [isAgentVerified, setAgentVerified] = React.useState<boolean>(true);
   const [isLoading, setLoading] = React.useState(false);
-  const [agentName, setAgentName] = React.useState('ersferfsd');
-  const [allAgents, setAllAgents] = React.useState([]);
-  const { loading, error, data } = useQuery(GET_ALL_AGENCY);
+  const [agentName, setAgentName] = React.useState('');
+  // const [allAgents, setAllAgents] = React.useState([]);
+  const [checkAgency, { loading, error, data }] = useLazyQuery(CHECK_AGENCY, {
+    variables: { AgencyCode: debouncedReferral }
+  });
 
   const checkPWID = (text: any) => {
     const postData = {
@@ -110,13 +116,35 @@ export default function SignupCard() {
 
   const checkIfAgentExists = () => {};
 
-  React.useEffect(() => {
+  /*   React.useEffect(() => {
     setAllAgents(data.AllKycAgency);
+  }, [data]); */
+
+  const verifyAgency = () => {
+    setDebouncedReferral(referral);
+    checkAgency();
+  };
+  React.useEffect(() => {
+    if (data?.findAgency?.user?.name) {
+      setAgentName(data?.findAgency?.user?.name);
+      setAgentVerified(true);
+    } else {
+      setAgentName('');
+    }
   }, [data]);
+
+  React.useEffect(() => {
+    if (error?.message) {
+      toast.error(error?.message);
+    }
+  }, [error]);
 
   React.useEffect(() => {
     checkIfAgentExists();
   }, [referral]);
+  React.useEffect(() => {
+    setAgentVerified(true);
+  }, [agentName]);
 
   return (
     <Grid component={Paper} elevation={6} square>
@@ -183,7 +211,24 @@ export default function SignupCard() {
             label="Agency Referral Code (optional)"
             onChange={(e) => {
               setReferral(e.target.value);
-              //checkPWID(e.target.value);
+              if (e.target.value.length > 0) {
+                setAgentVerified(false);
+              } else {
+                setAgentVerified(true);
+              }
+            }}
+            InputProps={{
+              endAdornment: (
+                <LoadingButton
+                  onClick={() => {
+                    verifyAgency();
+                  }}
+                  disabled={!referral || loading}
+                  variant="contained"
+                >
+                  Verify
+                </LoadingButton>
+              )
             }}
           />
           {agentName && (
@@ -232,7 +277,7 @@ export default function SignupCard() {
             onClick={() => {
               handleSubmit();
             }}
-            disabled={isLoading}
+            disabled={isLoading || !isAgentVerified}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >

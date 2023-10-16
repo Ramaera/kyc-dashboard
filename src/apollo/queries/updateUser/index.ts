@@ -101,6 +101,15 @@ query{
   }
 }`);
 
+export const CHECK_AGENCY = gql(`
+query($AgencyCode:String!){
+  findAgency(AgencyCode:$AgencyCode){
+    user{
+      name
+    }
+  }
+}`);
+
 export const GET_NUMBERS = gql(`
 query{
   getAllUsersCount{

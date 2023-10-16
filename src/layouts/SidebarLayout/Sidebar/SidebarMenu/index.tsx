@@ -326,7 +326,7 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
-              {(user.membership === variables.membership.BASIC ||
+              {(user?.membership === variables.membership.BASIC ||
                 user.documents.find((doc) =>
                   doc.title.includes('to_advance')
                 )) && (
