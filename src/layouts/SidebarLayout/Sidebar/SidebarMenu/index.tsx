@@ -326,41 +326,48 @@ function SidebarMenu() {
               ) : (
                 ''
               )}
-              <ListItem component="div">
-                <NextLink href="/dashboard/toAdvance" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/dashboard/toAdvance' ? 'active' : ''
-                    }
-                    style={{
-                      color:
-                        currentRoute === '/dashboard/toAdvance' ? '#7063C0' : ''
-                    }}
-                    disableRipple
-                    component="a"
-                    onClick={() => {
-                      setListVisible(false);
-                      setShareList(false);
-                      closeSidebar();
-                    }}
-                    // startIcon={<DesignServicesTwoToneIcon />}
-                    startIcon={
-                      <span
-                        style={{
-                          color:
-                            currentRoute === '/dashboard/toAdvance'
-                              ? '#7063C0'
-                              : ''
-                        }}
-                      >
-                        &#x2022;
-                      </span>
-                    }
-                  >
-                    UPGRADE MEMBERSHIP
-                  </Button>
-                </NextLink>
-              </ListItem>
+              {(user.membership === variables.membership.BASIC ||
+                user.documents.find((doc) =>
+                  doc.title.includes('to_advance')
+                )) && (
+                <ListItem component="div">
+                  <NextLink href="/dashboard/toAdvance" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/dashboard/toAdvance' ? 'active' : ''
+                      }
+                      style={{
+                        color:
+                          currentRoute === '/dashboard/toAdvance'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                      disableRipple
+                      component="a"
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
+                      // startIcon={<DesignServicesTwoToneIcon />}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/dashboard/toAdvance'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      UPGRADE MEMBERSHIP
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
               <ListItem component="div">
                 <NextLink href="/dashboard/getAgency" passHref>
                   <Button

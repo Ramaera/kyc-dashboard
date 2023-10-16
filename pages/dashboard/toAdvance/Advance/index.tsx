@@ -530,19 +530,19 @@ const InfoTab = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                {user?.kyc !== variables.status.APPROVED && (
-                  <LoadingButton
-                    loading={isLoading}
-                    fullWidth
-                    variant="contained"
-                    disabled={!isSubmitButtonEnalbed}
-                    onClick={() => {
-                      handlePaymentSubmit();
-                    }}
-                  >
-                    Submit
-                  </LoadingButton>
-                )}
+                {/* {user?.kyc !== variables.status.APPROVED && ( */}
+                <LoadingButton
+                  loading={isLoading}
+                  fullWidth
+                  variant="contained"
+                  disabled={!isSubmitButtonEnalbed}
+                  onClick={() => {
+                    handlePaymentSubmit();
+                  }}
+                >
+                  Submit
+                </LoadingButton>
+                {/* )} */}
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>
