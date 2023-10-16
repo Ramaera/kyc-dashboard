@@ -2,7 +2,18 @@ import { SIGNUP } from '@/apollo/queries/auth';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { IconButton, InputAdornment, Radio, RadioGroup } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
+  Radio,
+  RadioGroup
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
@@ -24,6 +35,8 @@ export default function SignupCard() {
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
   const [debouncedReferral, setDebouncedReferral] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
   // const [referral, setReferral] = React.useState('');
   const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
@@ -114,6 +127,27 @@ export default function SignupCard() {
     setLoading(false);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleStatus = async () => {
+    handleSubmit();
+    handleClose();
+    /*  if (status === 'APPROVED') {
+      toast.success('KYC APPROVED');
+    }
+    if (status === 'REJECTED') {
+      toast.error('KYC REJECTED');
+    }
+    if (status === 'ONGOING') {
+      toast.success('KYC ONGOING');
+    } */
+  };
   const checkIfAgentExists = () => {};
 
   /*   React.useEffect(() => {
@@ -275,7 +309,11 @@ export default function SignupCard() {
             loading={isLoading}
             fullWidth
             onClick={() => {
-              handleSubmit();
+              if (referral) {
+                handleSubmit();
+              } else {
+                handleClickOpen();
+              }
             }}
             disabled={isLoading || !isAgentVerified}
             variant="contained"
@@ -299,7 +337,25 @@ export default function SignupCard() {
           </LoadingButton>
         </Box>
       </Box>
-
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Are you susre?'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You have not added any Referral Code
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Dismiss</Button>
+          <Button onClick={handleStatus} autoFocus>
+            Create Account
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Toaster />
     </Grid>
   );
