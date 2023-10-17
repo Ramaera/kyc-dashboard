@@ -1,29 +1,53 @@
 import { SIGNUP } from '@/apollo/queries/auth';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { IconButton, InputAdornment, Radio, RadioGroup } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
+  Radio,
+  RadioGroup
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+// import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
+import { CHECK_AGENCY } from '@/apollo/queries/updateUser';
 
 export default function SignupCard() {
   const router = useRouter();
+  const [signup] = useMutation(SIGNUP);
   const [PWId, setPWId] = React.useState('');
   const [visible, setVisible] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [referral, setReferral] = React.useState('');
+  const [debouncedReferral, setDebouncedReferral] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
+  // const [referral, setReferral] = React.useState('');
   const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
   const [validPWID, setValidPWID] = React.useState<boolean>(false);
+  const [isAgentVerified, setAgentVerified] = React.useState<boolean>(true);
   const [isLoading, setLoading] = React.useState(false);
+  const [agentName, setAgentName] = React.useState('');
+  // const [allAgents, setAllAgents] = React.useState([]);
+  const [checkAgency, { loading, error, data }] = useLazyQuery(CHECK_AGENCY, {
+    variables: { AgencyCode: debouncedReferral }
+  });
 
   const checkPWID = (text: any) => {
     const postData = {
@@ -51,7 +75,6 @@ export default function SignupCard() {
         console.log('ERROR: ====', err);
       });
   };
-  const [signup] = useMutation(SIGNUP);
 
   const validateForm = () => {
     if (aadhaarNumber.length !== 12) {
@@ -103,6 +126,60 @@ export default function SignupCard() {
     }
     setLoading(false);
   };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleStatus = async () => {
+    handleSubmit();
+    handleClose();
+    /*  if (status === 'APPROVED') {
+      toast.success('KYC APPROVED');
+    }
+    if (status === 'REJECTED') {
+      toast.error('KYC REJECTED');
+    }
+    if (status === 'ONGOING') {
+      toast.success('KYC ONGOING');
+    } */
+  };
+  const checkIfAgentExists = () => {};
+
+  /*   React.useEffect(() => {
+    setAllAgents(data.AllKycAgency);
+  }, [data]); */
+
+  const verifyAgency = () => {
+    setDebouncedReferral(referral);
+    checkAgency();
+  };
+  React.useEffect(() => {
+    if (data?.findAgency?.user?.name) {
+      setAgentName(data?.findAgency?.user?.name);
+      setAgentVerified(true);
+    } else {
+      setAgentName('');
+    }
+  }, [data]);
+
+  React.useEffect(() => {
+    if (error?.message) {
+      toast.error(error?.message);
+    }
+  }, [error]);
+
+  React.useEffect(() => {
+    checkIfAgentExists();
+  }, [referral]);
+  React.useEffect(() => {
+    setAgentVerified(true);
+  }, [agentName]);
+
   return (
     <Grid component={Paper} elevation={6} square>
       <Box
@@ -168,9 +245,29 @@ export default function SignupCard() {
             label="Agency Referral Code (optional)"
             onChange={(e) => {
               setReferral(e.target.value);
-              //checkPWID(e.target.value);
+              if (e.target.value.length > 0) {
+                setAgentVerified(false);
+              } else {
+                setAgentVerified(true);
+              }
+            }}
+            InputProps={{
+              endAdornment: (
+                <LoadingButton
+                  onClick={() => {
+                    verifyAgency();
+                  }}
+                  disabled={!referral || loading}
+                  variant="contained"
+                >
+                  Verify
+                </LoadingButton>
+              )
             }}
           />
+          {agentName && (
+            <Typography>{'Referral Code Of : ' + agentName}</Typography>
+          )}
           <TextField
             margin="normal"
             fullWidth
@@ -212,9 +309,13 @@ export default function SignupCard() {
             loading={isLoading}
             fullWidth
             onClick={() => {
-              handleSubmit();
+              if (referral) {
+                handleSubmit();
+              } else {
+                handleClickOpen();
+              }
             }}
-            disabled={isLoading}
+            disabled={isLoading || !isAgentVerified}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
@@ -236,7 +337,25 @@ export default function SignupCard() {
           </LoadingButton>
         </Box>
       </Box>
-
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Are you susre?'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You have not added any Referral Code
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Dismiss</Button>
+          <Button onClick={handleStatus} autoFocus>
+            Create Account
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Toaster />
     </Grid>
   );

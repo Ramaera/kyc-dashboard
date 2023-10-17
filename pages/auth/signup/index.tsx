@@ -1,13 +1,16 @@
 import {
-  Box, Container, Grid, Hidden, styled, Typography
+  Box,
+  Container,
+  Grid,
+  Hidden,
+  styled,
+  Typography
 } from '@mui/material';
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Head from 'next/head';
 import SignupCard from './components/SignupCard';
-
-
 
 const MainContent = styled(Box)(
   () => `
@@ -21,11 +24,7 @@ const MainContent = styled(Box)(
 `
 );
 
-
-
 function Signup() {
-
-
   return (
     <>
       <Head>
@@ -38,8 +37,7 @@ function Signup() {
           alignItems="stretch"
           spacing={0}
         >
-
-<Hidden mdDown>
+          <Hidden mdDown>
             <Grid
               xs={12}
               md={6}
@@ -50,24 +48,23 @@ function Signup() {
             >
               <Container maxWidth="sm">
                 <Box textAlign="center">
-
-                <img
-                  alt="500"
-                  height={260}
-                  src="/static/images/logo/logo.png"
-                />
+                  <img
+                    alt="500"
+                    height={260}
+                    src="/static/images/logo/logo.png"
+                  />
                   <Typography variant="h1" sx={{ my: 2 }}>
                     Become A Partner
                   </Typography>
                   <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 4 }}
-                >
-                   RAMAERA is the future of upcoming Industrialisation in India, aiming presence in all kind of manufacturing sector
+                    variant="h4"
+                    color="text.secondary"
+                    fontWeight="normal"
+                    sx={{ mb: 4 }}
+                  >
+                    RAMAERA is the future of upcoming Industrialisation in
+                    India, aiming presence in all kind of manufacturing sector
                   </Typography>
-                 
                 </Box>
               </Container>
             </Grid>
@@ -82,7 +79,7 @@ function Signup() {
           >
             <Container maxWidth="sm">
               <Box textAlign="center">
-               <SignupCard/>
+                <SignupCard />
               </Box>
             </Container>
           </Grid>

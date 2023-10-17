@@ -90,26 +90,25 @@ query getAllKycHandler {
   }
 }
 `);
-
 export const GET_ALL_AGENCY = gql(`
 query{
   AllKycAgency{
     agencyCode
     user{
-      id
       name
-      referralAgencyCode
-      kyc
-      membership
-      referralAgencyCode
       pw_id
-      rm_id
-      mobile_number
-      email
     }
   }
-}
-`);
+}`);
+
+export const CHECK_AGENCY = gql(`
+query($AgencyCode:String!){
+  findAgency(AgencyCode:$AgencyCode){
+    user{
+      name
+    }
+  }
+}`);
 
 export const GET_NUMBERS = gql(`
 query{
