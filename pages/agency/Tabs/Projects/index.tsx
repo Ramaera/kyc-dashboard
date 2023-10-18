@@ -276,7 +276,7 @@ const DocumentRow = ({
                     setAdditionalAmounts(newArr);
                   }}
                 />
-                <Button
+                {/*  <Button
                   onClick={() =>
                     changeDocumentStatus(documents[i].id, 'APPROVED')
                   }
@@ -295,7 +295,7 @@ const DocumentRow = ({
                   sx={{ ml: 2 }}
                 >
                   Reject
-                </Button>
+                </Button> */}
               </Grid>
             )}
           </Box>
@@ -715,7 +715,7 @@ const InfoTab = ({ to }) => {
               {paymentDocument && paymentDocument.status}
             </span>
           </Typography>
-          <Box>
+          {/*   <Box>
             {user?.kyc !== variables.status.APPROVED && (
               <Grid>
                 <Button
@@ -741,7 +741,7 @@ const InfoTab = ({ to }) => {
                 </Button>
               </Grid>
             )}
-          </Box>
+          </Box> */}
         </>
       )}
       {proofImage && user?.kyc !== variables.status.APPROVED && (
