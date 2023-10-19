@@ -403,6 +403,41 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
+              <ListItem component="div">
+                <NextLink href="/dashboard/receipt" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/dashboard/receipt' ? 'active' : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/dashboard/receipt' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/dashboard/receipt'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    RECEIPT
+                  </Button>
+                </NextLink>
+              </ListItem>
               {/*   {
                 <ListItem component="div">
                   <NextLink href={`/dashboard/certificate`} passHref>

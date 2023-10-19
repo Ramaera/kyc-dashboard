@@ -1,6 +1,13 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Card, CardHeader, Container, Divider, Grid } from '@mui/material';
+import {
+  Card,
+  CardHeader,
+  Container,
+  Divider,
+  Grid,
+  Typography
+} from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useSelector } from 'react-redux';
@@ -9,9 +16,11 @@ import documentsConfig from '@/config/documentsConfig';
 function index() {
   const user = useSelector((state: any) => state.user?.data);
 
-  /*   const beforeAugustFifteenthTwentyTwentyThree =
-    202310815 > parseInt(user.createdAt.split('-').join(''));
- */
+  // const checkBeforeHike = (doc) => {
+  //   202310815 > parseInt(doc.split('-').join(''));
+  // };
+  // const beforeAugustFifteenthTwentyTwentyThree =
+  //   202310815 > parseInt(user.createdAt.split('-').join(''));
 
   const allCertificates = () => {
     let certificates: any = [];
@@ -49,18 +58,22 @@ function index() {
   return (
     <ProtectedSSRoute>
       <Head>
-        <title>Certificate</title>
+        <title>KYC | Receipt</title>
       </Head>
       <Container maxWidth={false} sx={{ mt: 2 }}>
         <Card variant="outlined">
           <CardHeader
-            title={'CERTIFICATE'}
+            title={'RECEIPT'}
             sx={{
               ml: 2,
               textTransform: 'uppercase'
             }}
           />
           <Divider sx={{ mb: 2 }} />
+          <Typography ml={4} mb={2}>
+            *If any of the receipt is not accurate or not present, contact our
+            KYC EXECUTIVES immediately.
+          </Typography>
           <Grid
             container
             direction="row"
