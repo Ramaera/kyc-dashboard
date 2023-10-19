@@ -35,6 +35,7 @@ export const rows = [
     config: documentsConfig.project_payment
   }
 ];
+
 const DocumentRow = ({
   data,
   documents = [],

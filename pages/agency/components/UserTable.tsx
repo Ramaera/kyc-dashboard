@@ -1,3 +1,4 @@
+import variables from '@/config/variables';
 import { User } from '@/models/user';
 import {
   Avatar,
@@ -53,6 +54,47 @@ const checkDemat = (user) => {
     }
   });
   return status;
+};
+
+const checkProjectPaymentAmount = (docs) => {
+  let status = [];
+  let finalStatus = 0;
+
+  docs.map((doc) => {
+    if (
+      doc.title.includes('project') &&
+      doc.status === variables.status.APPROVED
+    ) {
+      status.push(doc.amount);
+      finalStatus += doc.amount;
+    }
+  });
+
+  return finalStatus;
+};
+
+const numberOfProjectsEnrolledIn = (docs) => {
+  let numberOfProjects = 0;
+
+  if (
+    docs.find(
+      (doc) =>
+        doc.title.includes('hajipur') &&
+        doc.status === variables.status.APPROVED
+    )
+  ) {
+    numberOfProjects += 1;
+  }
+  if (
+    docs.find(
+      (doc) =>
+        doc.title.includes('agra') && doc.status === variables.status.APPROVED
+    )
+  ) {
+    numberOfProjects += 1;
+  }
+
+  return numberOfProjects;
 };
 
 const applyFilters = (users: User[], filters: Filters, searchTexts): User[] => {
@@ -365,6 +407,8 @@ const UserTable = () => {
                 </TableCell>
                 <TableCell>RMID</TableCell>
                 <TableCell>KYC Status</TableCell>
+                <TableCell>Projects Enrolled</TableCell>
+                <TableCell>Project Enrolled Amount</TableCell>
                 <TableCell>Demat Status</TableCell>
                 <TableCell>Share Holder Type</TableCell>
                 <TableCell>Mobile No.</TableCell>
@@ -447,6 +491,28 @@ const UserTable = () => {
                           noWrap
                         >
                           {user?.kyc}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {numberOfProjectsEnrolledIn(user.documents)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {checkProjectPaymentAmount(user.documents)}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
