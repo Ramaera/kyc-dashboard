@@ -2,7 +2,19 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, Container, Grid, styled, Tab, Tabs } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Dialog,
+  Grid,
+  Paper,
+  styled,
+  Tab,
+  Tabs,
+  Typography
+} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
@@ -16,6 +28,7 @@ import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import DSC from './Tabs/DSC';
 import ToAdvance from './toAdvance/Advance';
+import Countdown from '@/components/Countdown';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -29,6 +42,8 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
+  const [open, setOpen] = useState<boolean>(true);
+
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
   );
@@ -58,6 +73,10 @@ function DashboardTasks() {
       setCurrentTab('upgradeKyc');
     }
   }, [upgradeToAdvance]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <ProtectedSSRoute>
@@ -141,6 +160,33 @@ function DashboardTasks() {
             )}
           </Grid>
         </Card>
+        <Dialog onClose={handleClose} open={open}>
+          <Grid component={Paper} elevation={6} square>
+            <Box
+              sx={{
+                my: 2,
+                p: 1,
+                mx: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                overflow: 'visible'
+              }}
+            >
+              <Countdown />
+
+              <Button
+                color="error"
+                onClick={handleClose}
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 0, mb: 2 }}
+              >
+                Cancel
+              </Button>
+            </Box>
+          </Grid>
+        </Dialog>
       </Container>
       <Footer />
     </ProtectedSSRoute>
