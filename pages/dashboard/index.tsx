@@ -1,3 +1,4 @@
+import Countdown from '@/components/Countdown';
 import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
@@ -12,8 +13,7 @@ import {
   Paper,
   styled,
   Tab,
-  Tabs,
-  Typography
+  Tabs
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
@@ -22,13 +22,10 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DematTab from './Tabs/Demat';
 import DocumentTab from './Tabs/Documents';
-import GetAgency from './getAgency/Tabs';
+import DSC from './Tabs/DSC';
 import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
-import DSC from './Tabs/DSC';
-import ToAdvance from './toAdvance/Advance';
-import Countdown from '@/components/Countdown';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -42,7 +39,7 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
 
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
@@ -77,7 +74,13 @@ function DashboardTasks() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    var countDownDate = new Date('Oct 21, 2023 14:30:00').getTime();
+    var now = new Date().getTime();
+    if (countDownDate > now) {
+      setOpen(true);
+    }
+  }, []);
   return (
     <ProtectedSSRoute>
       <Head>

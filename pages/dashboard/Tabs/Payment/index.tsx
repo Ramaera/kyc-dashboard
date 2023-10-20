@@ -296,18 +296,16 @@ const DocumentRow = ({
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
         <TableCell style={{ border: 'none' }}>
-          {user?.kyc !== variables.status.APPROVED && (
-            <LoadingButton
-              loading={isLoading}
-              // disabled={!isValidToClick()}
-              variant="contained"
-              onClick={() => {
-                handleDocumentUpload();
-              }}
-            >
-              Upload
-            </LoadingButton>
-          )}
+          <LoadingButton
+            loading={isLoading}
+            // disabled={!isValidToClick()}
+            variant="contained"
+            onClick={() => {
+              handleDocumentUpload();
+            }}
+          >
+            Upload
+          </LoadingButton>
         </TableCell>
       </TableRow>
       {moreRow <= 3 && (
