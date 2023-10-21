@@ -28,7 +28,7 @@ import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 
 const TabsContainerWrapper = styled(Box)(
-  ({ theme }) => `
+  () => `
       .MuiTabs-scrollableX {
         overflow-x: auto !important;
       }
@@ -37,7 +37,7 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-  const user = useSelector((state: any) => state.user?.data);
+  // const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   const [open, setOpen] = useState<boolean>(false);
 

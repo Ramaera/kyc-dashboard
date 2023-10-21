@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"]
+      "@/public/*": ["./public/*"],
+      "react": ["./node_modules/@types/react"]
     },
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -30,5 +31,11 @@
     "incremental": true
   },
   "exclude": ["node_modules"],
-  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/dashboard/Tabs/Info/``\u001B"]
+  "include": [
+    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/dashboard/Tabs/Info/``\u001B"
+  ]
 }
