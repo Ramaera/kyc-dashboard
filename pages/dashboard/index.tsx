@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import SidebarLayout from '@/layouts/SidebarLayout';
+
 import {
   Box,
   Button,
@@ -39,7 +40,7 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   // const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
 
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
@@ -74,13 +75,16 @@ function DashboardTasks() {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    var countDownDate = new Date('Oct 21, 2023 14:30:00').getTime();
-    var now = new Date().getTime();
-    if (countDownDate > now) {
-      setOpen(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   var countDownDate = new Date('Oct 21, 2023 14:30:00').getTime();
+  //   var now = new Date().getTime();
+  //   if (countDownDate > now) {
+  //     setOpen(true);
+  //   }
+  // }, []);
+  setTimeout(function () {
+    setOpen(false);
+  }, 5000);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -164,6 +168,8 @@ function DashboardTasks() {
           </Grid>
         </Card>
         <Dialog onClose={handleClose} open={open}>
+          <Box zIndex={1000}></Box>
+
           <Grid component={Paper} elevation={6} square>
             <Box
               sx={{
@@ -178,7 +184,7 @@ function DashboardTasks() {
             >
               <Countdown />
 
-              <Button
+              {/* <Button
                 color="error"
                 onClick={handleClose}
                 fullWidth
@@ -186,7 +192,7 @@ function DashboardTasks() {
                 sx={{ mt: 0, mb: 2 }}
               >
                 Cancel
-              </Button>
+              </Button> */}
             </Box>
           </Grid>
         </Dialog>

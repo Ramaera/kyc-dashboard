@@ -20,6 +20,7 @@ import createEmotionCache from 'src/createEmotionCache';
 import ThemeProvider from 'src/theme/ThemeProvider';
 import { persistor, store } from '../src/state/store';
 import RamaeraRouter from './RamaeraRouter';
+
 import './style.css';
 library.add(faEye, faEyeSlash);
 // import type { AppProps } from 'next/app'

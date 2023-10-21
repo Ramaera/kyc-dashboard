@@ -1,5 +1,7 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
 import { useReducer } from 'react';
+import ConfettiExplosion from 'react-confetti-explosion';
+import Confetti from 'react-confetti';
 
 const index = () => {
   const theme = useTheme();
@@ -16,6 +18,9 @@ const index = () => {
   var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
   return (
     <div>
+      <ConfettiExplosion />
+      <Confetti numberOfPieces={150} width={1000} height={1000} />
+
       <Box
         padding={(0, 2)}
         sx={{
@@ -26,34 +31,42 @@ const index = () => {
       >
         <Box>
           <Typography
-            variant="h4"
-            component="h4"
+            variant="h2"
+            component="h2"
             gutterBottom
             textAlign={'center'}
             sx={{
               marginBottom: '10px',
               [theme.breakpoints.down('sm')]: {
-                fontSize: 16
+                fontSize: 24
               }
             }}
           >
             {' '}
-            MY Mart My Brand Funding Will closed in
+            CONGRATULATIONS
           </Typography>
-          {/* <Typography
-            variant="h3"
+          <Typography
+            variant="h4"
             textAlign={'center'}
-            component="h3"
+            component="h4"
             gutterBottom
             sx={{
               [theme.breakpoints.down('sm')]: {
-                fontSize: 18
+                fontSize: 14
               }
             }}
           >
-            {days} Days, {hours} Hours, {minutes},Minutes, {seconds} seconds{' '}
-          </Typography> */}
-          <Box
+            On achieving the funding for the{' '}
+            <span style={{ fontWeight: 'black', fontSize: 20 }}>
+              Agra My Mart My Brand
+            </span>{' '}
+            project. We sincerely thank all of you for your generous and
+            wholehearted support.
+          </Typography>
+
+          {/*
+           */}
+          {/* <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -184,9 +197,10 @@ const index = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
+      <ConfettiExplosion />
     </div>
   );
 };
