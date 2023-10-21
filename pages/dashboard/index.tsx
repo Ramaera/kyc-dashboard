@@ -84,7 +84,7 @@ function DashboardTasks() {
   // }, []);
   setTimeout(function () {
     setOpen(false);
-  }, 5000);
+  }, 10000);
   return (
     <ProtectedSSRoute>
       <Head>
