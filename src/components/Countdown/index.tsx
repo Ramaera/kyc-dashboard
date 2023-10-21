@@ -18,7 +18,7 @@ const index = () => {
   var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
   return (
     <div>
-      <ConfettiExplosion />
+      {/* <ConfettiExplosion /> */}
       <Confetti numberOfPieces={150} width={1000} height={1000} />
 
       <Box
@@ -200,7 +200,7 @@ const index = () => {
           </Box> */}
         </Box>
       </Box>
-      <ConfettiExplosion />
+      {/* <ConfettiExplosion /> */}
     </div>
   );
 };
