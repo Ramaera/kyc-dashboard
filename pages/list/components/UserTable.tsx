@@ -42,6 +42,13 @@ const projectChecker = (user, project) => {
 };
 
 interface Filters {
+  demat?:
+    | 'all'
+    | 'APPROVED'
+    | 'NOT_RECIEVED'
+    | 'ONGOING'
+    | 'REJECTED'
+    | 'SUBMITTED';
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
   hajipur?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
   agra?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
@@ -73,7 +80,9 @@ const applyFilters = (users: User[], filters: Filters): any => {
     ) {
       matches = false;
     }
-
+    if (filters.demat && checkDemat(user) !== filters.demat) {
+      matches = false;
+    }
     if (
       filters.agra &&
       projectChecker(user?.documents, 'agra_project_payment') !== filters.agra
@@ -92,6 +101,16 @@ const applyFilters = (users: User[], filters: Filters): any => {
 ): User[] => {
   return users.slice(page * limit, page * limit + limit);
 }; */
+
+const checkDemat = (user) => {
+  let status = 'NOT_RECIEVED';
+  user.documents.map((doc) => {
+    if (doc.title.includes('demat')) {
+      status = doc.status;
+    }
+  });
+  return status;
+};
 
 const UserTable = () => {
   const matches = useMediaQuery('(min-width:600px)');
@@ -125,11 +144,7 @@ const UserTable = () => {
       searchTerm: searchText
     }
   });
-  // console.log(allKycUsers.data);
-  /* 
-  let _usersList = useSelector(
-    (state: any) => state.allUsers.allTheUsersForList
-  ); */
+
   let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   let _usersList = [];
   const [usersList, setUsersList] = useState([]);
@@ -213,6 +228,28 @@ const UserTable = () => {
     {
       id: 'ONGOING',
       name: 'Ongoing'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    }
+  ];
+  const deamtOptions = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'NOT_RECIEVED',
+      name: 'Not Recieved'
+    },
+    {
+      id: 'REJECTED',
+      name: 'Rejected'
+    },
+    {
+      id: 'PENDING',
+      name: 'Pending'
     },
     {
       id: 'APPROVED',
@@ -310,6 +347,19 @@ const UserTable = () => {
   /*   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
   }; */
+
+  const handleDematChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      demat: value
+    }));
+  };
 
   const handleLimitChange = (
     event: ChangeEvent<HTMLInputElement | any>
@@ -429,9 +479,32 @@ const UserTable = () => {
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
           <CardHeader
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                width: '85vw'
+                // overflow: 'hidden'
+              }
+            }}
             action={
-              <Box display={'flex'} gap={'20px'}>
-                <Box display={'flex'} gap={'10px'}>
+              <Box
+                display={'flex'}
+                gap={'20px'}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    flexDirection: 'column-reverse'
+                  }
+                }}
+              >
+                <Box
+                  display={'flex'}
+                  gap={'10px'}
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      flexDirection: 'column',
+                      width: '82.5vw'
+                    }
+                  }}
+                >
                   <TextField
                     fullWidth
                     label="Search"
@@ -451,15 +524,34 @@ const UserTable = () => {
                   </Button>
                 </Box>
                 <Box
-                  width={480}
                   display={'flex'}
                   gap={'10px'}
                   sx={{
+                    width: '480px',
                     [theme.breakpoints.down('sm')]: {
-                      display: 'none'
+                      flexDirection: 'column',
+                      width: '82.5vw'
                     }
                   }}
                 >
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Demat Status</InputLabel>
+                    <Select
+                      sx={{
+                        bgcolor: filters.demat && '#8c7cf040'
+                      }}
+                      value={filters.demat || 'all'}
+                      onChange={handleDematChange}
+                      label="Deat"
+                      autoWidth
+                    >
+                      {deamtOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <FormControl fullWidth variant="outlined">
                     <InputLabel>KYC Status</InputLabel>
                     <Select
@@ -561,14 +653,6 @@ const UserTable = () => {
                 </Select>
               </FormControl>
             </Box>
-
-            {/*  <DownloadTableExcel
-              filename={'KYC_LIST'}
-              sheet={'KYC_LIST'}
-              currentTableRef={tableRef.current}
-            >
-              <LoadingButton variant="contained">Download</LoadingButton>
-            </DownloadTableExcel> */}
           </Box>
         )}
         {(currentSelectedButton.includes('totalAvdance') ||
@@ -641,7 +725,7 @@ const UserTable = () => {
                           {user?.name === 'NULL' ? '' : user?.name}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
@@ -653,7 +737,7 @@ const UserTable = () => {
                           {censorMe(user?.father_or_husband_name)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
@@ -689,18 +773,20 @@ const UserTable = () => {
                             : user?.kyc}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography
+                          width="120px"
                           variant="body1"
                           fontWeight="bold"
                           color="text.primary"
-                          gutterBottom
                           noWrap
                         >
-                          {censorMe(user?.demat_account)}
+                          {checkDemat(user) === 'NOT_RECIEVED'
+                            ? 'NOT RECEIVED'
+                            : checkDemat(user)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
@@ -714,7 +800,7 @@ const UserTable = () => {
                           )}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
