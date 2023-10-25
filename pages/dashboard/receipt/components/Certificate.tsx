@@ -202,11 +202,22 @@ const Certificate = ({
               >
                 Amount
               </div>
+              <div style={{ width: '749px' }}>
+                <div
+                  style={{
+                    color: 'black',
+                    textAlign: 'center',
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {amountToWords(amount)}
+                </div>
+              </div>
               <div
                 style={{
                   width: '200px',
-                  height: '100px',
-                  marginLeft: '749px'
+                  height: '100px'
                 }}
               >
                 <div

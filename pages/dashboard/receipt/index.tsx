@@ -46,7 +46,13 @@ function index() {
             paymentSource="upi"
             utrNumber={doc.utrNo || ''}
             receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
-            AgencyCode=""
+            AgencyCode={
+              user.referralAgencyCode === 'NULL'
+                ? ''
+                : user.referralAgencyCode
+                ? user.referralAgencyCode
+                : ''
+            }
           />
         );
       }
