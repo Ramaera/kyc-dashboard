@@ -48,7 +48,7 @@ const DocumentRow = ({
     }
     setImages(_imgs);
   }, [documents, user]);
-  console.log(imagesChanged);
+  // console.log(imagesChanged);
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
@@ -221,12 +221,11 @@ const DocumentRow = ({
                   : false
               }
               onChange={(f) => {
-                console.log(i);
                 if (f.target.files.length > 0) {
                   const _images = [...images];
                   _images[i] = f.target.files[0];
                   setImages(_images);
-                  console.log('imageChanged', _images[i]);
+                  // console.log('imageChanged', _images[i]);
                   const _imagesChanged = [...imagesChanged];
                   _imagesChanged[i] = true;
                   setImagesChange(_imagesChanged);
@@ -521,7 +520,6 @@ const InfoTab = () => {
                     }
                     onChange={(f) => {
                       if (f.target.files.length > 0) {
-                        console.log('here');
                         setSubmitButtonEnabled(true);
                         setProofImage(f.target.files[0]);
                         setImageChanged(true);

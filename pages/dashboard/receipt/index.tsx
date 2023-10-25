@@ -26,7 +26,6 @@ function index() {
     let certificates: any = [];
     user.documents.map((doc) => {
       if (doc.amount) {
-        console.log(doc);
         certificates.push(
           <Certificate
             id={doc.id}

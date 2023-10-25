@@ -26,7 +26,6 @@ const index = () => {
   };
 
   const handleDelete = async () => {
-    console.log('deleted');
     dispatch(logout());
     // router.push('/dashboard');
   };
