@@ -26,6 +26,7 @@ function index() {
     let certificates: any = [];
     user.documents.map((doc) => {
       if (doc.amount) {
+        console.log(doc);
         certificates.push(
           <Certificate
             id={doc.id}
@@ -46,7 +47,13 @@ function index() {
             paymentSource="upi"
             utrNumber={doc.utrNo || ''}
             receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
-            AgencyCode=""
+            AgencyCode={
+              user.referralAgencyCode === 'NULL'
+                ? ''
+                : user.referralAgencyCode
+                ? user.referralAgencyCode
+                : ''
+            }
           />
         );
       }

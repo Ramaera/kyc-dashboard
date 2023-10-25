@@ -150,6 +150,7 @@ query GetUser {
       url
       status
       amount
+      utrNo
     }
     nominee {
       id
