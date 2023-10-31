@@ -1,5 +1,6 @@
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
   Box,
@@ -23,7 +24,8 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
 import { useSelector } from 'react-redux';
 import sortObjectsArray from 'sort-objects-array';
 import { useDebounce } from 'usehooks-ts';
@@ -134,6 +136,8 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
+  const tableRef = useRef(null);
+
   const theme = useTheme();
   const [usersList, setUsersList] = useState(
     useSelector((state: any) => state.allUsers.allTheUsers)
@@ -394,7 +398,7 @@ const UserTable = () => {
 
         <Divider />
         <TableContainer>
-          <Table>
+          <Table ref={tableRef}>
             <TableHead>
               <TableRow>
                 <TableCell>Photo</TableCell>
@@ -630,7 +634,7 @@ const UserTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box p={2}>
+        <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
           <TablePagination
             component="div"
             count={filteredUsers.length}
@@ -640,6 +644,13 @@ const UserTable = () => {
             rowsPerPage={limit}
             rowsPerPageOptions={[5, 20, 50, 200]}
           />
+          <DownloadTableExcel
+            filename={'data'}
+            sheet={'data'}
+            currentTableRef={tableRef.current}
+          >
+            <LoadingButton variant="contained">Download</LoadingButton>
+          </DownloadTableExcel>
         </Box>
       </Card>
     </>

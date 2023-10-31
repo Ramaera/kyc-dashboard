@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Box,
   Button,
@@ -30,6 +30,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { useDispatch, useSelector } from 'react-redux';
 import variables from '@/config/variables';
+import { CHECK_PROJECT } from '@/apollo/queries/updateUser';
+
 export const rows = [
   {
     config: documentsConfig.project_payment
@@ -419,7 +421,14 @@ const InfoTab = ({ to }) => {
   const [paymentDocument, setPaymentDocument] = useState<DocumentType | null>();
   const [isImageChanged, setImageChanged] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
-  //const [createDocument] = useMutation(CREATEDOCUMENT);
+  const { data } = useQuery(CHECK_PROJECT, {
+    variables: { UserID: user.id }
+  });
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   // console.log(user);
@@ -635,8 +644,6 @@ const InfoTab = ({ to }) => {
   useEffect(() => {
     to && setProjectName(to + '_');
   }, [to]);
-
-  // console.log(user.documents);
 
   return (
     <>
