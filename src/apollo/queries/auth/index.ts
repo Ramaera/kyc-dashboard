@@ -142,6 +142,11 @@ query GetUser {
       DscExpiryDate
       DscCreatedDate
     }
+    shareHoldingType{
+      InvestmentType
+      allotedShare
+      status
+    }
     documents {
       createdAt
       updatedAt

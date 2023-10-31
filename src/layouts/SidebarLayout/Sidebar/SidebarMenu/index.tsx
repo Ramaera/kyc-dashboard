@@ -475,7 +475,7 @@ function SidebarMenu() {
                   </NextLink>
                 </ListItem>
               } */}
-              {
+              {/* {
                 <ListItem component="div">
                   <Button
                     className={
@@ -505,9 +505,9 @@ function SidebarMenu() {
                     SHARES
                   </Button>
                 </ListItem>
-              }
+              } */}
 
-              {shareList ? (
+              {/* {shareList ? (
                 <List component="div" style={{ marginLeft: '' }}>
                   <ListItem component="div" onClick={closeSidebar}>
                     <NextLink href={`/dashboard/share/ramaera`} passHref>
@@ -567,7 +567,41 @@ function SidebarMenu() {
                 </List>
               ) : (
                 ''
-              )}
+              )} */}
+
+              <ListItem component="div">
+                <NextLink href="/dashboard/share" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/dashboard/share' ? 'active' : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/dashboard/share' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/dashboard/share' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    Shares
+                  </Button>
+                </NextLink>
+              </ListItem>
               <ListItem component="div">
                 <NextLink href="/settings" passHref>
                   <Button
