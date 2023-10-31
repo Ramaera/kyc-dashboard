@@ -34,25 +34,29 @@ function index() {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <Hidden smDown>
-                    <TableCell>Investment</TableCell>
-                    <TableCell style={{ padding: '0 0 0 2rem' }}>
-                      Allotted Share
-                    </TableCell>
-                    <TableCell>Status</TableCell>
-                  </Hidden>
+                  <TableCell>Investment</TableCell>
+                  <TableCell>Allotted Share</TableCell>
+                  <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {user?.shareHoldingType?.map((item, index) => (
                   <TableRow>
-                    <Hidden smDown>
-                      <TableCell> {item.InvestmentType}</TableCell>
-                      <TableCell style={{ padding: '0 0 0 2rem' }}>
-                        {item.allotedShare ? item.allotedShare : 'Null'}
-                      </TableCell>
-                      <TableCell>{item.status}</TableCell>
-                    </Hidden>
+                    <TableCell>
+                      {item?.InvestmentType === 'ADVANCE_KYC_SHARE'
+                        ? '30% Net Profit Sharing Share'
+                        : item?.InvestmentType === 'COMMON_KYC_SHARE'
+                        ? 'Basic Subscriber'
+                        : item?.InvestmentType}
+                    </TableCell>
+                    <TableCell>
+                      {item?.allotedShare ? item?.allotedShare : 'Null'}
+                    </TableCell>
+                    <TableCell>
+                      {item?.status === 'NOT_ALLOTED_YET'
+                        ? 'Not Allotted Yet'
+                        : item?.status}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
