@@ -321,7 +321,30 @@ query($agencyCode: String!) {
     updatedAt
   }
 }`);
+export const VERIFYREFERRAL = gql(`
+  mutation VerifyReferralId($ReferralCode:string){
+    VerifyReferralId(data:{ReferralCode:$ReferralCode}){
+      name
+      pw_id
+      kycAgency{
+        agencyCode
+      }
+    }
 
+)`);
+
+// export const LOGIN = gql(`
+// mutation AuthUser($pw_id:String!,$password:String!) {
+//   login(data: { pw_id:$pw_id, password:$password}) {
+//     accessToken
+//     user{
+//      createdAt
+//      pw_id
+//     }
+
+//     refreshToken
+//   }
+// }`);
 /* export const GET_ALL_AGENCY_USERS = gql(`
 query($agencyCode: String!) {
   GetAllKycAgencyUser(agencyCode: $agencyCode) {
