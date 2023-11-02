@@ -321,8 +321,9 @@ query($agencyCode: String!) {
     updatedAt
   }
 }`);
+
 export const VERIFYREFERRAL = gql(`
-  mutation VerifyReferralId($ReferralCode:string){
+  mutation VerifyReferralId($ReferralCode:String!){
     VerifyReferralId(data:{ReferralCode:$ReferralCode}){
       name
       pw_id
@@ -330,57 +331,4 @@ export const VERIFYREFERRAL = gql(`
         agencyCode
       }
     }
-
-)`);
-
-// export const LOGIN = gql(`
-// mutation AuthUser($pw_id:String!,$password:String!) {
-//   login(data: { pw_id:$pw_id, password:$password}) {
-//     accessToken
-//     user{
-//      createdAt
-//      pw_id
-//     }
-
-//     refreshToken
-//   }
-// }`);
-/* export const GET_ALL_AGENCY_USERS = gql(`
-query($agencyCode: String!) {
-  GetAllKycAgencyUser(agencyCode: $agencyCode) {
-    user {
-      alternate_mobile_number
-      createdAt
-      date_of_birth
-      demat_account
-      membership
-      documents {
-        createdAt
-    updatedAt
-        id
-        title
-        url
-        userId
-        status
-        amount
-      }
-      nominee {
-        id
-        name
-        relationship
-      }
-      email
-      father_or_husband_name
-      id
-      kyc
-      mobile_number
-      name
-      pw_id
-      rm_id
-      updatedAt
-    }
-  }
-}
-
-  `);
- */
+  }`);

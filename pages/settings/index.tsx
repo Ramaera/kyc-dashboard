@@ -24,23 +24,31 @@ function index() {
   const theme = useTheme();
   const [currentButton, setCurrentButton] = useState('');
   const [supportText, setSupportText] = useState('');
-  const [verifyReferal] = useMutation[VERIFYREFERRAL];
+  const [sponser, setSponser] = useState({
+    sponserName: '',
+    sponserPWID: '',
+    sponserAgencyCode: ''
+  });
+  const [verifyReferal] = useMutation(VERIFYREFERRAL);
 
   const user = useAppSelector((state) => state.user?.data);
-
   const checkSponser = async () => {
-    const resp = verifyReferal({
+    const resp = await verifyReferal({
       variables: {
         ReferralCode: user?.referralAgencyCode
       }
     });
 
-    console.log('resp', resp);
+    setSponser({
+      sponserName: resp?.data?.VerifyReferralId.name,
+      sponserPWID: resp?.data?.VerifyReferralId.pw_id,
+      sponserAgencyCode: resp?.data?.VerifyReferralId.kycAgency
+    });
   };
 
   useEffect(() => {
     checkSponser();
-  });
+  }, []);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -162,9 +170,20 @@ function index() {
               }
             }}
           >
-            <Typography>Name</Typography>
-            <Typography>Pwid</Typography>
-            <Typography>Agency Code</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: 18
+              }}
+            >
+              <Typography sx={{}}>Name: {sponser.sponserName}</Typography>
+              <Typography>PW Id: {sponser.sponserPWID}</Typography>
+              <Typography>
+                Agency Code:{' '}
+                {sponser.sponserAgencyCode ? sponser.sponserAgencyCode : 'Null'}
+              </Typography>
+            </Box>
           </Box>
         </Card>
       </Container>
