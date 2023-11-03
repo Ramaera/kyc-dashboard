@@ -332,3 +332,29 @@ export const VERIFYREFERRAL = gql(`
       }
     }
   }`);
+
+export const SHARE_HOLDER = gql(`
+  query($skip: Int!, $take: Int!, $searchProject:String!){
+    searchShareHolding(skip: $skip, take: $take, input:{searchProject:"Hajipur"}){
+      status
+      InvestmentType
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const SHARE_HOLDER_MEMBERSHIP = gql(`
+  query($searchMembership:Membership!){
+    searchShareHolding(input:{searchMembership:$searchMembership}){
+      status
+      InvestmentType
+      user{
+        pw_id
+      }
+    }
+  }
+  `);
