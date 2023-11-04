@@ -142,6 +142,11 @@ query GetUser {
       DscExpiryDate
       DscCreatedDate
     }
+    shareHoldingType{
+      InvestmentType
+      allotedShare
+      status
+    }
     documents {
       createdAt
       updatedAt
@@ -317,42 +322,13 @@ query($agencyCode: String!) {
   }
 }`);
 
-/* export const GET_ALL_AGENCY_USERS = gql(`
-query($agencyCode: String!) {
-  GetAllKycAgencyUser(agencyCode: $agencyCode) {
-    user {
-      alternate_mobile_number
-      createdAt
-      date_of_birth
-      demat_account
-      membership
-      documents {
-        createdAt
-    updatedAt
-        id
-        title
-        url
-        userId
-        status
-        amount
-      }
-      nominee {
-        id
-        name
-        relationship
-      }
-      email
-      father_or_husband_name
-      id
-      kyc
-      mobile_number
+export const VERIFYREFERRAL = gql(`
+  mutation VerifyReferralId($ReferralCode:String!){
+    VerifyReferralId(data:{ReferralCode:$ReferralCode}){
       name
       pw_id
-      rm_id
-      updatedAt
+      kycAgency{
+        agencyCode
+      }
     }
-  }
-}
-
-  `);
- */
+  }`);

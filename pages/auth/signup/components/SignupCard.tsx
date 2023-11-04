@@ -40,7 +40,7 @@ export default function SignupCard() {
   // const [referral, setReferral] = React.useState('');
   const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
-  const [validPWID, setValidPWID] = React.useState<boolean>(false);
+  const [validPWID, setValidPWID] = React.useState<boolean>(true);
   const [isAgentVerified, setAgentVerified] = React.useState<boolean>(true);
   const [isLoading, setLoading] = React.useState(false);
   const [agentName, setAgentName] = React.useState('');
@@ -49,32 +49,32 @@ export default function SignupCard() {
     variables: { AgencyCode: debouncedReferral }
   });
 
-  const checkPWID = (text: any) => {
-    const postData = {
-      Reff_Code: text
-    };
+  // const checkPWID = (text: any) => {
+  //   const postData = {
+  //     Reff_Code: text
+  //   };
 
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+  //   const options = {
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   };
 
-    axios
-      .post('https://api.ramaera.com/api/KYC', postData, options)
-      .then((res) => {
-        setValidPWID(
-          res.data[0]['AC_Status'] === 'InActive'
-            ? false
-            : res.data[0]['AC_Status'] === 'Active'
-            ? true
-            : false
-        );
-      })
-      .catch((err) => {
-        console.log('ERROR: ====', err);
-      });
-  };
+  //   axios
+  //     .post('https://api.ramaera.com/api/KYC', postData, options)
+  //     .then((res) => {
+  //       setValidPWID(
+  //         res.data[0]['AC_Status'] === 'InActive'
+  //           ? false
+  //           : res.data[0]['AC_Status'] === 'Active'
+  //           ? true
+  //           : false
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       console.log('ERROR: ====', err);
+  //     });
+  // };
 
   const validateForm = () => {
     if (aadhaarNumber.length !== 12) {
@@ -212,7 +212,7 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              checkPWID(e.target.value);
+              // checkPWID(e.target.value);
             }}
           />
 
@@ -315,7 +315,7 @@ export default function SignupCard() {
                 handleClickOpen();
               }
             }}
-            disabled={isLoading || !isAgentVerified}
+            disabled={isLoading}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
