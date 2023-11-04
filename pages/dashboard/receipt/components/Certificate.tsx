@@ -46,7 +46,7 @@ const Certificate = ({
           [theme.breakpoints.down('sm')]: {
             transformOrigin: 'left top',
             scale: '0.2',
-            height: '200px'
+            height: '210px'
           }
         }}
       >
