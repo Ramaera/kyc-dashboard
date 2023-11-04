@@ -1,5 +1,6 @@
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { setOrUpdateAgencyUsersFilters } from '@/state/slice/filtersSlice';
 import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
@@ -24,9 +25,9 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import sortObjectsArray from 'sort-objects-array';
 import { useDebounce } from 'usehooks-ts';
 
@@ -136,6 +137,10 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
+  let persistedFilters = useSelector(
+    (state: any) => state.filters.agencyUsersFilters
+  );
+  const dispatch = useDispatch();
   const tableRefAll = useRef(null);
   const tableRef = useRef(null);
 
@@ -295,6 +300,13 @@ const UserTable = () => {
     setUsersList(sorted);
     setSortByPWID(!sortByPWID);
   };
+
+  useEffect(() => {
+    setFilters(persistedFilters);
+  }, []);
+  useEffect(() => {
+    dispatch(setOrUpdateAgencyUsersFilters(filters));
+  }, [filters]);
 
   return (
     <>
