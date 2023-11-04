@@ -642,7 +642,7 @@ const UserTable = () => {
             onRowsPerPageChange={handleLimitChange}
             page={page}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 20, 50, 200]}
+            rowsPerPageOptions={[5, 20, 50, 200, 1000]}
           />
           <DownloadTableExcel
             filename={'data'}
