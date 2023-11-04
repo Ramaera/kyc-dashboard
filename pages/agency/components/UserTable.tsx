@@ -660,13 +660,12 @@ const UserTable = () => {
               })}
             </TableBody>
           </Table>
-          <Table sx={{ display: 'none' }} ref={tableRefAll}>
+          {/* <Table sx={{ display: 'none' }} ref={tableRefAll}> 
             <TableHead>
               <TableRow>
                 <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
                   Name{sortByName ? '⬇' : '⬆'}
                 </TableCell>
-                {/* <TableCell align="right">KYC Score</TableCell> */}
                 <TableCell sx={{ cursor: 'pointer' }} onClick={sortPWID}>
                   PWID{sortByPWID ? '⬇' : '⬆'}
                 </TableCell>
@@ -685,16 +684,7 @@ const UserTable = () => {
                 return (
                   <Link href={'agency/' + user?.id}>
                     <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
-                      {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isUserSelected}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                          handleSelectOneUser(event, user?.id)
-                        }
-                        value={isUserSelected}
-                      />
-                    </TableCell> */}
+                    
 
                       <TableCell>
                         <Typography
@@ -828,7 +818,7 @@ const UserTable = () => {
                 );
               })}
             </TableBody>
-          </Table>
+          </Table> */}
         </TableContainer>
         <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
           <TablePagination
@@ -849,13 +839,13 @@ const UserTable = () => {
               Download Current Data
             </LoadingButton>
           </DownloadTableExcel>
-          <DownloadTableExcel
+          {/*  <DownloadTableExcel
             filename={'data'}
             sheet={'data'}
             currentTableRef={tableRefAll.current}
           >
             <LoadingButton variant="contained">Download All Data</LoadingButton>
-          </DownloadTableExcel>
+          </DownloadTableExcel> */}
         </Box>
       </Card>
     </>
