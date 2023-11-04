@@ -339,6 +339,20 @@ const UserTable = () => {
                   }}
                 />
               </Box>
+              <Box>
+                <LoadingButton
+                  sx={{ py: '14px' }}
+                  variant="contained"
+                  disabled={
+                    !filters?.membership && !filters?.status && !filters?.demat
+                  }
+                  onClick={() => {
+                    setFilters({});
+                  }}
+                >
+                  Clear Filters
+                </LoadingButton>
+              </Box>
               <Box
                 sx={{
                   display: 'flex',
