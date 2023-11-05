@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardHeader,
+  Dialog,
   Divider,
   FormControl,
   InputLabel,
@@ -32,6 +33,7 @@ import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
+import AllUserTable from './AllUserTable';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -121,6 +123,7 @@ const UserTable = () => {
   const [page, setPage] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(100);
+  const [allData, setAllData] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [kycList, setKycList] = useState<string | null>();
   const [currentSelectedButton, setCurrentSelectedButton] =
@@ -664,6 +667,19 @@ const UserTable = () => {
                   Download Current Data
                 </LoadingButton>
               </DownloadTableExcel>
+              <LoadingButton
+                variant="contained"
+                onClick={() => {
+                  setAllData(true);
+                }}
+              >
+                Load All Data
+              </LoadingButton>
+              {allData && (
+                <Dialog open={true} onClose={() => setAllData(false)}>
+                  <AllUserTable />
+                </Dialog>
+              )}
               {/*   <DownloadTableExcel
             filename={'data'}
             sheet={'data'}
