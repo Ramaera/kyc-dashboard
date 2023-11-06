@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 // import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
-import { CHECK_AGENCY } from '@/apollo/queries/updateUser';
+import { CHECK_REFERRAL_CODE } from '@/apollo/queries/updateUser';
 
 export default function SignupCard() {
   const router = useRouter();
@@ -45,9 +45,12 @@ export default function SignupCard() {
   const [isLoading, setLoading] = React.useState(false);
   const [agentName, setAgentName] = React.useState('');
   // const [allAgents, setAllAgents] = React.useState([]);
-  const [checkAgency, { loading, error, data }] = useLazyQuery(CHECK_AGENCY, {
-    variables: { AgencyCode: debouncedReferral }
-  });
+  const [checkAgency, { loading, error, data }] = useLazyQuery(
+    CHECK_REFERRAL_CODE,
+    {
+      variables: { referralCode: debouncedReferral }
+    }
+  );
 
   // const checkPWID = (text: any) => {
   //   const postData = {
@@ -77,13 +80,20 @@ export default function SignupCard() {
   // };
 
   const validateForm = () => {
-    if (aadhaarNumber.length !== 12) {
-      toast.error('Enter Valid Aadhaar Number!');
+    if (!PWId) {
+      toast.error('PW ID is not valid!');
 
       return;
     }
-    if (!PWId) {
-      toast.error('PW ID is not valid!');
+
+    if (!isAgentVerified) {
+      toast.error('Enter correct Referral ID!');
+
+      return;
+    }
+
+    if (!aadhaarNumber || aadhaarNumber.length !== 12) {
+      toast.error('Enter Valid Aadhaar Number!');
 
       return;
     }
@@ -99,7 +109,7 @@ export default function SignupCard() {
     }
     return true;
   };
-
+  console.log('isAgentVerified', isAgentVerified);
   const handleSubmit = async () => {
     const isValid = validateForm();
     setLoading(true);
@@ -159,11 +169,12 @@ export default function SignupCard() {
     checkAgency();
   };
   React.useEffect(() => {
-    if (data?.findAgency?.user?.name) {
-      setAgentName(data?.findAgency?.user?.name);
+    if (data?.verifyReferralId?.name) {
+      setAgentName(data?.verifyReferralId?.name);
       setAgentVerified(true);
     } else {
       setAgentName('');
+      setAgentVerified(false);
     }
   }, [data]);
 
@@ -177,7 +188,7 @@ export default function SignupCard() {
     checkIfAgentExists();
   }, [referral]);
   React.useEffect(() => {
-    setAgentVerified(true);
+    // setAgentVerified(true);
   }, [agentName]);
 
   return (
@@ -208,7 +219,7 @@ export default function SignupCard() {
             margin="normal"
             required
             fullWidth
-            label="Refferal Id"
+            label="Referral Id"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
@@ -236,13 +247,13 @@ export default function SignupCard() {
             <FormControlLabel
               value="ADVANCE"
               control={<Radio />}
-              label="Advance (Profit Sharing Partner)"
+              label="30% Net Profit Sharing Partner"
             />
           </RadioGroup>
           <TextField
             margin="normal"
             fullWidth
-            label="Agency Identification Number"
+            label="Referral Identification Number"
             onChange={(e) => {
               setReferral(e.target.value);
               if (e.target.value.length > 0) {
@@ -343,17 +354,19 @@ export default function SignupCard() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Are you susre?'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {'Verify Your Referral ID !'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            You have not added any Referral Code
+            You have not added any Referral ID Code
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Dismiss</Button>
-          <Button onClick={handleStatus} autoFocus>
+          <Button onClick={handleClose}>OK</Button>
+          {/* <Button onClick={handleStatus} autoFocus>
             Create Account
-          </Button>
+          </Button> */}
         </DialogActions>
       </Dialog>
       <Toaster />
