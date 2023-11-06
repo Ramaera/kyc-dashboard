@@ -635,7 +635,7 @@ function SidebarMenu() {
                       </span>
                     }
                   >
-                    Shares
+                    SHARES
                   </Button>
                 </NextLink>
               </ListItem>

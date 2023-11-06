@@ -1,5 +1,7 @@
 import variables from '@/config/variables';
 import { User } from '@/models/user';
+import { setOrUpdateAgencyUsersFilters } from '@/state/slice/filtersSlice';
+import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
   Box,
@@ -23,8 +25,9 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useDispatch, useSelector } from 'react-redux';
 import sortObjectsArray from 'sort-objects-array';
 import { useDebounce } from 'usehooks-ts';
 
@@ -134,6 +137,13 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
+  let persistedFilters = useSelector(
+    (state: any) => state.filters.agencyUsersFilters
+  );
+  const dispatch = useDispatch();
+  const tableRefAll = useRef(null);
+  const tableRef = useRef(null);
+
   const theme = useTheme();
   const [usersList, setUsersList] = useState(
     useSelector((state: any) => state.allUsers.allTheUsers)
@@ -291,6 +301,13 @@ const UserTable = () => {
     setSortByPWID(!sortByPWID);
   };
 
+  useEffect(() => {
+    setFilters(persistedFilters);
+  }, []);
+  useEffect(() => {
+    dispatch(setOrUpdateAgencyUsersFilters(filters));
+  }, [filters]);
+
   return (
     <>
       <Card>
@@ -321,6 +338,20 @@ const UserTable = () => {
                     setSearchText(e.target.value);
                   }}
                 />
+              </Box>
+              <Box>
+                <LoadingButton
+                  sx={{ py: '14px' }}
+                  variant="contained"
+                  disabled={
+                    !filters?.membership && !filters?.status && !filters?.demat
+                  }
+                  onClick={() => {
+                    setFilters({});
+                  }}
+                >
+                  Clear Filters
+                </LoadingButton>
               </Box>
               <Box
                 sx={{
@@ -394,7 +425,7 @@ const UserTable = () => {
 
         <Divider />
         <TableContainer>
-          <Table>
+          <Table ref={tableRef}>
             <TableHead>
               <TableRow>
                 <TableCell>Photo</TableCell>
@@ -629,8 +660,167 @@ const UserTable = () => {
               })}
             </TableBody>
           </Table>
+          {/* <Table sx={{ display: 'none' }} ref={tableRefAll}> 
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
+                  Name{sortByName ? '⬇' : '⬆'}
+                </TableCell>
+                <TableCell sx={{ cursor: 'pointer' }} onClick={sortPWID}>
+                  PWID{sortByPWID ? '⬇' : '⬆'}
+                </TableCell>
+                <TableCell>RMID</TableCell>
+                <TableCell>KYC Status</TableCell>
+                <TableCell>Projects Enrolled</TableCell>
+                <TableCell>Project Enrolled Amount</TableCell>
+                <TableCell>Demat Status</TableCell>
+                <TableCell>Share Holder Type</TableCell>
+                <TableCell>Mobile No.</TableCell>
+                <TableCell>Email</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredUsers.map((user) => {
+                return (
+                  <Link href={'agency/' + user?.id}>
+                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
+                    
+
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          width="120px"
+                          gutterBottom
+                          noWrap
+                        >
+                          {user?.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          variant="body1"
+                          width="100px"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {user?.pw_id}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {user?.rm_id}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          style={{
+                            color:
+                              user?.kyc === 'APPROVED'
+                                ? 'green'
+                                : user?.kyc === 'REJECTED'
+                                ? 'red'
+                                : user?.kyc === 'ONGOING'
+                                ? 'orange'
+                                : 'white'
+                          }}
+                          variant="body1"
+                          fontWeight="bold"
+                          width="150px"
+                          color="text.success"
+                          gutterBottom
+                          noWrap
+                        >
+                          {user?.kyc}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {numberOfProjectsEnrolledIn(user.documents)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {checkProjectPaymentAmount(user.documents)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          width="120px"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          noWrap
+                        >
+                          {checkDemat(user) || (
+                            <span style={{ color: 'red' }}>NOT RECIEVED</span>
+                          )}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          variant="body1"
+                          textAlign="center"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width="150px"
+                          noWrap
+                        >
+                          {user?.membership}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width="100px"
+                          noWrap
+                        >
+                          {user?.mobile_number}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {user?.email}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </Link>
+                );
+              })}
+            </TableBody>
+          </Table> */}
         </TableContainer>
-        <Box p={2}>
+        <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
           <TablePagination
             component="div"
             count={filteredUsers.length}
@@ -638,8 +828,24 @@ const UserTable = () => {
             onRowsPerPageChange={handleLimitChange}
             page={page}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 20, 50, 200]}
+            rowsPerPageOptions={[5, 20, 50, 200, 1000]}
           />
+          <DownloadTableExcel
+            filename={'data'}
+            sheet={'data'}
+            currentTableRef={tableRef.current}
+          >
+            <LoadingButton variant="contained">
+              Download Current Data
+            </LoadingButton>
+          </DownloadTableExcel>
+          {/*  <DownloadTableExcel
+            filename={'data'}
+            sheet={'data'}
+            currentTableRef={tableRefAll.current}
+          >
+            <LoadingButton variant="contained">Download All Data</LoadingButton>
+          </DownloadTableExcel> */}
         </Box>
       </Card>
     </>

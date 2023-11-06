@@ -38,8 +38,9 @@ function index() {
               doc.title === documentsConfig.payment_proof &&
               (doc.amount === 2000 || doc.amount === 1000)
                 ? 'basic'
-                : doc.title === documentsConfig.payment_proof &&
-                  (doc.amount === 200000 || doc.amount === 100000)
+                : doc.title.includes('payment_proof') &&
+                  !doc.title.includes('agency') &&
+                  doc.amount > 2000
                 ? 'advance'
                 : doc.title.includes('project') && 'project'
             }
