@@ -45,7 +45,7 @@ const applyFilters = (users: shareHoldingType[], filters: Filters): any => {
   return users.filter((user) => {
     let matches = true;
 
-    if (user?.status !== filters.status) {
+    if ((filters?.status && user?.status) !== filters.status) {
       matches = false;
     }
 
@@ -105,7 +105,7 @@ const UserTable = () => {
   });
 
   let _allShareHolder = useSelector(
-    (state: any) => state.allShareHolder.allNumberShareHolder
+    (state: any) => state.allShareHolder?.allNumberShareHolder
   );
 
   let _usersList = [];
@@ -147,10 +147,10 @@ const UserTable = () => {
 
   useEffect(() => {
     setNumbers({
-      totalShareHolder: _allShareHolder.TotalShareholders,
-      totalAdvance: _allShareHolder.TotalAdvanceShareHolder,
-      totalBasic: _allShareHolder.TotalBasicShareHolder,
-      totalHajipur: _allShareHolder.TotalHajipurShareHolder
+      totalShareHolder: _allShareHolder?.TotalShareholders,
+      totalAdvance: _allShareHolder?.TotalAdvanceShareHolder,
+      totalBasic: _allShareHolder?.TotalBasicShareHolder,
+      totalHajipur: _allShareHolder?.TotalHajipurShareHolder
     });
   }, [_allShareHolder]);
 
@@ -178,13 +178,15 @@ const UserTable = () => {
   const filteredUsersTotal = applyFilters(totalShareUserList, filters);
 
   // const filteredUsersTotal = totalShareUserList;
-  const filteredUsersAll = allShareUserList;
-  const filteredUsersHajipur = usersHajipurList;
+  const filteredUsersAll = applyFilters(allShareUserList, filters);
+  const filteredUsersHajipur = applyFilters(usersHajipurList, filters);
 
   useEffect(() => {
     setLimit(100);
     setSearchText('');
     setSearchTextInput('');
+    setCurrentPage(1);
+    filters.status = null;
   }, [currentSelectedButton]);
 
   const statusOptions = [
@@ -210,6 +212,9 @@ const UserTable = () => {
     let value = null;
     if (e !== 'all') {
       value = e;
+      setLimit(5000);
+    } else {
+      setLimit(100);
     }
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -311,7 +316,6 @@ const UserTable = () => {
             </Box>
           </Box>
         </Box>
-
         <CardHeader
           sx={{
             [theme.breakpoints.down('sm')]: {
@@ -328,7 +332,7 @@ const UserTable = () => {
                 }
               }}
             >
-              <Box
+              {/* <Box
                 display={'flex'}
                 gap={'10px'}
                 sx={{
@@ -355,7 +359,7 @@ const UserTable = () => {
                 >
                   Search
                 </Button>
-              </Box>
+              </Box> */}
               <Box
                 display={'flex'}
                 gap={'10px'}
@@ -371,7 +375,9 @@ const UserTable = () => {
                   <InputLabel>Status</InputLabel>
                   <Select
                     value={filters.status || 'all'}
-                    onChange={(e) => handleStatusChange(e.target.value)}
+                    onChange={(e) => {
+                      handleStatusChange(e.target.value);
+                    }}
                     label="Status"
                     autoWidth
                   >
@@ -387,7 +393,6 @@ const UserTable = () => {
           }
           title={matches ? 'SHARE HOLDER' : ''}
         />
-
         <Divider />
 
         <Box
@@ -397,48 +402,75 @@ const UserTable = () => {
           justifyContent={'center'}
           alignItems={'center'}
         >
-          <Stack spacing={2}>
-            <Pagination
-              count={Math.ceil(
-                (currentSelectedButton.includes('totalShareHolder') &&
-                  numbers.totalShareHolder / limit) ||
-                  (currentSelectedButton.includes('Advance') &&
-                    numbers.totalAdvance / limit) ||
-                  (currentSelectedButton.includes('Basic') &&
-                    numbers.totalBasic / limit) ||
-                  (currentSelectedButton.includes('Hajipur') &&
-                    numbers.totalHajipur / limit)
+          {filters.status === null ? (
+            <Box
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+            >
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(
+                    (currentSelectedButton.includes('totalShareHolder') &&
+                      numbers.totalShareHolder / limit) ||
+                      (currentSelectedButton.includes('Advance') &&
+                        numbers.totalAdvance / limit) ||
+                      (currentSelectedButton.includes('Basic') &&
+                        numbers.totalBasic / limit) ||
+                      (currentSelectedButton.includes('Hajipur') &&
+                        numbers.totalHajipur / limit)
+                  )}
+                  page={currentPage}
+                  color="primary"
+                  onChange={(event, selectedPage) => {
+                    setCurrentPage(selectedPage);
+                    setPage(selectedPage - 1);
+                    setSearchText('');
+                    setSearchTextInput('');
+                  }}
+                />
+              </Stack>
+              <Box width={80} display={'flex'} gap={'10px'}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Rows</InputLabel>
+                  <Select
+                    value={limit}
+                    onChange={(e) => {
+                      if (e.target.value === 5000) {
+                        setCurrentPage(1);
+                      }
+                      setLimit(e.target.value);
+                    }}
+                    label="Rows"
+                    fullWidth
+                  >
+                    <MenuItem value={20}>20</MenuItem>
+                    <MenuItem value={100}>100</MenuItem>
+                    <MenuItem value={5000}>All</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box>
+          ) : (
+            <>
+              {currentSelectedButton.includes('totalShareHolder') && (
+                <Box fontWeight="bold" color="text.primary">
+                  Number of Share Holders: {filteredUsersTotal.length}
+                </Box>
               )}
-              page={currentPage}
-              color="primary"
-              onChange={(event, selectedPage) => {
-                setCurrentPage(selectedPage);
-                setPage(selectedPage - 1);
-                setSearchText('');
-                setSearchTextInput('');
-              }}
-            />
-          </Stack>
-          <Box width={80} display={'flex'} gap={'10px'}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Rows</InputLabel>
-              <Select
-                value={limit}
-                onChange={(e) => {
-                  if (e.target.value === 5000) {
-                    setCurrentPage(1);
-                  }
-                  setLimit(e.target.value);
-                }}
-                label="Rows"
-                fullWidth
-              >
-                <MenuItem value={20}>20</MenuItem>
-                <MenuItem value={100}>100</MenuItem>
-                <MenuItem value={5000}>All</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+              {(currentSelectedButton.includes('totalAdvance') ||
+                currentSelectedButton.includes('totalBasic')) && (
+                <Box fontWeight="bold" color="text.primary">
+                  Number of Share Holders: {filteredUsersAll.length}
+                </Box>
+              )}
+              {currentSelectedButton.includes('totalHajipur') && (
+                <Box fontWeight="bold" color="text.primary">
+                  Number of Share Holders: {filteredUsersHajipur.length}
+                </Box>
+              )}
+            </>
+          )}
         </Box>
 
         {/* TOTAL SHARE HOLDER */}
@@ -557,7 +589,6 @@ const UserTable = () => {
             </Table>
           </TableContainer>
         )}
-
         {/* =========== BASIC AND ADVANCE  ===================*/}
         {(currentSelectedButton.includes('totalAdvance') ||
           currentSelectedButton.includes('totalBasic')) && (
@@ -678,7 +709,6 @@ const UserTable = () => {
             </Table>
           </TableContainer>
         )}
-
         {/* HAJIPUR */}
         {currentSelectedButton.includes('totalHajipur') && (
           <TableContainer>
@@ -795,7 +825,6 @@ const UserTable = () => {
             </Table>
           </TableContainer>
         )}
-
         <Toaster position="bottom-center" reverseOrder={false} />
       </Card>
     </>
