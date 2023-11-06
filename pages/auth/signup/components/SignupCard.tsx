@@ -52,32 +52,32 @@ export default function SignupCard() {
     }
   );
 
-  // const checkPWID = (text: any) => {
-  //   const postData = {
-  //     Reff_Code: text
-  //   };
+  const checkPWID = (text: any) => {
+    const postData = {
+      Reff_Code: text
+    };
 
-  //   const options = {
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   };
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
 
-  //   axios
-  //     .post('https://api.ramaera.com/api/KYC', postData, options)
-  //     .then((res) => {
-  //       setValidPWID(
-  //         res.data[0]['AC_Status'] === 'InActive'
-  //           ? false
-  //           : res.data[0]['AC_Status'] === 'Active'
-  //           ? true
-  //           : false
-  //       );
-  //     })
-  //     .catch((err) => {
-  //       console.log('ERROR: ====', err);
-  //     });
-  // };
+    axios
+      .post('https://api.ramaera.com/api/KYC', postData, options)
+      .then((res) => {
+        setValidPWID(
+          res.data[0]['AC_Status'] === 'InActive'
+            ? false
+            : res.data[0]['AC_Status'] === 'Active'
+            ? true
+            : false
+        );
+      })
+      .catch((err) => {
+        console.log('ERROR: ====', err);
+      });
+  };
 
   const validateForm = () => {
     if (!PWId) {
@@ -223,9 +223,24 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              // checkPWID(e.target.value);
+              //  checkPWID(e.target.value);
+            }}
+            InputProps={{
+              endAdornment: (
+                <LoadingButton
+                  onClick={() => {
+                    checkPWID(PWId);
+                  }}
+                  // disabled={!referral || loading}
+                  variant="contained"
+                >
+                  Verify
+                </LoadingButton>
+              )
             }}
           />
+
+          {/* <Typography>{'PWID : ' + validPWID}</Typography> */}
 
           <Typography
             color="text.secondary"
@@ -286,7 +301,6 @@ export default function SignupCard() {
             required
             onChange={(e) => {
               setAadhaarNumber(e.target.value);
-              //checkPWID(e.target.value);
             }}
           />
           <TextField
