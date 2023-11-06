@@ -17,6 +17,7 @@ export interface User {
   updatedAt?: String;
   membership?: Membership;
   documents?: DocumentType;
+  shareHoldingType?: shareHoldingType;
   Address?: String;
   aadharCardNumber?: String;
   panCardNumber?: String;
@@ -32,6 +33,13 @@ export type DocumentType = {
   amount: String;
   status: String;
 };
+
+export type shareHoldingType = {
+  status: String;
+  InvestmentType: String;
+  allotedShare: String;
+};
+
 enum Membership {
   BASIC = 'BASIC',
   ADVANCE = 'ADVANCE'
