@@ -324,11 +324,11 @@ query($agencyCode: String!) {
 
 export const VERIFYREFERRAL = gql(`
   mutation VerifyReferralId($ReferralCode:String!){
-    VerifyReferralId(data:{ReferralCode:$ReferralCode}){
-      name
+    getSponserDetails(data:{ReferralCode:$ReferralCode}){
+      SponserDetails {
       pw_id
-      kycAgency{
-        agencyCode
-      }
+      name
+    }
+    agencyCode
     }
   }`);
