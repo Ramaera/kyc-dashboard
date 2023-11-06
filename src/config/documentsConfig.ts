@@ -211,6 +211,28 @@ export default {
     ]
   },
 
+  additional_demat_documents: {
+    name: 'Additional Demat Document',
+    id: 'additional_demat_documents',
+    items: [
+      {
+        id: 'demat_document_2',
+        name: 'Demat Document'
+      },
+      {
+        id: 'demat_document_3',
+        name: 'Demat Document'
+      },
+      {
+        id: 'demat_document_4',
+        name: 'Demat Document'
+      },
+      {
+        id: 'demat_document_5',
+        name: 'Demat Document'
+      }
+    ]
+  },
   project_payment: {
     name: 'Project Payment',
     id: 'project_payment',

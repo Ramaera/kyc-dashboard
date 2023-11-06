@@ -110,6 +110,15 @@ query($AgencyCode:String!){
   }
 }`);
 
+export const CHECK_PROJECT = gql(`
+query($UserID: String!) {
+  projectEnrolled(id: $UserID) {
+    projectName
+    totalInvestedAmountinProject
+  }
+}
+`);
+
 export const GET_NUMBERS = gql(`
 query{
   getAllUsersCount{

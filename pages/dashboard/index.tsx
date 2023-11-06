@@ -40,7 +40,7 @@ const TabsContainerWrapper = styled(Box)(
 function DashboardTasks() {
   // const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
-  const [open, setOpen] = useState<boolean>(true);
+  // const [open, setOpen] = useState<boolean>(true);
 
   const upgradeToAdvance = useSelector(
     (state: any) => state.foundUser.toAdvance
@@ -72,9 +72,9 @@ function DashboardTasks() {
     }
   }, [upgradeToAdvance]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   // useEffect(() => {
   //   var countDownDate = new Date('Oct 21, 2023 14:30:00').getTime();
   //   var now = new Date().getTime();
@@ -82,9 +82,9 @@ function DashboardTasks() {
   //     setOpen(true);
   //   }
   // }, []);
-  setTimeout(function () {
-    setOpen(false);
-  }, 10000);
+  // setTimeout(function () {
+  //   setOpen(false);
+  // }, 10000);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -167,7 +167,7 @@ function DashboardTasks() {
             )}
           </Grid>
         </Card>
-        <Dialog onClose={handleClose} open={open}>
+        {/*     <Dialog onClose={handleClose} open={open}>
           <Box zIndex={1000}></Box>
 
           <Grid component={Paper} elevation={6} square>
@@ -184,7 +184,7 @@ function DashboardTasks() {
             >
               <Countdown />
 
-              {/* <Button
+             <Button
                 color="error"
                 onClick={handleClose}
                 fullWidth
@@ -192,10 +192,10 @@ function DashboardTasks() {
                 sx={{ mt: 0, mb: 2 }}
               >
                 Cancel
-              </Button> */}
+              </Button> 
             </Box>
           </Grid>
-        </Dialog>
+        </Dialog> */}
       </Container>
       <Footer />
     </ProtectedSSRoute>
