@@ -208,7 +208,7 @@ export default function SignupCard() {
             margin="normal"
             required
             fullWidth
-            label="PlanetWay Refferal Id"
+            label="Refferal Id"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
@@ -242,7 +242,7 @@ export default function SignupCard() {
           <TextField
             margin="normal"
             fullWidth
-            label="Agency Referral Code (optional)"
+            label="Agency Identification Number"
             onChange={(e) => {
               setReferral(e.target.value);
               if (e.target.value.length > 0) {

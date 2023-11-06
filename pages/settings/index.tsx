@@ -32,18 +32,23 @@ function index() {
   const [verifyReferal] = useMutation(VERIFYREFERRAL);
 
   const user = useAppSelector((state) => state.user?.data);
-  const checkSponser = async () => {
-    const resp = await verifyReferal({
-      variables: {
-        ReferralCode: user?.referralAgencyCode
-      }
-    });
 
-    setSponser({
-      sponserName: resp?.data?.VerifyReferralId.name,
-      sponserPWID: resp?.data?.VerifyReferralId.pw_id,
-      sponserAgencyCode: resp?.data?.VerifyReferralId.kycAgency
-    });
+  const checkSponser = async () => {
+    try {
+      const resp = await verifyReferal({
+        variables: {
+          ReferralCode: user?.referralAgencyCode
+        }
+      });
+
+      setSponser({
+        sponserName: resp?.data?.getSponserDetails.SponserDetails.name,
+        sponserPWID: resp?.data?.getSponserDetails.SponserDetails.pw_id,
+        sponserAgencyCode: resp?.data?.getSponserDetails.agencyCode
+      });
+    } catch (err) {
+      console.log('error', err);
+    }
   };
 
   useEffect(() => {
@@ -177,8 +182,8 @@ function index() {
                 fontSize: 18
               }}
             >
-              <Typography sx={{}}>Name: {sponser.sponserName}</Typography>
-              <Typography>PW Id: {sponser.sponserPWID}</Typography>
+              <Typography sx={{}}>Name: {sponser.sponserName} </Typography>
+              <Typography>PW Id: {sponser.sponserPWID} </Typography>
               <Typography>
                 Agency Code:{' '}
                 {sponser.sponserAgencyCode ? sponser.sponserAgencyCode : 'Null'}
