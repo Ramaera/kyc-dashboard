@@ -74,9 +74,7 @@ export default function SignupCard() {
             : false
         );
       })
-      .catch((err) => {
-        console.log('ERROR: ====', err);
-      });
+      .catch((err) => {});
   };
 
   const validateForm = () => {
@@ -109,7 +107,7 @@ export default function SignupCard() {
     }
     return true;
   };
-  console.log('isAgentVerified', isAgentVerified);
+
   const handleSubmit = async () => {
     const isValid = validateForm();
     setLoading(true);
@@ -225,19 +223,19 @@ export default function SignupCard() {
               setPWId(e.target.value);
               //  checkPWID(e.target.value);
             }}
-            InputProps={{
-              endAdornment: (
-                <LoadingButton
-                  onClick={() => {
-                    checkPWID(PWId);
-                  }}
-                  // disabled={!referral || loading}
-                  variant="contained"
-                >
-                  Verify
-                </LoadingButton>
-              )
-            }}
+            // InputProps={{
+            //   endAdornment: (
+            //     <LoadingButton
+            //       onClick={() => {
+            //         checkPWID(PWId);
+            //       }}
+            //       // disabled={!referral || loading}
+            //       variant="contained"
+            //     >
+            //       Verify
+            //     </LoadingButton>
+            //   )
+            // }}
           />
 
           {/* <Typography>{'PWID : ' + validPWID}</Typography> */}
