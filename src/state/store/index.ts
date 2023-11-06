@@ -7,6 +7,7 @@ import userSlice from '../slice/userSlice';
 import allShareHolderSlice from '../slice/allShareHolderSlice';
 
 import filtersSlice from '../slice/filtersSlice';
+import allShareHolderSlice from '../slice/allShareHolderSlice';
 
 
 export const store = configureStore({
@@ -14,11 +15,8 @@ export const store = configureStore({
     user: userSlice,
     allUsers: allUsersSlice,
     foundUser: foundUserSlice,
-
-    allShareHolder: allShareHolderSlice,
-
-    filters: filtersSlice
-
+    filters: filtersSlice,
+    allShareHolder: allShareHolderSlice
   }
 });
 export const persistor = store;

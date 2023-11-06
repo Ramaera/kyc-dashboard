@@ -126,6 +126,12 @@ query($UserID: String!) {
   }
 }
 `);
+export const CHECK_REFERRAL_CODE = gql(`
+query($referralCode:String!){
+  verifyReferralId(referralCode:$referralCode){
+      name
+  }
+}`);
 
 
 export const GET_NUMBERS = gql(`
