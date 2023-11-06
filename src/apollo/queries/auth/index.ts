@@ -332,3 +332,59 @@ export const VERIFYREFERRAL = gql(`
     agencyCode
     }
   }`);
+
+export const SHARE_HOLDER = gql(` 
+  query($skip: Int!, $take: Int!, $input: SearchInvestmentType!){
+    searchShareHolding(skip: $skip, take: $take, input: $input){
+      status
+      InvestmentType
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const SHARE_HOLDER_MEMBERSHIP = gql(`
+query($skip: Int!, $take: Int!, $input: SearchInvestmentType!) {
+  searchShareHolding(skip: $skip, take: $take, input: $input) {
+      status
+      InvestmentType
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const TOTAL_SHARE_HOLDERS = gql(`
+  query ($skip: Int!, $take: Int!){
+    TotalShareholders(skip: $skip, take: $take) {
+      InvestmentType
+      status
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const GET_ALL_SHARE_HOLDER = gql(`
+query{
+  getAllShareHoldersCount{
+    TotalAdvanceShareHolder
+    TotalBasicShareHolder
+    TotalHajipurShareHolder
+    TotalShareholders
+  }
+}
+`);

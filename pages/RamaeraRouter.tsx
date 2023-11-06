@@ -4,12 +4,14 @@ import {
   GET_PROJECT_AMOUNTS,
   GET_RLI
 } from '@/apollo/queries/updateUser';
+import { GET_ALL_SHARE_HOLDER } from '@/apollo/queries/auth';
 import { useAppDispatch } from '@/hooks';
 import {
   setNumbers,
   setTotalAgraAmount,
   setTotalHajipurAmount
 } from '@/state/slice/allUsersSlice';
+import { setAllNumberShareHolder } from '@/state/slice/allShareHolderSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -20,6 +22,7 @@ const RamaeraRouter = ({ children }) => {
   const userResp = useQuery(GetUser);
   const RamaLegalIT = useQuery(GET_RLI);
   const allNumbers = useQuery(GET_NUMBERS);
+  const allShareHolder = useQuery(GET_ALL_SHARE_HOLDER);
   const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
   const agencyCode = useQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
@@ -40,6 +43,11 @@ const RamaeraRouter = ({ children }) => {
   }
   if (allNumbers?.data?.getAllUsersCount) {
     dispatch(setNumbers(allNumbers?.data?.getAllUsersCount));
+  }
+  if (allShareHolder?.data?.getAllShareHoldersCount) {
+    dispatch(
+      setAllNumberShareHolder(allShareHolder?.data?.getAllShareHoldersCount)
+    );
   }
   if (agencyCode?.data?.kycAgency.agencyCode) {
     dispatch(setAgencyCode(agencyCode.data.kycAgency.agencyCode));
