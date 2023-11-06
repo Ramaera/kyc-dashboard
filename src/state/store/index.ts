@@ -3,8 +3,12 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import allUsersSlice from '../slice/allUsersSlice';
 import foundUserSlice from '../slice/foundUserSlice';
 import userSlice from '../slice/userSlice';
+
+import allShareHolderSlice from '../slice/allShareHolderSlice';
+
 import filtersSlice from '../slice/filtersSlice';
 import allShareHolderSlice from '../slice/allShareHolderSlice';
+
 
 export const store = configureStore({
   reducer: {

@@ -74,7 +74,10 @@ export default function SignupCard() {
             : false
         );
       })
+
       .catch((err) => {});
+
+
   };
 
   const validateForm = () => {
@@ -107,7 +110,7 @@ export default function SignupCard() {
     }
     return true;
   };
-
+  console.log('isAgentVerified', isAgentVerified);
   const handleSubmit = async () => {
     const isValid = validateForm();
     setLoading(true);

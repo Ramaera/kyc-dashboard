@@ -110,6 +110,14 @@ query($AgencyCode:String!){
   }
 }`);
 
+
+export const CHECK_REFERRAL_CODE = gql(`
+query($referralCode:String!){
+  verifyReferralId(referralCode:$referralCode){
+      name
+  }
+}`);
+
 export const CHECK_PROJECT = gql(`
 query($UserID: String!) {
   projectEnrolled(id: $UserID) {
@@ -124,6 +132,7 @@ query($referralCode:String!){
       name
   }
 }`);
+
 
 export const GET_NUMBERS = gql(`
 query{
