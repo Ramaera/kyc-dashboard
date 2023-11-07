@@ -76,8 +76,6 @@ export default function SignupCard() {
       })
 
       .catch((err) => {});
-
-
   };
 
   const validateForm = () => {
@@ -122,7 +120,7 @@ export default function SignupCard() {
             membership: membership,
             aadharCardNumber: aadhaarNumber,
             password: password,
-            referralAgencyCode: referral
+            referralAgencyCode: referral.toUpperCase()
           }
         });
 
