@@ -365,9 +365,10 @@ const UserTable = () => {
                 gap={'10px'}
                 sx={{
                   width: '180px',
+
                   [theme.breakpoints.down('sm')]: {
                     flexDirection: 'column',
-                    width: '50vw'
+                    width: '82.5vw'
                   }
                 }}
               >
@@ -395,64 +396,91 @@ const UserTable = () => {
         />
         <Divider />
 
-        <Box
-          p={2}
-          gap={2}
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
-        >
+        <Box>
           {filters.status === null ? (
             <Box
+              p={2}
+              gap={2}
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  gap: 1,
+                  display: 'flex'
+                }
+              }}
             >
-              <Stack spacing={2}>
-                <Pagination
-                  count={Math.ceil(
-                    (currentSelectedButton.includes('totalShareHolder') &&
-                      numbers.totalShareHolder / limit) ||
-                      (currentSelectedButton.includes('Advance') &&
-                        numbers.totalAdvance / limit) ||
-                      (currentSelectedButton.includes('Basic') &&
-                        numbers.totalBasic / limit) ||
-                      (currentSelectedButton.includes('Hajipur') &&
-                        numbers.totalHajipur / limit)
-                  )}
-                  page={currentPage}
-                  color="primary"
-                  onChange={(event, selectedPage) => {
-                    setCurrentPage(selectedPage);
-                    setPage(selectedPage - 1);
-                    setSearchText('');
-                    setSearchTextInput('');
-                  }}
-                />
-              </Stack>
-              <Box width={80} display={'flex'} gap={'10px'}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Rows</InputLabel>
-                  <Select
-                    value={limit}
-                    onChange={(e) => {
-                      if (e.target.value === 5000) {
-                        setCurrentPage(1);
-                      }
-                      setLimit(e.target.value);
+              <Box
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }
+                }}
+              >
+                <Stack spacing={2}>
+                  <Pagination
+                    count={Math.ceil(
+                      (currentSelectedButton.includes('totalShareHolder') &&
+                        numbers.totalShareHolder / limit) ||
+                        (currentSelectedButton.includes('Advance') &&
+                          numbers.totalAdvance / limit) ||
+                        (currentSelectedButton.includes('Basic') &&
+                          numbers.totalBasic / limit) ||
+                        (currentSelectedButton.includes('Hajipur') &&
+                          numbers.totalHajipur / limit)
+                    )}
+                    page={currentPage}
+                    color="primary"
+                    onChange={(event, selectedPage) => {
+                      setCurrentPage(selectedPage);
+                      setPage(selectedPage - 1);
+                      setSearchText('');
+                      setSearchTextInput('');
                     }}
-                    label="Rows"
-                    fullWidth
-                  >
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={100}>100</MenuItem>
-                    <MenuItem value={5000}>All</MenuItem>
-                  </Select>
-                </FormControl>
+                  />
+                </Stack>
+                <Box width={80} display={'flex'} gap={'10px'}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Rows</InputLabel>
+                    <Select
+                      value={limit}
+                      onChange={(e) => {
+                        if (e.target.value === 5000) {
+                          setCurrentPage(1);
+                        }
+                        setLimit(e.target.value);
+                      }}
+                      label="Rows"
+                      fullWidth
+                    >
+                      <MenuItem value={20}>20</MenuItem>
+                      <MenuItem value={100}>100</MenuItem>
+                      <MenuItem value={5000}>All</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Box>
             </Box>
           ) : (
-            <>
+            <Box
+              p={2}
+              gap={2}
+              display={'flex'}
+              justifyContent={'flex-start'}
+              alignItems={'center'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center'
+                }
+              }}
+            >
               {currentSelectedButton.includes('totalShareHolder') && (
                 <Box fontWeight="bold" color="text.primary">
                   Number of Share Holders: {filteredUsersTotal.length}
@@ -469,7 +497,7 @@ const UserTable = () => {
                   Number of Share Holders: {filteredUsersHajipur.length}
                 </Box>
               )}
-            </>
+            </Box>
           )}
         </Box>
 
@@ -533,7 +561,7 @@ const UserTable = () => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          minWidth={150}
+                          width={150}
                         >
                           {user?.user?.name}
                         </Typography>
@@ -652,7 +680,7 @@ const UserTable = () => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          minWidth={150}
+                          width={150}
                         >
                           {user?.user?.name}
                         </Typography>
@@ -769,7 +797,7 @@ const UserTable = () => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          minWidth={150}
+                          width={150}
                         >
                           {user?.user?.name}
                         </Typography>

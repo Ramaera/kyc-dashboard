@@ -615,72 +615,90 @@ const UserTable = () => {
             p={2}
             gap={2}
             display={'flex'}
-            justifyContent={'center'}
+            justifyContent={'space-between'}
             alignItems={'center'}
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
+              }
+            }}
           >
-            <Stack spacing={2}>
-              <Pagination
-                count={Math.ceil(
-                  (currentSelectedButton.includes('Avdance') &&
-                    numbers.totalAdvance / limit) ||
-                    (currentSelectedButton.includes('Basic') &&
-                      numbers.totalBasic / limit)
-                )}
-                page={currentPage}
-                color="primary"
-                onChange={(event, selectedPage) => {
-                  setCurrentPage(selectedPage);
-                  setPage(selectedPage - 1);
-                  setSearchText('');
-                  setSearchTextInput('');
-                }}
-              />
-            </Stack>
-            <Box width={80} display={'flex'} gap={'10px'}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Rows</InputLabel>
-                <Select
-                  value={limit}
-                  onChange={(e) => {
-                    if (e.target.value === 5000) {
-                      setCurrentPage(1);
-                    }
-                    setLimit(e.target.value);
-                  }}
-                  label="Rows"
-                  fullWidth
-                >
-                  <MenuItem value={20}>20</MenuItem>
-                  <MenuItem value={100}>100</MenuItem>
-                  <MenuItem value={5000}>All</MenuItem>
-                </Select>
-              </FormControl>
+            <Box fontWeight="bold" color="text.primary">
+              Number of Users List : {filteredUsers.length}
             </Box>
+            <Box
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column'
+                }
+              }}
+            >
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(
+                    (currentSelectedButton.includes('Avdance') &&
+                      numbers.totalAdvance / limit) ||
+                      (currentSelectedButton.includes('Basic') &&
+                        numbers.totalBasic / limit)
+                  )}
+                  page={currentPage}
+                  color="primary"
+                  onChange={(event, selectedPage) => {
+                    setCurrentPage(selectedPage);
+                    setPage(selectedPage - 1);
+                    setSearchText('');
+                    setSearchTextInput('');
+                  }}
+                />
+              </Stack>
+              <Box width={80} display={'flex'} gap={'10px'}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Rows</InputLabel>
+                  <Select
+                    value={limit}
+                    onChange={(e) => {
+                      if (e.target.value === 5000) {
+                        setCurrentPage(1);
+                      }
+                      setLimit(e.target.value);
+                    }}
+                    label="Rows"
+                    fullWidth
+                  >
+                    <MenuItem value={20}>20</MenuItem>
+                    <MenuItem value={100}>100</MenuItem>
+                    <MenuItem value={5000}>All</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
 
-            <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
-              <DownloadTableExcel
-                filename={'data'}
-                sheet={'data'}
-                currentTableRef={tableRef.current}
-              >
-                <LoadingButton variant="contained">
-                  Download Current Data
+              <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
+                <DownloadTableExcel
+                  filename={'data'}
+                  sheet={'data'}
+                  currentTableRef={tableRef.current}
+                >
+                  <LoadingButton variant="contained">
+                    Download Current Data
+                  </LoadingButton>
+                </DownloadTableExcel>
+                <LoadingButton
+                  variant="contained"
+                  onClick={() => {
+                    setAllData(true);
+                  }}
+                >
+                  Load All Data
                 </LoadingButton>
-              </DownloadTableExcel>
-              <LoadingButton
-                variant="contained"
-                onClick={() => {
-                  setAllData(true);
-                }}
-              >
-                Load All Data
-              </LoadingButton>
-              {allData && (
-                <Dialog open={true} onClose={() => setAllData(false)}>
-                  <AllUserTable />
-                </Dialog>
-              )}
-              {/*   <DownloadTableExcel
+                {allData && (
+                  <Dialog open={true} onClose={() => setAllData(false)}>
+                    <AllUserTable />
+                  </Dialog>
+                )}
+                {/*   <DownloadTableExcel
             filename={'data'}
             sheet={'data'}
             currentTableRef={tableRefAll.current}
@@ -689,6 +707,7 @@ const UserTable = () => {
               Download All Data
             </LoadingButton>
           </DownloadTableExcel> */}
+              </Box>
             </Box>
           </Box>
         )}
