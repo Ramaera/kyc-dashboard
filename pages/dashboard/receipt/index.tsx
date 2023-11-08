@@ -24,39 +24,168 @@ function index() {
 
   const allCertificates = () => {
     let certificates: any = [];
-    user.documents.map((doc) => {
-      if (doc.amount) {
-        certificates.push(
-          <Certificate
-            id={doc.id}
-            receiptSerialNumber=""
-            date={doc.createdAt.slice(0, 10)}
-            recievedFrom={user?.name || ''}
-            identityNumber={user.rm_id + '/' + user.pw_id}
-            amount={doc.amount}
-            amountPaidFor={
-              doc.title === documentsConfig.payment_proof &&
-              (doc.amount === 2000 || doc.amount === 1000)
-                ? 'basic'
-                : doc.title === documentsConfig.payment_proof &&
-                  (doc.amount === 200000 || doc.amount === 100000)
-                ? 'advance'
-                : doc.title.includes('project') && 'project'
-            }
-            paymentSource="upi"
-            utrNumber={doc.utrNo || ''}
-            receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
-            AgencyCode={
-              user.referralAgencyCode === 'NULL'
-                ? ''
-                : user.referralAgencyCode
-                ? user.referralAgencyCode
-                : ''
-            }
-          />
-        );
-      }
-    });
+    const totalPaymentDocument = user?.documents.filter(
+      (doc) =>
+        doc.title.includes('payment_proof') ||
+        doc.title.includes('additional_payment')
+    );
+    const totalHajipurPaymentDocument = user?.documents.filter((doc) =>
+      doc.title.includes('hajipur_project')
+    );
+    const totalAgraPaymentDocument = user?.documents.filter((doc) =>
+      doc.title.includes('agra_project')
+    );
+    totalHajipurPaymentDocument.map((doc, index) =>
+      certificates.push(
+        <Certificate
+          key={doc.id}
+          receiptSerialNumber={
+            user.pw_id + '/' + 'Hajipur' + '/' + `${index + 1}`
+          }
+          date={
+            doc?.createdAt.slice(0, 10).split('-')[2] +
+            '-' +
+            doc?.createdAt.slice(0, 10).split('-')[1] +
+            '-' +
+            doc?.createdAt.slice(0, 10).split('-')[0]
+          }
+          recievedFrom={user?.name || ''}
+          identityNumber={user.rm_id + '/' + user.pw_id}
+          amount={doc.amount}
+          project_name="Hajipur Project"
+          amountPaidFor={
+            doc.title === documentsConfig.payment_proof &&
+            (doc.amount === 2000 || doc.amount === 1000)
+              ? 'basic'
+              : doc.title === documentsConfig.payment_proof &&
+                (doc.amount === 200000 || doc.amount === 100000)
+              ? 'advance'
+              : doc.title.includes('project') && 'project'
+          }
+          paymentSource="upi"
+          utrNumber={doc.utrNo || ''}
+          receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
+          AgencyCode={
+            user.referralAgencyCode === 'NULL'
+              ? ''
+              : user.referralAgencyCode
+              ? user.referralAgencyCode
+              : ''
+          }
+        />
+      )
+    );
+    totalAgraPaymentDocument.map((doc, index) =>
+      certificates.push(
+        <Certificate
+          key={doc.id}
+          receiptSerialNumber={user.pw_id + '/' + 'Agra' + '/' + `${index + 1}`}
+          date={
+            doc?.createdAt.slice(0, 10).split('-')[2] +
+            '-' +
+            doc?.createdAt.slice(0, 10).split('-')[1] +
+            '-' +
+            doc?.createdAt.slice(0, 10).split('-')[0]
+          }
+          recievedFrom={user?.name || ''}
+          identityNumber={user.rm_id + '/' + user.pw_id}
+          amount={doc.amount}
+          project_name="Agra Project"
+          amountPaidFor={
+            doc.title === documentsConfig.payment_proof &&
+            (doc.amount === 2000 || doc.amount === 1000)
+              ? 'basic'
+              : doc.title === documentsConfig.payment_proof &&
+                (doc.amount === 200000 || doc.amount === 100000)
+              ? 'advance'
+              : doc.title.includes('project') && 'project'
+          }
+          paymentSource="upi"
+          utrNumber={doc.utrNo || ''}
+          receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
+          AgencyCode={
+            user.referralAgencyCode === 'NULL'
+              ? ''
+              : user.referralAgencyCode
+              ? user.referralAgencyCode
+              : ''
+          }
+        />
+      )
+    );
+
+    totalPaymentDocument.map((doc, index) =>
+      certificates.push(
+        <Certificate
+          key={doc.id}
+          receiptSerialNumber={user.pw_id + '/' + 'KYC' + '/' + `${index + 1}`}
+          date={doc?.createdAt.slice(0, 10)}
+          recievedFrom={user?.name || ''}
+          identityNumber={user.rm_id + '/' + user.pw_id}
+          amount={doc.amount}
+          project_name="Industrial Project"
+          amountPaidFor={
+            doc.title === documentsConfig.payment_proof &&
+            (doc.amount === 2000 || doc.amount === 1000)
+              ? 'basic'
+              : doc.title === documentsConfig.payment_proof &&
+                (doc.amount === 200000 || doc.amount === 100000)
+              ? 'advance'
+              : doc.title.includes('project') && 'project'
+          }
+          paymentSource="upi"
+          utrNumber={doc.utrNo || ''}
+          receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
+          AgencyCode={
+            user.referralAgencyCode === 'NULL'
+              ? ''
+              : user.referralAgencyCode
+              ? user.referralAgencyCode
+              : ''
+          }
+        />
+      )
+    );
+
+    // user.documents.map((doc, index) => {
+    //   if (doc.amount) {
+    //     certificates.push(
+    //       <Certificate
+    //         id={doc.id}
+    //         receiptSerialNumber={
+    //           user.pw_id +
+    //           '/' +
+    //           (doc.title === 'payment_proof' ? 'KYC' : '') +
+    //           '/' +
+    //           `${index + 1}`
+    //         }
+    //         date={doc.createdAt.slice(0, 10)}
+    //         recievedFrom={user?.name || ''}
+    //         identityNumber={user.rm_id + '/' + user.pw_id}
+    //         amount={doc.amount}
+    //         amountPaidFor={
+    //           doc.title === documentsConfig.payment_proof &&
+    //           (doc.amount === 2000 || doc.amount === 1000)
+    //             ? 'basic'
+    //             : doc.title === documentsConfig.payment_proof &&
+    //               (doc.amount === 200000 || doc.amount === 100000)
+    //             ? 'advance'
+    //             : doc.title.includes('project') && 'project'
+    //         }
+    //         paymentSource="upi"
+    //         utrNumber={doc.utrNo || ''}
+    //         receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
+    //         AgencyCode={
+    //           user.referralAgencyCode === 'NULL'
+    //             ? ''
+    //             : user.referralAgencyCode
+    //             ? user.referralAgencyCode
+    //             : ''
+    //         }
+    //       />
+    //     );
+    //   }
+    // });
 
     return certificates;
   };

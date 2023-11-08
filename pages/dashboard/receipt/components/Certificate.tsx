@@ -3,6 +3,8 @@ import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Box, Button, useTheme } from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+
 const Certificate = ({
   id,
   receiptSerialNumber,
@@ -13,6 +15,7 @@ const Certificate = ({
   amountPaidFor,
   paymentSource,
   utrNumber,
+  project_name,
   receivedBy,
   AgencyCode
 }: any) => {
@@ -30,6 +33,13 @@ const Certificate = ({
     toast.success('Downloaded');
     pdf.save('certificate.pdf');
   };
+  const user = useSelector((state: any) => state.user?.data);
+  const isHajipurProject = user?.documents.some((doc) =>
+    doc.title.includes('hajipur_project')
+  );
+  const projectText = isHajipurProject
+    ? 'hajipur project'
+    : 'Industrial Project';
 
   return (
     <>
@@ -283,7 +293,8 @@ const Certificate = ({
                 </div>
               </div>
               <div style={{ marginLeft: '80px', display: 'flex' }}>
-                Industrial Project
+                {project_name}
+                {/* {projectText} {isHajipurProject} */}
                 <div
                   style={{
                     width: '32px',
@@ -491,3 +502,72 @@ const Certificate = ({
 };
 
 export default Certificate;
+// import React from 'react';
+// import JsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import { Box, Button, useTheme } from '@mui/material';
+// import { Toaster, toast } from 'react-hot-toast';
+// import { useSelector } from 'react-redux';
+// import amountToWords from '../utils/amountToWords';
+
+// const Certificate = ({
+//   id,
+//   receiptSerialNumber,
+//   date,
+//   receivedFrom,
+//   identityNumber,
+//   amount,
+//   amountPaidFor,
+//   paymentSource,
+//   utrNumber,
+//   receivedBy,
+//   AgencyCode
+// }: any) => {
+//   const theme = useTheme();
+
+//   const generatePDF = async () => {
+//     const toastId = toast.loading('Downloading');
+//     const pdf = new JsPDF('landscape', 'pt', 'a4');
+//     const data = await html2canvas(document.querySelector('#' + id));
+//     const img = data.toDataURL('image/png');
+//     const imgProperties = pdf.getImageProperties(img);
+//     const pdfWidth = pdf.internal.pageSize.getWidth();
+//     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+//     pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+//     toast.dismiss(toastId);
+//     toast.success('Downloaded');
+//     pdf.save('certificate.pdf');
+//   };
+
+//   const user = useSelector((state: any) => state.user?.data);
+//   const isHajipurProject = user?.documents.some((doc) =>
+//     doc.title.includes('hajipur_project')
+//   );
+//   const projectText = isHajipurProject ? 'hajipur project' : 'Industrial Project';
+
+//   return (
+//     <>
+//       <Toaster position="bottom-center" reverseOrder={false} />
+//       <Box
+//         id={id}
+//         sx={{
+//           scale: '1',
+//           transformOrigin: 'left',
+//           padding: '20px',
+//           backgroundColor: 'white',
+//           width: '1180px',
+//           borderRadius: '20px',
+//         }}
+//       >
+//         {/* Your HTML content here */}
+//         {/* ... (Your existing HTML code) ... */}
+//       </Box>
+
+//       <Button sx={{ mb: 2 }} variant="outlined" onClick={generatePDF}>
+//         Print
+//       </Button>
+//     </>
+//   );
+// };
+
+// export default Certificate;
