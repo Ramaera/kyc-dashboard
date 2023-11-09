@@ -3,7 +3,6 @@ import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Box, Button, useTheme } from '@mui/material';
 import { Toaster, toast } from 'react-hot-toast';
-import { useSelector } from 'react-redux';
 
 const Certificate = ({
   id,
@@ -20,6 +19,7 @@ const Certificate = ({
   AgencyCode
 }: any) => {
   const theme = useTheme();
+
   const generatePDF = async () => {
     const toastId = toast.loading('Downloading');
     const pdf = new JsPDF('landscape', 'pt', 'a4');
@@ -33,13 +33,6 @@ const Certificate = ({
     toast.success('Downloaded');
     pdf.save('certificate.pdf');
   };
-  const user = useSelector((state: any) => state.user?.data);
-  const isHajipurProject = user?.documents.some((doc) =>
-    doc.title.includes('hajipur_project')
-  );
-  const projectText = isHajipurProject
-    ? 'hajipur project'
-    : 'Industrial Project';
 
   return (
     <>
@@ -51,9 +44,24 @@ const Certificate = ({
           transformOrigin: 'left',
           padding: '20px',
           backgroundColor: 'white',
-          width: '1180px',
+          // width: '1180px',
           borderRadius: '20px',
-          [theme.breakpoints.down('sm')]: {}
+
+          overflow: 'auto',
+
+          // [theme.breakpoints.down('xl')]: {
+          //   transform: 'scale(95%)'
+          // },
+          // [theme.breakpoints.down('lg')]: {
+          //   transform: 'scale(75%)'
+          // },
+          // [theme.breakpoints.down('md')]: {
+          //   transform: 'scale(55%)'
+          // },
+          [theme.breakpoints.down('sm')]: {
+            width: '1180px',
+            transform: 'scale(35%)'
+          }
         }}
       >
         <div
@@ -61,109 +69,107 @@ const Certificate = ({
             border: '2px solid #301100',
             borderRadius: '20px',
             overflow: 'clip',
-            fontWeight: '450'
+            fontWeight: '450',
+            paddingBottom: '20px'
           }}
         >
           <div
             style={{
               color: 'white',
               backgroundColor: '#301100',
-              height: '100px',
-              marginLeft: '0px',
-              display: 'flex'
-            }}
-          >
-            <img
-              style={{ width: '130px', height: '130px' }}
-              src="/images/logo.png"
-              alt=""
-            />
-            <div>
-              <div style={{ height: '20px' }}>
-                <p
-                  style={{
-                    fontSize: '40px',
-                    marginTop: '30px',
-                    fontFamily: 'dash'
-                  }}
-                >
-                  RAMAERA INDUSTRIES LTD
-                </p>
-              </div>
-              <div style={{ marginTop: '5px' }}>
-                <p style={{ fontSize: '20px' }}>
-                  CIN No. U74110UP2022PLC168553
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            style={{
-              color: 'white',
-              marginTop: '0px',
-              backgroundColor: '#301100',
-              display: 'flex',
-              marginLeft: '0px',
-              height: '118px'
+              padding: '10px'
             }}
           >
             <div
               style={{
-                width: '400px',
-                border: '1px solid white',
-                height: '50px',
-                marginTop: '55px',
-                marginLeft: '270px',
-                display: 'flex'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div>
+                  <img
+                    style={{ width: '130px', height: '130px' }}
+                    src="/images/logo.png"
+                    alt=""
+                  />
+                </div>
+                <div style={{}}>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '40px',
+                      fontFamily: 'dash',
+                      lineHeight: '1.5rem'
+                    }}
+                  >
+                    RAMAERA INDUSTRIES LTD
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      fontSize: '20px',
+                      fontFamily: 'dash'
+                    }}
+                  >
+                    CIN No. U74110UP2022PLC168553
+                  </p>
+                </div>
+              </div>
+              <div style={{ marginRight: '20px' }}>
+                <div>
+                  <p
+                    style={{
+                      borderBottom: '2px solid white',
+                      fontSize: '20px'
+                    }}
+                  >
+                    Receipt Sr. No. : {receiptSerialNumber}
+                  </p>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      borderBottom: '2px solid white',
+                      fontSize: '20px'
+                    }}
+                  >
+                    Date : {date}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                fontSize: '20px',
+                display: 'flex',
+                justifyContent: 'center'
               }}
             >
               <p
                 style={{
-                  fontSize: '38px',
-                  marginLeft: '42px',
-                  padding: '0px',
+                  padding: '10px',
+                  border: '1px solid white',
+                  fontSize: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: '0px',
                   marginTop: '0px'
                 }}
               >
                 PAYMENT RECEIPT
               </p>
             </div>
-            <div
-              style={{
-                width: '300px',
-                justifyContent: 'flex-start',
-                marginLeft: '100px',
-                marginTop: '0px'
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    borderBottom: '2px solid white',
-                    fontSize: '20px'
-                  }}
-                >
-                  Receipt Sr. No. : {receiptSerialNumber}
-                </p>
-              </div>
-              <div>
-                <p
-                  style={{
-                    borderBottom: '2px solid white',
-                    fontSize: '20px'
-                  }}
-                >
-                  Date : {date}
-                </p>
-              </div>
-            </div>
           </div>
+
           <div
             style={{
-              width: '1105px',
-              height: '540px',
               backgroundColor: 'white',
-              marginLeft: '0px'
+              paddingInline: '25px'
             }}
           >
             <div
@@ -172,43 +178,51 @@ const Certificate = ({
                 display: 'flex',
                 justifyContent: 'space-between',
                 color: 'black',
-                marginLeft: '40px',
-                height: '45px'
+                paddingTop: '10px'
               }}
             >
               <p
                 style={{
                   fontSize: '18px',
-                  marginLeft: '0px',
-                  marginTop: '20px'
+                  marginBottom: '0px',
+                  marginTop: '0px'
                 }}
               >
-                Received From :{' '}
-                <span style={{ fontWeight: 'bold' }}>{recievedFrom}</span>
+                Received From :
+                <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
+                  {recievedFrom}
+                </span>
               </p>
-              <p style={{ fontSize: '18px' }}>
-                RM/PW Number :{' '}
-                <span style={{ fontWeight: 'bold' }}>{identityNumber}</span>
+              <p
+                style={{
+                  fontSize: '18px',
+                  marginBottom: '0px',
+                  marginTop: '0px'
+                }}
+              >
+                RM/PW Number:
+                <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
+                  {identityNumber}
+                </span>
               </p>
             </div>
             <div
               style={{
                 display: 'flex',
                 borderBottom: '2px solid black',
-                marginLeft: '40px'
+                justifyContent: 'space-between'
               }}
             >
               <div
                 style={{
                   fontSize: '18px',
                   color: 'black',
-                  marginLeft: '0px',
                   display: 'flex'
                 }}
               >
                 Amount
               </div>
-              <div style={{ width: '749px' }}>
+              <div style={{}}>
                 <div
                   style={{
                     color: 'black',
@@ -217,32 +231,25 @@ const Certificate = ({
                     fontWeight: 'bold'
                   }}
                 >
-                  {amountToWords(amount)}
+                  {amountToWords(amount)} Only /-
                 </div>
               </div>
+
               <div
                 style={{
                   width: '200px',
-                  height: '100px'
+                  height: '50px',
+                  border: '2px solid black',
+                  borderBottom: '0px',
+                  borderTop: '0px',
+                  paddingTop: '20px',
+                  color: 'black',
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold'
                 }}
               >
-                <div
-                  style={{
-                    width: '200px',
-                    height: '70px',
-                    border: '2px solid black',
-                    marginLeft: '43px',
-                    borderBottom: '0px',
-                    marginTop: '30px',
-                    paddingTop: '20px',
-                    color: 'black',
-                    textAlign: 'center',
-                    fontSize: 18,
-                    fontWeight: 'bold'
-                  }}
-                >
-                  {amount && 'Rs.' + amount + '/-'}
-                </div>
+                {amount && '₹' + amount + '/-'}
               </div>
             </div>
 
@@ -250,60 +257,49 @@ const Certificate = ({
               style={{
                 fontSize: '18px',
                 color: 'black',
-                marginTop: '20px',
                 display: 'flex',
-                marginLeft: '40px',
-                borderBottom: '2px solid black'
+                borderBottom: '2px solid black',
+                paddingTop: '10px',
+                justifyContent: 'space-between'
               }}
             >
               <div style={{ display: 'flex' }}>
-                {' '}
-                Amount Paid For : Basic Subscription{' '}
+                Amount Paid For : Basic Subscription
                 <div
                   style={{
                     width: '32px',
-                    marginTop: '0px',
                     marginLeft: '5px',
-                    height: '20px',
                     border: '1px solid black',
                     textAlign: 'center',
-                    paddingBottom: '25px',
                     fontWeight: 'bold'
                   }}
                 >
                   {amountPaidFor === 'basic' ? '✓' : ''}
                 </div>
               </div>
-              <div style={{ marginLeft: '80px', display: 'flex' }}>
+              <div style={{ display: 'flex' }}>
                 {' '}
                 Profit sharing partner
                 <div
                   style={{
                     width: '32px',
-                    marginTop: '0px',
                     marginLeft: '5px',
-                    height: '20px',
                     border: '1px solid black',
                     textAlign: 'center',
-                    paddingBottom: '25px',
                     fontWeight: 'bold'
                   }}
                 >
                   {amountPaidFor === 'advance' ? '✓' : ''}
                 </div>
               </div>
-              <div style={{ marginLeft: '80px', display: 'flex' }}>
+              <div style={{ display: 'flex' }}>
                 {project_name}
-                {/* {projectText} {isHajipurProject} */}
                 <div
                   style={{
                     width: '32px',
-                    marginTop: '0px',
                     marginLeft: '5px',
-                    height: '20px',
                     border: '1px solid black',
                     textAlign: 'center',
-                    paddingBottom: '25px',
                     fontWeight: 'bold'
                   }}
                 >
@@ -312,31 +308,33 @@ const Certificate = ({
               </div>
             </div>
 
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div
                 style={{
                   fontSize: '17px',
                   color: 'black',
-                  marginTop: '20px',
-                  marginLeft: '40px',
                   borderBottom: '2px solid black',
-                  width: '853px'
+                  width: '100%'
                 }}
               >
                 <div
-                  style={{ display: 'flex', borderBottom: '2px solid black' }}
+                  style={{
+                    display: 'flex',
+                    borderBottom: '2px solid black',
+                    paddingTop: '10px',
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  <div style={{ marginLeft: '0px', display: 'flex' }}>
+                  <div style={{ display: 'flex' }}>
                     Payment Source: Cheque
                     <div
                       style={{
                         width: '32px',
-                        marginTop: '0px',
-                        height: '20px',
+                        height: '30px',
                         border: '1px solid black',
                         textAlign: 'center',
                         marginLeft: '5px',
-                        paddingBottom: '25px',
                         fontWeight: 'bold'
                       }}
                     >
@@ -348,12 +346,10 @@ const Certificate = ({
                     <div
                       style={{
                         width: '32px',
-                        marginTop: '0px',
-                        height: '20px',
+                        height: '30px',
                         border: '1px solid black',
                         textAlign: 'center',
                         marginLeft: '5px',
-                        paddingBottom: '25px',
                         fontWeight: 'bold'
                       }}
                     >
@@ -365,12 +361,10 @@ const Certificate = ({
                     <div
                       style={{
                         width: '32px',
-                        marginTop: '0px',
-                        height: '20px',
+                        height: '30px',
                         border: '1px solid black',
                         textAlign: 'center',
                         marginLeft: '5px',
-                        paddingBottom: '25px',
                         fontWeight: 'bold'
                       }}
                     >
@@ -382,12 +376,10 @@ const Certificate = ({
                     <div
                       style={{
                         width: '32px',
-                        marginTop: '0px',
-                        height: '20px',
+                        height: '30px',
                         border: '1px solid black',
                         textAlign: 'center',
                         marginLeft: '5px',
-                        paddingBottom: '25px',
                         fontWeight: 'bold'
                       }}
                     >
@@ -399,12 +391,10 @@ const Certificate = ({
                     <div
                       style={{
                         width: '32px',
-                        marginTop: '0px',
-                        height: '20px',
+                        height: '30px',
                         border: '1px solid black',
                         textAlign: 'center',
                         marginLeft: '5px',
-                        paddingBottom: '25px',
                         fontWeight: 'bold'
                       }}
                     >
@@ -416,7 +406,7 @@ const Certificate = ({
                   style={{
                     fontSize: '18px',
                     color: 'black',
-                    marginTop: '20px',
+                    marginTop: '10px',
                     display: 'flex',
                     borderBottom: '2px solid black'
                   }}
@@ -425,16 +415,14 @@ const Certificate = ({
                 </div>
                 <div
                   style={{
-                    height: '45px',
                     fontSize: '20px',
                     color: 'black',
-                    marginTop: '6px',
                     display: 'flex',
                     alignItems: 'baseline'
                   }}
                 >
-                  <p style={{ marginTop: '30px' }}>
-                    Received By
+                  <p style={{ marginTop: '0px', marginBottom: '0px' }}>
+                    Received By:
                     <strong style={{ marginLeft: '150px' }}>
                       {receivedBy}
                     </strong>
@@ -444,8 +432,8 @@ const Certificate = ({
 
               <div
                 style={{
-                  height: '159px',
-                  width: '210px',
+                  height: '120px',
+                  width: '20%',
                   border: '2px solid black',
                   borderTop: '0px',
                   color: 'black',
@@ -454,7 +442,7 @@ const Certificate = ({
                 }}
               >
                 {' '}
-                <p style={{ fontSize: '18px', marginTop: '130px' }}>
+                <p style={{ fontSize: '18px', marginTop: '90px' }}>
                   Sign & Stamp
                 </p>
               </div>
@@ -464,9 +452,8 @@ const Certificate = ({
               style={{
                 fontSize: '18px',
                 color: 'black',
-                marginTop: '20px',
+                padding: '5px',
                 display: 'flex',
-                marginLeft: '40px',
                 borderBottom: '2px solid black'
               }}
             >
@@ -477,24 +464,38 @@ const Certificate = ({
             <div
               style={{
                 backgroundColor: '#301100',
-                width: '980px',
+                display: 'flex',
+                justifyContent: 'center',
+                width: '70%',
+                marginInline: 'auto',
+
+                alignItems: 'center',
                 height: '100px',
                 clipPath:
                   'polygon(2.5% 0, 97.5% 0, 100% 20%, 100% 80%, 97.5% 100%, 2.5% 100%, 0% 80%, 0% 20%)',
                 fontSize: '30px',
-                marginLeft: '60px',
+                // marginLeft: '60px',
                 marginTop: '20px',
                 textAlign: 'center'
               }}
             >
-              Address: H150, Ground Floor, Sector 63, Noida, Uttar Pradesh
-              201301 GST No. 09AAMCR0782R1ZF
+              <p>
+                Address: H150, Ground Floor, Sector 63, Noida, Uttar Pradesh
+                201301 GST No. 09AAMCR0782R1ZF
+              </p>
             </div>
           </div>
         </div>
       </Box>
 
-      <Button sx={{ mb: 2 }} variant="outlined" onClick={generatePDF}>
+      <Button
+        sx={{
+          mb: 2,
+          [theme.breakpoints.down('sm')]: { marginTop: '-400px' }
+        }}
+        variant="outlined"
+        onClick={generatePDF}
+      >
         Print
       </Button>
     </>
@@ -502,72 +503,3 @@ const Certificate = ({
 };
 
 export default Certificate;
-// import React from 'react';
-// import JsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
-// import { Box, Button, useTheme } from '@mui/material';
-// import { Toaster, toast } from 'react-hot-toast';
-// import { useSelector } from 'react-redux';
-// import amountToWords from '../utils/amountToWords';
-
-// const Certificate = ({
-//   id,
-//   receiptSerialNumber,
-//   date,
-//   receivedFrom,
-//   identityNumber,
-//   amount,
-//   amountPaidFor,
-//   paymentSource,
-//   utrNumber,
-//   receivedBy,
-//   AgencyCode
-// }: any) => {
-//   const theme = useTheme();
-
-//   const generatePDF = async () => {
-//     const toastId = toast.loading('Downloading');
-//     const pdf = new JsPDF('landscape', 'pt', 'a4');
-//     const data = await html2canvas(document.querySelector('#' + id));
-//     const img = data.toDataURL('image/png');
-//     const imgProperties = pdf.getImageProperties(img);
-//     const pdfWidth = pdf.internal.pageSize.getWidth();
-//     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-//     pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
-//     toast.dismiss(toastId);
-//     toast.success('Downloaded');
-//     pdf.save('certificate.pdf');
-//   };
-
-//   const user = useSelector((state: any) => state.user?.data);
-//   const isHajipurProject = user?.documents.some((doc) =>
-//     doc.title.includes('hajipur_project')
-//   );
-//   const projectText = isHajipurProject ? 'hajipur project' : 'Industrial Project';
-
-//   return (
-//     <>
-//       <Toaster position="bottom-center" reverseOrder={false} />
-//       <Box
-//         id={id}
-//         sx={{
-//           scale: '1',
-//           transformOrigin: 'left',
-//           padding: '20px',
-//           backgroundColor: 'white',
-//           width: '1180px',
-//           borderRadius: '20px',
-//         }}
-//       >
-//         {/* Your HTML content here */}
-//         {/* ... (Your existing HTML code) ... */}
-//       </Box>
-
-//       <Button sx={{ mb: 2 }} variant="outlined" onClick={generatePDF}>
-//         Print
-//       </Button>
-//     </>
-//   );
-// };
-
-// export default Certificate;
