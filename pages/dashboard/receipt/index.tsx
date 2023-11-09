@@ -147,46 +147,6 @@ function index() {
       )
     );
 
-    // user.documents.map((doc, index) => {
-    //   if (doc.amount) {
-    //     certificates.push(
-    //       <Certificate
-    //         id={doc.id}
-    //         receiptSerialNumber={
-    //           user.pw_id +
-    //           '/' +
-    //           (doc.title === 'payment_proof' ? 'KYC' : '') +
-    //           '/' +
-    //           `${index + 1}`
-    //         }
-    //         date={doc.createdAt.slice(0, 10)}
-    //         recievedFrom={user?.name || ''}
-    //         identityNumber={user.rm_id + '/' + user.pw_id}
-    //         amount={doc.amount}
-    //         amountPaidFor={
-    //           doc.title === documentsConfig.payment_proof &&
-    //           (doc.amount === 2000 || doc.amount === 1000)
-    //             ? 'basic'
-    //             : doc.title === documentsConfig.payment_proof &&
-    //               (doc.amount === 200000 || doc.amount === 100000)
-    //             ? 'advance'
-    //             : doc.title.includes('project') && 'project'
-    //         }
-    //         paymentSource="upi"
-    //         utrNumber={doc.utrNo || ''}
-    //         receivedBy="RAMAERA INDUSTRIES LTD. (Account Dept.)"
-    //         AgencyCode={
-    //           user.referralAgencyCode === 'NULL'
-    //             ? ''
-    //             : user.referralAgencyCode
-    //             ? user.referralAgencyCode
-    //             : ''
-    //         }
-    //       />
-    //     );
-    //   }
-    // });
-
     return certificates;
   };
 
