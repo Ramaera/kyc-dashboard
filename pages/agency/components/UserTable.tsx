@@ -428,6 +428,7 @@ const UserTable = () => {
           <Table ref={tableRef}>
             <TableHead>
               <TableRow>
+                <TableCell>S.No.</TableCell>
                 <TableCell>Photo</TableCell>
                 <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
                   Name{sortByName ? '⬇' : '⬆'}
@@ -447,7 +448,7 @@ const UserTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedUsers.map((user) => {
+              {paginatedUsers.map((user, index) => {
                 return (
                   <Link href={'agency/' + user?.id}>
                     <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
@@ -461,6 +462,19 @@ const UserTable = () => {
                         value={isUserSelected}
                       />
                     </TableCell> */}
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          align="center"
+                          noWrap
+                          width={30}
+                        >
+                          {index + 1}
+                        </Typography>
+                      </TableCell>
 
                       <TableCell>
                         <Avatar alt="Avatar" src={`${avatarFetch(user)}`} />
