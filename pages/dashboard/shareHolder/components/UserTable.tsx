@@ -483,18 +483,18 @@ const UserTable = () => {
             >
               {currentSelectedButton.includes('totalShareHolder') && (
                 <Box fontWeight="bold" color="text.primary">
-                  Number of Share Holders: {filteredUsersTotal.length}
+                  Total Record : {filteredUsersTotal.length}
                 </Box>
               )}
               {(currentSelectedButton.includes('totalAdvance') ||
                 currentSelectedButton.includes('totalBasic')) && (
                 <Box fontWeight="bold" color="text.primary">
-                  Number of Share Holders: {filteredUsersAll.length}
+                  Total Record : {filteredUsersAll.length}
                 </Box>
               )}
               {currentSelectedButton.includes('totalHajipur') && (
                 <Box fontWeight="bold" color="text.primary">
-                  Number of Share Holders: {filteredUsersHajipur.length}
+                  Total Record : {filteredUsersHajipur.length}
                 </Box>
               )}
             </Box>
