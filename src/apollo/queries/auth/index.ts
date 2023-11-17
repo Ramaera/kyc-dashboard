@@ -162,6 +162,9 @@ query GetUser {
       name
       relationship
     }
+    kycAgency {
+      agencyCode
+    }
     email
     father_or_husband_name
     id
@@ -386,5 +389,74 @@ query{
     TotalHajipurShareHolder
     TotalShareholders
   }
+}
+`);
+
+export const GET_AGENCY_PAYMENT = gql(`
+query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
+  AgencyPayment(agencyCode: $agencyCode, month: $month, year: $year) {
+      agraProjectAmount
+      hajipurProjectAmount
+      kycAmount
+      BasicKycApprovedUser {
+        pw_id
+        createdAt
+        kyc
+        name
+        membership
+    }
+    AdvanceKycApprovedUser {
+        pw_id
+        createdAt
+        kyc
+        name
+        membership
+    }
+    basicHajipurprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    advanceHajipurprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    basicAgraprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    advanceAgraprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+  }
+
 }
 `);

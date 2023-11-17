@@ -15,11 +15,11 @@ function index() {
   const router = useRouter();
   let title =
     router.query.index.charAt(0).toUpperCase() + router.query.index.slice(1);
-  useEffect(() => {
-    if (user?.kyc !== variables.status.APPROVED) {
-      router.replace('/dashboard');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user?.kyc !== variables.status.APPROVED) {
+  //     router.replace('/dashboard');
+  //   }
+  // }, []);
   return (
     <ProtectedSSRoute>
       <Head>
