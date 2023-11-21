@@ -194,6 +194,9 @@ function Header() {
           )}
         </Stack>
       )}
+      {router.pathname === '/star-of-the-week' && (
+        <Typography sx={{ fontSize: 30 }}>Star Of The Week</Typography>
+      )}
       {router.pathname === '/agency' && agencyCode && (
         <Stack
           direction="row"
