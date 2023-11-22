@@ -168,14 +168,28 @@ const DocumentRow = ({
         <Box
           sx={{
             height: 160,
-            marginTop: 10,
+            marginTop: 1,
+            marginLeft: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
             [theme.breakpoints.down('sm')]: {
-              height: 60
+              marginLeft: 0,
+              marginTop: 2
             }
           }}
         >
           {' '}
-          <div style={{ marginBottom: 10 }}>
+          <Box
+            sx={{
+              marginBottom: '10px',
+              marginLeft: '15px',
+              [theme.breakpoints.down('sm')]: {
+                marginBottom: '0px'
+              }
+            }}
+          >
             Status:{' '}
             <span
               style={{
@@ -194,7 +208,7 @@ const DocumentRow = ({
                 documents[i]?.status ||
                 'NOT STARTED'}
             </span>
-          </div>
+          </Box>
           <Button
             style={{
               cursor: documents[i]
@@ -272,29 +286,40 @@ const DocumentRow = ({
   };
   return (
     <>
-      <TableRow
-        key={data.config.name}
+      <Box
         sx={{
-          '&:last-child td, &:last-child th': { border: 0 },
+          border: 'none',
+          fontWeight: 800,
           [theme.breakpoints.down('sm')]: {
-            display: 'flex',
-            flexDirection: 'column'
+            textAlign: 'center'
           }
         }}
       >
-        <TableCell component="th" scope="row" style={{ border: 'none' }}>
-          {data.config.name} {data.isOptional ? '(Optional)' : ''}
-        </TableCell>
+        {data.config.name} {data.isOptional ? '(Optional)' : ''}
+      </Box>
 
+      <TableRow
+        key={data.config.name}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 }
+        }}
+      >
         <TableCell
-          style={{ display: 'flex', flexDirection: 'column', border: 'none' }}
-          width={300}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            border: 'none',
+            [theme.breakpoints.down('sm')]: {
+              paddingRight: 0
+            }
+          }}
+          // width={300}
         >
           {getPreview()}
         </TableCell>
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
-        <TableCell style={{ border: 'none' }}>
+        {/* <TableCell style={{ border: 'none' }}>
           <LoadingButton
             loading={isLoading}
             // disabled={!isValidToClick()}
@@ -305,7 +330,7 @@ const DocumentRow = ({
           >
             Upload
           </LoadingButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       {moreRow <= 3 && (
         <LoadingButton
@@ -319,12 +344,25 @@ const DocumentRow = ({
         </LoadingButton>
       )}
       <LoadingButton
-        sx={{ marginLeft: 2 }}
+        sx={{ marginLeft: 1 }}
         variant="contained"
         onClick={hideAdditionalDocuments}
       >
         Go Back
       </LoadingButton>
+
+      <LoadingButton
+        sx={{ marginLeft: 1 }}
+        loading={isLoading}
+        // disabled={!isValidToClick()}
+        variant="contained"
+        onClick={() => {
+          handleDocumentUpload();
+        }}
+      >
+        Upload
+      </LoadingButton>
+
       <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
