@@ -411,7 +411,7 @@ const InfoTab = () => {
             id: paymentDocument.id
           }
         });
-
+        setSubmitButtonEnabled(false);
         dispatch(setOrUpdateUser(updateUser(paymentDocument.id, imgUrl)));
       } else {
         await createDocument({
