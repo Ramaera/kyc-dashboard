@@ -341,7 +341,7 @@ const DematTab = () => {
     null
   );
   const [rowNo, setRowNo] = useState(0);
-
+  const [isDematImage, setDematImage] = useState(false);
   const [dematDocument, setDematDocument] = useState<DocumentType>();
   const [isImageChanged, setImageChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -425,6 +425,21 @@ const DematTab = () => {
         imgUrl = dematDocumentImage;
       }
 
+      if (user) {
+        setDematAccount(user?.demat_account);
+      }
+      if (user && user?.documents && user?.documents?.length > 0) {
+        user?.documents?.find((document: DocumentType) => {
+          if (
+            document.title.toLowerCase() ===
+            documentsConfig.demat_document.items[0].id
+          ) {
+            setDematDocument(document);
+            setDematDocumentImage(document.url);
+          }
+        });
+      }
+
       if (dematDocument) {
         await updateDocument({
           variables: {
@@ -433,10 +448,11 @@ const DematTab = () => {
             id: dematDocument.id
           }
         });
+        toast.success('Demat Details Updated ');
+        setSubmitButtonEnabled(false);
         dispatch(
           setOrUpdateUser(updateUser(dematDocument.id, imgUrl, dematAccount))
         );
-        toast.success('Demat Details Updated ');
       } else {
         await createDocument({
           variables: {
@@ -444,6 +460,12 @@ const DematTab = () => {
             url: imgUrl
           }
         });
+        toast.success('Demat Details Updated ');
+        setSubmitButtonEnabled(false);
+        setDematImage(true);
+        // dispatch(
+        //   setOrUpdateUser(updateUser(dematDocument.id, imgUrl, dematAccount))
+        // );
       }
     } catch (err) {}
     setLoading(false);
@@ -584,16 +606,17 @@ const DematTab = () => {
           <Grid item xs={4} />
           {/* </Grid> */}
 
-          {dematDocument && (
-            <LoadingButton
-              variant="contained"
-              onClick={() => {
-                setAdditionalDocuments(true);
-              }}
-            >
-              Additional Documents
-            </LoadingButton>
-          )}
+          {isDematImage ||
+            (dematDocument && (
+              <LoadingButton
+                variant="contained"
+                onClick={() => {
+                  setAdditionalDocuments(true);
+                }}
+              >
+                Additional Documents
+              </LoadingButton>
+            ))}
         </>
       ) : (
         <>

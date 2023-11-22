@@ -624,7 +624,7 @@ const UserTable = () => {
             }}
           >
             <Box fontWeight="bold" color="text.primary">
-              Number of Users List : {filteredUsers.length}
+              Total Record : {filteredUsers.length}
             </Box>
             <Box
               display={'flex'}
