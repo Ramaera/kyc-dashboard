@@ -322,6 +322,24 @@ query($agencyCode: String!) {
   }
 }`);
 
+export const STAR_OF_THE_WEEK = gql(`
+
+query($EndOfTheWeek: String!,$startOfTheWeek: String!)  {
+  starOfTheWeek(
+      EndOfTheWeek: $EndOfTheWeek
+      startOfTheWeek: $startOfTheWeek
+  ) {
+      agencyCode
+      agencyOwnerName
+      users {
+          membership
+          pw_id
+          referralAgencyCode
+      }
+  }
+}
+`);
+
 /* export const GET_ALL_AGENCY_USERS = gql(`
 query($agencyCode: String!) {
   GetAllKycAgencyUser(agencyCode: $agencyCode) {

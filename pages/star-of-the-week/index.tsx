@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { STAR_OF_THE_WEEK } from '@/apollo/queries/auth';
 import SidebarLayout from '@/layouts/SidebarLayout';
 // import { Box, useTheme } from '@mui/material';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
+import Confetti from 'react-confetti';
+
 import {
   Box,
   Container,
@@ -19,9 +22,12 @@ import {
 } from '@mui/material';
 import Head from 'next/head';
 import moment, { Moment } from 'moment';
+import { useQuery } from '@apollo/client';
 
 const index = () => {
   const theme = useTheme();
+
+  console.log('star of the week', data, error);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('kyc');
   const [weekButton, setWeekButton] = useState<string>('current');
@@ -38,9 +44,35 @@ const index = () => {
     setCurrentWeekStart(weekStart);
     setCurrentWeekEnd(weekEnd);
 
-    console.log('week', weekStart.format(), weekEnd);
+    // console.log('week', weekStart.format(), weekEnd);
   }, []);
-
+  const beforepreviousWeekStartDate = currentWeekStart
+    .clone()
+    .subtract(14, 'days');
+  const beforepreviousWeekEndDate = currentWeekEnd.clone().subtract(14, 'days');
+  const previousWeekStartDate = currentWeekStart.clone().subtract(7, 'days');
+  const previousWeekEndDate = currentWeekEnd.clone().subtract(7, 'days');
+  const currentWeekStartDate = currentWeekStart;
+  const currentWeekEndDate = currentWeekEnd;
+  console.log('-->', currentWeekStartDate);
+  const { data, error, loading } = useQuery(STAR_OF_THE_WEEK, {
+    variables: {
+      EndOfTheWeek: weekButton.includes('current')
+        ? currentWeekEndDate
+        : weekButton.includes('previous')
+        ? previousWeekEndDate
+        : weekButton.includes('beforePrevious')
+        ? beforepreviousWeekEndDate
+        : currentWeekEndDate,
+      startOfTheWeek: weekButton.includes('current')
+        ? currentWeekStartDate
+        : weekButton.includes('previous')
+        ? previousWeekStartDate
+        : weekButton.includes('beforePrevious')
+        ? beforepreviousWeekStartDate
+        : currentWeekStartDate
+    }
+  });
   return (
     <>
       <ProtectedSSRoute>
@@ -68,7 +100,8 @@ const index = () => {
                 sx={{
                   [theme.breakpoints.down('sm')]: {
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    marginY: '10px'
                   }
                 }}
               >
@@ -93,7 +126,8 @@ const index = () => {
                 sx={{
                   [theme.breakpoints.down('sm')]: {
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    marginY: '10px'
                   }
                 }}
               >
@@ -118,7 +152,8 @@ const index = () => {
                 sx={{
                   [theme.breakpoints.down('sm')]: {
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    marginY: '10px'
                   }
                 }}
               >
@@ -136,65 +171,105 @@ const index = () => {
                 </Button>
               </Box>
             </Box>
-          </Card>
-          <Box
-            my={5}
-            mx={2}
-            display={'flex'}
-            justifyContent={'center'}
-            gap={2}
-            sx={{
-              [theme.breakpoints.down('sm')]: {
-                display: 'flex',
-                flexDirection: 'column'
-              }
-            }}
-          >
-            <Button
-              onClick={() => setWeekButton('beforePrevious')}
-              variant={
-                weekButton.includes('beforePrevious') ? 'contained' : 'outlined'
-              }
-              sx={{ textTransform: 'uppercase', padding: 2 }}
-            >
-              {currentWeekStart.clone().subtract(14, 'days').format('DD MMM')} -
-              {currentWeekEnd.clone().subtract(14, 'days').format('DD MMM')}
-            </Button>
-            <Button
-              onClick={() => setWeekButton('previous')}
-              variant={
-                weekButton.includes('previous') ? 'contained' : 'outlined'
-              }
-              sx={{ textTransform: 'uppercase', padding: 2 }}
-            >
-              {currentWeekStart.clone().subtract(7, 'days').format('DD MMM')} -
-              {currentWeekEnd.clone().subtract(7, 'days').format('DD MMM')}
-            </Button>
-            <Button
-              onClick={() => setWeekButton('current')}
-              variant={
-                weekButton.includes('current') ? 'contained' : 'outlined'
-              }
-              sx={{ textTransform: 'uppercase', padding: 2 }}
-            >
-              {currentWeekStart.format('DD MMM')} -{' '}
-              {currentWeekEnd.format('DD MMM')}
-            </Button>
-          </Box>
-          <TableContainer>
-            <Table ref={tableRef}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
+            <Divider />
 
-                  <TableCell align="center">Agency Code</TableCell>
-                  <TableCell align="center">Agency Owner Name</TableCell>
-                  <TableCell>No. Of Approved User</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody></TableBody>
-            </Table>
-          </TableContainer>
+            <Box
+              my={5}
+              mx={2}
+              display={'flex'}
+              gap={2}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  display: 'flex',
+                  flexDirection: 'column'
+                }
+              }}
+            >
+              <Button
+                onClick={() => setWeekButton('beforePrevious')}
+                variant={
+                  weekButton.includes('beforePrevious')
+                    ? 'contained'
+                    : 'outlined'
+                }
+                sx={{ textTransform: 'uppercase', padding: 2 }}
+              >
+                {currentWeekStart.clone().subtract(14, 'days').format('DD MMM')}{' '}
+                -{currentWeekEnd.clone().subtract(14, 'days').format('DD MMM')}
+              </Button>
+              <Button
+                onClick={() => setWeekButton('previous')}
+                variant={
+                  weekButton.includes('previous') ? 'contained' : 'outlined'
+                }
+                sx={{ textTransform: 'uppercase', padding: 2 }}
+              >
+                {currentWeekStart.clone().subtract(7, 'days').format('DD MMM')}{' '}
+                -{currentWeekEnd.clone().subtract(7, 'days').format('DD MMM')}
+              </Button>
+              <Button
+                onClick={() => setWeekButton('current')}
+                variant={
+                  weekButton.includes('current') ? 'contained' : 'outlined'
+                }
+                sx={{ textTransform: 'uppercase', padding: 2 }}
+              >
+                {currentWeekStart.format('DD MMM')} -{' '}
+                {currentWeekEnd.format('DD MMM')}
+              </Button>
+            </Box>
+            <Divider />
+
+            <TableContainer>
+              <Table ref={tableRef}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>S.No.</TableCell>
+                    <TableCell align="center">Agency Code</TableCell>
+                    <TableCell align="center">Agency Owner Name</TableCell>
+                    <TableCell align="center">No. Of Approved User</TableCell>
+                  </TableRow>
+                </TableHead>
+
+                {/* <TableBody>
+                  {data?.starOfTheWeek?.map((item, index) => (
+                    <React.Fragment key={index}>
+                      {index === 0 && (
+                        <Confetti
+                          numberOfPieces={150}
+                          width={1000}
+                          height={1000}
+                        />
+                      )}
+                      <TableRow>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell align="center">{item.agencyCode}</TableCell>
+                        <TableCell align="center">
+                          {item.agencyOwnerName}
+                        </TableCell>
+                        <TableCell align="center">
+                          {item.users.length}
+                        </TableCell>
+                      </TableRow>
+                    </React.Fragment>
+                  ))}
+                </TableBody> */}
+                <TableBody>
+                  {data?.starOfTheWeek?.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+
+                      <TableCell align="center">{item.agencyCode}</TableCell>
+                      <TableCell align="center">
+                        {item.agencyOwnerName}
+                      </TableCell>
+                      <TableCell align="center">{item.users.length}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
         </Container>
       </ProtectedSSRoute>
     </>
@@ -203,3 +278,4 @@ const index = () => {
 index.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default index;
+// {index === 0 && <Confetti numberOfPieces={150} width={1000} height={1000} />}
