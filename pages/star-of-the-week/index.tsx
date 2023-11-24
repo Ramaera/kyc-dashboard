@@ -18,7 +18,9 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
+  Typography,
+  colors
 } from '@mui/material';
 import Head from 'next/head';
 import moment, { Moment } from 'moment';
@@ -133,7 +135,7 @@ const index = () => {
               >
                 {' '}
                 <Button
-                  onClick={() => setCurrentSelectedButton('hajipur')}
+                  // onClick={() => setCurrentSelectedButton('hajipur')}
                   variant={
                     currentSelectedButton.includes('hajipur')
                       ? 'contained'
@@ -159,7 +161,7 @@ const index = () => {
               >
                 {' '}
                 <Button
-                  onClick={() => setCurrentSelectedButton('agra')}
+                  // onClick={() => setCurrentSelectedButton('agra')}
                   variant={
                     currentSelectedButton.includes('agra')
                       ? 'contained'
@@ -172,9 +174,11 @@ const index = () => {
               </Box>
             </Box>
             <Divider />
-
+            <Typography mx={2} mt={2} fontSize={24}>
+              Weeks
+            </Typography>
             <Box
-              my={5}
+              my={2}
               mx={2}
               display={'flex'}
               gap={2}
