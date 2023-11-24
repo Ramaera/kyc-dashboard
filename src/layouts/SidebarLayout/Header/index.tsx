@@ -195,7 +195,16 @@ function Header() {
         </Stack>
       )}
       {router.pathname === '/star-of-the-week' && (
-        <Typography sx={{ fontSize: 30 }}>Star Of The Week</Typography>
+        <Typography
+          sx={{
+            fontSize: 30,
+            [theme.breakpoints.down('sm')]: {
+              fontSize: 25
+            }
+          }}
+        >
+          Star Of The Week
+        </Typography>
       )}
       {router.pathname === '/agency' && agencyCode && (
         <Stack

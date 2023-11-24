@@ -230,31 +230,55 @@ const index = () => {
                     <TableCell align="center">No. Of Approved User</TableCell>
                   </TableRow>
                 </TableHead>
+                {/* {
+                  <TableBody>
+                    {data?.starOfTheWeek?.map((item, index) => (
+                      <React.Fragment key={index}>
+                        {index === 0 && (
+                          <Confetti
+                            numberOfPieces={150}
+                            width={1000}
+                            height={1000}
+                          />
+                        )}
+                        <TableRow>
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell align="center">
+                            {item.agencyCode}
+                          </TableCell>
+                          <TableCell align="center">
+                            {item.agencyOwnerName}
+                          </TableCell>
+                          <TableCell align="center">
+                            {item.users.length}
+                          </TableCell>
+                        </TableRow>
+                      </React.Fragment>
+                    ))}
+                  </TableBody>
+                } */}
+                <TableBody>
+                  {data?.starOfTheWeek?.map((item, index) => (
+                    <TableRow
+                      key={index}
+                      style={{
+                        background:
+                          index === 0
+                            ? 'linear-gradient(90deg, rgba(147,85,31,1) 0%, rgba(162,133,41,1) 40%, rgba(145,88,7,1) 100%)'
+                            : ''
+                      }}
+                    >
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell align="center">{item.agencyCode}</TableCell>
+                      <TableCell align="center">
+                        {item.agencyOwnerName}
+                      </TableCell>
+                      <TableCell align="center">{item.users.length}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
 
                 {/* <TableBody>
-                  {data?.starOfTheWeek?.map((item, index) => (
-                    <React.Fragment key={index}>
-                      {index === 0 && (
-                        <Confetti
-                          numberOfPieces={150}
-                          width={1000}
-                          height={1000}
-                        />
-                      )}
-                      <TableRow>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell align="center">{item.agencyCode}</TableCell>
-                        <TableCell align="center">
-                          {item.agencyOwnerName}
-                        </TableCell>
-                        <TableCell align="center">
-                          {item.users.length}
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ))}
-                </TableBody> */}
-                <TableBody>
                   {data?.starOfTheWeek?.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{index + 1}</TableCell>
@@ -266,7 +290,7 @@ const index = () => {
                       <TableCell align="center">{item.users.length}</TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </TableContainer>
           </Card>
@@ -278,4 +302,3 @@ const index = () => {
 index.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default index;
-// {index === 0 && <Confetti numberOfPieces={150} width={1000} height={1000} />}
