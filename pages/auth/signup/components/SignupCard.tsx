@@ -221,7 +221,7 @@ export default function SignupCard() {
             //   )
             // }}
           />
-          {userName && <Typography>{'PWID : ' + userName}</Typography>}
+          {userName && <Typography>{'Name : ' + userName}</Typography>}
 
           <Typography
             color="text.secondary"
