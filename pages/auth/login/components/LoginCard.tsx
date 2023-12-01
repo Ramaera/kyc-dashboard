@@ -2,7 +2,7 @@ import { LOGIN } from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -23,6 +23,7 @@ export default function LoginCard() {
   const [forgotPasswordShow, setForgotPasswordShow] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [login] = useMutation(LOGIN);
+  const theme = useTheme();
 
   const validateForm = () => {
     if (!PWId) {
@@ -68,7 +69,10 @@ export default function LoginCard() {
           mx: 4,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          [theme.breakpoints.down('sm')]: {
+            mx: 0
+          }
         }}
       >
         <Typography variant="h1" sx={{ my: 2 }}>
