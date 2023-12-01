@@ -204,7 +204,7 @@ function SidebarMenu() {
                         </span>
                       }
                     >
-                      Star Of The Week
+                      STAR OF THE WEEK
                     </Button>
                   </NextLink>
                 </ListItem>
@@ -433,7 +433,7 @@ function SidebarMenu() {
                       </span>
                     }
                   >
-                    GET AGENCY
+                    {agencyCode ? 'VIEW AGENCY' : 'GET AGENCY'}
                   </Button>
                 </NextLink>
               </ListItem>
@@ -466,7 +466,7 @@ function SidebarMenu() {
                         </span>
                       }
                     >
-                      Agency Income
+                      AGENCY INCOME
                     </Button>
                   </NextLink>
                 </ListItem>
