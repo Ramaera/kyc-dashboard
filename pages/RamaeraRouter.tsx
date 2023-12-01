@@ -13,7 +13,7 @@ import {
 } from '@/state/slice/allUsersSlice';
 import { setAllNumberShareHolder } from '@/state/slice/allShareHolderSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -24,7 +24,7 @@ const RamaeraRouter = ({ children }) => {
   const allNumbers = useQuery(GET_NUMBERS);
   const allShareHolder = useQuery(GET_ALL_SHARE_HOLDER);
   const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
-  const agencyCode = useQuery(GET_AGENCY_CODE, {
+  const agencyCode = useLazyQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
 

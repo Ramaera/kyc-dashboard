@@ -12,7 +12,8 @@ import {
   IconButton,
   InputAdornment,
   Radio,
-  RadioGroup
+  RadioGroup,
+  useTheme
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -36,7 +37,7 @@ export default function SignupCard() {
   const [referral, setReferral] = React.useState('');
   const [debouncedReferral, setDebouncedReferral] = React.useState('');
   const [open, setOpen] = React.useState(false);
-
+  const theme = useTheme();
   // const [referral, setReferral] = React.useState('');
   const [aadhaarNumber, setAadhaarNumber] = React.useState('');
   const [membership, setMembership] = React.useState('BASIC');
@@ -44,7 +45,8 @@ export default function SignupCard() {
   const [isAgentVerified, setAgentVerified] = React.useState<boolean>(true);
   const [isLoading, setLoading] = React.useState(false);
   const [agentName, setAgentName] = React.useState('');
-  // const [allAgents, setAllAgents] = React.useState([]);
+  const [userName, setUserName] = React.useState('');
+
   const [checkAgency, { loading, error, data }] = useLazyQuery(
     CHECK_REFERRAL_CODE,
     {
@@ -52,30 +54,30 @@ export default function SignupCard() {
     }
   );
 
+  if (error) {
+    toast.error(error?.message);
+  }
+
   const checkPWID = (text: any) => {
     const postData = {
       Reff_Code: text
     };
-
     const options = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
-
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        setValidPWID(
-          res.data[0]['AC_Status'] === 'InActive'
-            ? false
-            : res.data[0]['AC_Status'] === 'Active'
-            ? true
-            : false
-        );
+        const AC_Status = res.data[0]?.AC_Status || 'InActive';
+        setValidPWID(AC_Status === 'Active');
+        setUserName(res.data[0]?.Name);
       })
-
-      .catch((err) => {});
+      .catch((err) => {
+        console.error('error', err);
+        setValidPWID(false);
+      });
   };
 
   const validateForm = () => {
@@ -108,7 +110,7 @@ export default function SignupCard() {
     }
     return true;
   };
-  console.log('isAgentVerified', isAgentVerified);
+
   const handleSubmit = async () => {
     const isValid = validateForm();
     setLoading(true);
@@ -144,28 +146,13 @@ export default function SignupCard() {
     setOpen(false);
   };
 
-  const handleStatus = async () => {
-    handleSubmit();
-    handleClose();
-    /*  if (status === 'APPROVED') {
-      toast.success('KYC APPROVED');
-    }
-    if (status === 'REJECTED') {
-      toast.error('KYC REJECTED');
-    }
-    if (status === 'ONGOING') {
-      toast.success('KYC ONGOING');
-    } */
-  };
-  const checkIfAgentExists = () => {};
-
   /*   React.useEffect(() => {
     setAllAgents(data.AllKycAgency);
   }, [data]); */
 
-  const verifyAgency = () => {
+  const verifyAgency = async () => {
     setDebouncedReferral(referral);
-    checkAgency();
+    await checkAgency();
   };
   React.useEffect(() => {
     if (data?.verifyReferralId?.name) {
@@ -177,18 +164,11 @@ export default function SignupCard() {
     }
   }, [data]);
 
-  React.useEffect(() => {
-    if (error?.message) {
-      toast.error(error?.message);
-    }
-  }, [error]);
-
-  React.useEffect(() => {
-    checkIfAgentExists();
-  }, [referral]);
-  React.useEffect(() => {
-    // setAgentVerified(true);
-  }, [agentName]);
+  // React.useEffect(() => {
+  //   if (error?.message) {
+  //     toast.error(error?.message);
+  //   }
+  // }, [error]);
 
   return (
     <Grid component={Paper} elevation={6} square>
@@ -199,7 +179,10 @@ export default function SignupCard() {
           mx: 4,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          [theme.breakpoints.down('sm')]: {
+            mx: 0
+          }
         }}
       >
         <Typography variant="h1" sx={{ my: 2 }}>
@@ -222,7 +205,7 @@ export default function SignupCard() {
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
-              //  checkPWID(e.target.value);
+              checkPWID(e.target.value);
             }}
             // InputProps={{
             //   endAdornment: (
@@ -238,8 +221,7 @@ export default function SignupCard() {
             //   )
             // }}
           />
-
-          {/* <Typography>{'PWID : ' + validPWID}</Typography> */}
+          {userName && <Typography>{'PWID : ' + userName}</Typography>}
 
           <Typography
             color="text.secondary"
@@ -259,6 +241,7 @@ export default function SignupCard() {
           >
             <FormControlLabel value="BASIC" control={<Radio />} label="Basic" />
             <FormControlLabel
+              sx={{ textAlign: 'left' }}
               value="ADVANCE"
               control={<Radio />}
               label="30% Net Profit Sharing Partner"
@@ -339,7 +322,7 @@ export default function SignupCard() {
                 handleClickOpen();
               }
             }}
-            disabled={isLoading}
+            disabled={isLoading || !validPWID}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
