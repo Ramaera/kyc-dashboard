@@ -7,6 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import router from 'next/router';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 function ForgotPasswordModal({ open, setOpen }) {
   const user = useAppSelector((state) => state.user?.data);
@@ -24,14 +25,6 @@ function ForgotPasswordModal({ open, setOpen }) {
   };
 
   const checkPrivateKey = async () => {
-    if (privateKey.length < 8) {
-      toast.error('Private key is not valid');
-      return;
-    }
-    setChangePasswordVisible(true);
-    toast.error('Private key is not getting checked');
-  };
-  /*   const checkPrivateKey = async () => {
     const postData = {
       privateKey: privateKey
     };
@@ -55,7 +48,7 @@ function ForgotPasswordModal({ open, setOpen }) {
       .catch((err) => {
         toast.error(err.message);
       });
-  }; */
+  };
 
   const handlePasswordChange = async () => {
     if (confirmPassword !== newPassword) {

@@ -125,7 +125,7 @@ export default function LoginCard() {
               )
             }}
           />
-          {/*   <Grid item xs>
+          <Grid item xs>
             <Link href="#">
               <a
                 onClick={() => {
@@ -135,7 +135,7 @@ export default function LoginCard() {
                 Forgot Password
               </a>
             </Link>
-          </Grid> */}
+          </Grid>
           <LoadingButton
             loading={isLoading}
             fullWidth
