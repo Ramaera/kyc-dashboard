@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer';
+import { useAppSelector } from '@/hooks';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import {
   Box,
@@ -14,12 +15,45 @@ import {
 import Head from 'next/head';
 import Link from 'next/link';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { CHECK_AGENCY } from '@/apollo/queries/updateUser';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { VERIFYREFERRAL } from '@/apollo/queries/auth';
 
 function index() {
   const theme = useTheme();
   const [currentButton, setCurrentButton] = useState('');
   const [supportText, setSupportText] = useState('');
+  const [sponser, setSponser] = useState({
+    sponserName: '',
+    sponserPWID: '',
+    sponserAgencyCode: ''
+  });
+  const [verifyReferal] = useMutation(VERIFYREFERRAL);
+
+  const user = useAppSelector((state) => state.user?.data);
+
+  const checkSponser = async () => {
+    try {
+      const resp = await verifyReferal({
+        variables: {
+          ReferralCode: user?.referralAgencyCode
+        }
+      });
+
+      setSponser({
+        sponserName: resp?.data?.getSponserDetails.SponserDetails.name,
+        sponserPWID: resp?.data?.getSponserDetails.SponserDetails.pw_id,
+        sponserAgencyCode: resp?.data?.getSponserDetails.agencyCode
+      });
+    } catch (err) {
+      console.log('error', err);
+    }
+  };
+
+  useEffect(() => {
+    checkSponser();
+  }, []);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -81,6 +115,7 @@ function index() {
                 </Typography>
               </>
             )}
+
             {currentButton === 'support' && (
               <Box>
                 <Typography
@@ -120,8 +155,44 @@ function index() {
               </Box>
             )}
           </Box>
+
+          <CardHeader
+            title={'Sponsor Details'}
+            sx={{
+              ml: 2,
+              textTransform: 'uppercase'
+            }}
+          />
+          <Divider />
+          <Box
+            sx={{
+              padding: '2rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
+              }
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: 18
+              }}
+            >
+              <Typography sx={{}}>Name: {sponser.sponserName} </Typography>
+              <Typography>PW Id: {sponser.sponserPWID} </Typography>
+              <Typography>
+                Agency Code:{' '}
+                {sponser.sponserAgencyCode ? sponser.sponserAgencyCode : 'Null'}
+              </Typography>
+            </Box>
+          </Box>
         </Card>
       </Container>
+
       <Footer />
     </ProtectedSSRoute>
   );

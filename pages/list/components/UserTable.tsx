@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardHeader,
+  Dialog,
   Divider,
   FormControl,
   InputLabel,
@@ -30,6 +31,9 @@ import { User } from '@/models/user';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { LoadingButton } from '@mui/lab';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import AllUserTable from './AllUserTable';
 
 const projectChecker = (user, project) => {
   let status = 'NOT ENROLLED';
@@ -119,6 +123,7 @@ const UserTable = () => {
   const [page, setPage] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(100);
+  const [allData, setAllData] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [kycList, setKycList] = useState<string | null>();
   const [currentSelectedButton, setCurrentSelectedButton] =
@@ -379,8 +384,6 @@ const UserTable = () => {
     return w.replace(regex, '*');
   };
 
-  let index = -1;
-
   if (!usersList[0]) {
     return <Loading />;
   }
@@ -612,143 +615,196 @@ const UserTable = () => {
             p={2}
             gap={2}
             display={'flex'}
-            justifyContent={'center'}
+            justifyContent={'space-between'}
             alignItems={'center'}
+            sx={{
+              [theme.breakpoints.down('sm')]: {
+                flexDirection: 'column'
+              }
+            }}
           >
-            <Stack spacing={2}>
-              <Pagination
-                count={Math.ceil(
-                  (currentSelectedButton.includes('Avdance') &&
-                    numbers.totalAdvance / limit) ||
-                    (currentSelectedButton.includes('Basic') &&
-                      numbers.totalBasic / limit)
-                )}
-                page={currentPage}
-                color="primary"
-                onChange={(event, selectedPage) => {
-                  setCurrentPage(selectedPage);
-                  setPage(selectedPage - 1);
-                  setSearchText('');
-                  setSearchTextInput('');
-                }}
-              />
-            </Stack>
-            <Box width={80} display={'flex'} gap={'10px'}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Rows</InputLabel>
-                <Select
-                  value={limit}
-                  onChange={(e) => {
-                    if (e.target.value === 5000) {
-                      setCurrentPage(1);
-                    }
-                    setLimit(e.target.value);
+            <Box fontWeight="bold" color="text.primary">
+              Total Record : {filteredUsers.length}
+            </Box>
+            <Box
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column'
+                }
+              }}
+            >
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(
+                    (currentSelectedButton.includes('Avdance') &&
+                      numbers.totalAdvance / limit) ||
+                      (currentSelectedButton.includes('Basic') &&
+                        numbers.totalBasic / limit)
+                  )}
+                  page={currentPage}
+                  color="primary"
+                  onChange={(event, selectedPage) => {
+                    setCurrentPage(selectedPage);
+                    setPage(selectedPage - 1);
+                    setSearchText('');
+                    setSearchTextInput('');
                   }}
-                  label="Rows"
-                  fullWidth
+                />
+              </Stack>
+              <Box width={80} display={'flex'} gap={'10px'}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Rows</InputLabel>
+                  <Select
+                    value={limit}
+                    onChange={(e) => {
+                      if (e.target.value === 5000) {
+                        setCurrentPage(1);
+                      }
+                      setLimit(e.target.value);
+                    }}
+                    label="Rows"
+                    fullWidth
+                  >
+                    <MenuItem value={20}>20</MenuItem>
+                    <MenuItem value={100}>100</MenuItem>
+                    <MenuItem value={5000}>All</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box p={2} gap={2} display={'flex'} justifyContent={'flex-end'}>
+                <DownloadTableExcel
+                  filename={'data'}
+                  sheet={'data'}
+                  currentTableRef={tableRef.current}
                 >
-                  <MenuItem value={20}>20</MenuItem>
-                  <MenuItem value={100}>100</MenuItem>
-                  <MenuItem value={5000}>All</MenuItem>
-                </Select>
-              </FormControl>
+                  <LoadingButton variant="contained">
+                    Download Current Data
+                  </LoadingButton>
+                </DownloadTableExcel>
+                <LoadingButton
+                  variant="contained"
+                  onClick={() => {
+                    setAllData(true);
+                  }}
+                >
+                  Load All Data
+                </LoadingButton>
+                {allData && (
+                  <Dialog open={true} onClose={() => setAllData(false)}>
+                    <AllUserTable />
+                  </Dialog>
+                )}
+                {/*   <DownloadTableExcel
+            filename={'data'}
+            sheet={'data'}
+            currentTableRef={tableRefAll.current}
+          >
+            <LoadingButton variant="contained">
+              Download All Data
+            </LoadingButton>
+          </DownloadTableExcel> */}
+              </Box>
             </Box>
           </Box>
         )}
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
-          <TableContainer>
-            <Table ref={tableRef}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
-                  <TableCell>PW ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell align="center">Father's Name</TableCell>
-                  <TableCell align="center">Moibile No.</TableCell>
-                  {/* <TableCell align="center">Email</TableCell> */}
-                  <TableCell align="center">KYC Status</TableCell>
-                  <TableCell align="center">Demat</TableCell>
-                  <TableCell align="center">Hajipur Project</TableCell>
-                  <TableCell align="center">Agra Project</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredUsers.map((user) => {
-                  if (user?.membership === kycList) {
-                    return;
-                  }
-                  index += 1;
-                  return (
-                    <TableRow hover key={user?.id}>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          align="center"
-                          noWrap
-                          width={30}
-                        >
-                          {index + 1}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={100}
-                        >
-                          {user?.pw_id}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          noWrap
-                        >
-                          {/* {format(user?.orderDate, 'MMMM dd yyyy')} */}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={150}
-                        >
-                          {user?.name === 'NULL' ? '' : user?.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          width={100}
-                          noWrap
-                        >
-                          {censorMe(user?.father_or_husband_name)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {censorMe(user?.mobile_number)}
-                        </Typography>
-                      </TableCell>
-                      {/*  <TableCell align="right">
+          <>
+            <TableContainer>
+              <Table ref={tableRef}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>S.No.</TableCell>
+                    <TableCell>PW ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="center">Father's Name</TableCell>
+                    <TableCell align="center">Moibile No.</TableCell>
+                    {/* <TableCell align="center">Email</TableCell> */}
+                    <TableCell align="center">KYC Status</TableCell>
+                    <TableCell align="center">Demat</TableCell>
+                    <TableCell align="center">Hajipur Project</TableCell>
+                    <TableCell align="center">Agra Project</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredUsers.map((user, index) => {
+                    if (user?.membership === kycList) {
+                      return;
+                    }
+                    return (
+                      <TableRow hover key={user?.id}>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            align="center"
+                            noWrap
+                            width={30}
+                          >
+                            {index + 1}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={100}
+                          >
+                            {user?.pw_id}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            noWrap
+                          >
+                            {/* {format(user?.orderDate, 'MMMM dd yyyy')} */}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={150}
+                          >
+                            {user?.name === 'NULL' ? '' : user?.name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            width={100}
+                            noWrap
+                          >
+                            {censorMe(user?.father_or_husband_name)}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            {censorMe(user?.mobile_number)}
+                          </Typography>
+                        </TableCell>
+                        {/*  <TableCell align="right">
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -759,67 +815,68 @@ const UserTable = () => {
                       {censorMe(user?.email)}
                     </Typography>
                   </TableCell> */}
-                      <TableCell align="right">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          align="center"
-                          noWrap
-                        >
-                          {user?.kyc === 'NOT_INITIALIZED'
-                            ? 'NOT STARTED'
-                            : user?.kyc}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          width="120px"
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          noWrap
-                        >
-                          {checkDemat(user) === 'NOT_RECIEVED'
-                            ? 'NOT RECEIVED'
-                            : checkDemat(user)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {projectChecker(
-                            user?.documents,
-                            'hajipur_project_payment'
-                          )}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {projectChecker(
-                            user?.documents,
-                            'agra_project_payment'
-                          )}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                        <TableCell align="right">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            align="center"
+                            noWrap
+                          >
+                            {user?.kyc === 'NOT_INITIALIZED'
+                              ? 'NOT STARTED'
+                              : user?.kyc}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            width="120px"
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            noWrap
+                          >
+                            {checkDemat(user) === 'NOT_RECIEVED'
+                              ? 'NOT RECEIVED'
+                              : checkDemat(user)}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            {projectChecker(
+                              user?.documents,
+                              'hajipur_project_payment'
+                            )}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            {projectChecker(
+                              user?.documents,
+                              'agra_project_payment'
+                            )}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
         )}
         <Toaster position="bottom-center" reverseOrder={false} />
       </Card>

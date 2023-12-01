@@ -60,7 +60,6 @@ const UserTable = ({ title }) => {
   const [searchText, setSearchText] = useState('');
   const debouncedValue = useDebounce<string>(searchText, 400);
 
-
   const getAllUser = useQuery(GET_ALL_USERS, {
     variables: {
       skip: 0,
@@ -93,7 +92,11 @@ const UserTable = ({ title }) => {
     }
   };
 
-  const applyFilters = (users: User[], filters: Filters,searchTexts):User[] => {
+  const applyFilters = (
+    users: User[],
+    filters: Filters,
+    searchTexts
+  ): User[] => {
     let searchText = searchTexts.toLowerCase();
 
     return users.filter((user) => {
@@ -132,7 +135,7 @@ const UserTable = ({ title }) => {
     status: null,
     membership: null
   });
-  const filteredUsers = applyFilters(usersList, filters,debouncedValue);
+  const filteredUsers = applyFilters(usersList, filters, debouncedValue);
   const paginatedUsers = applyPagination(filteredUsers, page, limit);
 
   const sortName = () => {
@@ -237,7 +240,6 @@ const UserTable = ({ title }) => {
   useEffect(() => {
     checkTotal();
   }, [usersList]);
-  
 
   useEffect(() => {
     setNumbers((val) => ({
@@ -444,17 +446,15 @@ const UserTable = ({ title }) => {
                       }
                     }}
                   >
-                
-                <TextField
-                  fullWidth
-                  label="Search"
-                  variant="outlined"
-                  value={searchText}
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                  }}
-                />
-             
+                    <TextField
+                      fullWidth
+                      label="Search"
+                      variant="outlined"
+                      value={searchText}
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                      }}
+                    />
                   </Box>
                 </Box>
               }
@@ -471,8 +471,9 @@ const UserTable = ({ title }) => {
                 <TableRow>
                   <TableCell>S.No.</TableCell>
                   <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
-                  Name{sortByName ? '⬇' : '⬆'}
-                </TableCell>                  <TableCell>Father's Name</TableCell>
+                    Name{sortByName ? '⬇' : '⬆'}
+                  </TableCell>{' '}
+                  <TableCell>Father's Name</TableCell>
                   <TableCell>PW ID</TableCell>
                   <TableCell>Share Holder Type</TableCell>
                   <TableCell align="center">Moibile No.</TableCell>
@@ -533,7 +534,7 @@ const UserTable = ({ title }) => {
                           {user?.membership}
                         </Typography>
                       </TableCell>
-                    
+
                       <TableCell>
                         <Typography
                           variant="body1"

@@ -6,15 +6,18 @@ import {
   Container,
   Divider,
   Grid,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
+
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useSelector } from 'react-redux';
 import Certificate from './components/Certificate';
 import documentsConfig from '@/config/documentsConfig';
 function index() {
   const user = useSelector((state: any) => state.user?.data);
+  const theme = useTheme();
 
   // const checkBeforeHike = (doc) => {
   //   202310815 > parseInt(doc.split('-').join(''));
@@ -117,7 +120,7 @@ function index() {
     totalPaymentDocument.map((doc, index) =>
       certificates.push(
         <Certificate
-          key={doc.id}
+          id={doc.id}
           receiptSerialNumber={user.pw_id + '/' + 'KYC' + '/' + `${index + 1}`}
           date={doc?.createdAt.slice(0, 10)}
           recievedFrom={user?.name || ''}
@@ -176,7 +179,16 @@ function index() {
             alignItems="stretch"
             spacing={0}
           >
-            <Grid item xs={12} paddingX={6}>
+            <Grid
+              item
+              xs={12}
+              paddingX={6}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  paddingX: '9px'
+                }
+              }}
+            >
               {allCertificates()}
             </Grid>
           </Grid>

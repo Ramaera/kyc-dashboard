@@ -162,6 +162,9 @@ query GetUser {
       name
       relationship
     }
+    kycAgency {
+      agencyCode
+    }
     email
     father_or_husband_name
     id
@@ -322,42 +325,138 @@ query($agencyCode: String!) {
   }
 }`);
 
-/* export const GET_ALL_AGENCY_USERS = gql(`
-query($agencyCode: String!) {
-  GetAllKycAgencyUser(agencyCode: $agencyCode) {
-    user {
-      alternate_mobile_number
-      createdAt
-      date_of_birth
-      demat_account
-      membership
-      documents {
-        createdAt
-    updatedAt
-        id
-        title
-        url
-        userId
-        status
-        amount
-      }
-      nominee {
-        id
-        name
-        relationship
-      }
-      email
-      father_or_husband_name
-      id
-      kyc
-      mobile_number
-      name
+export const VERIFYREFERRAL = gql(`
+  mutation VerifyReferralId($ReferralCode:String!){
+    getSponserDetails(data:{ReferralCode:$ReferralCode}){
+      SponserDetails {
       pw_id
-      rm_id
-      updatedAt
+      name
+    }
+    agencyCode
+    }
+  }`);
+
+export const SHARE_HOLDER = gql(` 
+  query($skip: Int!, $take: Int!, $input: SearchInvestmentType!){
+    searchShareHolding(skip: $skip, take: $take, input: $input){
+      status
+      InvestmentType
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
     }
   }
-}
-
   `);
- */
+
+export const SHARE_HOLDER_MEMBERSHIP = gql(`
+query($skip: Int!, $take: Int!, $input: SearchInvestmentType!) {
+  searchShareHolding(skip: $skip, take: $take, input: $input) {
+      status
+      InvestmentType
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const TOTAL_SHARE_HOLDERS = gql(`
+  query ($skip: Int!, $take: Int!){
+    TotalShareholders(skip: $skip, take: $take) {
+      InvestmentType
+      status
+      allotedShare
+      user{
+        pw_id
+        name
+        membership
+      }
+    }
+  }
+  `);
+
+export const GET_ALL_SHARE_HOLDER = gql(`
+query{
+  getAllShareHoldersCount{
+    TotalAdvanceShareHolder
+    TotalBasicShareHolder
+    TotalHajipurShareHolder
+    TotalShareholders
+  }
+}
+`);
+
+export const GET_AGENCY_PAYMENT = gql(`
+query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
+  AgencyPayment(agencyCode: $agencyCode, month: $month, year: $year) {
+      agraProjectAmount
+      hajipurProjectAmount
+      kycAmount
+      BasicKycApprovedUser {
+        pw_id
+        createdAt
+        kyc
+        name
+        membership
+    }
+    AdvanceKycApprovedUser {
+        pw_id
+        createdAt
+        kyc
+        name
+        membership
+    }
+    basicHajipurprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    advanceHajipurprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    basicAgraprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+    advanceAgraprojectDocument {
+      amount
+      createdAt
+      status
+      user {
+          kyc
+          membership
+          name
+          pw_id
+      }
+    }
+  }
+
+}
+`);
