@@ -174,6 +174,42 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
               {agencyCode && (
+                <ListItem component="div">
+                  <NextLink href="/star-of-the-week" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/star-of-the-week' ? 'active' : ''
+                      }
+                      style={{
+                        color:
+                          currentRoute === '/star-of-the-week' ? '#7063C0' : ''
+                      }}
+                      disableRipple
+                      component="a"
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/star-of-the-week'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      Star Of The Week
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
+              {agencyCode && (
                 <ListItem
                   component="div"
                   // sx={{ backgroundColor: '#ffffff10', borderRadius: 2 }}

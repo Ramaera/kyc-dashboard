@@ -14,7 +14,8 @@ import {
   Paper,
   styled,
   Tab,
-  Tabs
+  Tabs,
+  useTheme
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
@@ -38,6 +39,7 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
+  const theme = useTheme();
   // const user = useSelector((state: any) => state.user?.data);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
   // const [open, setOpen] = useState<boolean>(true);
@@ -130,7 +132,14 @@ function DashboardTasks() {
             )}
             {currentTab === 'payment' && (
               <Grid item xs={12}>
-                <Box p={4}>
+                <Box
+                  p={4}
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      padding: 1
+                    }
+                  }}
+                >
                   <PaymentTab />
                 </Box>
               </Grid>
@@ -153,7 +162,14 @@ function DashboardTasks() {
             )}
             {currentTab === 'demat' && (
               <Grid item xs={12}>
-                <Box p={4}>
+                <Box
+                  p={4}
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      padding: 1
+                    }
+                  }}
+                >
                   <DematTab />
                 </Box>
               </Grid>

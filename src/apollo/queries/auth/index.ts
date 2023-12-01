@@ -325,6 +325,24 @@ query($agencyCode: String!) {
   }
 }`);
 
+export const STAR_OF_THE_WEEK = gql(`
+
+query($EndOfTheWeek: String!,$startOfTheWeek: String!)  {
+  starOfTheWeek(
+      EndOfTheWeek: $EndOfTheWeek
+      startOfTheWeek: $startOfTheWeek
+  ) {
+      agencyCode
+      agencyOwnerName
+      users {
+          membership
+          pw_id
+          referralAgencyCode
+      }
+  }
+}
+`);
+
 export const VERIFYREFERRAL = gql(`
   mutation VerifyReferralId($ReferralCode:String!){
     getSponserDetails(data:{ReferralCode:$ReferralCode}){
