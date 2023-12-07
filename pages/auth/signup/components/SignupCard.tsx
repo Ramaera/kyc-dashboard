@@ -70,8 +70,12 @@ export default function SignupCard() {
     axios
       .post('https://api.ramaera.com/api/KYC', postData, options)
       .then((res) => {
-        const AC_Status = res.data[0]?.AC_Status || 'InActive';
-        setValidPWID(AC_Status === 'Active');
+        // const AC_Status = res.data[0]?.AC_Status || 'InActive';
+        // setValidPWID(AC_Status === 'Active');
+
+        const AC_Status = res.data[0]?.AC_Status;
+        setValidPWID(AC_Status);
+        setUserName(res.data[0]?.Name);
         setUserName(res.data[0]?.Name);
       })
       .catch((err) => {
