@@ -354,7 +354,7 @@ const UserTable = () => {
                           // minWidth="80px"
                           noWrap
                         >
-                          {getMonthName(user?.createdAt) === monthName
+                          {user?.createdAt.slice(0, 7) === selectedMonthYear
                             ? '--'
                             : `Carry Forward ${getMonthName(user?.createdAt)}`}
                         </Typography>
