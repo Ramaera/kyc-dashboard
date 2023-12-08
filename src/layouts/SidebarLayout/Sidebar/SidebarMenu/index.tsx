@@ -173,7 +173,7 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-              {agencyCode && (
+              {/* {agencyCode && (
                 <ListItem component="div">
                   <NextLink href="/star-of-the-week" passHref>
                     <Button
@@ -208,7 +208,7 @@ function SidebarMenu() {
                     </Button>
                   </NextLink>
                 </ListItem>
-              )}
+              )} */}
               {agencyCode && (
                 <ListItem
                   component="div"

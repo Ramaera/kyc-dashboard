@@ -24,7 +24,7 @@ const RamaeraRouter = ({ children }) => {
   const allNumbers = useQuery(GET_NUMBERS);
   const allShareHolder = useQuery(GET_ALL_SHARE_HOLDER);
   const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
-  const agencyCode = useLazyQuery(GET_AGENCY_CODE, {
+  const [agencyCode, { loading, data }] = useLazyQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
 
@@ -49,8 +49,12 @@ const RamaeraRouter = ({ children }) => {
       setAllNumberShareHolder(allShareHolder?.data?.getAllShareHoldersCount)
     );
   }
-  if (agencyCode?.data?.kycAgency.agencyCode) {
-    dispatch(setAgencyCode(agencyCode.data.kycAgency.agencyCode));
+  useEffect(() => {
+    agencyCode();
+  }, [agencyCode]);
+
+  if (data?.kycAgency.agencyCode) {
+    dispatch(setAgencyCode(data.kycAgency.agencyCode));
   }
 
   const [isLoading, setLoading] = useState(true);
