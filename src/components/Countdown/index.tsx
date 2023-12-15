@@ -6,7 +6,7 @@ import Confetti from 'react-confetti';
 const index = () => {
   const theme = useTheme();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  var countDownDate = new Date('Oct 21, 2023 14:30:00').getTime();
+  var countDownDate = new Date('Dec 22, 2023 23:59:59').getTime();
   var myfunc = setInterval(function () {
     forceUpdate();
   }, 1000);
@@ -19,7 +19,7 @@ const index = () => {
   return (
     <div>
       {/* <ConfettiExplosion /> */}
-      <Confetti numberOfPieces={150} width={1000} height={1000} />
+      {/* <Confetti numberOfPieces={150} width={1000} height={1000} /> */}
 
       <Box
         padding={(0, 2)}
@@ -38,14 +38,14 @@ const index = () => {
             sx={{
               marginBottom: '10px',
               [theme.breakpoints.down('sm')]: {
-                fontSize: 24
+                fontSize: 16
               }
             }}
           >
             {' '}
-            CONGRATULATIONS
+            Hajipur Spice Factory Funding Will Close In
           </Typography>
-          <Typography
+          {/* <Typography
             variant="h4"
             textAlign={'center'}
             component="h4"
@@ -62,11 +62,11 @@ const index = () => {
             </span>{' '}
             project. We sincerely thank all of you for your generous and
             wholehearted support.
-          </Typography>
+          </Typography> */}
 
           {/*
            */}
-          {/* <Box
+          <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -197,7 +197,7 @@ const index = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Box> */}
+          </Box>
         </Box>
       </Box>
       {/* <ConfettiExplosion /> */}

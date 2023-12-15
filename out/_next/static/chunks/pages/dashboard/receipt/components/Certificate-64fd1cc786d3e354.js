@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2586],{11470:function(n,_,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/dashboard/receipt/components/Certificate",function(){return e(47318)}])}},function(n){n.O(0,[5443,7847,8244,9990,3778,2961,7318,9774,2888,179],(function(){return _=11470,n(n.s=_);var _}));var _=n.O();_N_E=_}]);
