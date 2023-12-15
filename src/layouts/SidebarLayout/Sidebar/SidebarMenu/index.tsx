@@ -173,6 +173,39 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
+
+              <ListItem component="div">
+                <NextLink href="/profit-sharing" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/profit-sharing' ? 'active' : ''
+                    }
+                    disableRipple
+                    style={{
+                      color: currentRoute === '/profit-sharing' ? '#7063C0' : ''
+                    }}
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/profit-sharing' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    PROFIT SHARING IN RAMAERA
+                  </Button>
+                </NextLink>
+              </ListItem>
+
               {/* {agencyCode && (
                 <ListItem component="div">
                   <NextLink href="/star-of-the-week" passHref>
