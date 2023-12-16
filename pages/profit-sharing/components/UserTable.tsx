@@ -38,7 +38,7 @@ const UserTable = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [allUsers, setAllUsers] = useState([]);
   const [currentSelectedButton, setCurrentSelectedButton] =
-    useState<string>('totalBasic');
+    useState<string>('threePercentProfit');
   const [usersList, setUsersList] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -75,9 +75,9 @@ const UserTable = () => {
         )
         .slice(0, 3000);
 
-      const filteredData = currentSelectedButton.includes('totalBasic')
+      const filteredData = currentSelectedButton.includes('threePercentProfit')
         ? fetchedUsers
-        : currentSelectedButton.includes('totalAvdance')
+        : currentSelectedButton.includes('fivePercentProfit')
         ? UsersData
         : fetchedUsers;
 
@@ -98,6 +98,12 @@ const UserTable = () => {
     const endIndex = startIndex + limit;
     setUsersList(allUsers.slice(startIndex, endIndex));
     setCurrentPage(selectedPage);
+  };
+
+  const handleButtonClick = () => {
+    setSearchValue('');
+    handleSearchInput('');
+    setCurrentPage(1);
   };
 
   const filteredUsers = usersList;
@@ -142,33 +148,35 @@ const UserTable = () => {
             >
               <Button
                 variant={
-                  currentSelectedButton === 'totalBasic'
+                  currentSelectedButton === 'threePercentProfit'
                     ? 'contained'
                     : 'outlined'
                 }
                 sx={{ textTransform: 'uppercase', padding: 2 }}
                 onClick={() => {
-                  setCurrentSelectedButton('totalBasic');
+                  setCurrentSelectedButton('threePercentProfit');
+                  handleButtonClick();
                 }}
               >{`3% Profit Sharing Ramaera`}</Button>
 
               <Button
                 variant={
-                  currentSelectedButton === 'totalAvdance'
+                  currentSelectedButton === 'fivePercentProfit'
                     ? 'contained'
                     : 'outlined'
                 }
                 sx={{ textTransform: 'uppercase', padding: 2 }}
                 onClick={() => {
-                  setCurrentSelectedButton('totalAvdance');
+                  setCurrentSelectedButton('fivePercentProfit');
+                  handleButtonClick();
                 }}
               >{`5% Profit Sharing Ramaera`}</Button>
             </Box>
           </Box>
         </Box>
 
-        {(currentSelectedButton.includes('totalAvdance') ||
-          currentSelectedButton.includes('totalBasic')) && (
+        {(currentSelectedButton.includes('fivePercentProfit') ||
+          currentSelectedButton.includes('threePercentProfit')) && (
           <CardHeader
             action={
               <Box
@@ -217,8 +225,8 @@ const UserTable = () => {
 
         <Divider />
 
-        {(currentSelectedButton.includes('totalAvdance') ||
-          currentSelectedButton.includes('totalBasic')) && (
+        {(currentSelectedButton.includes('fivePercentProfit') ||
+          currentSelectedButton.includes('threePercentProfit')) && (
           <Box
             p={2}
             gap={2}
@@ -279,7 +287,7 @@ const UserTable = () => {
         )}
 
         {/* 3% Profit sharing data */}
-        {currentSelectedButton.includes('totalBasic') && (
+        {currentSelectedButton.includes('threePercentProfit') && (
           <>
             <TableContainer>
               <Table ref={tableRef}>
@@ -288,7 +296,7 @@ const UserTable = () => {
                     <TableCell>S.No.</TableCell>
                     <TableCell>PW ID</TableCell>
                     <TableCell>Name</TableCell>{' '}
-                    <TableCell align="center">createdAt</TableCell>
+                    {/* <TableCell align="center">createdAt</TableCell> */}
                     <TableCell align="center">Membership</TableCell>
                     <TableCell align="center">KYC Status</TableCell>
                     <TableCell align="center">Demat</TableCell>
@@ -344,7 +352,7 @@ const UserTable = () => {
                             {user?.name === 'NULL' ? '' : user?.name}
                           </Typography>
                         </TableCell>
-                        <TableCell align="center">
+                        {/* <TableCell align="center">
                           <Typography
                             variant="body1"
                             fontWeight="bold"
@@ -355,7 +363,7 @@ const UserTable = () => {
                           >
                             {user?.createdAt?.slice(0, 10)}
                           </Typography>
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell align="center">
                           <Typography
                             variant="body1"
@@ -402,7 +410,7 @@ const UserTable = () => {
         )}
 
         {/* 5% Profit sharing data */}
-        {currentSelectedButton.includes('totalAvdance') && (
+        {currentSelectedButton.includes('fivePercentProfit') && (
           <>
             <TableContainer>
               <Table ref={tableRef}>
