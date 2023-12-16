@@ -16,6 +16,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
   useMediaQuery,
   useTheme
@@ -39,6 +40,8 @@ const UserTable = () => {
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('totalBasic');
   const [usersList, setUsersList] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const allKycUsers = useQuery(ALL_KYC_USERS, {
     variables: {
@@ -60,6 +63,10 @@ const UserTable = () => {
     return status;
   };
 
+  const handleSearchInput = (searchValue) => {
+    setSearchTerm(searchValue);
+  };
+
   useEffect(() => {
     if (allKycUsers.data || UsersData) {
       const fetchedUsers = allKycUsers?.data?.allKycUser
@@ -68,17 +75,23 @@ const UserTable = () => {
         )
         .slice(0, 3000);
 
-      const categortyData = currentSelectedButton.includes('totalBasic')
+      const filteredData = currentSelectedButton.includes('totalBasic')
         ? fetchedUsers
         : currentSelectedButton.includes('totalAvdance')
         ? UsersData
         : fetchedUsers;
 
+      const categortyData = filteredData?.filter(
+        (user) =>
+          user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user?.pw_id?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
       setAllUsers(categortyData);
       setTotalPages(Math.ceil(categortyData?.length / limit));
-      setUsersList(categortyData.slice(0, limit));
+      setUsersList(categortyData?.slice(0, limit));
     }
-  }, [allKycUsers.data, UsersData, limit, currentSelectedButton]);
+  }, [allKycUsers.data, UsersData, limit, currentSelectedButton, searchTerm]);
 
   const handlePageChange = (selectedPage) => {
     const startIndex = (selectedPage - 1) * limit;
@@ -89,7 +102,7 @@ const UserTable = () => {
 
   const filteredUsers = usersList;
 
-  if (!usersList[0]) {
+  if (!usersList) {
     return <Loading />;
   }
 
@@ -157,21 +170,46 @@ const UserTable = () => {
         {(currentSelectedButton.includes('totalAvdance') ||
           currentSelectedButton.includes('totalBasic')) && (
           <CardHeader
-            sx={{
-              [theme.breakpoints.down('sm')]: {
-                width: '85vw'
-              }
-            }}
             action={
               <Box
                 display={'flex'}
                 gap={'20px'}
+                px={2}
                 sx={{
                   [theme.breakpoints.down('sm')]: {
-                    flexDirection: 'column-reverse'
+                    flexDirection: 'column-reverse',
+                    gap: 0,
+                    padding: 0
                   }
                 }}
-              ></Box>
+              >
+                <Box
+                  // my={2}
+                  display={'flex'}
+                  gap={2}
+                  sx={{
+                    [theme.breakpoints.down('sm')]: {
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '82.5vw'
+                    }
+                  }}
+                >
+                  <TextField
+                    fullWidth
+                    label="Search"
+                    variant="outlined"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={() => handleSearchInput(searchValue)}
+                  >
+                    Search
+                  </Button>
+                </Box>
+              </Box>
             }
             title={matches ? 'DASHBOARD' : ''}
           />
