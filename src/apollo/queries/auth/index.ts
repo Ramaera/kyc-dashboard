@@ -379,6 +379,7 @@ query($skip: Int!, $take: Int!, $input: SearchInvestmentType!) {
         pw_id
         name
         membership
+        kyc
       }
     }
   }
