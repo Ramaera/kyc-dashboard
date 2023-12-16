@@ -16,136 +16,78 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
   useMediaQuery,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { ALL_KYC_USERS, SEARCH_USERS } from '@/apollo/queries/auth';
+import { useEffect, useRef, useState } from 'react';
+import { ALL_KYC_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
-import variables from '@/config/variables';
-import { User } from '@/models/user';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Toaster } from 'react-hot-toast';
-import { useSelector } from 'react-redux';
-
-interface Filters {
-  membership?: 'BASIC';
-}
-
-const applyFilters = (users: User[], filters: Filters): any => {
-  return users.filter((user) => {
-    let matches = true;
-
-    if (user.role === variables.role.ADMIN) {
-      matches = false;
-    }
-
-    // if ((filters.membership && user?.membership) !== filters.membership) {
-    //   matches = false;
-    // }
-
-    // if (user?.kyc !== 'APPROVED') {
-    //   matches = false;
-    // }
-
-    // if (checkDemat(user) !== 'APPROVED') {
-    //   matches = false;
-    // }
-
-    return matches;
-  });
-};
-
-const checkDemat = (user) => {
-  let status = 'APPROVED';
-  user.documents.map((doc) => {
-    if (doc.title.includes('demat')) {
-      status = doc.status;
-    }
-  });
-  return status;
-};
+import UsersData from './Users5%ProfitData';
 
 const UserTable = () => {
   const matches = useMediaQuery('(min-width:600px)');
   const theme = useTheme();
   const tableRef = useRef(null);
-  const [page, setPage] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(5000);
-  const [searchText, setSearchText] = useState('');
-  const [kycList, setKycList] = useState<string | null>();
+  const [limit, setLimit] = useState<number>(100);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [allUsers, setAllUsers] = useState([]);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('totalBasic');
+  const [usersList, setUsersList] = useState([]);
 
-  const [searchTextInput, setSearchTextInput] = useState('');
   const allKycUsers = useQuery(ALL_KYC_USERS, {
     variables: {
-      skip: page * limit,
-      take: limit,
+      skip: 0,
+      take: 5000,
       input: {
         searchTerm: 'BASIC'
       }
     }
   });
 
-  const [search, { data }] = useLazyQuery(SEARCH_USERS, {
-    variables: {
-      searchTerm: searchText
-    }
-  });
-
-  let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
-  let _usersList = [];
-  const [usersList, setUsersList] = useState([]);
-  const [numbers, setNumbers] = useState({
-    totalBasic: 0
-  });
-
-  const users = allKycUsers?.data?.allKycUser
-    .filter(
-      (user) => user.kyc === 'APPROVED' && checkDemat(user) === 'APPROVED'
-    )
-    .slice(0, 3000);
-
-  useEffect(() => {
-    if (allKycUsers.data) {
-      setUsersList(users);
-      _usersList = users;
-    }
-  }, [allKycUsers]);
-
-  useEffect(() => {
-    setNumbers({
-      totalBasic: _numbers.totalBasicSubscribers
+  const checkDemat = (user) => {
+    let status = 'APPROVED';
+    user?.documents?.map((doc) => {
+      if (doc.title.includes('demat')) {
+        status = doc.status;
+      }
     });
-  }, [_numbers]);
-  const [filters, setFilters] = useState<Filters>({});
+    return status;
+  };
 
   useEffect(() => {
-    if (currentSelectedButton.includes('totalBasic')) {
-      search();
-    }
-  }, [searchText]);
+    if (allKycUsers.data || UsersData) {
+      const fetchedUsers = allKycUsers?.data?.allKycUser
+        .filter(
+          (user) => user.kyc === 'APPROVED' && checkDemat(user) === 'APPROVED'
+        )
+        .slice(0, 3000);
 
-  useEffect(() => {
-    if (!data?.searchUsers[0]) {
-      // toast.error('Not Found');
-    } else if (data?.searchUsers[0]) {
-      // setUsersList(data.searchUsers);
+      const categortyData = currentSelectedButton.includes('totalBasic')
+        ? fetchedUsers
+        : currentSelectedButton.includes('totalAvdance')
+        ? UsersData
+        : fetchedUsers;
+
+      setAllUsers(categortyData);
+      setTotalPages(Math.ceil(categortyData?.length / limit));
+      setUsersList(categortyData.slice(0, limit));
     }
-  }, [data?.searchUsers]);
+  }, [allKycUsers.data, UsersData, limit, currentSelectedButton]);
+
+  const handlePageChange = (selectedPage) => {
+    const startIndex = (selectedPage - 1) * limit;
+    const endIndex = startIndex + limit;
+    setUsersList(allUsers.slice(startIndex, endIndex));
+    setCurrentPage(selectedPage);
+  };
 
   const filteredUsers = usersList;
-
-  useEffect(() => {
-    setLimit(100);
-    setSearchText('');
-    setSearchTextInput('');
-  }, [currentSelectedButton]);
 
   if (!usersList[0]) {
     return <Loading />;
@@ -187,6 +129,18 @@ const UserTable = () => {
             >
               <Button
                 variant={
+                  currentSelectedButton === 'totalBasic'
+                    ? 'contained'
+                    : 'outlined'
+                }
+                sx={{ textTransform: 'uppercase', padding: 2 }}
+                onClick={() => {
+                  setCurrentSelectedButton('totalBasic');
+                }}
+              >{`3% Profit Sharing Ramaera`}</Button>
+
+              <Button
+                variant={
                   currentSelectedButton === 'totalAvdance'
                     ? 'contained'
                     : 'outlined'
@@ -196,18 +150,6 @@ const UserTable = () => {
                   setCurrentSelectedButton('totalAvdance');
                 }}
               >{`5% Profit Sharing Ramaera`}</Button>
-              <Button
-                variant={
-                  currentSelectedButton === 'totalBasic'
-                    ? 'contained'
-                    : 'outlined'
-                }
-                sx={{ textTransform: 'uppercase', padding: 2 }}
-                onClick={() => {
-                  setCurrentSelectedButton('totalBasic');
-                  // handleMembershipChange(variables.membership.BASIC);
-                }}
-              >{`3% Profit Sharing Ramaera`}</Button>
             </Box>
           </Box>
         </Box>
@@ -218,7 +160,6 @@ const UserTable = () => {
             sx={{
               [theme.breakpoints.down('sm')]: {
                 width: '85vw'
-                // overflow: 'hidden'
               }
             }}
             action={
@@ -230,36 +171,7 @@ const UserTable = () => {
                     flexDirection: 'column-reverse'
                   }
                 }}
-              >
-                <Box
-                  display={'flex'}
-                  gap={'10px'}
-                  sx={{
-                    [theme.breakpoints.down('sm')]: {
-                      flexDirection: 'column',
-                      width: '82.5vw'
-                    }
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    label="Search"
-                    variant="outlined"
-                    value={searchTextInput}
-                    onChange={(e) => {
-                      setSearchTextInput(e.target.value);
-                    }}
-                  />
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      setSearchText(searchTextInput);
-                    }}
-                  >
-                    Search
-                  </Button>
-                </Box>
-              </Box>
+              ></Box>
             }
             title={matches ? 'DASHBOARD' : ''}
           />
@@ -282,7 +194,7 @@ const UserTable = () => {
             }}
           >
             <Box fontWeight="bold" color="text.primary">
-              Total Record : {filteredUsers.length}
+              Total Record : {filteredUsers?.length}
             </Box>
             <Box
               display={'flex'}
@@ -296,18 +208,12 @@ const UserTable = () => {
             >
               <Stack spacing={2}>
                 <Pagination
-                  count={Math.ceil(
-                    currentSelectedButton.includes('Basic') &&
-                      numbers.totalBasic / limit
-                  )}
+                  count={totalPages}
                   page={currentPage}
                   color="primary"
-                  onChange={(event, selectedPage) => {
-                    setCurrentPage(selectedPage);
-                    setPage(selectedPage - 1);
-                    setSearchText('');
-                    setSearchTextInput('');
-                  }}
+                  onChange={(event, selectedPage) =>
+                    handlePageChange(selectedPage)
+                  }
                 />
               </Stack>
               <Box width={80} display={'flex'} gap={'10px'}>
@@ -333,8 +239,9 @@ const UserTable = () => {
             </Box>
           </Box>
         )}
-        {(currentSelectedButton.includes('totalAvdance') ||
-          currentSelectedButton.includes('totalBasic')) && (
+
+        {/* 3% Profit sharing data */}
+        {currentSelectedButton.includes('totalBasic') && (
           <>
             <TableContainer>
               <Table ref={tableRef}>
@@ -350,14 +257,9 @@ const UserTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredUsers.map((user, index) => {
+                  {filteredUsers?.map((user, index) => {
                     console.log('user', user);
-                    if (
-                      user?.membership === kycList
-
-                      // user?.kyc !== 'APPROVED' &&
-                      // checkDemat(user) !== 'APPROVED'
-                    ) {
+                    if (!user) {
                       return;
                     }
                     return (
@@ -413,7 +315,7 @@ const UserTable = () => {
                             align="center"
                             noWrap
                           >
-                            {user?.createdAt.slice(0, 10)}
+                            {user?.createdAt?.slice(0, 10)}
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
@@ -425,9 +327,7 @@ const UserTable = () => {
                             align="center"
                             noWrap
                           >
-                            {user?.membership === 'NOT_INITIALIZED'
-                              ? 'NOT STARTED'
-                              : user?.membership}
+                            {user?.membership}
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
@@ -439,9 +339,7 @@ const UserTable = () => {
                             align="center"
                             noWrap
                           >
-                            {user?.kyc === 'NOT_INITIALIZED'
-                              ? 'NOT STARTED'
-                              : user?.kyc}
+                            {user?.kyc}
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
@@ -453,9 +351,7 @@ const UserTable = () => {
                             align="center"
                             noWrap
                           >
-                            {checkDemat(user) === 'NOT_RECIEVED'
-                              ? 'NOT RECEIVED'
-                              : checkDemat(user)}
+                            {checkDemat(user)}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -466,6 +362,78 @@ const UserTable = () => {
             </TableContainer>
           </>
         )}
+
+        {/* 5% Profit sharing data */}
+        {currentSelectedButton.includes('totalAvdance') && (
+          <>
+            <TableContainer>
+              <Table ref={tableRef}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>S.No.</TableCell>
+                    <TableCell>PW ID</TableCell>
+                    <TableCell>Name</TableCell>{' '}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredUsers?.map((user, index) => {
+                    console.log('user', user);
+                    if (!user) {
+                      return;
+                    }
+                    return (
+                      <TableRow hover key={user?.id}>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            align="center"
+                            noWrap
+                            width={30}
+                          >
+                            {index + 1}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={100}
+                          >
+                            {user?.pw_id}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            noWrap
+                          ></Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={200}
+                          >
+                            {user?.name === 'NULL' ? '' : user?.name}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        )}
+
         <Toaster position="bottom-center" reverseOrder={false} />
       </Card>
     </>
