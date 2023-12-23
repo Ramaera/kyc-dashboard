@@ -344,7 +344,7 @@ const DocumentRow = ({
         </TableCell> */}
       </TableRow>
       <div style={{ marginBottom: 40 }}>
-        {moreRow <= 3 && (
+        {moreRow <= 10 && (
           <LoadingButton
             variant="contained"
             disabled={images.length !== moreRow}

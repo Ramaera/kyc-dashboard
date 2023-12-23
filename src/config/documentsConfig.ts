@@ -256,6 +256,30 @@ export default {
       {
         id: 'project_payment_5',
         name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_6',
+        name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_7',
+        name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_8',
+        name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_9',
+        name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_10',
+        name: 'Payment Document'
+      },
+      {
+        id: 'project_payment_11',
+        name: 'Payment Document'
       }
     ]
   }
