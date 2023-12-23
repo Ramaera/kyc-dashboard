@@ -18,8 +18,8 @@ const index = () => {
   var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
   return (
     <div>
-      {/* <ConfettiExplosion /> */}
-      {/* <Confetti numberOfPieces={150} width={1000} height={1000} /> */}
+      <ConfettiExplosion />
+      <Confetti numberOfPieces={150} width={1000} height={1000} />
 
       <Box
         padding={(0, 2)}
@@ -43,9 +43,9 @@ const index = () => {
             }}
           >
             {' '}
-            Hajipur Spice Factory Funding Will Close In
+            Congratulations
           </Typography>
-          {/* <Typography
+          <Typography
             variant="h4"
             textAlign={'center'}
             component="h4"
@@ -58,15 +58,15 @@ const index = () => {
           >
             On achieving the funding for the{' '}
             <span style={{ fontWeight: 'black', fontSize: 20 }}>
-              Agra My Mart My Brand
+              Hajipur Spice Factory
             </span>{' '}
             project. We sincerely thank all of you for your generous and
             wholehearted support.
-          </Typography> */}
+          </Typography>
 
           {/*
            */}
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -197,10 +197,10 @@ const index = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
-      {/* <ConfettiExplosion /> */}
+      <ConfettiExplosion />
     </div>
   );
 };

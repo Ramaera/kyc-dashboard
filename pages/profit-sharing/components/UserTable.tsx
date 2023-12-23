@@ -27,7 +27,7 @@ import { ALL_KYC_USERS } from '@/apollo/queries/auth';
 import Loading from '@/components/Loading';
 import { useQuery } from '@apollo/client';
 import { Toaster } from 'react-hot-toast';
-import UsersData from './Users5%ProfitData';
+import UsersData from '@/components/DATA5%';
 
 const UserTable = () => {
   const matches = useMediaQuery('(min-width:600px)');
@@ -54,7 +54,7 @@ const UserTable = () => {
   });
 
   const checkDemat = (user) => {
-    let status = 'APPROVED';
+    let status = '';
     user?.documents?.map((doc) => {
       if (doc.title.includes('demat')) {
         status = doc.status;

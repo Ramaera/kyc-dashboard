@@ -37,5 +37,5 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/dashboard/Tabs/Info/``\u001B"
-  ]
+, "pages/profit-sharing/components/Users5%ProfitData.js"  ]
 }
