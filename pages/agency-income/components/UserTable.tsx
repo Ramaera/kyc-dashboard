@@ -136,6 +136,14 @@ const UserTable = () => {
   basicAgraIncome?.map((user) => agraIncomeData.push(user));
   advanceAgraIncome?.map((user) => agraIncomeData.push(user));
 
+  const showButtonDate = new Date('2023-01-01'); //YYYY-MM-DD
+  const getDate = `${showButtonDate.getFullYear()}-${
+    showButtonDate.getMonth() + 1
+  }`;
+
+  const walletTransferShowButton = selectedMonthYear >= getDate;
+  // console.log('getDate', getDate, 'selectedMonthYear');
+
   return (
     <>
       <Card>
@@ -256,6 +264,9 @@ const UserTable = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
+                  {walletTransferShowButton && (
+                    <TableCell>Transfer To Wallet</TableCell>
+                  )}
                   <TableCell>Name</TableCell>
                   <TableCell>PWID</TableCell>
                   <TableCell>KYC Status</TableCell>
@@ -281,6 +292,21 @@ const UserTable = () => {
                           {index + 1}
                         </Typography>
                       </TableCell>
+                      {walletTransferShowButton && (
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              fontSize: 12,
+                              cursor: 'unset',
+                              padding: 1,
+                              minWidth: 200
+                            }}
+                          >
+                            Transfer Amount To Wallet
+                          </Button>
+                        </TableCell>
+                      )}
                       <TableCell>
                         <Typography
                           variant="body1"
@@ -392,6 +418,9 @@ const UserTable = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
+                  {walletTransferShowButton && (
+                    <TableCell>Transfer To Wallet</TableCell>
+                  )}
                   <TableCell>Name</TableCell>
                   <TableCell>PWID</TableCell>
                   <TableCell>KYC Status</TableCell>
@@ -416,6 +445,21 @@ const UserTable = () => {
                           {index + 1}
                         </Typography>
                       </TableCell>
+                      {walletTransferShowButton && (
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              fontSize: 12,
+                              cursor: 'unset',
+                              padding: 1,
+                              minWidth: 200
+                            }}
+                          >
+                            Transfer Amount To Wallet
+                          </Button>
+                        </TableCell>
+                      )}
                       <TableCell>
                         <Typography
                           variant="body1"
@@ -516,6 +560,9 @@ const UserTable = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>S.No.</TableCell>
+                  {walletTransferShowButton && (
+                    <TableCell>Transfer To Wallet</TableCell>
+                  )}
                   <TableCell>Name</TableCell>
                   <TableCell>PWID</TableCell>
                   <TableCell>KYC Status</TableCell>
@@ -540,6 +587,21 @@ const UserTable = () => {
                           {index + 1}
                         </Typography>
                       </TableCell>
+                      {walletTransferShowButton && (
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              fontSize: 12,
+                              cursor: 'unset',
+                              padding: 1,
+                              minWidth: 200
+                            }}
+                          >
+                            Transfer Amount To Wallet
+                          </Button>
+                        </TableCell>
+                      )}
                       <TableCell>
                         <Typography
                           variant="body1"
