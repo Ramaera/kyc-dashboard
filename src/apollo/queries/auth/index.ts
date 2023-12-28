@@ -418,6 +418,7 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       hajipurProjectAmount
       kycAmount
       BasicKycApprovedUser {
+        id
         pw_id
         createdAt
         kyc
@@ -425,6 +426,7 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
         membership
     }
     AdvanceKycApprovedUser {
+        id
         pw_id
         createdAt
         kyc
@@ -432,10 +434,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
         membership
     }
     basicHajipurprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -443,10 +447,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     advanceHajipurprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -454,10 +460,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     basicAgraprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -465,10 +473,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     advanceAgraprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -479,3 +489,15 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
 
 }
 `);
+
+export const TRANSACTION_TO_WALLET = gql(`
+mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $metaData: [JSONObject!]!) {
+  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,metaData: $metaData }) {
+      amount
+      createdAt
+      finalBalance
+      id
+      type
+      updatedAt
+  }
+}`);

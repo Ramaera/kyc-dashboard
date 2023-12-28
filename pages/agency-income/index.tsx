@@ -97,7 +97,7 @@ function DashboardTasks() {
                 color: '#7063C0'
               }}
             >
-              ₹ {11110}
+              ₹ {0}
             </Typography>
           </Box>
           <Box

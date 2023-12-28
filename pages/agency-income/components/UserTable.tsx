@@ -1,6 +1,11 @@
 import { LoadingButton } from '@mui/lab';
 import { Button, useMediaQuery, useTheme } from '@mui/material';
-import { GET_AGENCY_PAYMENT, GetUser } from '@/apollo/queries/auth';
+import {
+  GET_AGENCY_PAYMENT,
+  GetUser,
+  TRANSACTION_TO_WALLET
+} from '@/apollo/queries/auth';
+
 import {
   Box,
   Card,
@@ -22,19 +27,22 @@ import {
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useAppSelector } from '@/hooks';
 import { useSelector } from 'react-redux';
+import { timeStamp } from 'console';
 
 const UserTable = () => {
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+
+  const [transactionToWalletMutation] = useMutation(TRANSACTION_TO_WALLET);
+  const [isLoading, setLoading] = useState({});
   const matches = useMediaQuery('(min-width:600px)');
   const theme = useTheme();
   const userResp = useQuery(GetUser);
   const userDetails = useAppSelector((state) => state.user.data);
   const [active, setActive] = useState(false);
   const [currentSelectedButton, setCurrentSelectedButton] = useState('');
-
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
 
   const currentDate = new Date();
   const months = [];
@@ -143,6 +151,52 @@ const UserTable = () => {
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
   // console.log('getDate', getDate, 'selectedMonthYear');
+
+  const handleTransferToWallet = async (user, userId, paymentType) => {
+    setLoading({ ...isLoading, [user.id]: true });
+
+    // console.log('user---', user);
+
+    const amountGenerate = currentSelectedButton.includes('kyc')
+      ? 200
+      : currentSelectedButton.includes('hajipur')
+      ? user?.amount * 0.01
+      : currentSelectedButton.includes('agra')
+      ? user?.amount * 0.1
+      : '';
+
+    interface metaType {
+      userId?: string;
+      timeStamp?: string;
+      documentId?: string;
+    }
+
+    const metaData: metaType[] = [
+      { userId: userId },
+      { timeStamp: new Date().toLocaleString('en-US', 'Asia/Delhi') }
+    ];
+
+    if (paymentType === 'project') {
+      metaData.push({ documentId: user.id });
+    }
+
+    try {
+      const data = await transactionToWalletMutation({
+        variables: {
+          agencyCode: agencyCode,
+          type: 'DEPOSIT',
+          amount: amountGenerate,
+          metaData: metaData
+        }
+      });
+      // console.log('data', data);
+      toast.success('Succesfully');
+    } catch (err) {
+      // console.log('err---', err);
+      toast.error(err.message);
+    }
+    setLoading({ ...isLoading, [user.id]: false });
+  };
 
   return (
     <>
@@ -294,7 +348,8 @@ const UserTable = () => {
                       </TableCell>
                       {walletTransferShowButton && (
                         <TableCell>
-                          <Button
+                          <LoadingButton
+                            loading={isLoading[user.id]}
                             variant="contained"
                             sx={{
                               fontSize: 12,
@@ -302,9 +357,12 @@ const UserTable = () => {
                               padding: 1,
                               minWidth: 200
                             }}
+                            onClick={() =>
+                              handleTransferToWallet(user, user.id, 'kyc')
+                            }
                           >
                             Transfer Amount To Wallet
-                          </Button>
+                          </LoadingButton>
                         </TableCell>
                       )}
                       <TableCell>
@@ -447,7 +505,8 @@ const UserTable = () => {
                       </TableCell>
                       {walletTransferShowButton && (
                         <TableCell>
-                          <Button
+                          <LoadingButton
+                            loading={isLoading[user.id]}
                             variant="contained"
                             sx={{
                               fontSize: 12,
@@ -455,9 +514,16 @@ const UserTable = () => {
                               padding: 1,
                               minWidth: 200
                             }}
+                            onClick={() =>
+                              handleTransferToWallet(
+                                user,
+                                user?.user?.id,
+                                'project'
+                              )
+                            }
                           >
                             Transfer Amount To Wallet
-                          </Button>
+                          </LoadingButton>
                         </TableCell>
                       )}
                       <TableCell>
@@ -589,7 +655,8 @@ const UserTable = () => {
                       </TableCell>
                       {walletTransferShowButton && (
                         <TableCell>
-                          <Button
+                          <LoadingButton
+                            loading={isLoading[user.id]}
                             variant="contained"
                             sx={{
                               fontSize: 12,
@@ -597,9 +664,16 @@ const UserTable = () => {
                               padding: 1,
                               minWidth: 200
                             }}
+                            onClick={() =>
+                              handleTransferToWallet(
+                                user,
+                                user?.user?.id,
+                                'project'
+                              )
+                            }
                           >
                             Transfer Amount To Wallet
-                          </Button>
+                          </LoadingButton>
                         </TableCell>
                       )}
                       <TableCell>
