@@ -7,6 +7,7 @@ import userSlice from '../slice/userSlice';
 import allShareHolderSlice from '../slice/allShareHolderSlice';
 
 import filtersSlice from '../slice/filtersSlice';
+import walletBalanceSlice from '../slice/walletBalanceSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
     allUsers: allUsersSlice,
     foundUser: foundUserSlice,
     filters: filtersSlice,
-    allShareHolder: allShareHolderSlice
+    allShareHolder: allShareHolderSlice,
+    walletBalance: walletBalanceSlice
   }
 });
 export const persistor = store;

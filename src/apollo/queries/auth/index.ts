@@ -501,3 +501,11 @@ mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int
       updatedAt
   }
 }`);
+
+export const GET_FINAL_WALLET_BALANCE_OF_AGENCY = gql(`
+query GetFinalWalletBalanceOfAgency($agencyCode: String!) {
+  GetFinalWalletBalanceOfAgency(agencyCode: $agencyCode) {
+    agencyCode
+    finalBalance
+  }
+}`);

@@ -18,38 +18,41 @@ import {
   colors
 } from '@mui/material';
 import Head from 'next/head';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/Loading';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import UserTable from './components/UserTable';
-import StarIcon from '@mui/icons-material/Star';
+
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 // import WalletIcon from '@mui/icons-material/Wallet';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { GET_FINAL_WALLET_BALANCE_OF_AGENCY } from '@/apollo/queries/auth';
+import { setWalletBalance } from '@/state/slice/walletBalanceSlice';
+import { useAppDispatch } from '@/hooks';
+import { useEffect } from 'react';
 
 function DashboardTasks() {
-  // const dispatch = useDispatch();
-  // const foundUser = useSelector((state: any) => state.foundUser.foundUser);
-  // const { loading, error, data } = useQuery(GetAllUser);
-  // const kycHandlersList = useQuery(GET_ALL_KYC_HANDLER);
+  const dispatch = useAppDispatch();
+  const agencyCode = useSelector(
+    (persistor: any) => persistor.user?.agencyCode
+  );
+  const walletFinalBalance = useSelector(
+    (state: any) => state.walletBalance.walletBalance
+  );
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
-  // if (error) {
-  //   return <h3>error</h3>;
-  // }
-  // if (data) {
-  //   // console.log('all users', data.getAllUser);
-  //   dispatch(setAllTheUsers(data.getAllUser));
-  // }
-  // if (kycHandlersList) {
+  const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
+    variables: { agencyCode: agencyCode }
+  });
 
-  //   // console.log('kycHandlersList', kycHandlersList.data.getAllKycHandler);
-  //   dispatch(setAllKycHandlerList(kycHandlersList.data.getAllKycHandler));
-  // }
+  useEffect(() => {
+    if (data && data?.GetFinalWalletBalanceOfAgency?.finalBalance) {
+      dispatch(
+        setWalletBalance(data?.GetFinalWalletBalanceOfAgency?.finalBalance)
+      );
+    }
+  }, [data]);
 
   return (
     <ProtectedSSRoute>
@@ -97,7 +100,7 @@ function DashboardTasks() {
                 color: '#7063C0'
               }}
             >
-              ₹ {0}
+              ₹ {walletFinalBalance | 0}
             </Typography>
           </Box>
           <Box

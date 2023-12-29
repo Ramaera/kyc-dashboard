@@ -28,11 +28,12 @@ import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useSelector } from 'react-redux';
-import { timeStamp } from 'console';
+import { addToWalletBalance } from '@/state/slice/walletBalanceSlice';
 
 const UserTable = () => {
+  const dispatch = useAppDispatch();
   const agencyCode = useSelector((state: any) => state.user?.agencyCode);
 
   const [transactionToWalletMutation] = useMutation(TRANSACTION_TO_WALLET);
@@ -75,15 +76,6 @@ const UserTable = () => {
       year: parseInt(selectedYear, 10)
     }
   });
-
-  // const getAgencyPayment = useQuery(GET_AGENCY_PAYMENT, {
-  //   variables: {
-  //     // agencyCode: 'ReferralAgencyCode',
-  //     agencyCode: 'RLI977346',
-  //     month: date.month,
-  //     year: date.year
-  //   }
-  // });
 
   function getMonthName(dateString) {
     const myDate = new Date(dateString);
@@ -190,7 +182,8 @@ const UserTable = () => {
         }
       });
       // console.log('data', data);
-      toast.success('Succesfully');
+      toast.success('Succesfully Amount Transfer To Wallet');
+      dispatch(addToWalletBalance(amountGenerate));
     } catch (err) {
       // console.log('err---', err);
       toast.error(err.message);
