@@ -8,7 +8,6 @@
 //     PASSBOOK:"passbook",
 //     DRIVING_LICENSE:"driving_license",
 //     VOTER_ID:"voter_id",
-
 // }
 
 export default {

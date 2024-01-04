@@ -48,7 +48,6 @@ const DocumentRow = ({
     }
     setImages(_imgs);
   }, [documents, user]);
-  // console.log(imagesChanged);
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
@@ -87,9 +86,11 @@ const DocumentRow = ({
         return true;
       }
     });
-    if (rowNo == data.config.items.length && hasSomethingChanged) {
-      return true;
-    }
+    return hasSomethingChanged;
+
+    // if (rowNo == data.config.items.length && hasSomethingChanged) {
+    //   return true;
+    // }
   };
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
@@ -107,12 +108,8 @@ const DocumentRow = ({
 
   const handleDocumentUpload = async () => {
     setLoading(true);
-
-    // console.log({ imagesChanged, images });
-    //handle upload
     try {
-      for (let i = 0; i < moreRow; i++) {
-        // console.log('data.config.items[i].id', data.config.items[i].id);
+      for (let i = 0; i <= moreRow; i++) {
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
@@ -160,10 +157,11 @@ const DocumentRow = ({
     }
     setLoading(false);
   };
+
   const getActionCell = () => {
     const views = [];
     const items = data.config.items;
-    for (let i = 0; i < moreRow; i++) {
+    for (let i = 0; i <= moreRow; i++) {
       views.push(
         <div style={{ height: 160, marginTop: 10 }}>
           <div style={{ marginBottom: 10 }}>
@@ -188,8 +186,8 @@ const DocumentRow = ({
           </div>
           <Button
             style={{
-              cursor: documents[0]
-                ? documents[0].status === 'APPROVED'
+              cursor: documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'not-allowed'
                   : 'pointer'
                 : 'pointer',
@@ -201,8 +199,8 @@ const DocumentRow = ({
             }
             component="label"
             color={
-              documents[0]
-                ? documents[0].status === 'APPROVED'
+              documents[i]
+                ? documents[i].status === 'APPROVED'
                   ? 'secondary'
                   : 'primary'
                 : 'primary'
@@ -214,8 +212,8 @@ const DocumentRow = ({
               accept="image/*"
               hidden
               disabled={
-                documents[0]
-                  ? documents[0].status === 'APPROVED'
+                documents[i]
+                  ? documents[i].status === 'APPROVED'
                     ? true
                     : false
                   : false
@@ -225,9 +223,14 @@ const DocumentRow = ({
                   const _images = [...images];
                   _images[i] = f.target.files[0];
                   setImages(_images);
-                  // console.log('imageChanged', _images[i]);
+
                   const _imagesChanged = [...imagesChanged];
-                  _imagesChanged[i] = true;
+                  if (_imagesChanged.length === 0) {
+                    for (let k = 0; k < i; k++) {
+                      _imagesChanged.push(false);
+                    }
+                  }
+                  _imagesChanged.push(true);
                   setImagesChange(_imagesChanged);
                 }
               }}
@@ -242,7 +245,7 @@ const DocumentRow = ({
   const getPreview = () => {
     const views: any = [];
     const items = data.config.items;
-    for (let i = 0; i < moreRow; i++) {
+    for (let i = 0; i <= moreRow; i++) {
       const _img = images[i];
       if (_img) {
         views.push(
@@ -289,7 +292,7 @@ const DocumentRow = ({
           {/* {user?.kyc !== variables.status.APPROVED && ( */}
           <LoadingButton
             loading={isLoading}
-            // disabled={!isValidToClick()}
+            disabled={!isValidToClick()}
             variant="contained"
             onClick={() => {
               handleDocumentUpload();
