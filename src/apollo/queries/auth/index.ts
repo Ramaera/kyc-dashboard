@@ -491,14 +491,10 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
 `);
 
 export const TRANSACTION_TO_WALLET = gql(`
-mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $metaData: [JSONObject!]!) {
-  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,metaData: $metaData }) {
-      amount
-      createdAt
+mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $category: String!, $metaData: [JSONObject!]!) {
+  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,category:$category,metaData: $metaData }) {
       finalBalance
       id
-      type
-      updatedAt
   }
 }`);
 
@@ -509,3 +505,14 @@ query GetFinalWalletBalanceOfAgency($agencyCode: String!) {
     finalBalance
   }
 }`);
+
+export const GET_ALL_KYC_REFERRAL = gql(`
+query GetAllKycReferral {
+  getAllKycReferral {
+      agencyCode
+      createdAt
+      userId
+      id
+  }
+}
+`);

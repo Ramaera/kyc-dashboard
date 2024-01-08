@@ -1,8 +1,9 @@
 import { LoadingButton } from '@mui/lab';
-import { Button, useMediaQuery, useTheme } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import {
   GET_AGENCY_PAYMENT,
-  TRANSACTION_TO_WALLET
+  TRANSACTION_TO_WALLET,
+  GET_ALL_KYC_REFERRAL
 } from '@/apollo/queries/auth';
 
 import {
@@ -25,7 +26,7 @@ import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch } from '@/hooks';
 import { useSelector } from 'react-redux';
 import { addToWalletBalance } from '@/state/slice/walletBalanceSlice';
 import { initialDate, monthsData } from './agenyIncomeStartMonth';
@@ -39,7 +40,7 @@ const UserTable = () => {
   const [active, setActive] = useState(false);
   const [currentSelectedButton, setCurrentSelectedButton] = useState('');
 
-  const [date, setDate] = useState<number>(initialDate);
+  const getAllKycTransaction = useQuery(GET_ALL_KYC_REFERRAL);
 
   const [selectedMonthYear, setSelectedMonthYear] = useState<string>(
     monthsData.months[monthsData.months.length - 1]
@@ -60,23 +61,6 @@ const UserTable = () => {
     return ans;
   }
 
-  // function currentMonthName(monthNumber) {
-  //   const months = [
-  //     'January',
-  //     'February',
-  //     'March',
-  //     'April',
-  //     'May',
-  //     'June',
-  //     'July',
-  //     'August',
-  //     'September',
-  //     'October',
-  //     'November',
-  //     'December'
-  //   ];
-  //   return months[monthNumber];
-  // }
   //total amount of each agency
   const totalKycIncome = getAgencyPayment?.data?.AgencyPayment?.kycAmount;
   const totalAgraIncome =
@@ -115,15 +99,9 @@ const UserTable = () => {
 
   const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
 
-  // const getDate = `${showButtonDate.getFullYear()}-${(
-  //   showButtonDate.getMonth() + 1
-  // )
-  //   .toString()
-  //   .padStart(2, '0')}`;
   const getDate = showButtonDate.toISOString().slice(0, 7);
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
-  // console.log('getDate', getDate, 'selectedMonthYear', selectedMonthYear);
 
   const handleTransferToWallet = async (user, userId, paymentType) => {
     setLoading({ ...isLoading, [user.id]: true });
@@ -227,12 +205,13 @@ const UserTable = () => {
           </Box>
 
           <Button variant="outlined" sx={{ cursor: 'unset', padding: 1.5 }}>
-            Amount : ₹ {totalMonthIncome}
+            Amount : ₹ {totalMonthIncome | 0}
           </Button>
         </Box>
         <Divider />
-        <TableContainer
+        <Box
           sx={{
+            width: '100%',
             display: 'flex',
             flexDirection: 'row',
             [theme.breakpoints.down('sm')]: {
@@ -286,470 +265,473 @@ const UserTable = () => {
               AGRA : ₹{totalAgraIncome}
             </LoadingButton>
           </Table>
-
-          {currentSelectedButton.includes('kyc') && (
-            <Table
+          {active && (
+            <TableContainer
               sx={{
                 width: '78%',
-                borderLeft: '0.1px solid #6A7199',
+                borderLeft: '1px solid #2c3151',
                 [theme.breakpoints.down('sm')]: {
                   border: 'none'
                 }
               }}
             >
-              <TableHead>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
-                  {walletTransferShowButton && (
-                    <TableCell>Transfer To Wallet</TableCell>
-                  )}
-                  <TableCell>Name</TableCell>
-                  <TableCell>PWID</TableCell>
-                  <TableCell>KYC Status</TableCell>
-                  <TableCell>Membership</TableCell>
-                  <TableCell>Carry Forward</TableCell>
-                  <TableCell align="center">KYC Income</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {kycIncomeData.map((user, index) => {
-                  return (
-                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          align="center"
-                          noWrap
-                          width={30}
-                        >
-                          {index + 1}
-                        </Typography>
-                      </TableCell>
+              {currentSelectedButton.includes('kyc') && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>S.No.</TableCell>
                       {walletTransferShowButton && (
-                        <TableCell>
-                          <LoadingButton
-                            loading={isLoading[user.id]}
-                            variant="contained"
-                            sx={{
-                              fontSize: 12,
-                              cursor: 'unset',
-                              padding: 1,
-                              minWidth: 200
-                            }}
-                            onClick={() =>
-                              handleTransferToWallet(user, user.id, 'kyc')
-                            }
-                          >
-                            Transfer Amount To Wallet
-                          </LoadingButton>
-                        </TableCell>
+                        <TableCell>Transfer To Wallet</TableCell>
                       )}
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.name === 'NULL' ? null : user?.name}
-                        </Typography>
-                      </TableCell>
-                      <Link href="" scroll={false}>
-                        <TableCell
-                          align="left"
-                          onClick={() => {
-                            toast.success(` ${user.pw_id} Copied`);
-                            navigator.clipboard.writeText(user.pw_id);
-                          }}
-                        >
-                          <Typography
-                            variant="body1"
-                            width="100px"
-                            fontWeight="bold"
-                            color="text.primary"
-                            noWrap
-                          >
-                            {user?.pw_id === 'NULL' ? null : user?.pw_id}
-                          </Typography>
-                        </TableCell>
-                      </Link>
-                      <TableCell>
-                        <Typography
-                          style={{
-                            color:
-                              user?.kyc === 'APPROVED'
-                                ? 'limegreen'
-                                : user?.kyc === 'REJECTED'
-                                ? 'red'
-                                : user?.kyc === 'ONGOING'
-                                ? 'orange'
-                                : 'white'
-                          }}
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.kyc}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          width="80px"
-                          noWrap
-                        >
-                          {user?.membership}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          // minWidth="80px"
-                          noWrap
-                        >
-                          {user?.createdAt.slice(0, 7) === selectedMonthYear
-                            ? '--'
-                            : `Carry Forward ${getMonthName(user?.createdAt)}`}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          200
-                        </Typography>
-                      </TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>PWID</TableCell>
+                      <TableCell>KYC Status</TableCell>
+                      <TableCell>Membership</TableCell>
+                      <TableCell>Carry Forward</TableCell>
+                      <TableCell align="center">KYC Income</TableCell>
                     </TableRow>
-                  );
-                })}
-                <Toaster position="bottom-center" reverseOrder={false} />
-              </TableBody>
-            </Table>
-          )}
+                  </TableHead>
+                  <TableBody>
+                    {kycIncomeData.map((user, index) => {
+                      return (
+                        <TableRow
+                          hover
+                          key={user?.id}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          {console.log('user?.id', user?.id)}
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              align="center"
+                              noWrap
+                              width={30}
+                            >
+                              {index + 1}
+                            </Typography>
+                          </TableCell>
+                          {walletTransferShowButton && (
+                            <TableCell>
+                              <LoadingButton
+                                loading={isLoading[user.id]}
+                                variant="contained"
+                                sx={{
+                                  fontSize: 12,
+                                  cursor: 'unset',
+                                  padding: 1,
+                                  minWidth: 200
+                                }}
+                                disabled={getAllKycTransaction.data.getAllKycReferral.find(
+                                  (data) => data.userId === user.id
+                                )}
+                                onClick={() =>
+                                  handleTransferToWallet(user, user.id, 'kyc')
+                                }
+                              >
+                                Transfer Amount To Wallet
+                              </LoadingButton>
+                            </TableCell>
+                          )}
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.name === 'NULL' ? null : user?.name}
+                            </Typography>
+                          </TableCell>
+                          <Link href="" scroll={false}>
+                            <TableCell
+                              align="left"
+                              onClick={() => {
+                                toast.success(` ${user.pw_id} Copied`);
+                                navigator.clipboard.writeText(user.pw_id);
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                width="100px"
+                                fontWeight="bold"
+                                color="text.primary"
+                                noWrap
+                              >
+                                {user?.pw_id === 'NULL' ? null : user?.pw_id}
+                              </Typography>
+                            </TableCell>
+                          </Link>
+                          <TableCell>
+                            <Typography
+                              style={{
+                                color:
+                                  user?.kyc === 'APPROVED'
+                                    ? 'limegreen'
+                                    : user?.kyc === 'REJECTED'
+                                    ? 'red'
+                                    : user?.kyc === 'ONGOING'
+                                    ? 'orange'
+                                    : 'white'
+                              }}
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.kyc}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              width="80px"
+                              noWrap
+                            >
+                              {user?.membership}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              // minWidth="80px"
+                              noWrap
+                            >
+                              {user?.createdAt.slice(0, 7) === selectedMonthYear
+                                ? '--'
+                                : `Carry Forward ${getMonthName(
+                                    user?.createdAt
+                                  )}`}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              200
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    <Toaster position="bottom-center" reverseOrder={false} />
+                  </TableBody>
+                </Table>
+              )}
 
-          {currentSelectedButton.includes('hajipur') && (
-            <Table
-              sx={{
-                width: '78%',
-                borderLeft: '0.1px solid #6A7199',
-                [theme.breakpoints.down('sm')]: {
-                  border: 'none'
-                }
-              }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
-                  {walletTransferShowButton && (
-                    <TableCell>Transfer To Wallet</TableCell>
-                  )}
-                  <TableCell>Name</TableCell>
-                  <TableCell>PWID</TableCell>
-                  <TableCell>KYC Status</TableCell>
-                  <TableCell>Membership</TableCell>
-                  <TableCell>Invest Amount</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {hajipurIncomeData.map((document, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      key={document?.id}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          align="center"
-                          noWrap
-                          width={30}
-                        >
-                          {index + 1}
-                        </Typography>
-                      </TableCell>
+              {currentSelectedButton.includes('hajipur') && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>S.No.</TableCell>
                       {walletTransferShowButton && (
-                        <TableCell>
-                          <LoadingButton
-                            loading={isLoading[document.id]}
-                            variant="contained"
-                            sx={{
-                              fontSize: 12,
-                              cursor: 'unset',
-                              padding: 1,
-                              minWidth: 200
-                            }}
-                            onClick={() =>
-                              handleTransferToWallet(
-                                document,
+                        <TableCell>Transfer To Wallet</TableCell>
+                      )}
+                      <TableCell>Name</TableCell>
+                      <TableCell>PWID</TableCell>
+                      <TableCell>KYC Status</TableCell>
+                      <TableCell>Membership</TableCell>
+                      <TableCell>Invest Amount</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {hajipurIncomeData.map((document, index) => {
+                      return (
+                        <TableRow
+                          hover
+                          key={document?.id}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              align="center"
+                              noWrap
+                              width={30}
+                            >
+                              {index + 1}
+                            </Typography>
+                          </TableCell>
+                          {walletTransferShowButton && (
+                            <TableCell>
+                              <LoadingButton
+                                loading={isLoading[document.id]}
+                                variant="contained"
+                                sx={{
+                                  fontSize: 12,
+                                  cursor: 'unset',
+                                  padding: 1,
+                                  minWidth: 200
+                                }}
+                                onClick={() =>
+                                  handleTransferToWallet(
+                                    document,
 
-                                document?.user?.id,
-                                'project'
-                              )
-                            }
-                          >
-                            Transfer Amount To Wallet
-                          </LoadingButton>
-                        </TableCell>
-                      )}
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {document?.user?.name === 'NULL'
-                            ? null
-                            : document?.user?.name}
-                        </Typography>
-                      </TableCell>
-                      <Link href="" scroll={false}>
-                        <TableCell
-                          align="left"
-                          onClick={() => {
-                            toast.success(` ${document.user.pw_id} Copied`);
-                            navigator.clipboard.writeText(document.user.pw_id);
-                          }}
-                        >
-                          <Typography
-                            variant="body1"
-                            width="100px"
-                            fontWeight="bold"
-                            color="text.primary"
-                            noWrap
-                          >
-                            {document?.user?.pw_id === 'NULL'
-                              ? null
-                              : document?.user?.pw_id}
-                          </Typography>
-                        </TableCell>
-                      </Link>
-                      <TableCell>
-                        <Typography
-                          style={{
-                            color:
-                              document?.user?.kyc === 'APPROVED'
-                                ? 'limegreen'
-                                : document?.user?.kyc === 'REJECTED'
-                                ? 'red'
-                                : document?.user?.kyc === 'ONGOING'
-                                ? 'orange'
-                                : 'white'
-                          }}
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          {document?.user?.kyc}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          width="80px"
-                          noWrap
-                        >
-                          {document?.user?.membership}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          {document?.amount}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                <Toaster position="bottom-center" reverseOrder={false} />
-              </TableBody>
-            </Table>
-          )}
-          {currentSelectedButton.includes('agra') && (
-            <Table
-              sx={{
-                width: '78%',
-                borderLeft: '0.1px solid #6A7199',
-                [theme.breakpoints.down('sm')]: {
-                  border: 'none'
-                }
-              }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>S.No.</TableCell>
-                  {walletTransferShowButton && (
-                    <TableCell>Transfer To Wallet</TableCell>
-                  )}
-                  <TableCell>Name</TableCell>
-                  <TableCell>PWID</TableCell>
-                  <TableCell>KYC Status</TableCell>
-                  <TableCell>Membership</TableCell>
-                  <TableCell>Invest Amount</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {agraIncomeData.map((user, index) => {
-                  return (
-                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          align="center"
-                          noWrap
-                          width={30}
-                        >
-                          {index + 1}
-                        </Typography>
-                      </TableCell>
+                                    document?.user?.id,
+                                    'project'
+                                  )
+                                }
+                              >
+                                Transfer Amount To Wallet
+                              </LoadingButton>
+                            </TableCell>
+                          )}
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {document?.user?.name === 'NULL'
+                                ? null
+                                : document?.user?.name}
+                            </Typography>
+                          </TableCell>
+                          <Link href="" scroll={false}>
+                            <TableCell
+                              align="left"
+                              onClick={() => {
+                                toast.success(` ${document.user.pw_id} Copied`);
+                                navigator.clipboard.writeText(
+                                  document.user.pw_id
+                                );
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                width="100px"
+                                fontWeight="bold"
+                                color="text.primary"
+                                noWrap
+                              >
+                                {document?.user?.pw_id === 'NULL'
+                                  ? null
+                                  : document?.user?.pw_id}
+                              </Typography>
+                            </TableCell>
+                          </Link>
+                          <TableCell>
+                            <Typography
+                              style={{
+                                color:
+                                  document?.user?.kyc === 'APPROVED'
+                                    ? 'limegreen'
+                                    : document?.user?.kyc === 'REJECTED'
+                                    ? 'red'
+                                    : document?.user?.kyc === 'ONGOING'
+                                    ? 'orange'
+                                    : 'white'
+                              }}
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              {document?.user?.kyc}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              width="80px"
+                              noWrap
+                            >
+                              {document?.user?.membership}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              {document?.amount}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    <Toaster position="bottom-center" reverseOrder={false} />
+                  </TableBody>
+                </Table>
+              )}
+              {currentSelectedButton.includes('agra') && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>S.No.</TableCell>
                       {walletTransferShowButton && (
-                        <TableCell>
-                          <LoadingButton
-                            loading={isLoading[user.id]}
-                            variant="contained"
-                            sx={{
-                              fontSize: 12,
-                              cursor: 'unset',
-                              padding: 1,
-                              minWidth: 200
-                            }}
-                            onClick={() =>
-                              handleTransferToWallet(
-                                user,
-                                user?.user?.id,
-                                'project'
-                              )
-                            }
-                          >
-                            Transfer Amount To Wallet
-                          </LoadingButton>
-                        </TableCell>
+                        <TableCell>Transfer To Wallet</TableCell>
                       )}
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.user?.name === 'NULL'
-                            ? null
-                            : user?.user?.name}
-                        </Typography>
-                      </TableCell>
-                      <Link href="" scroll={false}>
-                        <TableCell
-                          align="left"
-                          onClick={() => {
-                            toast.success(`PWID ${user.pw_id} Copied`);
-                            navigator.clipboard.writeText(user.pw_id);
-                          }}
-                        >
-                          <Typography
-                            variant="body1"
-                            width="100px"
-                            fontWeight="bold"
-                            color="text.primary"
-                            noWrap
-                          >
-                            {user?.user?.pw_id === 'NULL'
-                              ? null
-                              : user?.user?.pw_id}
-                          </Typography>
-                        </TableCell>
-                      </Link>
-                      <TableCell>
-                        <Typography
-                          style={{
-                            color:
-                              user?.user?.kyc === 'APPROVED'
-                                ? 'limegreen'
-                                : user?.user?.kyc === 'REJECTED'
-                                ? 'red'
-                                : user?.user?.kyc === 'ONGOING'
-                                ? 'orange'
-                                : 'white'
-                          }}
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.user?.kyc}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.user?.membership}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          {user?.amount}
-                        </Typography>
-                      </TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>PWID</TableCell>
+                      <TableCell>KYC Status</TableCell>
+                      <TableCell>Membership</TableCell>
+                      <TableCell>Invest Amount</TableCell>
                     </TableRow>
-                  );
-                })}
-                <Toaster position="bottom-center" reverseOrder={false} />
-              </TableBody>
-            </Table>
+                  </TableHead>
+                  <TableBody>
+                    {agraIncomeData.map((user, index) => {
+                      return (
+                        <TableRow
+                          hover
+                          key={user?.id}
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              align="center"
+                              noWrap
+                              width={30}
+                            >
+                              {index + 1}
+                            </Typography>
+                          </TableCell>
+                          {walletTransferShowButton && (
+                            <TableCell>
+                              <LoadingButton
+                                loading={isLoading[user.id]}
+                                variant="contained"
+                                sx={{
+                                  fontSize: 12,
+                                  cursor: 'unset',
+                                  padding: 1,
+                                  minWidth: 200
+                                }}
+                                onClick={() =>
+                                  handleTransferToWallet(
+                                    user,
+                                    user?.user?.id,
+                                    'project'
+                                  )
+                                }
+                              >
+                                Transfer Amount To Wallet
+                              </LoadingButton>
+                            </TableCell>
+                          )}
+                          <TableCell>
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.user?.name === 'NULL'
+                                ? null
+                                : user?.user?.name}
+                            </Typography>
+                          </TableCell>
+                          <Link href="" scroll={false}>
+                            <TableCell
+                              align="left"
+                              onClick={() => {
+                                toast.success(`PWID ${user.pw_id} Copied`);
+                                navigator.clipboard.writeText(user.pw_id);
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                width="100px"
+                                fontWeight="bold"
+                                color="text.primary"
+                                noWrap
+                              >
+                                {user?.user?.pw_id === 'NULL'
+                                  ? null
+                                  : user?.user?.pw_id}
+                              </Typography>
+                            </TableCell>
+                          </Link>
+                          <TableCell>
+                            <Typography
+                              style={{
+                                color:
+                                  user?.user?.kyc === 'APPROVED'
+                                    ? 'limegreen'
+                                    : user?.user?.kyc === 'REJECTED'
+                                    ? 'red'
+                                    : user?.user?.kyc === 'ONGOING'
+                                    ? 'orange'
+                                    : 'white'
+                              }}
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.user?.kyc}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.user?.membership}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              width="100px"
+                              color="text.success"
+                              gutterBottom
+                              noWrap
+                            >
+                              {user?.amount}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    <Toaster position="bottom-center" reverseOrder={false} />
+                  </TableBody>
+                </Table>
+              )}
+            </TableContainer>
           )}
-        </TableContainer>
+        </Box>
       </Card>
     </>
   );
