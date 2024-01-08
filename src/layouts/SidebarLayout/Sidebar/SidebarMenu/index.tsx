@@ -206,6 +206,100 @@ function SidebarMenu() {
                 </NextLink>
               </ListItem>
 
+              {agencyCode && (
+                <ListItem component="div">
+                  <NextLink href="/investor" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/investor'
+                          ? 'active'
+                          : currentRoute === '/investor/[index]'
+                          ? 'active'
+                          : ''
+                      }
+                      disableRipple
+                      style={{
+                        color:
+                          currentRoute === '/investor'
+                            ? '#7063C0'
+                            : currentRoute === '/investor/[index]'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                      component="a"
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/investor'
+                                ? '#7063C0'
+                                : currentRoute === '/investor/[index]'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      INVESTOR
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
+
+              {agencyCode && (
+                <ListItem component="div">
+                  <NextLink href="/member" passHref>
+                    <Button
+                      className={
+                        currentRoute === '/member'
+                          ? 'active'
+                          : currentRoute === '/member/[index]'
+                          ? 'active'
+                          : ''
+                      }
+                      disableRipple
+                      style={{
+                        color:
+                          currentRoute === '/member'
+                            ? '#7063C0'
+                            : currentRoute === '/member/[index]'
+                            ? '#7063C0'
+                            : ''
+                      }}
+                      component="a"
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/member'
+                                ? '#7063C0'
+                                : currentRoute === '/member/[index]'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      MEMBER
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
+
               {/* {agencyCode && (
                 <ListItem component="div">
                   <NextLink href="/star-of-the-week" passHref>
