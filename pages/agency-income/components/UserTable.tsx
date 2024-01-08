@@ -2,14 +2,12 @@ import { LoadingButton } from '@mui/lab';
 import { Button, useMediaQuery, useTheme } from '@mui/material';
 import {
   GET_AGENCY_PAYMENT,
-  GetUser,
   TRANSACTION_TO_WALLET
 } from '@/apollo/queries/auth';
 
 import {
   Box,
   Card,
-  CardHeader,
   Divider,
   FormControl,
   InputLabel,
@@ -20,52 +18,31 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Typography
 } from '@mui/material';
 import Link from 'next/link';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useSelector } from 'react-redux';
 import { addToWalletBalance } from '@/state/slice/walletBalanceSlice';
+import { initialDate, monthsData } from './agenyIncomeStartMonth';
 
 const UserTable = () => {
   const dispatch = useAppDispatch();
   const agencyCode = useSelector((state: any) => state.user?.agencyCode);
-
   const [transactionToWalletMutation] = useMutation(TRANSACTION_TO_WALLET);
   const [isLoading, setLoading] = useState({});
-  const matches = useMediaQuery('(min-width:600px)');
   const theme = useTheme();
-  const userResp = useQuery(GetUser);
-  const userDetails = useAppSelector((state) => state.user.data);
   const [active, setActive] = useState(false);
   const [currentSelectedButton, setCurrentSelectedButton] = useState('');
 
-  const currentDate = new Date();
-  const months = [];
-  for (let year = 2023; year <= currentDate.getFullYear(); year++) {
-    const startMonth = year === 2023 ? 9 : 0; // October is 9 (0-indexed)
-    const endMonth =
-      year === currentDate.getFullYear() ? currentDate.getMonth() : 11;
-
-    for (let month = startMonth; month <= endMonth; month++) {
-      const monthYearString = `${year}-${String(month + 1).padStart(2, '0')}`;
-      months.push(monthYearString);
-    }
-  }
-
-  const initialDate = {
-    month: currentDate.getMonth(),
-    year: currentDate.getFullYear()
-  };
   const [date, setDate] = useState<number>(initialDate);
 
   const [selectedMonthYear, setSelectedMonthYear] = useState<string>(
-    months[months.length - 1]
+    monthsData.months[monthsData.months.length - 1]
   ); // Set initial value to the latest month and year
 
   const [selectedYear, selectedMonth] = selectedMonthYear.split('-');
@@ -83,25 +60,23 @@ const UserTable = () => {
     return ans;
   }
 
-  function currentMonthName(monthNumber) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    return months[monthNumber];
-  }
-  const monthName = currentMonthName(date.month);
-
+  // function currentMonthName(monthNumber) {
+  //   const months = [
+  //     'January',
+  //     'February',
+  //     'March',
+  //     'April',
+  //     'May',
+  //     'June',
+  //     'July',
+  //     'August',
+  //     'September',
+  //     'October',
+  //     'November',
+  //     'December'
+  //   ];
+  //   return months[monthNumber];
+  // }
   //total amount of each agency
   const totalKycIncome = getAgencyPayment?.data?.AgencyPayment?.kycAmount;
   const totalAgraIncome =
@@ -112,6 +87,7 @@ const UserTable = () => {
     totalKycIncome + totalAgraIncome + totalHajipurIncome;
 
   //kyc
+
   const kycBasicIncome =
     getAgencyPayment?.data?.AgencyPayment?.BasicKycApprovedUser;
   const kycAdvanceIncome =
@@ -119,6 +95,7 @@ const UserTable = () => {
   const kycIncomeData = [];
   kycBasicIncome?.map((user) => kycIncomeData.push(user));
   kycAdvanceIncome?.map((user) => kycIncomeData.push(user));
+
   // Hajipur
   const basicHajipurIncome =
     getAgencyPayment?.data?.AgencyPayment?.basicHajipurprojectDocument;
@@ -151,7 +128,14 @@ const UserTable = () => {
   const handleTransferToWallet = async (user, userId, paymentType) => {
     setLoading({ ...isLoading, [user.id]: true });
 
-    // console.log('user---', user);
+    let category = '';
+
+    if (paymentType === 'kyc') {
+      category = 'DEPOSIT_KYC';
+    }
+    if (paymentType === 'project') {
+      category = 'DEPOSIT_PROJECT';
+    }
 
     const amountGenerate = currentSelectedButton.includes('kyc')
       ? 200
@@ -177,15 +161,15 @@ const UserTable = () => {
     }
 
     try {
-      const data = await transactionToWalletMutation({
+      await transactionToWalletMutation({
         variables: {
           agencyCode: agencyCode,
+          category,
           type: 'DEPOSIT',
           amount: amountGenerate,
           metaData: metaData
         }
       });
-      // console.log('data', data);
       toast.success('Succesfully Amount Transfer To Wallet');
       dispatch(addToWalletBalance(amountGenerate));
     } catch (err) {
@@ -228,7 +212,7 @@ const UserTable = () => {
                   setSelectedMonthYear(e.target.value as string)
                 }
               >
-                {months.map((monthYear) => (
+                {monthsData.months.map((monthYear) => (
                   <MenuItem key={monthYear} value={monthYear}>
                     {monthYear.split('-')[1] == new Date().getMonth() + 1
                       ? 'Current Month'
@@ -241,6 +225,7 @@ const UserTable = () => {
               </Select>
             </FormControl>
           </Box>
+
           <Button variant="outlined" sx={{ cursor: 'unset', padding: 1.5 }}>
             Amount : ₹ {totalMonthIncome}
           </Button>
@@ -377,7 +362,7 @@ const UserTable = () => {
                         <TableCell
                           align="left"
                           onClick={() => {
-                            toast.success(`PWID ${user.pw_id} Copied`);
+                            toast.success(` ${user.pw_id} Copied`);
                             navigator.clipboard.writeText(user.pw_id);
                           }}
                         >
@@ -484,9 +469,13 @@ const UserTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {hajipurIncomeData.map((user, index) => {
+                {hajipurIncomeData.map((document, index) => {
                   return (
-                    <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
+                    <TableRow
+                      hover
+                      key={document?.id}
+                      sx={{ cursor: 'pointer' }}
+                    >
                       <TableCell>
                         <Typography
                           variant="body1"
@@ -503,7 +492,7 @@ const UserTable = () => {
                       {walletTransferShowButton && (
                         <TableCell>
                           <LoadingButton
-                            loading={isLoading[user.id]}
+                            loading={isLoading[document.id]}
                             variant="contained"
                             sx={{
                               fontSize: 12,
@@ -513,8 +502,9 @@ const UserTable = () => {
                             }}
                             onClick={() =>
                               handleTransferToWallet(
-                                user,
-                                user?.user?.id,
+                                document,
+
+                                document?.user?.id,
                                 'project'
                               )
                             }
@@ -531,17 +521,17 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user?.user?.name === 'NULL'
+                          {document?.user?.name === 'NULL'
                             ? null
-                            : user?.user?.name}
+                            : document?.user?.name}
                         </Typography>
                       </TableCell>
                       <Link href="" scroll={false}>
                         <TableCell
                           align="left"
                           onClick={() => {
-                            toast.success(`PWID ${user.pw_id} Copied`);
-                            navigator.clipboard.writeText(user.pw_id);
+                            toast.success(` ${document.user.pw_id} Copied`);
+                            navigator.clipboard.writeText(document.user.pw_id);
                           }}
                         >
                           <Typography
@@ -551,9 +541,9 @@ const UserTable = () => {
                             color="text.primary"
                             noWrap
                           >
-                            {user?.user?.pw_id === 'NULL'
+                            {document?.user?.pw_id === 'NULL'
                               ? null
-                              : user?.user?.pw_id}
+                              : document?.user?.pw_id}
                           </Typography>
                         </TableCell>
                       </Link>
@@ -561,11 +551,11 @@ const UserTable = () => {
                         <Typography
                           style={{
                             color:
-                              user?.user?.kyc === 'APPROVED'
+                              document?.user?.kyc === 'APPROVED'
                                 ? 'limegreen'
-                                : user?.user?.kyc === 'REJECTED'
+                                : document?.user?.kyc === 'REJECTED'
                                 ? 'red'
-                                : user?.user?.kyc === 'ONGOING'
+                                : document?.user?.kyc === 'ONGOING'
                                 ? 'orange'
                                 : 'white'
                           }}
@@ -576,7 +566,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user?.user?.kyc}
+                          {document?.user?.kyc}
                         </Typography>
                       </TableCell>
                       <TableCell align="left">
@@ -588,7 +578,7 @@ const UserTable = () => {
                           width="80px"
                           noWrap
                         >
-                          {user?.user?.membership}
+                          {document?.user?.membership}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
@@ -600,7 +590,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {user?.amount}
+                          {document?.amount}
                         </Typography>
                       </TableCell>
                     </TableRow>

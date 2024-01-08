@@ -29,7 +29,10 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 // import WalletIcon from '@mui/icons-material/Wallet';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { GET_FINAL_WALLET_BALANCE_OF_AGENCY } from '@/apollo/queries/auth';
-import { setWalletBalance } from '@/state/slice/walletBalanceSlice';
+import {
+  addToWalletBalance,
+  setWalletBalance
+} from '@/state/slice/walletBalanceSlice';
 import { useAppDispatch } from '@/hooks';
 import { useEffect } from 'react';
 
@@ -42,15 +45,21 @@ function DashboardTasks() {
     (state: any) => state.walletBalance.walletBalance
   );
 
+  console.log(walletFinalBalance);
+
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
     variables: { agencyCode: agencyCode }
   });
 
   useEffect(() => {
     if (data && data?.GetFinalWalletBalanceOfAgency?.finalBalance) {
-      dispatch(
-        setWalletBalance(data?.GetFinalWalletBalanceOfAgency?.finalBalance)
-      );
+      {
+        walletFinalBalance <
+          data?.GetFinalWalletBalanceOfAgency?.finalBalance &&
+          dispatch(
+            setWalletBalance(data?.GetFinalWalletBalanceOfAgency?.finalBalance)
+          );
+      }
     }
   }, [data]);
 
