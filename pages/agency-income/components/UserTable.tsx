@@ -136,13 +136,17 @@ const UserTable = () => {
   basicAgraIncome?.map((user) => agraIncomeData.push(user));
   advanceAgraIncome?.map((user) => agraIncomeData.push(user));
 
-  const showButtonDate = new Date('2023-01-01'); //YYYY-MM-DD
-  const getDate = `${showButtonDate.getFullYear()}-${
-    showButtonDate.getMonth() + 1
-  }`;
+  const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
+
+  // const getDate = `${showButtonDate.getFullYear()}-${(
+  //   showButtonDate.getMonth() + 1
+  // )
+  //   .toString()
+  //   .padStart(2, '0')}`;
+  const getDate = showButtonDate.toISOString().slice(0, 7);
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
-  // console.log('getDate', getDate, 'selectedMonthYear');
+  // console.log('getDate', getDate, 'selectedMonthYear', selectedMonthYear);
 
   const handleTransferToWallet = async (user, userId, paymentType) => {
     setLoading({ ...isLoading, [user.id]: true });
