@@ -29,7 +29,6 @@ import { useQuery } from '@apollo/client';
 const index = () => {
   const theme = useTheme();
 
-  console.log('star of the week', data, error);
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('kyc');
   const [weekButton, setWeekButton] = useState<string>('current');
@@ -56,7 +55,7 @@ const index = () => {
   const previousWeekEndDate = currentWeekEnd.clone().subtract(7, 'days');
   const currentWeekStartDate = currentWeekStart;
   const currentWeekEndDate = currentWeekEnd;
-  console.log('-->', currentWeekStartDate);
+  // console.log('-->', currentWeekStartDate);
   const { data, error, loading } = useQuery(STAR_OF_THE_WEEK, {
     variables: {
       EndOfTheWeek: weekButton.includes('current')

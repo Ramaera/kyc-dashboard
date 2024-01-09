@@ -426,7 +426,7 @@ const InfoTab = ({ to }) => {
   });
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);

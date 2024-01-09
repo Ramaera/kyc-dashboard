@@ -178,7 +178,7 @@ const DocumentRow = ({ data, documents = [], user }) => {
                 const _images = [...images];
                 _images[i] = f.target.files[0];
                 setImages(_images);
-                console.log('imageChanged', _images[i]);
+                // console.log('imageChanged', _images[i]);
                 const _imagesChanged = [...imagesChanged];
                 _imagesChanged[i] = true;
                 setImagesChange(_imagesChanged);

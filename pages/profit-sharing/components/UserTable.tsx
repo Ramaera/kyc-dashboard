@@ -304,7 +304,6 @@ const UserTable = () => {
                 </TableHead>
                 <TableBody>
                   {filteredUsers?.map((user, index) => {
-                    console.log('user', user);
                     if (!user) {
                       return;
                     }
@@ -423,7 +422,6 @@ const UserTable = () => {
                 </TableHead>
                 <TableBody>
                   {filteredUsers?.map((user, index) => {
-                    console.log('user', user);
                     if (!user) {
                       return;
                     }
