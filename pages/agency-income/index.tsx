@@ -35,6 +35,7 @@ import {
 } from '@/state/slice/walletBalanceSlice';
 import { useAppDispatch } from '@/hooks';
 import { useEffect } from 'react';
+import React from 'react';
 
 function DashboardTasks() {
   const dispatch = useAppDispatch();

@@ -516,3 +516,15 @@ query GetAllKycReferral {
   }
 }
 `);
+export const GET_ALL_PROJECT_REFERRAL = gql(`
+query GetAllProjectReferral {
+  getAllProjectReferral {
+      agencyCode
+      createdAt
+      documentId
+      id
+      updatedAt
+      userId
+  }
+}
+`);
