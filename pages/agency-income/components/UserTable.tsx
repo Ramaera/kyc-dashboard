@@ -103,8 +103,8 @@ const UserTable = () => {
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
 
-  const handleTransferToWallet = async (user, userId, paymentType) => {
-    setLoading({ ...isLoading, [user.id]: true });
+  const handleTransferToWallet = async (document, userId, paymentType) => {
+    setLoading({ ...isLoading, [document.id]: true });
 
     let category = '';
 
@@ -118,9 +118,9 @@ const UserTable = () => {
     const amountGenerate = currentSelectedButton.includes('kyc')
       ? 200
       : currentSelectedButton.includes('hajipur')
-      ? user?.amount * 0.01
+      ? document?.amount * 0.01
       : currentSelectedButton.includes('agra')
-      ? user?.amount * 0.1
+      ? document?.amount * 0.1
       : '';
 
     interface metaType {
@@ -135,7 +135,7 @@ const UserTable = () => {
     ];
 
     if (paymentType === 'project') {
-      metaData.push({ documentId: user.id });
+      metaData.push({ documentId: document.id });
     }
 
     try {
@@ -154,7 +154,7 @@ const UserTable = () => {
       // console.log('err---', err);
       toast.error(err.message);
     }
-    setLoading({ ...isLoading, [user.id]: false });
+    setLoading({ ...isLoading, [document.id]: false });
   };
 
   return (
@@ -271,7 +271,8 @@ const UserTable = () => {
                 width: '78%',
                 borderLeft: '1px solid #2c3151',
                 [theme.breakpoints.down('sm')]: {
-                  border: 'none'
+                  border: 'none',
+                  width: '100%'
                 }
               }}
             >
@@ -299,7 +300,6 @@ const UserTable = () => {
                           key={user?.id}
                           sx={{ cursor: 'pointer' }}
                         >
-                          {console.log('user?.id', user?.id)}
                           <TableCell>
                             <Typography
                               variant="body1"
@@ -485,7 +485,6 @@ const UserTable = () => {
                                 onClick={() =>
                                   handleTransferToWallet(
                                     document,
-
                                     document?.user?.id,
                                     'project'
                                   )

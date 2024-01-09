@@ -45,8 +45,6 @@ function DashboardTasks() {
     (state: any) => state.walletBalance.walletBalance
   );
 
-  console.log(walletFinalBalance);
-
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
     variables: { agencyCode: agencyCode }
   });
@@ -92,7 +90,8 @@ function DashboardTasks() {
                 background: '#7063C0',
                 padding: 1,
                 borderEndStartRadius: 6,
-                borderTopLeftRadius: 6
+                borderTopLeftRadius: 6,
+                alignItems: 'center'
               }}
             >
               <AccountBalanceWalletIcon />
