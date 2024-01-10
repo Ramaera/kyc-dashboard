@@ -36,6 +36,7 @@ import {
 import { useAppDispatch } from '@/hooks';
 import { useEffect } from 'react';
 import React from 'react';
+import Link from 'next/link';
 
 function DashboardTasks() {
   const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ function DashboardTasks() {
   const walletFinalBalance = useSelector(
     (state: any) => state.walletBalance.walletBalance
   );
+  // console.log('walletFinalBalance', walletFinalBalance);
 
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
     variables: { agencyCode: agencyCode }
@@ -119,26 +121,21 @@ function DashboardTasks() {
             flexDirection={'column'}
             alignItems={'center'}
           >
-            <Box display={'flex'}>
-              <Typography variant="h4"> Withdrawal Amount</Typography>
-              <Tooltip
-                title="You can withdraw the amount on 15th or 30th date of the month."
-                enterTouchDelay={0}
+            <Link href="/transaction">
+              <Button
+                variant="contained"
+                sx={{
+                  cursor: 'unset',
+                  fontSize: 24,
+                  paddingY: 1,
+                  paddingInline: 3,
+                  margin: 1
+                }}
               >
-                <Typography paddingX={1}>*</Typography>
-              </Tooltip>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                cursor: 'unset',
-                padding: 1,
-                margin: 1
-              }}
-            >
-              <CurrencyRupeeIcon />
-              Withdrawal
-            </Button>
+                <CurrencyRupeeIcon />
+                Wallet
+              </Button>
+            </Link>
           </Box>
         </Box>
         {/* // todo place filters here */}
