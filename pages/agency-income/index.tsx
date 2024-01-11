@@ -119,9 +119,9 @@ function DashboardTasks() {
             fontWeight={600}
             display={'flex'}
             flexDirection={'column'}
-            alignItems={'center'}
+            // alignItems={'center'}
           >
-            <Link href="/transaction">
+            <Link href="/wallet">
               <Button
                 variant="contained"
                 sx={{

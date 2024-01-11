@@ -34,10 +34,6 @@ const UserTable = () => {
     setAmountToWithdraw(event.target.value);
   };
 
-  const isWithdrawalValid = () => {
-    // Check if the entered amount is smaller than or equal to the wallet balance
-    return parseFloat(amountToWithdraw) <= walletBalance;
-  };
   const theme = useTheme();
   const [show, setShow] = useState(true);
   const agencyCode = useSelector(
@@ -56,10 +52,10 @@ const UserTable = () => {
     <>
       {show ? (
         <>
-          <Card sx={{ marginTop: 2 }}>
+          <Box sx={{ marginTop: 2 }}>
             <Box
               sx={{
-                width: '100%',
+                width: '95%',
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '2%',
@@ -132,11 +128,11 @@ const UserTable = () => {
                 </div>
               </div>
             </Box>
-          </Card>
+          </Box>
         </>
       ) : (
         <>
-          <Card style={{ marginTop: '2%' }}>
+          <Box style={{ marginTop: '2%' }}>
             <Box
               sx={{
                 width: '100%',
@@ -161,7 +157,7 @@ const UserTable = () => {
                   fontWeight={600}
                   color="white"
                 >
-                  ₹ 12345
+                  ₹ {amountToWithdraw}
                 </Typography>
                 <div
                   style={{
@@ -172,17 +168,15 @@ const UserTable = () => {
                   <Typography
                     sx={{
                       backgroundColor: 'orange',
-                      width: '15%',
-                      fontSize: '18px',
-                      fontWeight: '600',
+                      fontSize: 18,
+                      fontWeight: 600,
                       color: 'white',
-                      padding: '10px',
-                      marginTop: '5px',
-                      borderRadius: '3px',
+                      paddingX: 2,
+                      paddingY: 1,
+                      marginTop: 1,
+                      borderRadius: 1,
                       textAlign: 'center',
-                      [theme.breakpoints.down('sm')]: {
-                        width: '30%'
-                      }
+                      [theme.breakpoints.down('sm')]: {}
                     }}
                   >
                     Pending
@@ -206,11 +200,17 @@ const UserTable = () => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <Typography
-                    fontSize={14}
-                    fontWeight={600}
-                    marginTop={1}
-                    width="70%"
-                    textAlign={'center'}
+                    sx={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      marginTop: 1,
+                      width: '70%',
+                      textAlign: 'center',
+                      [theme.breakpoints.down('sm')]: {
+                        fontSize: 12,
+                        width: '95%'
+                      }
+                    }}
                   >
                     We've received your withdrawal request. Incase it fails, the
                     amount will be returned to your Funds in Wallet.
@@ -231,10 +231,26 @@ const UserTable = () => {
                         width: '70%'
                       }}
                     >
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
                         Payment Method
                       </Typography>
-                      <Typography sx={{ fontSize: 14 }}>NEFT</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        NEFT
+                      </Typography>
                     </div>
                   </Box>
                   <Box
@@ -250,8 +266,24 @@ const UserTable = () => {
                         width: '70%'
                       }}
                     >
-                      <Typography sx={{ fontSize: 14 }}>From</Typography>
-                      <Typography sx={{ fontSize: 14 }}>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        From
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
                         Agency Wallet
                       </Typography>
                     </div>
@@ -269,8 +301,26 @@ const UserTable = () => {
                         width: '70%'
                       }}
                     >
-                      <Typography>Account</Typography>
-                      <Typography>****414</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        Account
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        ****414
+                      </Typography>
                     </div>
                   </Box>
                   <Box
@@ -286,8 +336,26 @@ const UserTable = () => {
                         width: '70%'
                       }}
                     >
-                      <Typography>Started on</Typography>
-                      <Typography>12/01/2023</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        Started on
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        12/01/2023
+                      </Typography>
                     </div>
                   </Box>
                   <Box
@@ -303,8 +371,26 @@ const UserTable = () => {
                         width: '70%'
                       }}
                     >
-                      <Typography>Transaction Fee</Typography>
-                      <Typography>No Fee</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        Transaction Fee
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 18,
+                          [theme.breakpoints.down('sm')]: {
+                            fontSize: 14
+                          }
+                        }}
+                      >
+                        No Fee
+                      </Typography>
                     </div>
                   </Box>
                 </Box>
@@ -345,7 +431,7 @@ const UserTable = () => {
                 </Box>
               </Card>
             </Box>
-          </Card>
+          </Box>
         </>
       )}
     </>
