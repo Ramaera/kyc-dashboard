@@ -505,6 +505,16 @@ query GetFinalWalletBalanceOfAgency($agencyCode: String!) {
     finalBalance
   }
 }`);
+export const AGENCY_WALLET_HISTORY = gql(`
+query AgencyWalletHistory($agencyCode: String!) {
+  AgencyWalletHistory(agencyCode: $agencyCode) {
+    agencyCode
+    amount
+    createdAt
+    finalBalance
+    type
+  }
+}`);
 
 export const GET_ALL_KYC_REFERRAL = gql(`
 query GetAllKycReferral {
@@ -528,3 +538,4 @@ query GetAllProjectReferral {
   }
 }
 `);
+

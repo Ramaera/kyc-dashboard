@@ -14,14 +14,25 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import UserTable from './UserTable';
+import { AGENCY_WALLET_HISTORY } from '@/apollo/queries/auth';
 
 import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useMutation, useQuery } from '@apollo/client';
+import { useSelector } from 'react-redux';
+import { log } from 'console';
 
 const WalletFields = () => {
   const theme = useTheme();
   const [active, setActive] = useState(false);
   const [currentSelectedButton, setCurrentSelectedButton] = useState('');
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+
+  const getAllWalletHistory = useQuery(AGENCY_WALLET_HISTORY, {
+    variables: {
+      agencyCode: agencyCode
+    }
+  });
 
   const isButtonActive = () => {
     const currentDate = new Date();
@@ -30,6 +41,9 @@ const WalletFields = () => {
     // Enable the button on the 15th and 30th of every month
     return currentDay === 11 || currentDay === 30;
   };
+
+  const allWalletHistory = getAllWalletHistory?.data?.AgencyWalletHistory;
+  console.log('allWalletHistory', allWalletHistory);
 
   return (
     <>
@@ -124,102 +138,77 @@ const WalletFields = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>S.No.</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>PWID</TableCell>
-                      <TableCell>KYC Status</TableCell>
-                      <TableCell>Membership</TableCell>
-                      <TableCell>Carry Forward</TableCell>
-                      <TableCell align="center">KYC Income</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell>Type</TableCell>
+                      <TableCell>Amount Withdrawl</TableCell>
+                      <TableCell>Balance</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow sx={{ cursor: 'pointer' }}>
-                      <TableCell>
-                        {' '}
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          1
-                        </Typography>
-                      </TableCell>
-
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                        >
-                          Chota Don
-                        </Typography>
-                      </TableCell>
-                      <Link href="" scroll={false}>
-                        <TableCell align="left">
+                    {allWalletHistory?.map((item: any) => (
+                      <TableRow sx={{ cursor: 'pointer' }}>
+                        <TableCell>
                           <Typography
                             variant="body1"
-                            width="100px"
                             fontWeight="bold"
                             color="text.primary"
+                            gutterBottom
                             noWrap
                           >
-                            420
+                            {item.createdAt}
                           </Typography>
                         </TableCell>
-                      </Link>
-                      <TableCell>
-                        <Typography
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          Always Approoved
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          width="80px"
-                          noWrap
-                        >
-                          UnderWorld
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          // minWidth="80px"
-                          noWrap
-                        >
-                          Accepted
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          200
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
+
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            {/* {item.amount} */}
+                          </Typography>
+                        </TableCell>
+                        <Link href="" scroll={false}>
+                          <TableCell align="left">
+                            <Typography
+                              variant="body1"
+                              width="100px"
+                              fontWeight="bold"
+                              color="text.primary"
+                              noWrap
+                            >
+                              {item.type}
+                            </Typography>
+                          </TableCell>
+                        </Link>
+                        <TableCell>
+                          <Typography
+                            fontWeight="bold"
+                            width="100px"
+                            color="text.success"
+                            gutterBottom
+                            noWrap
+                          >
+                            ₹ {item.amount}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            width="80px"
+                            noWrap
+                          >
+                            ₹ {item.finalBalance}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
 
                     <Toaster position="bottom-center" reverseOrder={false} />
                   </TableBody>

@@ -92,10 +92,6 @@ function DashboardTasks() {
           </Box>
         </Box>
 
-        <Card>
-          <Box></Box>
-        </Card>
-
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth={false}>
