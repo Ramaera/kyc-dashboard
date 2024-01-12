@@ -21,6 +21,7 @@ import { Toaster } from 'react-hot-toast';
 import { useMutation, useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
 import { log } from 'console';
+import TransactionDetailsCard from './TansactionDetail';
 
 const WalletFields = () => {
   const theme = useTheme();
@@ -43,7 +44,6 @@ const WalletFields = () => {
   };
 
   const allWalletHistory = getAllWalletHistory?.data?.AgencyWalletHistory;
-  console.log('allWalletHistory', allWalletHistory);
 
   return (
     <>
@@ -60,7 +60,7 @@ const WalletFields = () => {
         >
           <Table
             sx={{
-              width: active ? '22%' : '100%',
+              width: active ? '25%' : '100%',
               display: 'flex',
               flexDirection: 'column',
               padding: '2%',
@@ -75,55 +75,72 @@ const WalletFields = () => {
                 setCurrentSelectedButton('WithdrawAmount');
                 setActive(true);
               }}
-              variant={active ? 'contained' : 'outlined'}
+              variant={
+                currentSelectedButton === 'WithdrawAmount'
+                  ? 'contained'
+                  : 'outlined'
+              }
               sx={{
                 mt: 2,
                 mb: 2,
-                width: '180px',
+                width: '200px',
                 [theme.breakpoints.down('sm')]: {
                   mt: 1
                 }
               }}
-              disabled={!isButtonActive()}
+              // disabled={!isButtonActive()}
             >
               Withdraw Amount
             </LoadingButton>
 
             <LoadingButton
               onClick={() => {
-                setCurrentSelectedButton('WithdrawHistory');
+                setCurrentSelectedButton('PreviousWithdrawal');
                 setActive(true);
               }}
-              variant={active ? 'contained' : 'outlined'}
+              variant={
+                currentSelectedButton === 'PreviousWithdrawal'
+                  ? 'contained'
+                  : 'outlined'
+              }
               sx={{
                 mt: 2,
                 mb: 2,
-                width: '180px',
+                width: '200px',
                 [theme.breakpoints.down('sm')]: {
                   mt: 1
                 }
               }}
             >
-              Withdraw History
+              Previous Withdrawal
             </LoadingButton>
-            {/* <LoadingButton
-              variant="outlined"
+
+            <LoadingButton
+              onClick={() => {
+                setCurrentSelectedButton('TransactionHistory');
+                setActive(true);
+              }}
+              variant={
+                currentSelectedButton === 'TransactionHistory'
+                  ? 'contained'
+                  : 'outlined'
+              }
               sx={{
                 mt: 2,
                 mb: 2,
-                width: '180px',
+                width: '200px',
                 [theme.breakpoints.down('sm')]: {
                   mt: 1
                 }
               }}
             >
-              Withdraw Amountsss
-            </LoadingButton> */}
+              Transaction History
+            </LoadingButton>
           </Table>
           {active && (
             <TableContainer
               sx={{
-                width: '78%',
+                width: '75%',
                 borderLeft: '1px solid #2c3151',
                 [theme.breakpoints.down('sm')]: {
                   border: 'none',
@@ -134,19 +151,23 @@ const WalletFields = () => {
               {currentSelectedButton.includes('WithdrawAmount') && (
                 <UserTable />
               )}
-              {currentSelectedButton.includes('WithdrawHistory') && (
+              {currentSelectedButton.includes('PreviousWithdrawal') && (
+                <TransactionDetailsCard amountToWithdraw={567} />
+              )}
+              {currentSelectedButton.includes('TransactionHistory') && (
                 <Table>
                   <TableHead>
                     <TableRow>
+                      <TableCell>S.No.</TableCell>
                       <TableCell>Date</TableCell>
                       <TableCell>Description</TableCell>
                       <TableCell>Type</TableCell>
-                      <TableCell>Amount Withdrawl</TableCell>
+                      <TableCell>Amount</TableCell>
                       <TableCell>Balance</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {allWalletHistory?.map((item: any) => (
+                    {allWalletHistory?.map((item, index) => (
                       <TableRow sx={{ cursor: 'pointer' }}>
                         <TableCell>
                           <Typography
@@ -154,12 +175,13 @@ const WalletFields = () => {
                             fontWeight="bold"
                             color="text.primary"
                             gutterBottom
+                            align="center"
                             noWrap
+                            width={30}
                           >
-                            {item.createdAt}
+                            {index + 1}
                           </Typography>
                         </TableCell>
-
                         <TableCell>
                           <Typography
                             variant="body1"
@@ -168,8 +190,36 @@ const WalletFields = () => {
                             gutterBottom
                             noWrap
                           >
-                            {/* {item.amount} */}
+                            {item?.metaData.map((list) => list?.timeStamp)}
                           </Typography>
+                        </TableCell>
+
+                        <TableCell>
+                          {item.category === 'DEPOSIT_KYC' && (
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              Reward for completing KYC for PWID {''}
+                              {item?.metaData.map((list) => list.userId)}
+                            </Typography>
+                          )}
+                          {item.category === 'DEPOSIT_PROJECT' && (
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              Reward for Project{' '}
+                              {item?.metaData.map((list) => list.documentId)}{' '}
+                              for PWID
+                            </Typography>
+                          )}
                         </TableCell>
                         <Link href="" scroll={false}>
                           <TableCell align="left">

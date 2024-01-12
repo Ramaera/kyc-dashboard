@@ -15,7 +15,8 @@ import {
   Container,
   Tooltip,
   Typography,
-  colors
+  colors,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import UserTable from './components/UserTable';
 
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+
 // import WalletIcon from '@mui/icons-material/Wallet';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { GET_FINAL_WALLET_BALANCE_OF_AGENCY } from '@/apollo/queries/auth';
@@ -39,6 +41,7 @@ import React from 'react';
 import Link from 'next/link';
 
 function DashboardTasks() {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const agencyCode = useSelector(
     (persistor: any) => persistor.user?.agencyCode
@@ -129,7 +132,9 @@ function DashboardTasks() {
                   fontSize: 24,
                   paddingY: 1,
                   paddingInline: 3,
-                  margin: 1
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 20
+                  }
                 }}
               >
                 <CurrencyRupeeIcon />

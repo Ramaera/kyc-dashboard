@@ -513,6 +513,8 @@ query AgencyWalletHistory($agencyCode: String!) {
     createdAt
     finalBalance
     type
+    category
+    metaData
   }
 }`);
 
@@ -538,4 +540,3 @@ query GetAllProjectReferral {
   }
 }
 `);
-
