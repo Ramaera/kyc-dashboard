@@ -540,3 +540,22 @@ query GetAllProjectReferral {
   }
 }
 `);
+
+export const GET_USER_DETAILS = gql(`
+query GetUserDetails ($id:String!){
+  getUserDetails(id: $id) {
+      pw_id
+  }
+}
+`);
+
+export const GET_DOCUMENT_DETAILS = gql(`
+query GetDocumentDetails ($id:String!){
+  getDocumentDetails(id: $id) {
+    title
+    user{
+      pw_id
+    }
+  }
+}
+`);

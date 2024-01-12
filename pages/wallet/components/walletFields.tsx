@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import UserTable from './UserTable';
-import { AGENCY_WALLET_HISTORY } from '@/apollo/queries/auth';
-
-import React, { useState } from 'react';
+import { AGENCY_WALLET_HISTORY, GET_USER_DETAILS } from '@/apollo/queries/auth';
+import WalletHistoryRow from './WalletHistoryRow';
+import React, { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
 import { log } from 'console';
 import TransactionDetailsCard from './TansactionDetail';
@@ -168,96 +168,98 @@ const WalletFields = () => {
                   </TableHead>
                   <TableBody>
                     {allWalletHistory?.map((item, index) => (
-                      <TableRow sx={{ cursor: 'pointer' }}>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            align="center"
-                            noWrap
-                            width={30}
-                          >
-                            {index + 1}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                          >
-                            {item?.metaData.map((list) => list?.timeStamp)}
-                          </Typography>
-                        </TableCell>
+                      <WalletHistoryRow item={item} index={index} />
+                      // <TableRow sx={{ cursor: 'pointer' }}>
+                      //   {console.log('item', item.metaData.includes(''))}
+                      //   <TableCell>
+                      //     <Typography
+                      //       variant="body1"
+                      //       fontWeight="bold"
+                      //       color="text.primary"
+                      //       gutterBottom
+                      //       align="center"
+                      //       noWrap
+                      //       width={30}
+                      //     >
+                      //       {index + 1}
+                      //     </Typography>
+                      //   </TableCell>
+                      //   <TableCell>
+                      //     <Typography
+                      //       variant="body1"
+                      //       fontWeight="bold"
+                      //       color="text.primary"
+                      //       gutterBottom
+                      //       noWrap
+                      //     >
+                      //       {item?.metaData.map((list) => list?.timeStamp)}
+                      //     </Typography>
+                      //   </TableCell>
 
-                        <TableCell>
-                          {item.category === 'DEPOSIT_KYC' && (
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              Reward for completing KYC for PWID {''}
-                              {item?.metaData.map((list) => list.userId)}
-                            </Typography>
-                          )}
-                          {item.category === 'DEPOSIT_PROJECT' && (
-                            <Typography
-                              variant="body1"
-                              fontWeight="bold"
-                              color="text.primary"
-                              gutterBottom
-                              noWrap
-                            >
-                              Reward for Project{' '}
-                              {item?.metaData.map((list) => list.documentId)}{' '}
-                              for PWID
-                            </Typography>
-                          )}
-                        </TableCell>
-                        <Link href="" scroll={false}>
-                          <TableCell align="left">
-                            <Typography
-                              variant="body1"
-                              width="100px"
-                              fontWeight="bold"
-                              color="text.primary"
-                              noWrap
-                            >
-                              {item.type}
-                            </Typography>
-                          </TableCell>
-                        </Link>
-                        <TableCell>
-                          <Typography
-                            fontWeight="bold"
-                            width="100px"
-                            color="text.success"
-                            gutterBottom
-                            noWrap
-                          >
-                            ₹ {item.amount}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            width="80px"
-                            noWrap
-                          >
-                            ₹ {item.finalBalance}
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
+                      //   <TableCell>
+                      //     {item.category === 'DEPOSIT_KYC' && (
+                      //       <Typography
+                      //         variant="body1"
+                      //         fontWeight="bold"
+                      //         color="text.primary"
+                      //         gutterBottom
+                      //         noWrap
+                      //       >
+                      //         Reward for completing KYC for PWID {''}
+                      //         {item?.metaData.map((list) => list.userId)}
+                      //       </Typography>
+                      //     )}
+                      //     {item.category === 'DEPOSIT_PROJECT' && (
+                      //       <Typography
+                      //         variant="body1"
+                      //         fontWeight="bold"
+                      //         color="text.primary"
+                      //         gutterBottom
+                      //         noWrap
+                      //       >
+                      //         Reward for Project{' '}
+                      //         {item?.metaData.map((list) => list.documentId)}{' '}
+                      //         for PWID
+                      //       </Typography>
+                      //     )}
+                      //   </TableCell>
+                      //   <Link href="" scroll={false}>
+                      //     <TableCell align="left">
+                      //       <Typography
+                      //         variant="body1"
+                      //         width="100px"
+                      //         fontWeight="bold"
+                      //         color="text.primary"
+                      //         noWrap
+                      //       >
+                      //         {item.type}
+                      //       </Typography>
+                      //     </TableCell>
+                      //   </Link>
+                      //   <TableCell>
+                      //     <Typography
+                      //       fontWeight="bold"
+                      //       width="100px"
+                      //       color="text.success"
+                      //       gutterBottom
+                      //       noWrap
+                      //     >
+                      //       ₹ {item.amount}
+                      //     </Typography>
+                      //   </TableCell>
+                      //   <TableCell>
+                      //     <Typography
+                      //       variant="body1"
+                      //       fontWeight="bold"
+                      //       color="text.primary"
+                      //       gutterBottom
+                      //       width="80px"
+                      //       noWrap
+                      //     >
+                      //       ₹ {item.finalBalance}
+                      //     </Typography>
+                      //   </TableCell>
+                      // </TableRow>
                     ))}
 
                     <Toaster position="bottom-center" reverseOrder={false} />
