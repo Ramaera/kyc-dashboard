@@ -131,10 +131,20 @@ const UserTable = () => {
       timeStamp?: string;
       documentId?: string;
     }
+    const indianDateTime = new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
 
     const metaData: metaType[] = [
       { userId: userId },
-      { timeStamp: new Date().toLocaleString('en-US', 'Asia/Delhi') }
+      { timeStamp: indianDateTime }
     ];
 
     if (paymentType === 'project') {

@@ -82,8 +82,13 @@ const WalletHistoryRow = ({ item, index }) => {
               gutterBottom
               noWrap
             >
-              Reward for Project {data?.getDocumentDetails?.title} for PWID{' '}
-              {data?.getDocumentDetails?.user.pw_id}
+              Reward for Project{' '}
+              {data?.getDocumentDetails?.title.includes('hajipur')
+                ? data.getDocumentDetails.title.slice(0, 7).toUpperCase()
+                : data?.getDocumentDetails?.title.includes('agra')
+                ? data.getDocumentDetails.title.slice(0, 4).toUpperCase()
+                : ''}{' '}
+              for PWID {data?.getDocumentDetails?.user.pw_id}
             </Typography>
           )}
         </TableCell>
@@ -104,11 +109,11 @@ const WalletHistoryRow = ({ item, index }) => {
           <Typography
             fontWeight="bold"
             width="100px"
-            color="text.success"
+            color={item.type === 'DEPOSIT' ? 'green' : 'red'}
             gutterBottom
             noWrap
           >
-            ₹ {item.amount}
+            {item.type === 'DEPOSIT' && '+ ₹ ' + item.amount}
           </Typography>
         </TableCell>
         <TableCell>
