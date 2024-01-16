@@ -491,8 +491,8 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
 `);
 
 export const TRANSACTION_TO_WALLET = gql(`
-mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $metaData: [JSONObject!]!) {
-  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,metaData: $metaData }) {
+mutation TransactionToWallet($agencyCode: String!, $type: String!, $category:Referral_Category $amount: Int!, $metaData: [JSONObject!]!) {
+  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode,  type: $type,amount: $amount,metaData: $metaData }) {
       amount
       createdAt
       finalBalance
