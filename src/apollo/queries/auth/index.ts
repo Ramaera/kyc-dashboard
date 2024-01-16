@@ -491,14 +491,17 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
 `);
 
 export const TRANSACTION_TO_WALLET = gql(`
+<<<<<<< HEAD
 mutation TransactionToWallet($agencyCode: String!, $type: String!, $category:Referral_Category $amount: Int!, $metaData: [JSONObject!]!) {
   TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode,  type: $type,amount: $amount,metaData: $metaData }) {
       amount
       createdAt
+=======
+mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $category: String!, $metaData: [JSONObject!]!) {
+  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,category:$category,metaData: $metaData }) {
+>>>>>>> a48b941cdb1ed854be58483410c387e0fbb62248
       finalBalance
       id
-      type
-      updatedAt
   }
 }`);
 
@@ -509,3 +512,26 @@ query GetFinalWalletBalanceOfAgency($agencyCode: String!) {
     finalBalance
   }
 }`);
+
+export const GET_ALL_KYC_REFERRAL = gql(`
+query GetAllKycReferral {
+  getAllKycReferral {
+      agencyCode
+      createdAt
+      userId
+      id
+  }
+}
+`);
+export const GET_ALL_PROJECT_REFERRAL = gql(`
+query GetAllProjectReferral {
+  getAllProjectReferral {
+      agencyCode
+      createdAt
+      documentId
+      id
+      updatedAt
+      userId
+  }
+}
+`);
