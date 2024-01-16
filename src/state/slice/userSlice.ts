@@ -5,7 +5,7 @@ import { UserType } from '../types';
 
 export type UserState = {
   data: UserType | undefined;
-  agencyCode: String;
+  agencyCode: any;
 };
 
 const initialState: UserState = {

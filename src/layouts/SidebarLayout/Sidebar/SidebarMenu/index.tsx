@@ -131,7 +131,9 @@ const SubMenuWrapper = styled(Box)(
 function SidebarMenu() {
   const user = useAppSelector((state) => state.user?.data);
   const { closeSidebar } = useContext(SidebarContext);
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
   const router = useRouter();
   const currentRoute = router.pathname;
   const currentQuery = router.query;

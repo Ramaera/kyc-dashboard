@@ -27,7 +27,9 @@ const WalletFields = () => {
   const theme = useTheme();
   const [active, setActive] = useState(false);
   const [currentSelectedButton, setCurrentSelectedButton] = useState('');
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
 
   const getAllWalletHistory = useQuery(AGENCY_WALLET_HISTORY, {
     variables: {

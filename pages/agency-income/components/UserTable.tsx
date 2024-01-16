@@ -34,7 +34,9 @@ import { initialDate, monthsData } from './agenyIncomeStartMonth';
 
 const UserTable = () => {
   const dispatch = useAppDispatch();
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
   const [transactionToWalletMutation] = useMutation(TRANSACTION_TO_WALLET);
   const [isLoading, setLoading] = useState({});
   const [isDisable, setDisable] = useState({});

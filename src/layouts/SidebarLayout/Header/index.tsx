@@ -44,7 +44,9 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
   const _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   const mobile = useMediaQuery('(max-width:600px)');
 

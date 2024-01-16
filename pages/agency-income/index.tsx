@@ -44,7 +44,7 @@ function DashboardTasks() {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const agencyCode = useSelector(
-    (persistor: any) => persistor.user?.agencyCode
+    (persistor: any) => persistor.user?.agencyCode?.agencyCode
   );
   const walletFinalBalance = useSelector(
     (state: any) => state.walletBalance.walletBalance

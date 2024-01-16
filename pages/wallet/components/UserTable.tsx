@@ -38,7 +38,7 @@ const UserTable = () => {
   const theme = useTheme();
   const [show, setShow] = useState(true);
   const agencyCode = useSelector(
-    (persistor: any) => persistor.user?.agencyCode
+    (persistor: any) => persistor.user?.agencyCode?.agencyCode
   );
 
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {

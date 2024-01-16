@@ -106,6 +106,30 @@ export default {
       }
     ]
   },
+
+  upgrade_agency_license_payment_proof_documents: {
+    name: 'Upgrade Agency License Payment Proof',
+    id: 'upgrade_agency_license_payment_proof',
+    items: [
+      {
+        id: 'upgrade_agency_license_payment_proof2',
+        name: 'Upgrade Agency License Payment Proof'
+      },
+      {
+        id: 'upgrade_agency_license_payment_proof3',
+        name: 'Upgrade Agency License Payment Proof'
+      },
+      {
+        id: 'upgrade_agency_license_payment_proof4',
+        name: 'Upgrade Agency License Payment Proof'
+      },
+      {
+        id: 'upgrade_agency_license_payment_proof5',
+        name: 'Upgrade Agency License Payment Proof'
+      }
+    ]
+  },
+
   additional_payment_documents: {
     name: 'Additional Payment Document',
     id: 'additional_payment_doc',
