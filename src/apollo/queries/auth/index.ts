@@ -418,6 +418,7 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       hajipurProjectAmount
       kycAmount
       BasicKycApprovedUser {
+        id
         pw_id
         createdAt
         kyc
@@ -425,6 +426,7 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
         membership
     }
     AdvanceKycApprovedUser {
+        id
         pw_id
         createdAt
         kyc
@@ -432,10 +434,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
         membership
     }
     basicHajipurprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -443,10 +447,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     advanceHajipurprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -454,10 +460,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     basicAgraprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -465,10 +473,12 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       }
     }
     advanceAgraprojectDocument {
+      id
       amount
       createdAt
       status
       user {
+          id
           kyc
           membership
           name
@@ -477,5 +487,75 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
     }
   }
 
+}
+`);
+
+export const TRANSACTION_TO_WALLET = gql(`
+mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $category: String!, $metaData: [JSONObject!]!) {
+  TransactionToWallet(transactionToWallet: { agencyCode: $agencyCode, type: $type,amount: $amount,category:$category,metaData: $metaData }) {
+      finalBalance
+      id
+  }
+}`);
+
+export const GET_FINAL_WALLET_BALANCE_OF_AGENCY = gql(`
+query GetFinalWalletBalanceOfAgency($agencyCode: String!) {
+  GetFinalWalletBalanceOfAgency(agencyCode: $agencyCode) {
+    agencyCode
+    finalBalance
+  }
+}`);
+export const AGENCY_WALLET_HISTORY = gql(`
+query AgencyWalletHistory($agencyCode: String!) {
+  AgencyWalletHistory(agencyCode: $agencyCode) {
+    agencyCode
+    amount
+    createdAt
+    finalBalance
+    type
+    category
+    metaData
+  }
+}`);
+
+export const GET_ALL_KYC_REFERRAL = gql(`
+query GetAllKycReferral {
+  getAllKycReferral {
+      agencyCode
+      createdAt
+      userId
+      id
+  }
+}
+`);
+export const GET_ALL_PROJECT_REFERRAL = gql(`
+query GetAllProjectReferral {
+  getAllProjectReferral {
+      agencyCode
+      createdAt
+      documentId
+      id
+      updatedAt
+      userId
+  }
+}
+`);
+
+export const GET_USER_DETAILS = gql(`
+query GetUserDetails ($id:String!){
+  getUserDetails(id: $id) {
+      pw_id
+  }
+}
+`);
+
+export const GET_DOCUMENT_DETAILS = gql(`
+query GetDocumentDetails ($id:String!){
+  getDocumentDetails(id: $id) {
+    title
+    user{
+      pw_id
+    }
+  }
 }
 `);
