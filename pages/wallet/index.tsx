@@ -73,7 +73,7 @@ function DashboardTasks() {
               }}
             >
               Wallet Amount <sup style={{ fontSize: '14px' }}>*</sup> : ₹{' '}
-              {walletBalance}
+              {walletBalance | 0}
             </Typography>
           </Box>
           <Box>
