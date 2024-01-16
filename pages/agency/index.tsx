@@ -16,7 +16,9 @@ import Loading from '@/components/Loading';
 function DashboardTasks() {
   const dispatch = useDispatch();
   const foundUser = useSelector((state: any) => state.foundUser.foundUser);
-  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
     variables: {

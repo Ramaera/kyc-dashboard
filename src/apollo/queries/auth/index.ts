@@ -285,6 +285,7 @@ export const GET_AGENCY_CODE = gql(`
   query($userID: String!) {
   kycAgency(userId: $userID) {
     agencyCode
+    createdAt
   }
 }
 `);

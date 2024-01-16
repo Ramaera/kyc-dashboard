@@ -26,7 +26,7 @@ import { color } from 'html2canvas/dist/types/css/types/color';
 function DashboardTasks() {
   const theme = useTheme();
   const agencyCode = useSelector(
-    (persistor: any) => persistor.user?.agencyCode
+    (persistor: any) => persistor.user?.agencyCode?.agencyCode
   );
 
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
