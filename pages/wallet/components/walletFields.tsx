@@ -88,12 +88,12 @@ const WalletFields = () => {
                   mt: 1
                 }
               }}
-              // disabled={!isButtonActive()}
+              disabled={!isButtonActive()}
             >
               Withdraw Amount
             </LoadingButton>
 
-            <LoadingButton
+            {/* <LoadingButton
               onClick={() => {
                 setCurrentSelectedButton('PreviousWithdrawal');
                 setActive(true);
@@ -135,7 +135,7 @@ const WalletFields = () => {
               }}
             >
               Transaction History
-            </LoadingButton>
+            </LoadingButton> */}
           </Table>
           {active && (
             <TableContainer
@@ -151,10 +151,10 @@ const WalletFields = () => {
               {currentSelectedButton.includes('WithdrawAmount') && (
                 <UserTable />
               )}
-              {currentSelectedButton.includes('PreviousWithdrawal') && (
+              {/* {currentSelectedButton.includes('PreviousWithdrawal') && (
                 <TransactionDetailsCard amountToWithdraw={567} />
-              )}
-              {currentSelectedButton.includes('TransactionHistory') && (
+              )} */}
+              {/* {currentSelectedButton.includes('TransactionHistory') && (
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -265,7 +265,7 @@ const WalletFields = () => {
                     <Toaster position="bottom-center" reverseOrder={false} />
                   </TableBody>
                 </Table>
-              )}
+              )} */}
             </TableContainer>
           )}
         </Box>

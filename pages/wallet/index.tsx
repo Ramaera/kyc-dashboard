@@ -72,22 +72,25 @@ function DashboardTasks() {
                 }
               }}
             >
-              Wallet Amount : ₹ {walletBalance}
+              Wallet Amount <sup style={{ fontSize: '14px' }}>*</sup> : ₹{' '}
+              {walletBalance}
             </Typography>
           </Box>
           <Box>
             <Typography
               sx={{
-                fontSize: '14px',
+                fontSize: '10px',
+                marginLeft: '20px',
                 fontWeight: '600',
                 color: 'primary.main',
                 textAlign: 'center',
                 [theme.breakpoints.down('sm')]: {
-                  fontSize: '10px'
+                  fontSize: '8px'
                 }
               }}
             >
-              Withdrawals are only processed on the 15th and 30th of the month.
+              <sup style={{ fontSize: '14px' }}>*</sup> Withdrawals are only
+              processed on the 15th and 30th of the month.
             </Typography>
           </Box>
         </Box>
