@@ -20,3 +20,9 @@ export const initialDate = {
 export const monthsData = {
   months: months
 };
+
+const checkData = () => {
+  return <></>;
+};
+
+export default checkData;
