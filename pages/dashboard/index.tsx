@@ -1,4 +1,4 @@
-import Countdown from '@/components/Countdown';
+// import Countdown from '@/components/Countdown';
 import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
@@ -78,17 +78,17 @@ function DashboardTasks() {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    var countDownDate = new Date('Dec 22, 2023 23:59:59').getTime();
-    // console.log(countDownDate);
-    var now = new Date().getTime();
-    if (countDownDate > now) {
-      setOpen(true);
-    }
-  }, []);
-  setTimeout(function () {
-    setOpen(false);
-  }, 10000);
+  // useEffect(() => {
+  //   var countDownDate = new Date('Dec 22, 2023 23:59:59').getTime();
+  //   // console.log(countDownDate);
+  //   var now = new Date().getTime();
+  //   if (countDownDate > now) {
+  //     setOpen(true);
+  //   }
+  // }, []);
+  // setTimeout(function () {
+  //   setOpen(false);
+  // }, 10000);
   return (
     <ProtectedSSRoute>
       <Head>
@@ -185,7 +185,7 @@ function DashboardTasks() {
             )}
           </Grid>
         </Card>
-        <Dialog onClose={handleClose} open={open}>
+        {/* <Dialog onClose={handleClose} open={open}>
           <Box zIndex={1000}></Box>
 
           <Grid component={Paper} elevation={6} square>
@@ -213,7 +213,7 @@ function DashboardTasks() {
               </Button>
             </Box>
           </Grid>
-        </Dialog>
+        </Dialog> */}
       </Container>
       <Footer />
     </ProtectedSSRoute>
