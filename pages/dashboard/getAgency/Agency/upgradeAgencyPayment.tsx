@@ -319,7 +319,7 @@ const DocumentRow = ({
         </TableCell>
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
-        {/* <TableCell style={{ border: 'none' }}>
+        <TableCell style={{ border: 'none' }}>
           <LoadingButton
             loading={isLoading}
             // disabled={!isValidToClick()}
@@ -330,7 +330,7 @@ const DocumentRow = ({
           >
             Upload
           </LoadingButton>
-        </TableCell> */}
+        </TableCell>
       </TableRow>
       {moreRow <= 3 && (
         <LoadingButton
@@ -568,7 +568,7 @@ const UpgradeAgencyPayment = () => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                {user?.kyc !== variables.status.APPROVED && (
+                {
                   <LoadingButton
                     loading={isLoading}
                     fullWidth
@@ -580,7 +580,7 @@ const UpgradeAgencyPayment = () => {
                   >
                     Submit
                   </LoadingButton>
-                )}
+                }
               </Grid>
               <Toaster position="bottom-center" reverseOrder={false} />
             </Grid>

@@ -42,7 +42,7 @@ const WalletFields = () => {
     const currentDay = currentDate.getDate();
 
     // Enable the button on the 15th and 30th of every month
-    return currentDay === 11 || currentDay === 30;
+    return currentDay === 17 || currentDay === 30;
   };
 
   const allWalletHistory = getAllWalletHistory?.data?.AgencyWalletHistory;
@@ -94,7 +94,6 @@ const WalletFields = () => {
             >
               Withdraw Amount
             </LoadingButton>
-
             {/* <LoadingButton
               onClick={() => {
                 setCurrentSelectedButton('PreviousWithdrawal');
@@ -116,7 +115,7 @@ const WalletFields = () => {
             >
               Previous Withdrawal
             </LoadingButton>
-
+            */}
             <LoadingButton
               onClick={() => {
                 setCurrentSelectedButton('TransactionHistory');
@@ -137,7 +136,7 @@ const WalletFields = () => {
               }}
             >
               Transaction History
-            </LoadingButton> */}
+            </LoadingButton>{' '}
           </Table>
           {active && (
             <TableContainer
@@ -153,10 +152,10 @@ const WalletFields = () => {
               {currentSelectedButton.includes('WithdrawAmount') && (
                 <UserTable />
               )}
-              {/* {currentSelectedButton.includes('PreviousWithdrawal') && (
+              {currentSelectedButton.includes('PreviousWithdrawal') && (
                 <TransactionDetailsCard amountToWithdraw={567} />
-              )} */}
-              {/* {currentSelectedButton.includes('TransactionHistory') && (
+              )}
+              {currentSelectedButton.includes('TransactionHistory') && (
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -171,103 +170,102 @@ const WalletFields = () => {
                   <TableBody>
                     {allWalletHistory?.map((item, index) => (
                       <WalletHistoryRow item={item} index={index} />
-                      // <TableRow sx={{ cursor: 'pointer' }}>
-                      //   {console.log('item', item.metaData.includes(''))}
-                      //   <TableCell>
-                      //     <Typography
-                      //       variant="body1"
-                      //       fontWeight="bold"
-                      //       color="text.primary"
-                      //       gutterBottom
-                      //       align="center"
-                      //       noWrap
-                      //       width={30}
-                      //     >
+                      //  <TableRow sx={{ cursor: 'pointer' }}>
+                      //    <TableCell>
+                      //      <Typography
+                      //        variant="body1"
+                      //        fontWeight="bold"
+                      //        color="text.primary"
+                      //        gutterBottom
+                      //        align="center"
+                      //        noWrap
+                      //        width={30}
+                      //    >
                       //       {index + 1}
                       //     </Typography>
-                      //   </TableCell>
-                      //   <TableCell>
-                      //     <Typography
-                      //       variant="body1"
-                      //       fontWeight="bold"
-                      //       color="text.primary"
-                      //       gutterBottom
-                      //       noWrap
-                      //     >
-                      //       {item?.metaData.map((list) => list?.timeStamp)}
-                      //     </Typography>
-                      //   </TableCell>
+                      //    </TableCell>
+                      //    <TableCell>
+                      //      <Typography
+                      //        variant="body1"
+                      //        fontWeight="bold"
+                      //        color="text.primary"
+                      //        gutterBottom
+                      //        noWrap
+                      //      >
+                      //        {item?.metaData.map((list) => list?.timeStamp)}
+                      //      </Typography>
+                      //  </TableCell>
 
-                      //   <TableCell>
-                      //     {item.category === 'DEPOSIT_KYC' && (
+                      //    <TableCell>
+                      //      {item.category === 'DEPOSIT_KYC' && (
                       //       <Typography
-                      //         variant="body1"
-                      //         fontWeight="bold"
-                      //         color="text.primary"
-                      //         gutterBottom
-                      //         noWrap
-                      //       >
-                      //         Reward for completing KYC for PWID {''}
-                      //         {item?.metaData.map((list) => list.userId)}
-                      //       </Typography>
-                      //     )}
-                      //     {item.category === 'DEPOSIT_PROJECT' && (
-                      //       <Typography
-                      //         variant="body1"
-                      //         fontWeight="bold"
-                      //         color="text.primary"
-                      //         gutterBottom
-                      //         noWrap
-                      //       >
-                      //         Reward for Project{' '}
-                      //         {item?.metaData.map((list) => list.documentId)}{' '}
-                      //         for PWID
-                      //       </Typography>
-                      //     )}
-                      //   </TableCell>
-                      //   <Link href="" scroll={false}>
-                      //     <TableCell align="left">
-                      //       <Typography
-                      //         variant="body1"
-                      //         width="100px"
-                      //         fontWeight="bold"
-                      //         color="text.primary"
-                      //         noWrap
-                      //       >
-                      //         {item.type}
-                      //       </Typography>
-                      //     </TableCell>
-                      //   </Link>
-                      //   <TableCell>
-                      //     <Typography
-                      //       fontWeight="bold"
-                      //       width="100px"
-                      //       color="text.success"
-                      //       gutterBottom
-                      //       noWrap
-                      //     >
-                      //       ₹ {item.amount}
-                      //     </Typography>
-                      //   </TableCell>
-                      //   <TableCell>
-                      //     <Typography
-                      //       variant="body1"
-                      //       fontWeight="bold"
-                      //       color="text.primary"
-                      //       gutterBottom
-                      //       width="80px"
-                      //       noWrap
-                      //     >
-                      //       ₹ {item.finalBalance}
-                      //     </Typography>
-                      //   </TableCell>
-                      // </TableRow>
+                      //          variant="body1"
+                      //          fontWeight="bold"
+                      //          color="text.primary"
+                      //          gutterBottom
+                      //          noWrap
+                      //        >
+                      //          Reward for completing KYC for PWID {''}
+                      //          {item?.metaData.map((list) => list.userId)}
+                      //        </Typography>
+                      //      )}
+                      //      {item.category === 'DEPOSIT_PROJECT' && (
+                      //        <Typography
+                      //          variant="body1"
+                      //          fontWeight="bold"
+                      //          color="text.primary"
+                      //          gutterBottom
+                      //          noWrap
+                      //        >
+                      //          Reward for Project{' '}
+                      //          {item?.metaData.map((list) => list.documentId)}{' '}
+                      //          for PWID
+                      //        </Typography>
+                      //      )}
+                      //    </TableCell>
+                      //    <Link href="" scroll={false}>
+                      //      <TableCell align="left">
+                      //        <Typography
+                      //          variant="body1"
+                      //          width="100px"
+                      //          fontWeight="bold"
+                      //          color="text.primary"
+                      //          noWrap
+                      //        >
+                      //          {item.type}
+                      //      </Typography>
+                      //      </TableCell>
+                      //    </Link>
+                      //    <TableCell>
+                      //      <Typography
+                      //      fontWeight="bold"
+                      //        width="100px"
+                      //        color="text.success"
+                      //        gutterBottom
+                      //        noWrap
+                      //      >
+                      //        ₹ {item.amount}
+                      //      </Typography>
+                      //    </TableCell>
+                      //    <TableCell>
+                      //      <Typography
+                      //        variant="body1"
+                      //        fontWeight="bold"
+                      //        color="text.primary"
+                      //        gutterBottom
+                      //        width="80px"
+                      //        noWrap
+                      //      >
+                      //        ₹ {item.finalBalance}
+                      //      </Typography>
+                      //    </TableCell>
+                      //  </TableRow>
                     ))}
 
                     <Toaster position="bottom-center" reverseOrder={false} />
                   </TableBody>
                 </Table>
-              )} */}
+              )}
             </TableContainer>
           )}
         </Box>
