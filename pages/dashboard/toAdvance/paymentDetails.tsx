@@ -79,8 +79,8 @@ const PaymentInfo = ({ docStatus }) => {
                     doc.amount === 2000 &&
                     doc.status === 'APPROVED'
                 )
-              ? '198,000'
-              : '200,000'}
+              ? '498,000'
+              : '500,000'}
             /- and upload the payment slip as a proof!
           </Typography>
         )}

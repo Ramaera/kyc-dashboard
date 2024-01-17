@@ -55,7 +55,7 @@ const PaymentInfo = ({ docStatus }) => {
       {docStatus !== variables.status.APPROVED && (
         <Typography variant="h4" sx={{ my: 2 }}>
           Kindly Deposit Rs.{' '}
-          {user?.membership === 'BASIC' ? '2,000' : '2,00,000'}
+          {user?.membership === 'BASIC' ? '2,000' : '5,00,000'}
           /- and upload the payment slip as a proof!
         </Typography>
       )}

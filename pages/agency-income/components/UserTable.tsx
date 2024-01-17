@@ -208,12 +208,16 @@ const UserTable = () => {
               >
                 {monthsData.months.map((monthYear) => (
                   <MenuItem key={monthYear} value={monthYear}>
-                    {monthYear.split('-')[1] == new Date().getMonth() + 1
+                    {/* {monthYear.split('-')[1] == new Date().getMonth() + 1
                       ? 'Current Month'
                       : new Date(monthYear).toLocaleString('default', {
                           month: 'long',
                           year: 'numeric'
-                        })}
+                        })} */}
+                    {new Date(monthYear).toLocaleString('default', {
+                      month: 'long',
+                      year: 'numeric'
+                    })}
                   </MenuItem>
                 ))}
               </Select>
@@ -258,7 +262,7 @@ const UserTable = () => {
               variant="contained"
               sx={{ mt: 2, mb: 2, width: '180px' }}
             >
-              KYC : ₹{totalKycIncome}
+              KYC : ₹{totalKycIncome | 0}
             </LoadingButton>
             <LoadingButton
               onClick={() => {
@@ -268,7 +272,7 @@ const UserTable = () => {
               variant="contained"
               sx={{ mt: 2, mb: 2, width: '180px' }}
             >
-              HAJIPUR : ₹{totalHajipurIncome}
+              HAJIPUR : ₹{totalHajipurIncome | 0}
             </LoadingButton>
             <LoadingButton
               onClick={() => {
@@ -278,7 +282,7 @@ const UserTable = () => {
               variant="contained"
               sx={{ mt: 2, mb: 2, width: '180px' }}
             >
-              AGRA : ₹{totalAgraIncome}
+              AGRA : ₹{totalAgraIncome | 0}
             </LoadingButton>
           </Table>
           {active && (
