@@ -94,7 +94,7 @@ const UserTable = () => {
                     onChange={handleAmountChange}
                   />
                 </div>
-                {amountToWithdraw >= walletBalance && (
+                {amountToWithdraw > walletBalance && (
                   <Typography
                     textAlign={'center'}
                     fontWeight={'700'}
@@ -120,7 +120,7 @@ const UserTable = () => {
                       }
                     }}
                     disabled={
-                      amountToWithdraw >= walletBalance ||
+                      amountToWithdraw > walletBalance ||
                       amountToWithdraw <= '0'
                     }
                   >

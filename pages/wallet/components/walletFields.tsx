@@ -42,7 +42,7 @@ const WalletFields = () => {
     const currentDay = currentDate.getDate();
 
     // Enable the button on the 15th and 30th of every month
-    return currentDay === 11 || currentDay === 30;
+    return currentDay === 15 || currentDay === 30;
   };
 
   const allWalletHistory = getAllWalletHistory?.data?.AgencyWalletHistory;

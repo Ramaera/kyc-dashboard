@@ -25,14 +25,18 @@ import { color } from 'html2canvas/dist/types/css/types/color';
 
 function DashboardTasks() {
   const theme = useTheme();
-  const agencyCode = useSelector(
-    (persistor: any) => persistor.user?.agencyCode?.agencyCode
-  );
+  // const agencyCode = useSelector(
+  //   (persistor: any) => persistor.user?.agencyCode?.agencyCode
+  // );
 
-  const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
-    variables: { agencyCode: agencyCode }
-  });
-  const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
+  // const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
+  //   variables: { agencyCode: agencyCode }
+  // });
+  // const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
+
+  const walletBalance = useSelector(
+    (state: any) => state.walletBalance.walletBalance
+  );
 
   return (
     <ProtectedSSRoute>
@@ -73,7 +77,7 @@ function DashboardTasks() {
               }}
             >
               Wallet Amount <sup style={{ fontSize: '14px' }}>*</sup> : ₹{' '}
-              {walletBalance}
+              {walletBalance | 0}
             </Typography>
           </Box>
           <Box>
