@@ -83,7 +83,15 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              <Box px={4} pb={2}>
+              <Box
+                pb={2}
+                sx={{
+                  paddingX: 4,
+                  [theme.breakpoints.down('sm')]: {
+                    paddingX: 1
+                  }
+                }}
+              >
                 <Agency />
               </Box>
             </Grid>

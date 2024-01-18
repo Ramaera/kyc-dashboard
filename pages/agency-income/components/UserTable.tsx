@@ -192,7 +192,7 @@ const UserTable = () => {
             Agency Income List
           </Box>
 
-          <Box width={'200px'}>
+          <Box minWidth={'160px'}>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="month-year-dropdown-label">
                 Month and Year
@@ -224,7 +224,10 @@ const UserTable = () => {
             </FormControl>
           </Box>
 
-          <Button variant="outlined" sx={{ cursor: 'unset', padding: 1.5 }}>
+          <Button
+            variant="outlined"
+            sx={{ cursor: 'unset', padding: 1.5, minWidth: '160px' }}
+          >
             Amount : ₹ {totalMonthIncome | 0}
           </Button>
         </Box>

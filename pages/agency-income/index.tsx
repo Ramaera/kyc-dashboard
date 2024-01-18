@@ -128,7 +128,7 @@ function DashboardTasks() {
               <Button
                 variant="contained"
                 sx={{
-                  cursor: 'unset',
+                  cursor: 'pointer',
                   fontSize: 24,
                   paddingY: 1,
                   paddingInline: 3,
