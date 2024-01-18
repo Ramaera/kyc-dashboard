@@ -92,19 +92,19 @@ const WalletHistoryRow = ({ item, index }) => {
             </Typography>
           )}
         </TableCell>
-        <Link href="" scroll={false}>
-          <TableCell align="left">
-            <Typography
-              variant="body1"
-              width="100px"
-              fontWeight="bold"
-              color="text.primary"
-              noWrap
-            >
-              {item.type}
-            </Typography>
-          </TableCell>
-        </Link>
+
+        <TableCell align="left">
+          <Typography
+            variant="body1"
+            width="100px"
+            fontWeight="bold"
+            color="text.primary"
+            noWrap
+          >
+            {item.type}
+          </Typography>
+        </TableCell>
+
         <TableCell>
           <Typography
             fontWeight="bold"
