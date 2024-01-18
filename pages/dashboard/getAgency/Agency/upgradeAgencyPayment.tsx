@@ -49,7 +49,6 @@ const DocumentRow = ({
     }
     setImages(_imgs);
   }, [documents, user]);
-  // console.log(imagesChanged);
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
@@ -79,7 +78,7 @@ const DocumentRow = ({
         updatedStatus = stat.status;
       }
     });
-    // console.log(updatedStatus);
+
     return updatedStatus;
   };
   const isValidToClick = () => {
@@ -108,11 +107,8 @@ const DocumentRow = ({
   const handleDocumentUpload = async () => {
     setLoading(true);
 
-    // console.log({ imagesChanged, images });
-    //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
-        // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleImageUpload(images[i]);
@@ -248,7 +244,6 @@ const DocumentRow = ({
                   const _images = [...images];
                   _images[i] = f.target.files[0];
                   setImages(_images);
-                  // console.log('imageChanged', _images[i]);
                   const _imagesChanged = [...imagesChanged];
                   _imagesChanged[i] = true;
                   setImagesChange(_imagesChanged);
@@ -284,6 +279,7 @@ const DocumentRow = ({
     }
     return views;
   };
+
   return (
     <>
       <Box
@@ -319,23 +315,12 @@ const DocumentRow = ({
         </TableCell>
 
         <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
-        <TableCell style={{ border: 'none' }}>
-          <LoadingButton
-            loading={isLoading}
-            // disabled={!isValidToClick()}
-            variant="contained"
-            onClick={() => {
-              handleDocumentUpload();
-            }}
-          >
-            Upload
-          </LoadingButton>
-        </TableCell>
+        <TableCell style={{ border: 'none' }}></TableCell>
       </TableRow>
       {moreRow <= 3 && (
         <LoadingButton
           variant="contained"
-          disabled={images.length !== moreRow}
+          disabled={moreRow === images.length + 1}
           onClick={() => {
             setMoreRow(moreRow + 1);
           }}
@@ -390,9 +375,8 @@ const UpgradeAgencyPayment = () => {
     return true;
   };
   const getDocNum = () => {
-    let count = 0;
+    let count = 1;
     user?.documents?.map((doc) => {
-      console.log('doc.title', doc.title);
       if (doc.title.slice(0, 22) === 'upgrade_agency_license_payment_proof') {
         count += 1;
       }
@@ -602,7 +586,7 @@ const UpgradeAgencyPayment = () => {
             <DocumentRow
               hideAdditionalDocuments={hideAdditionalDocuments}
               data={row}
-              rowNo={rowNo}
+              rowNo={row.config.items.length}
               key={index}
               user={user}
               documents={getDocumentsByConfig(row.config.items)}
