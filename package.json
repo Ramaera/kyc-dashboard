@@ -57,7 +57,7 @@
     "react-dom": "17.0.2",
     "react-export-table-to-excel": "^1.0.6",
     "react-hot-toast": "^2.4.0",
-    "react-photo-view": "^1.2.3",
+    "react-photo-view": "^1.2.4",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
     "search-array": "^1.6.0",
