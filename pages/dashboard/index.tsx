@@ -181,35 +181,6 @@ function DashboardTasks() {
             )}
           </Grid>
         </Card>
-        {/* <Dialog onClose={handleClose} open={open}>
-          <Box zIndex={1000}></Box>
-
-          <Grid component={Paper} elevation={6} square>
-            <Box
-              sx={{
-                my: 2,
-                p: 1,
-                mx: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                overflow: 'visible'
-              }}
-            >
-              <Countdown />
-
-              <Button
-                color="error"
-                onClick={handleClose}
-                fullWidth
-                variant="outlined"
-                sx={{ mt: 0, mb: 2 }}
-              >
-                Cancel
-              </Button>
-            </Box>
-          </Grid>
-        </Dialog> */}
       </Container>
       <Footer />
     </ProtectedSSRoute>

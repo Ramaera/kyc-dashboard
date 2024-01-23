@@ -7,9 +7,13 @@ import {
   Typography,
   Container,
   TextField,
-  Box
+  Box,
+  FormControlLabel,
+  Radio,
+  useTheme
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const steps = [{ label: 'Payment Proof', fields: ['Payment_Proof'] }];
 
@@ -21,6 +25,7 @@ const Documents = ({ nextStep, prevStep, formData: initialFormData }: any) => {
       Amount: ''
     }
   );
+  const theme = useTheme();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -153,16 +158,89 @@ const Documents = ({ nextStep, prevStep, formData: initialFormData }: any) => {
       >
         Payment Details
       </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-evenly'
+        }}
+      >
+        <Box marginTop={2}>
+          <Box
+            sx={{
+              backgroundColor: 'black',
+              // height: 60,
+              width: 400,
+              justifyContent: 'space-between',
+              display: 'flex',
+              padding: 2,
+              [theme.breakpoints.down('sm')]: {
+                width: 250
+              }
+            }}
+          >
+            <Typography>Gold</Typography>
+            <Typography>#myCard</Typography>
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: 'grey',
+              height: 200,
+              width: 400,
+              [theme.breakpoints.down('sm')]: {
+                width: 250
+              }
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
+              <img
+                // alt="500"
+
+                style={{ marginLeft: 5 }}
+                height={70}
+                src="/static/images/logo/logo.png"
+              />
+              <ShoppingCartIcon style={{ marginRight: 5 }} />
+            </Box>{' '}
+            <Typography
+              sx={{
+                marginTop: 3,
+                display: 'flex',
+                justifyContent: 'center',
+                fontSize: 20,
+                letterSpacing: 6,
+                [theme.breakpoints.down('sm')]: {
+                  letterSpacing: 2
+                }
+              }}
+            >
+              1234567890123456
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: 1,
+                padding: 2
+              }}
+            >
+              <Typography>Kartikey Sharma</Typography>
+              <Typography>Expiry:- 11/24</Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
 
       <Box>
         <Typography>{getStepContent()}</Typography>
       </Box>
       <Box sx={{ marginTop: 1 }}>
-        <Button onClick={activeStep === 0 ? prevStep : handleBack}>Back</Button>
-
-        <Button onClick={handleSubmit} disabled={!isStepComplete()}>
-          Next
-        </Button>
+        <Button>Submit</Button>
       </Box>
     </Container>
   );

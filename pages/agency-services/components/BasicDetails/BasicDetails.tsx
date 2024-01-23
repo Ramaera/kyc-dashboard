@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box, Card } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Card,
+  useTheme
+} from '@mui/material';
 
 const PersonalInfoForm = ({
   nextStep,
@@ -22,21 +29,22 @@ const PersonalInfoForm = ({
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const theme = useTheme();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    nextStep(formData);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   nextStep(formData);
+  // };
 
   return (
     <Card sx={{}}>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Typography
           fontSize={30}
           fontWeight={600}
           sx={{ display: 'flex', justifyContent: 'center' }}
         >
-          Basic Details
+          User Details
         </Typography>
         <Box
           sx={{
@@ -44,7 +52,11 @@ const PersonalInfoForm = ({
             paddingInline: 8,
             width: '100%',
             flexDirection: 'row',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            [theme.breakpoints.down('sm')]: {
+              display: 'block',
+              paddingInline: 1
+            }
           }}
         >
           <Box sx={{ paddingY: 2 }}>
@@ -116,13 +128,8 @@ const PersonalInfoForm = ({
             />
           </Box>
         </Box>
-        <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', padding: 1 }}
-        >
-          <Button onClick={prevStep}>Back</Button>
-          <Button type="submit" onClick={handleSubmit}>
-            Next
-          </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
+          <Button type="submit">Submit</Button>
         </Box>
       </form>
     </Card>

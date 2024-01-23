@@ -7,46 +7,97 @@ import {
   Container,
   Hidden,
   Typography,
-  Button
+  Button,
+  useTheme
 } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useState } from 'react';
-import StepForm from './components/Stepper/StepForm';
+// import StepForm from './components/Stepper/StepForm';
+import BasicDetails from './components/BasicDetails/BasicDetails';
+import UserTable from './components/UserTable';
 function index() {
   const [showStepper, setShowStepper] = useState(false);
+  const [showTable, setshowTable] = useState(false);
+
+  const handleShowTableClick = () => {
+    setshowTable(true);
+    setShowStepper(false);
+  };
 
   const handleApplyCardClick = () => {
     setShowStepper(true);
+    setshowTable(false);
   };
+  const theme = useTheme();
 
   return (
     <ProtectedSSRoute>
       <Head>
         <title>Agency Services</title>
       </Head>
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ width: '20%', padding: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          [theme.breakpoints.down('sm')]: {
+            display: 'block'
+          }
+        }}
+      >
+        <Box
+          sx={{
+            width: '25%',
+            padding: 2,
+            [theme.breakpoints.down('sm')]: {
+              width: '100%'
+            }
+          }}
+        >
           <Card sx={{ height: '100%', padding: 2 }}>
             <Button
               variant="contained"
               component="label"
               onClick={handleApplyCardClick}
             >
-              Apply My Card
+              Create #myCard User Profile
+            </Button>
+            <Button
+              sx={{ marginTop: 2 }}
+              variant="contained"
+              component="label"
+              onClick={handleShowTableClick}
+            >
+              Users Applied
             </Button>
           </Card>
         </Box>
+        {showTable && (
+          <Box
+            sx={{
+              width: '75%',
+
+              padding: 2,
+              [theme.breakpoints.down('sm')]: {
+                width: '100%'
+              }
+            }}
+          >
+            <UserTable />
+          </Box>
+        )}
 
         {showStepper && (
           <Box
             sx={{
               width: '80%',
 
-              padding: 2
+              padding: 2,
+              [theme.breakpoints.down('sm')]: {
+                width: '100%'
+              }
             }}
           >
-            <StepForm />
+            <BasicDetails />
           </Box>
         )}
       </Box>
