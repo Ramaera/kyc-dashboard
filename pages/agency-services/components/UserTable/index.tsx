@@ -20,11 +20,7 @@ const UserTable = ({ formData }: any) => {
     e.preventDefault();
     formData;
   };
-  const User = [
-    {
-      Name: 'dfghjkl'
-    }
-  ];
+
   const [allUsersList, setAllUserList] = useState([]);
   const apiUrl = 'http://localhost:6768/card-holder-users/RLI1234';
   useEffect(() => {

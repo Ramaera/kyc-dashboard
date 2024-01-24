@@ -42,10 +42,8 @@ const PersonalInfoForm = ({
     setFormData({ ...formData, [name]: value });
   };
   const theme = useTheme();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-  const API_URL = `http://localhost:6768/my-card/create-user`;
+  const API_URL = `http://l83w6jqz-6768.inc1.devtunnels.ms/my-card/create-user`;
   const submitData = async () => {
     await axios
       .post(API_URL, CheckData, {
@@ -91,20 +89,16 @@ const PersonalInfoForm = ({
               name="name"
               label="Name"
               variant="outlined"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
+              value={formData.name}
+              onChange={handleInputChange}
             />
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
               name="email"
               label="Email"
               variant="outlined"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              value={formData.email}
+              onChange={handleInputChange}
             />
           </Box>
           <Box sx={{ paddingY: 2 }}>
@@ -113,12 +107,10 @@ const PersonalInfoForm = ({
               name="mobileNumber"
               label="Mobile Number"
               variant="outlined"
-              value={mobileNumber}
-              onChange={(e) => {
-                setMobileNumber(e.target.value);
-              }}
+              value={formData.mobileNumber}
+              onChange={handleInputChange}
             />
-            {/* 
+
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
               name="pincode"
@@ -126,7 +118,7 @@ const PersonalInfoForm = ({
               variant="outlined"
               value={formData.pincode}
               onChange={handleInputChange}
-            /> */}
+            />
           </Box>
 
           <TextField
@@ -137,13 +129,11 @@ const PersonalInfoForm = ({
             variant="outlined"
             multiline
             rows={3}
-            value={address}
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
+            value={formData.address}
+            onChange={handleInputChange}
           />
           <Box sx={{ paddingY: 2 }}>
-            {/* <TextField
+            <TextField
               sx={{ width: '49%', marginRight: '1%' }}
               name="aadhar"
               label="Aadhar No"
@@ -158,7 +148,7 @@ const PersonalInfoForm = ({
               variant="outlined"
               value={formData.pancard}
               onChange={handleInputChange}
-            /> */}
+            />
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
