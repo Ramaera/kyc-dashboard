@@ -71,18 +71,22 @@ const CardUI = () => {
                 }}
               >
                 {CardData.map((item) => (
-                  <Box key={item.id} marginTop={2}>
+                  <Box
+                    sx={{
+                      width: 400,
+                      [theme.breakpoints.down('sm')]: {
+                        width: 250
+                      }
+                    }}
+                    key={item.id}
+                    marginTop={2}
+                  >
                     <Box
                       sx={{
                         backgroundColor: 'black',
-                        // height: 60,
-                        width: 400,
                         justifyContent: 'space-between',
                         display: 'flex',
-                        padding: 2,
-                        [theme.breakpoints.down('sm')]: {
-                          width: 250
-                        }
+                        padding: 2
                       }}
                     >
                       <Typography>{item.type}</Typography>
@@ -91,11 +95,7 @@ const CardUI = () => {
                     <Box
                       sx={{
                         backgroundColor: 'grey',
-                        height: 200,
-                        width: 400,
-                        [theme.breakpoints.down('sm')]: {
-                          width: 250
-                        }
+                        height: 200
                       }}
                     >
                       <Box

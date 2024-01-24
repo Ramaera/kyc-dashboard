@@ -8,26 +8,18 @@ import {
   useTheme
 } from '@mui/material';
 import axios from 'axios';
-import { error } from 'console';
-import { CommitSharp } from '@mui/icons-material';
-import checkData from 'pages/agency-income/components/agenyIncomeStartMonth';
+import toast, { Toaster } from 'react-hot-toast';
 
-const PersonalInfoForm = ({
-  nextStep,
-  prevStep,
-  formData: initialFormData
-}: any) => {
-  const [formData, setFormData] = useState(
-    initialFormData || {
-      name: '',
-      email: '',
-      mobileNumber: '',
-      pincode: '',
-      address: '',
-      aadhar: '',
-      pancard: ''
-    }
-  );
+const PersonalInfoForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    mobileNumber: '',
+    pincode: '',
+    address: '',
+    aadhar: '',
+    pancard: ''
+  });
 
   const CheckData = {
     name: formData.name,
@@ -41,22 +33,43 @@ const PersonalInfoForm = ({
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const validateForm = () => {
+    if (formData.mobileNumber.length !== 10) {
+      toast.error('Enter Valid Mobile Number');
+      return;
+    }
+    // if (!password || password.length < 8) {
+    if (formData.aadhar.length !== 12) {
+      toast.error('Enter Valid Adhar No');
+      return;
+    }
+    return true;
+  };
+  console.log('asdfghjk', formData.mobileNumber.length !== 10);
+  const isMobileNumberValid = formData.mobileNumber.length === 10;
+  const isAadharNumberValid = formData.aadhar.length === 12;
+  const isPanNumberValid = formData.pancard.length === 10;
+
   const theme = useTheme();
 
   const API_URL = `http://l83w6jqz-6768.inc1.devtunnels.ms/my-card/create-user`;
   const submitData = async () => {
-    await axios
-      .post(API_URL, CheckData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then((response) => {
-        console.log('response', response);
-      })
-      .catch((error) => {
-        console.log('ERRROR', error.message);
-      });
+    const isValid = validateForm();
+    if (isValid) {
+      await axios
+        .post(API_URL, CheckData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then((response) => {
+          console.log('response', response);
+        })
+        .catch((error) => {
+          console.log('ERRROR', error.message);
+        });
+    }
   };
 
   return (
@@ -94,6 +107,7 @@ const PersonalInfoForm = ({
             />
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
+              required
               name="email"
               label="Email"
               variant="outlined"
@@ -104,15 +118,17 @@ const PersonalInfoForm = ({
           <Box sx={{ paddingY: 2 }}>
             <TextField
               sx={{ width: '49%', marginRight: '1%' }}
+              required
+              type="number"
               name="mobileNumber"
               label="Mobile Number"
               variant="outlined"
               value={formData.mobileNumber}
               onChange={handleInputChange}
             />
-
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
+              required
               name="pincode"
               label="Pin Code"
               variant="outlined"
@@ -135,6 +151,8 @@ const PersonalInfoForm = ({
           <Box sx={{ paddingY: 2 }}>
             <TextField
               sx={{ width: '49%', marginRight: '1%' }}
+              required
+              type="number"
               name="aadhar"
               label="Aadhar No"
               variant="outlined"
@@ -143,6 +161,7 @@ const PersonalInfoForm = ({
             />
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
+              required
               name="pancard"
               label="Pan No"
               variant="outlined"
@@ -152,9 +171,12 @@ const PersonalInfoForm = ({
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-          <Button type="submit">Submit</Button>
+          <Button variant="contained" type="submit">
+            Submit
+          </Button>
         </Box>
       </form>
+      <Toaster />
     </Card>
   );
 };
