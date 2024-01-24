@@ -47,7 +47,7 @@ const CardUI = () => {
                 }
               }}
             >
-              Select your Card Type
+              Select Card Type
             </Typography>
             <RadioGroup name="cardtype">
               <Box

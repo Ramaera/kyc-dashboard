@@ -8,45 +8,68 @@ import {
   useTheme
 } from '@mui/material';
 import axios from 'axios';
+import { error } from 'console';
+import { CommitSharp } from '@mui/icons-material';
+import checkData from 'pages/agency-income/components/agenyIncomeStartMonth';
 
-const PersonalInfoForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [address, setAddress] = useState('');
+const PersonalInfoForm = ({
+  nextStep,
+  prevStep,
+  formData: initialFormData
+}: any) => {
+  const [formData, setFormData] = useState(
+    initialFormData || {
+      name: '',
+      email: '',
+      mobileNumber: '',
+      pincode: '',
+      address: '',
+      aadhar: '',
+      pancard: ''
+    }
+  );
 
+  const CheckData = {
+    name: formData.name,
+    email: formData.email,
+    referralAgencyCode: 'RLI1234',
+    address: [{ address: formData.address, pinCode: formData.pincode }],
+    mobileNumber: formData.mobileNumber
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
   const theme = useTheme();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        'https://l83w6jqz-6768.inc1.devtunnels.ms/my-card/create-user',
-        { json: { name, email, address, mobileNumber } }
-      );
-
-      if (response.status === 200) {
-        // Handle success, maybe navigate to the next step or show a success message
-        console.log('User created successfully', response);
-      } else {
-        // Handle error, maybe show an error message
-        console.error('Error creating user');
-      }
-    } catch (error) {
-      // Handle network or other errors
-      console.error('Error:', error);
-    }
+  const API_URL = `http://localhost:6768/my-card/create-user`;
+  const submitData = async () => {
+    await axios
+      .post(API_URL, CheckData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.log('ERRROR', error.message);
+      });
   };
 
   return (
     <Card sx={{}}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={submitData}>
         <Typography
           fontSize={30}
           fontWeight={600}
           sx={{ display: 'flex', justifyContent: 'center' }}
         >
-          User Details
+          Please Fill User Details
         </Typography>
         <Box
           sx={{

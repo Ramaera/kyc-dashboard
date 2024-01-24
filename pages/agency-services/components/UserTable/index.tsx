@@ -11,8 +11,9 @@ import {
   Typography
 } from '@mui/material';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 const UserTable = ({ formData }: any) => {
   const handleSubmit = (e) => {
@@ -24,8 +25,22 @@ const UserTable = ({ formData }: any) => {
       Name: 'dfghjkl'
     }
   ];
+  const [allUsersList, setAllUserList] = useState([]);
+  const apiUrl = 'http://localhost:6768/card-holder-users/RLI1234';
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await axios.get(apiUrl);
+        console.log(data);
+        setAllUserList(data.data);
+        // console.log(allUsersList);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  console.log('Form Data in UserTable:', formData);
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -50,96 +65,96 @@ const UserTable = ({ formData }: any) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow hover sx={{ cursor: 'pointer' }}>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      width={30}
-                    >
-                      1
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                    >
-                      Kartikey Sharma
-                    </Typography>
-                  </TableCell>
+                {allUsersList.map((data) => (
+                  <TableRow hover sx={{ cursor: 'pointer' }}>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        width={30}
+                      >
+                        1
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                      >
+                        {data.name}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      width="100px"
-                      color="text.success"
-                      gutterBottom
-                      noWrap
-                    >
-                      Kartikeysharma17@gmail.com
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      width="80px"
-                    >
-                      1234567890
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                      width="80px"
-                    >
-                      qwertyuiopasdfghjklzxcvbnm
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      width="100px"
-                      color="text.success"
-                      gutterBottom
-                      noWrap
-                    >
-                      123456789012
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      width="100px"
-                      color="text.success"
-                      gutterBottom
-                      noWrap
-                    >
-                      123456789012
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    {User.map((user) => (
-                      <Link href={'agency-services/' + user?.id}>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        width="100px"
+                        color="text.success"
+                        gutterBottom
+                        noWrap
+                      >
+                        {data.email}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        width="80px"
+                      >
+                        {data.mobileNumber}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                        width="80px"
+                      >
+                        qwertyuiopasdfghjklzxcvbnm
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        width="100px"
+                        color="text.success"
+                        gutterBottom
+                        noWrap
+                      >
+                        123456789012
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        width="100px"
+                        color="text.success"
+                        gutterBottom
+                        noWrap
+                      >
+                        123456789012
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Link href={'agency-services/' + `${data.id}`}>
                         <Button>Apply #myCard</Button>
                       </Link>
-                    ))}
-                  </TableCell>
-                </TableRow>
+                    </TableCell>
+                  </TableRow>
+                ))}
 
                 <Toaster position="bottom-center" reverseOrder={false} />
               </TableBody>
