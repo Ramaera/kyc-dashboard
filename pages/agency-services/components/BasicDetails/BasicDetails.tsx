@@ -7,38 +7,40 @@ import {
   Card,
   useTheme
 } from '@mui/material';
+import axios from 'axios';
 
-const PersonalInfoForm = ({
-  nextStep,
-  prevStep,
-  formData: initialFormData
-}: any) => {
-  const [formData, setFormData] = useState(
-    initialFormData || {
-      name: '',
-      email: '',
-      mobileNumber: '',
-      pincode: '',
-      address: '',
-      aadhar: '',
-      pancard: ''
-    }
-  );
-  console.log('initialFormData', initialFormData);
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+const PersonalInfoForm = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [address, setAddress] = useState('');
+
   const theme = useTheme();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   nextStep(formData);
-  // };
+    try {
+      const response = await axios.post(
+        'https://l83w6jqz-6768.inc1.devtunnels.ms/my-card/create-user',
+        { json: { name, email, address, mobileNumber } }
+      );
+
+      if (response.status === 200) {
+        // Handle success, maybe navigate to the next step or show a success message
+        console.log('User created successfully', response);
+      } else {
+        // Handle error, maybe show an error message
+        console.error('Error creating user');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <Card sx={{}}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Typography
           fontSize={30}
           fontWeight={600}
@@ -66,16 +68,20 @@ const PersonalInfoForm = ({
               name="name"
               label="Name"
               variant="outlined"
-              value={formData.name}
-              onChange={handleInputChange}
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
               name="email"
               label="Email"
               variant="outlined"
-              value={formData.email}
-              onChange={handleInputChange}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </Box>
           <Box sx={{ paddingY: 2 }}>
@@ -84,10 +90,12 @@ const PersonalInfoForm = ({
               name="mobileNumber"
               label="Mobile Number"
               variant="outlined"
-              value={formData.mobileNumber}
-              onChange={handleInputChange}
+              value={mobileNumber}
+              onChange={(e) => {
+                setMobileNumber(e.target.value);
+              }}
             />
-
+            {/* 
             <TextField
               sx={{ width: '49%', marginLeft: '1%' }}
               name="pincode"
@@ -95,7 +103,7 @@ const PersonalInfoForm = ({
               variant="outlined"
               value={formData.pincode}
               onChange={handleInputChange}
-            />
+            /> */}
           </Box>
 
           <TextField
@@ -106,11 +114,13 @@ const PersonalInfoForm = ({
             variant="outlined"
             multiline
             rows={3}
-            value={formData.address}
-            onChange={handleInputChange}
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
           />
           <Box sx={{ paddingY: 2 }}>
-            <TextField
+            {/* <TextField
               sx={{ width: '49%', marginRight: '1%' }}
               name="aadhar"
               label="Aadhar No"
@@ -125,7 +135,7 @@ const PersonalInfoForm = ({
               variant="outlined"
               value={formData.pancard}
               onChange={handleInputChange}
-            />
+            /> */}
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>

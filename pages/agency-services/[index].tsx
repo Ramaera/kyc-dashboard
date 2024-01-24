@@ -119,7 +119,7 @@ function DashboardTasks() {
 
   // console.log('foundUser [index]', foundUser);
 
-  const [currentTab, setCurrentTab] = useState<string>('basicInfo');
+  const [currentTab, setCurrentTab] = useState<string>('cardui');
 
   const tabs = [
     { value: 'cardui', label: 'Cards' }

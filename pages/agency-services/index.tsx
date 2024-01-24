@@ -53,7 +53,7 @@ function index() {
             }
           }}
         >
-          <Card sx={{ height: '100%', padding: 2 }}>
+          <Card sx={{ height: '100%', padding: 4 }}>
             <Button
               variant="contained"
               component="label"
