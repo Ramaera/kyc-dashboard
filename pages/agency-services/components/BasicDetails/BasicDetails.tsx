@@ -7,6 +7,10 @@ import {
   Card,
   useTheme
 } from '@mui/material';
+import axios from 'axios';
+import { error } from 'console';
+import { CommitSharp } from '@mui/icons-material';
+import checkData from 'pages/agency-income/components/agenyIncomeStartMonth';
 
 const PersonalInfoForm = ({
   nextStep,
@@ -24,27 +28,46 @@ const PersonalInfoForm = ({
       pancard: ''
     }
   );
-  console.log('initialFormData', initialFormData);
+
+  const CheckData = {
+    name: formData.name,
+    email: formData.email,
+    referralAgencyCode: 'RLI1234',
+    address: [{ address: formData.address, pinCode: formData.pincode }],
+    mobileNumber: formData.mobileNumber
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
   const theme = useTheme();
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   nextStep(formData);
-  // };
+  const API_URL = `http://localhost:6768/my-card/create-user`;
+  const submitData = async () => {
+    await axios
+      .post(API_URL, CheckData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.log('ERRROR', error.message);
+      });
+  };
 
   return (
     <Card sx={{}}>
-      <form>
+      <form onSubmit={submitData}>
         <Typography
           fontSize={30}
           fontWeight={600}
           sx={{ display: 'flex', justifyContent: 'center' }}
         >
-          User Details
+          Please Fill User Details
         </Typography>
         <Box
           sx={{
