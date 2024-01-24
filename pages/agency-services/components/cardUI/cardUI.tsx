@@ -21,9 +21,18 @@ const CardData = [
 
 const CardUI = () => {
   const [showCardPayment, setShowCardPayment] = useState(false);
-  const handleGenerateCard = () => {
-    setShowCardPayment(true);
+
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  const handleCardSelect = (event) => {
+    setSelectedCard(event.target.value);
   };
+  const handleGenerateCard = () => {
+    if (selectedCard) {
+      setShowCardPayment(true);
+    }
+  };
+
   const theme = useTheme();
 
   return (
@@ -49,7 +58,11 @@ const CardUI = () => {
             >
               Select Card Type
             </Typography>
-            <RadioGroup name="cardtype">
+            <RadioGroup
+              name="cardtype"
+              value={selectedCard}
+              onChange={handleCardSelect}
+            >
               <Box
                 sx={{
                   display: 'flex',
@@ -138,7 +151,11 @@ const CardUI = () => {
             </RadioGroup>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-            <Button type="submit" onClick={handleGenerateCard}>
+            <Button
+              type="submit"
+              onClick={handleGenerateCard}
+              disabled={!selectedCard}
+            >
               Generate Your Card
             </Button>
           </Box>
