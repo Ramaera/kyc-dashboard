@@ -305,5 +305,40 @@ export default {
         name: 'Payment Document'
       }
     ]
-  }
+  },
+  card_payment_proof: {
+    name: 'Card Payment Proof',
+    id: 'card_payment_proof',
+    status: 'Not Uploaded',
+    items: [
+      {
+        id: 'card_payment_proof',
+        name: 'Card Payment Proof',
+        status: ''
+      }
+    ]
+  },
+
+  additional_card_payment_proof: {
+    name: 'Additional Card Payment Proof',
+    id: 'additional_card_payment_proof',
+    items: [
+      {
+        id: 'card_payment_proof_2',
+        name: 'Card Payment Proof'
+      },
+      {
+        id: 'card_payment_proof_3',
+        name: 'Card Payment Proof'
+      },
+      {
+        id: 'card_payment_proof_4',
+        name: 'Card Payment Proof'
+      },
+      {
+        id: 'card_payment_proof_5',
+        name: 'Card Payment Proof'
+      }
+    ]
+  },
 };

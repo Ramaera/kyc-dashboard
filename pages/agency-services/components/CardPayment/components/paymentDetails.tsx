@@ -8,7 +8,8 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Typography
+  Typography,
+  TableHead
 } from '@mui/material';
 import variables from '@/config/variables';
 import { useSelector } from 'react-redux';
@@ -40,21 +41,23 @@ const rows = [
   }
 ];
 const PaymentInfo = ({ docStatus }) => {
-  const user = useAppSelector((state) => state.user?.data);
-  const [isBankDetails, setBankDetails] = useState(false);
+  const [isBankDetails, setBankDetails] = useState(true);
   const [isUPIDetails, setUPIDetails] = useState(false);
-
-  const agencyCode = useSelector(
-    (state: any) => state.user?.agencyCode?.agencyCode
-  );
+  const [bankButtonClicked, setBankButtonClicked] = useState(true);
+  const [upiButtonClicked, setUpiButtonClicked] = useState(false);
 
   const showBankDetails = () => {
     setBankDetails(true);
     setUPIDetails(false);
+    setBankButtonClicked(true);
+    setUpiButtonClicked(false);
   };
+
   const showUPIDetails = () => {
     setBankDetails(false);
     setUPIDetails(true);
+    setBankButtonClicked(false);
+    setUpiButtonClicked(true);
   };
   return (
     <>
@@ -68,7 +71,7 @@ const PaymentInfo = ({ docStatus }) => {
       >
         <Button
           style={{ marginRight: 20, justifyContent: 'center' }}
-          variant="contained"
+          variant={bankButtonClicked ? 'contained' : 'outlined'}
           onClick={() => {
             showBankDetails();
           }}
@@ -77,7 +80,7 @@ const PaymentInfo = ({ docStatus }) => {
         </Button>
         <Button
           style={{ justifyContent: 'center' }}
-          variant="contained"
+          variant={upiButtonClicked ? 'contained' : 'outlined'}
           onClick={() => {
             showUPIDetails();
           }}

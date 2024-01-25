@@ -9,28 +9,51 @@ import {
   Card,
   useTheme
 } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CardPayment from '../CardPayment/CardPayment';
-
+import CardRamaera from '../CardRamaera';
 const CardData = [
-  { id: '1', type: 'Bronze' },
-  { id: '2', type: 'Silver' },
-  { id: '3', type: 'Gold' },
-  { id: '4', type: 'Platinum' }
+  {
+    id: '1',
+    type: 'bronze',
+    cardNumber: 'XXXXXXXXXXXXXX34',
+    cardHolder: 'Your Name',
+    expiry: 'Validity'
+  },
+  {
+    id: '2',
+    type: 'silver',
+    cardNumber: 'XXXXXXXXXXXXXX34',
+    cardHolder: 'Your Name',
+    expiry: 'Validity'
+  },
+  {
+    id: '3',
+    type: 'gold',
+    cardNumber: 'XXXXXXXXXXXXXX34',
+    cardHolder: 'Your Name',
+    expiry: 'Validity'
+  },
+  {
+    id: '4',
+    type: 'platinum',
+    cardNumber: 'XXXXXXXXXXXXXX34',
+    cardHolder: 'Your Name',
+    expiry: 'Validity'
+  }
 ];
 
-const CardUI = () => {
+const Cards = () => {
   const [showCardPayment, setShowCardPayment] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
 
-  const handleCardSelect = (event) => {
-    setSelectedCard(event.target.value);
-  };
   const handleGenerateCard = () => {
     if (selectedCard) {
       setShowCardPayment(true);
     }
+  };
+  const handleCardClick = (cardId) => {
+    setSelectedCard(cardId);
   };
 
   const theme = useTheme();
@@ -58,97 +81,23 @@ const CardUI = () => {
             >
               Select Card Type
             </Typography>
-            <RadioGroup
-              name="cardtype"
-              value={selectedCard}
-              onChange={handleCardSelect}
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                paddingX: '15px'
+              }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-evenly'
-                }}
-              >
-                {CardData.map((item) => (
-                  <Box
-                    sx={{
-                      width: 400,
-                      [theme.breakpoints.down('sm')]: {
-                        width: 250
-                      }
-                    }}
-                    key={item.id}
-                    marginTop={2}
-                  >
-                    <Box
-                      sx={{
-                        backgroundColor: 'black',
-                        justifyContent: 'space-between',
-                        display: 'flex',
-                        padding: 2
-                      }}
-                    >
-                      <Typography>{item.type}</Typography>
-                      <Typography>#myCard</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        backgroundColor: 'grey',
-                        height: 200
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <img
-                          // alt="500"
-
-                          style={{ marginLeft: 5 }}
-                          height={70}
-                          src="/static/images/logo/logo.png"
-                        />
-                        <ShoppingCartIcon style={{ marginRight: 5 }} />
-                      </Box>{' '}
-                      <Typography
-                        sx={{
-                          marginTop: 3,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          fontSize: 20,
-                          letterSpacing: 6,
-                          [theme.breakpoints.down('sm')]: {
-                            letterSpacing: 2
-                          }
-                        }}
-                      >
-                        1234567890123456
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginTop: 1,
-                          padding: 2
-                        }}
-                      >
-                        <Typography>Kartikey Sharma</Typography>
-                        <Typography>Expiry:- 11/24</Typography>
-                      </Box>
-                    </Box>
-
-                    <FormControlLabel
-                      value={item.type}
-                      control={<Radio color="primary" />}
-                      label="Select"
-                    />
-                  </Box>
-                ))}
-              </Box>
-            </RadioGroup>
+              {CardData.map((card) => (
+                <CardRamaera
+                  key={card.id}
+                  {...card}
+                  isSelected={selectedCard === card.id}
+                  onClick={() => handleCardClick(card.id)}
+                />
+              ))}
+            </Box>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
             <Button
@@ -167,4 +116,4 @@ const CardUI = () => {
   );
 };
 
-export default CardUI;
+export default Cards;

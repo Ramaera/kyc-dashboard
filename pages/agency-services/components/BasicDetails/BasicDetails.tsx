@@ -35,25 +35,41 @@ const PersonalInfoForm = () => {
   };
 
   const validateForm = () => {
+    if (!formData.name) {
+      toast.error('Enter Name');
+      return;
+    }
+    if (!formData.email) {
+      toast.error('Enter E-mail Id');
+      return;
+    }
     if (formData.mobileNumber.length !== 10) {
       toast.error('Enter Valid Mobile Number');
       return;
     }
-    // if (!password || password.length < 8) {
+    if (!formData.pincode) {
+      toast.error('Enter Pincode');
+      return;
+    }
+    if (!formData.address) {
+      toast.error('Enter Address');
+      return;
+    }
+
     if (formData.aadhar.length !== 12) {
       toast.error('Enter Valid Adhar No');
       return;
     }
+    if (formData.pancard.length !== 10) {
+      toast.error('Enter Valid Pan No');
+      return;
+    }
     return true;
   };
-  console.log('asdfghjk', formData.mobileNumber.length !== 10);
-  const isMobileNumberValid = formData.mobileNumber.length === 10;
-  const isAadharNumberValid = formData.aadhar.length === 12;
-  const isPanNumberValid = formData.pancard.length === 10;
 
   const theme = useTheme();
 
-  const API_URL = `http://l83w6jqz-6768.inc1.devtunnels.ms/my-card/create-user`;
+  const API_URL = `https://l83w6jqz-6768.inc1.devtunnels.ms/graphql`;
   const submitData = async () => {
     const isValid = validateForm();
     if (isValid) {
@@ -73,8 +89,8 @@ const PersonalInfoForm = () => {
   };
 
   return (
-    <Card sx={{}}>
-      <form onSubmit={submitData}>
+    <>
+      <Card sx={{}}>
         <Typography
           fontSize={30}
           fontWeight={600}
@@ -171,13 +187,13 @@ const PersonalInfoForm = () => {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-          <Button variant="contained" type="submit">
+          <Button onClick={submitData} variant="contained" type="submit">
             Submit
           </Button>
         </Box>
-      </form>
-      <Toaster />
-    </Card>
+        <Toaster />
+      </Card>
+    </>
   );
 };
 
