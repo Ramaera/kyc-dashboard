@@ -171,7 +171,7 @@ function DashboardTasks() {
           >
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
-                <Box p={4}>
+                <Box>
                   <CardUI />
                 </Box>
               </Grid>

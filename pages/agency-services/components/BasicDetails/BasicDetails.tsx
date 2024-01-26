@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { useSelector } from 'react-redux';
+
 import {
   TextField,
   Button,
@@ -7,27 +10,24 @@ import {
   Card,
   useTheme
 } from '@mui/material';
-import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-
+import { CREATE_CARD_USER } from '@/apollo/queries/auth';
 const PersonalInfoForm = () => {
+  const [createCardUser] = useMutation(CREATE_CARD_USER);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     mobileNumber: '',
     pincode: '',
     address: '',
+    metaData: '',
     aadhar: '',
     pancard: ''
   });
-
-  const CheckData = {
-    name: formData.name,
-    email: formData.email,
-    referralAgencyCode: 'RLI1234',
-    address: [{ address: formData.address, pinCode: formData.pincode }],
-    mobileNumber: formData.mobileNumber
-  };
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,22 +69,25 @@ const PersonalInfoForm = () => {
 
   const theme = useTheme();
 
-  const API_URL = `https://l83w6jqz-6768.inc1.devtunnels.ms/graphql`;
   const submitData = async () => {
     const isValid = validateForm();
     if (isValid) {
-      await axios
-        .post(API_URL, CheckData, {
-          headers: {
-            'Content-Type': 'application/json'
+      try {
+        const resp = await createCardUser({
+          variables: {
+            address: [{ address: formData.address, pinCode: formData.pincode }],
+            email: formData.email,
+            mobileNumber: formData.mobileNumber,
+            name: formData.name,
+            referralAgencyCode: agencyCode,
+            metaData: [{ aadhar: formData.aadhar, pancard: formData.pancard }]
           }
-        })
-        .then((response) => {
-          console.log('response', response);
-        })
-        .catch((error) => {
-          console.log('ERRROR', error.message);
         });
+
+        toast.success('User Created Sucessfully');
+      } catch (err) {
+        toast.error(err.message);
+      }
     }
   };
 

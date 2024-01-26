@@ -111,20 +111,29 @@ const PaymentInfo = ({ docStatus }) => {
       )}
       {isUPIDetails && (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 100 }} aria-label="simple table">
-            <TableBody>
+          <Table
+            sx={{ minWidth: 100, justifyContent: 'center' }}
+            aria-label="simple table"
+          >
+            <TableBody
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}
+            >
               <img
                 style={{
                   width: '250px',
                   borderRadius: '20px',
-                  padding: '10px'
+                  padding: 10
                 }}
                 src="/images/upi_legal.png"
               />
-              <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
+              <Typography fontSize={20} variant="body1" sx={{ m: 1 }}>
                 OR
               </Typography>
-              <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
+              <Typography variant="h4" sx={{ m: 2 }}>
                 <a href="upi://pay?pa=ramaeralegal.noida@hdfcbank&amp;pn=Ramaera  K&amp;cu=INR">
                   UPI ID : ramaeralegal.noida@hdfcbank
                 </a>

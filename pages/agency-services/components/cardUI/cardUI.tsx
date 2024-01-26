@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Card,
-  useTheme
-} from '@mui/material';
+import { useMutation } from '@apollo/client';
+import { Box, Button, Typography, Card, useTheme } from '@mui/material';
 import CardPayment from '../CardPayment/CardPayment';
 import CardRamaera from '../CardRamaera';
+import toast, { Toaster } from 'react-hot-toast';
+import { GENERATE_CARD } from '@/apollo/queries/auth';
 const CardData = [
   {
     id: '1',
@@ -44,17 +38,36 @@ const CardData = [
 
 const Cards = () => {
   const [showCardPayment, setShowCardPayment] = useState(false);
+  const [generateCard] = useMutation(GENERATE_CARD);
 
   const [selectedCard, setSelectedCard] = useState(null);
 
   const handleGenerateCard = () => {
-    if (selectedCard) {
+    if (selectedCard?.id) {
       setShowCardPayment(true);
     }
   };
-  const handleCardClick = (cardId) => {
-    setSelectedCard(cardId);
+  // console.log('ghj', selectedCard?.type.toUpperCase());
+  const handleCardClick = (cardDetail) => {
+    setSelectedCard(cardDetail);
   };
+  // const handleGenerateCard = async () => {
+  //   if (selectedCard?.id) {
+  //     try {
+  //       const resp = await generateCard({
+  //         variables: {
+  //           cardType: selectedCard?.type.toUpperCase()
+  //         }
+  //       });
+
+  //       toast.success('Card Generated Sucessfully');
+  //       setShowCardPayment(true);
+
+  //     } catch (err) {
+  //       toast.error(err.message);
+  //     }
+  //   }
+  // };
 
   const theme = useTheme();
 
@@ -93,14 +106,15 @@ const Cards = () => {
                 <CardRamaera
                   key={card.id}
                   {...card}
-                  isSelected={selectedCard === card.id}
-                  onClick={() => handleCardClick(card.id)}
+                  isSelected={selectedCard?.id === card.id}
+                  onClick={() => handleCardClick(card)}
                 />
               ))}
             </Box>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
             <Button
+              variant="contained"
               type="submit"
               onClick={handleGenerateCard}
               disabled={!selectedCard}
@@ -111,7 +125,7 @@ const Cards = () => {
         </Card>
       )}
 
-      {showCardPayment && <CardPayment />}
+      {showCardPayment && <CardPayment selectedCard={selectedCard} />}
     </>
   );
 };

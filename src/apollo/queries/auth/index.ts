@@ -560,3 +560,51 @@ query GetDocumentDetails ($id:String!){
   }
 }
 `);
+export const CREATE_CARD_USER = gql(`
+
+mutation CreateUser(
+  $address: [JSONObject!]!
+  $email: String!
+  $mobileNumber: String!
+  $referralAgencyCode: String!
+  $name:String!
+  $metaData: [JSONObject!]!
+) {
+  CreateUser(
+      data: {
+          address: $address
+          email: $email
+          mobileNumber: $mobileNumber
+          name: $name
+          referralAgencyCode: $referralAgencyCode
+          metaData: $metaData
+      }
+  ) {
+      address
+      createdAt
+      email
+      id
+      metaData
+      mobileNumber
+      name
+      referralAgencyCode
+      updatedAt
+  }
+}
+`);
+
+export const GENERATE_CARD = gql(`
+
+mutation CreateCard(
+  $cardHolderId:Int!
+  $cardType:CARD_TYPE!
+  ) {
+  createCard(data: { cardHolderId: $cardHolderId, cardType: $cardType }) {
+      cardValidity
+      cardValue
+      isActive
+      maxDiscount
+  }
+}
+
+`);

@@ -251,7 +251,15 @@ input[type="date"]:valid::before {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; 
+}
+@media screen and (max-width: 767px) {
+  
+  .credit-card {
+    width: 300px;
+    height:180px;
+    padding: 6px;
+  }
 }
 
 .credit-card.bronze {

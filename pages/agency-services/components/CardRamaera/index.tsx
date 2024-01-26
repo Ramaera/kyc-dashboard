@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Card, CardContent, Typography, useTheme, Box } from '@mui/material';
 const CardRamaera = (props) => {
   const { cardNumber, cardHolder, expiry, type, isSelected, onClick } = props;
@@ -16,6 +15,9 @@ const CardRamaera = (props) => {
           transform: isSelected ? 'scale(1.12)' : 'scale(1)',
           '&:hover': {
             boxShadow: theme.shadows[8]
+          },
+          [theme.breakpoints.down('sm')]: {
+            margin: '10px'
           }
         }}
       >
@@ -48,10 +50,7 @@ const CardRamaera = (props) => {
                 alt=""
               />{' '}
             </div>
-            <div style={{ fontSize: '20px' }}>
-              #myCard
-              {/* <ShoppingCartIcon style={{ height: '40px', width: '40px' }} /> */}
-            </div>
+            <div style={{ fontSize: '20px' }}>#myCard</div>
           </div>
 
           <Box
@@ -69,7 +68,16 @@ const CardRamaera = (props) => {
             >
               {type}
             </Typography>
-            <Typography fontSize={25} letterSpacing={3}>
+            <Typography
+              fontSize={25}
+              letterSpacing={3}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  letterSpacing: 2,
+                  fontSize: 20
+                }
+              }}
+            >
               {cardNumber}
             </Typography>
           </Box>

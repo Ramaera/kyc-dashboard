@@ -39,9 +39,24 @@ const cardBenefits = () => {
   ];
   return (
     <>
-      <Box sx={{ marginLeft: 10 }}>
+      <Box
+        sx={{
+          marginLeft: 10,
+          [theme.breakpoints.down('sm')]: {
+            marginLeft: 0
+          }
+        }}
+      >
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 400 }} aria-label="simple table">
+          <Table
+            sx={{
+              minWidth: 400,
+              [theme.breakpoints.down('sm')]: {
+                minWidth: 300
+              }
+            }}
+            aria-label="simple table"
+          >
             <TableHead>
               <TableRow>
                 <TableCell
