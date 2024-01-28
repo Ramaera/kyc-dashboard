@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { CREATE_CARD_USER } from '@/apollo/queries/auth';
+import { LoadingButton } from '@mui/lab';
 const PersonalInfoForm = () => {
   const [createCardUser] = useMutation(CREATE_CARD_USER);
 
@@ -28,6 +29,9 @@ const PersonalInfoForm = () => {
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
+  const [isLoading, setLoading] = React.useState(false);
+
+  console.log('agencyCode', agencyCode);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,11 +75,14 @@ const PersonalInfoForm = () => {
 
   const submitData = async () => {
     const isValid = validateForm();
+    setLoading(true);
     if (isValid) {
+      console.log('Enter');
+
       try {
         const resp = await createCardUser({
           variables: {
-            address: [{ address: formData.address, pinCode: formData.pincode }],
+            address: [{ pincode: formData.pincode, address: formData.address }],
             email: formData.email,
             mobileNumber: formData.mobileNumber,
             name: formData.name,
@@ -85,10 +92,12 @@ const PersonalInfoForm = () => {
         });
 
         toast.success('User Created Sucessfully');
+        console.log('resp', resp);
       } catch (err) {
         toast.error(err.message);
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -190,11 +199,16 @@ const PersonalInfoForm = () => {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-          <Button onClick={submitData} variant="contained" type="submit">
+          <LoadingButton
+            loading={isLoading}
+            onClick={submitData}
+            variant="contained"
+            type="submit"
+          >
             Submit
-          </Button>
+          </LoadingButton>
         </Box>
-        <Toaster />
+        <Toaster position="bottom-right" reverseOrder={false} />
       </Card>
     </>
   );

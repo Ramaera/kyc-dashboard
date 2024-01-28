@@ -262,7 +262,7 @@ input[type="date"]:valid::before {
   }
 }
 
-.credit-card.bronze {
+.credit-card.BRONZE {
   background:
   -moz-linear-gradient(
     -72deg,
@@ -329,7 +329,7 @@ input[type="date"]:valid::before {
   );
 }
 
-.credit-card.gold {
+.credit-card.GOLD {
   background:
   -moz-linear-gradient(
   -72deg,
@@ -395,7 +395,7 @@ linear-gradient(
   #452100
 );
 }
-.credit-card.silver {
+.credit-card.SILVER {
   background:
   -moz-linear-gradient(
   -72deg,
@@ -460,7 +460,7 @@ linear-gradient(
   #dedede 84%,
   #a1a1a1
 );
-}.credit-card.platinum {
+}.credit-card.DIAMOND {
   background:
     -moz-linear-gradient(
     -72deg,

@@ -1,5 +1,5 @@
 import {
-  CREATEDOCUMENT,
+  CREATE_PAYMENT_DOCUMENT,
   UPDATEDOCUMENT,
   UPDATEUSERDETAILS
 } from '@/apollo/queries/auth';
@@ -7,7 +7,7 @@ import documentsConfig from '@/config/documentsConfig';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
-import handleImageUpload from '@/utils/upload';
+import handleCardPaymentProofUpload from '@/utils/uploadCardDocuments';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -29,6 +29,7 @@ export const rows = [
 ];
 const DocumentRow = ({
   data,
+  cardId,
   documents = [],
   user,
   rowNo,
@@ -39,7 +40,7 @@ const DocumentRow = ({
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
-  const [createDocument] = useMutation(CREATEDOCUMENT);
+  const [createDocument] = useMutation(CREATE_PAYMENT_DOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
   const [statusUpdate, setStatusUpdate] = useState([]);
@@ -56,8 +57,12 @@ const DocumentRow = ({
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
+        cardUserId: '',
+        myCardId: cardId,
         title,
-        url
+        url,
+        amount,
+        utrNo
       }
     });
   };
@@ -118,7 +123,7 @@ const DocumentRow = ({
         // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
-          const imgUrl = await handleImageUpload(images[i]);
+          const imgUrl = await handleCardPaymentProofUpload(images[i]);
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true;
@@ -364,7 +369,7 @@ const DocumentRow = ({
   );
 };
 
-const CardPayment = () => {
+const CardPayment = ({ cardId }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
   const [cardPaymentImage, setCardPaymentImage] = useState<any | null>(null);
@@ -374,10 +379,12 @@ const CardPayment = () => {
   const [isImageChanged, setImageChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
-  const [createDocument] = useMutation(CREATEDOCUMENT);
+  const [createDocument] = useMutation(CREATE_PAYMENT_DOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [updatedetails] = useMutation(UPDATEUSERDETAILS);
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
+
+  // const {cardId} = props;
 
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
@@ -429,16 +436,19 @@ const CardPayment = () => {
   };
 
   const handleSubmit = async () => {
-    const isValid = validateSubmit(cardPaymentImage);
-    if (!isValid) {
-      return;
-    }
-    setLoading(true);
+    // const isValid = validateSubmit(cardPaymentImage);
+    // if (!isValid) {
+    //   return;
+    // }
+    // setLoading(true);
 
     try {
+      console.log('cardPaymentImage', cardPaymentImage);
+
       let imgUrl = '';
       if (isImageChanged) {
-        imgUrl = await handleImageUpload(cardPaymentImage);
+        imgUrl = await handleCardPaymentProofUpload(cardPaymentImage);
+        console.log('imgUrl', imgUrl);
       } else {
         imgUrl = cardPaymentImage;
       }
@@ -456,6 +466,8 @@ const CardPayment = () => {
       }
 
       if (cardPaymentDoc) {
+        console.log('console1', cardPaymentDoc);
+
         await updateDocument({
           variables: {
             title: documentsConfig.card_payment_proof.items[0].id,
@@ -465,14 +477,16 @@ const CardPayment = () => {
         });
         toast.success('Payment Proof Updated ');
         setSubmitButtonEnabled(false);
-        dispatch(setOrUpdateUser(updateUser(cardPaymentDoc.id, imgUrl)));
+        // dispatch(setOrUpdateUser(updateUser(cardPaymentDoc.id, imgUrl)));
       } else {
-        await createDocument({
-          variables: {
-            title: documentsConfig.card_payment_proof.items[0].id,
-            url: imgUrl
-          }
-        });
+        console.log('cardPaymentDoc', cardPaymentDoc);
+
+        // await createDocument({
+        //   variables: {
+        //     title: documentsConfig.card_payment_proof.items[0].id,
+        //     url: imgUrl
+        //   }
+        // });
         toast.success('Card Payment Updated ');
         setSubmitButtonEnabled(false);
         setPaymentImage(true);
@@ -599,6 +613,7 @@ const CardPayment = () => {
               <>
                 {rows.map((row, index) => (
                   <DocumentRow
+                    cardId={cardId}
                     hideAdditionalDocuments={hideAdditionalDocuments}
                     data={row}
                     rowNo={rowNo}

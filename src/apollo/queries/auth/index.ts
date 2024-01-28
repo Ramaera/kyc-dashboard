@@ -562,29 +562,44 @@ query GetDocumentDetails ($id:String!){
 `);
 export const CREATE_CARD_USER = gql(`
 
-mutation CreateUser(
-  $address: [JSONObject!]!
-  $email: String!
-  $mobileNumber: String!
-  $referralAgencyCode: String!
-  $name:String!
-  $metaData: [JSONObject!]!
-) {
+mutation CreateUser (
+   $address: [JSONObject!]!
+   $metaData: [JSONObject!]!
+   $email: String!
+   $mobileNumber: String!
+   $referralAgencyCode: String!
+   $name:String!
+    ) {
   CreateUser(
-      data: {
-          address: $address
-          email: $email
-          mobileNumber: $mobileNumber
-          name: $name
-          referralAgencyCode: $referralAgencyCode
-          metaData: $metaData
-      }
+   data: {
+    email: $email
+    mobileNumber: $mobileNumber
+    name: $name
+    referralAgencyCode: $referralAgencyCode
+    metaData: $metaData
+    address: $address
+  }
   ) {
-      address
+    createdAt
+    email
+    id
+    mobileNumber
+    name
+    referralAgencyCode
+    updatedAt
+  }
+}
+
+
+`);
+
+export const CARD_USERS_DETAIL = gql(`
+
+query FindCardHoldersInAgency($agencyCode:String!) {
+  findCardHoldersInAgency(agencyCode: $agencyCode) {
       createdAt
       email
       id
-      metaData
       mobileNumber
       name
       referralAgencyCode
@@ -596,7 +611,7 @@ mutation CreateUser(
 export const GENERATE_CARD = gql(`
 
 mutation CreateCard(
-  $cardHolderId:Int!
+  $cardHolderId:String!
   $cardType:CARD_TYPE!
   ) {
   createCard(data: { cardHolderId: $cardHolderId, cardType: $cardType }) {
@@ -604,7 +619,44 @@ mutation CreateCard(
       cardValue
       isActive
       maxDiscount
+      cardNumber
   }
 }
 
 `);
+
+export const CREATE_PAYMENT_DOCUMENT= gql(`
+
+
+mutation CreatePaymentDocument ($cardUserId:String! $myCardId:Int! $title:String! $url:String! $amount:Int! $utrNo:String!) {
+  createPaymentDocument(
+      createPaymentDocumentInput: {
+          cardUserId: $cardUserId
+          myCardId: $myCardId
+          title: $title
+          url: $url
+          amount:$amount
+          utrNo: $utrNo
+      }
+  ) {
+      exampleField
+  }
+}
+`);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+                   
+

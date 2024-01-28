@@ -1,19 +1,30 @@
 import axios from 'axios';
 
-const handleImageUpload = async (img) => {
+const handleCardPaymentProofUpload = async (img) => {
   const form = new FormData();
+  console.log('img', img);
+
   form.append('document', img);
 
-  const resp = await axios.post(
-    `${process.env.CARD_REST_API}/documents/upload`,
-    form,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+  try {
+    console.log('swd', process.env.NEXT_PUBLIC_CARD_REST_API);
+
+    const resp = await axios.post(
+      `${process.env.NEXT_PUBLIC_CARD_REST_API}/documents/upload`,
+      form,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    }
-  );
-  return resp.data.url;
+    );
+
+    console.log('resp', resp);
+
+    return resp.data.url;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export default handleImageUpload;
+export default handleCardPaymentProofUpload;

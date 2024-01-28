@@ -5,7 +5,7 @@ import CardRamaera from '../CardRamaera';
 import CardBenefits from './components/cardBenefits';
 import UploadCardPayment from './components/uploadCardPayment';
 const Documents = (props: any) => {
-  const { selectedCard } = props;
+  const { id, type, cardNumber, cardHolder, generatedCardData } = props;
   const theme = useTheme();
 
   return (
@@ -53,10 +53,22 @@ const Documents = (props: any) => {
         }}
       >
         <Box sx={{}}>
-          <CardRamaera {...selectedCard} />
+          <CardRamaera
+            id={id}
+            type={type}
+            cardNumber={generatedCardData?.cardNumber}
+            cardHolder={cardHolder}
+            expiry={generatedCardData?.cardValidity}
+          />
         </Box>
         <Box>
-          <CardBenefits />
+          <CardBenefits
+            id={id}
+            type={type}
+            amountYouGet={generatedCardData?.cardValue}
+            validUpto={generatedCardData?.cardValidity}
+            redeemAmount={generatedCardData?.maxDiscount}
+          />
         </Box>
       </Box>
       <Typography
@@ -92,7 +104,7 @@ const Documents = (props: any) => {
             }
           }}
         >
-          <UploadCardPayment />
+          <UploadCardPayment cardId={id} />
         </Box>
       </Box>
     </Box>

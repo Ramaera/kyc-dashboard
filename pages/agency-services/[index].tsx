@@ -11,7 +11,6 @@ import { setFoundUser } from '@/state/slice/foundUserSlice';
 import { Box, Card, Container, Grid, Tab, Tabs, styled } from '@mui/material';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
-import StepForm from './components/Stepper/StepForm';
 import CardUI from './components/cardUI/cardUI';
 // import DocumentTab from './Tabs/Documents';
 // import InfoTab from './Tabs/Info';
@@ -110,7 +109,7 @@ function DashboardTasks() {
   //spread ... userList and add the updated user to itthen change it
   const { index } = router.query;
   const foundUser = usersList.find((user) => user.id === index);
-  // console.log(foundUser.date_of_birth.length);
+  console.log(foundUser, index);
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));
@@ -172,7 +171,7 @@ function DashboardTasks() {
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
                 <Box>
-                  <CardUI />
+                  <CardUI cardId={index} />
                 </Box>
               </Grid>
             )}

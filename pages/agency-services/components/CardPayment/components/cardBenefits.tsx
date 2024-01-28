@@ -14,29 +14,51 @@ import {
   TableHead
 } from '@mui/material';
 
-const cardBenefits = () => {
+const cardBenefits = (props) => {
+  const { amountYouGet, validUpto, redeemAmount } = props;
   const theme = useTheme();
+  const { type } = props;
+
+  // Define values based on card type
+  var amountToPay;
+
+  switch (type) {
+    case 'BRONZE':
+      amountToPay = '₹ 1000';
+      break;
+    case 'SILVER':
+      amountToPay = '₹ 2500';
+      break;
+    case 'GOLD':
+      amountToPay = '₹ 5000';
+      break;
+    case 'DIAMOND':
+      amountToPay = '₹ 10000';
+      break;
+    default:
+      // Handle default case
+      break;
+  }
 
   const rows = [
     {
       name: 'Amount To Pay',
-      value: '1000'
+      value: amountToPay
     },
     {
       name: 'Amount You Get',
-      value: '1100'
+      value: `₹ ${amountYouGet}`
     },
-
     {
-      name: 'Redeem Amount',
-      value: '100'
+      name: 'Redeem Amount Per Month',
+      value: `₹ ${redeemAmount}`
     },
-
     {
-      name: ' Valid Upto  ',
-      value: '11 Months'
+      name: 'Valid Upto',
+      value: `${validUpto} Months`
     }
   ];
+
   return (
     <>
       <Box
@@ -60,7 +82,7 @@ const cardBenefits = () => {
             <TableHead>
               <TableRow>
                 <TableCell
-                  colSpan={2} // Assuming you have 2 columns in the table body
+                  colSpan={2}
                   sx={{
                     backgroundColor: theme.colors.primary.main,
                     textAlign: 'center',
@@ -84,7 +106,7 @@ const cardBenefits = () => {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.value}</TableCell>
+                    <TableCell align="right">{row?.value}</TableCell>
                   </TableRow>
                 );
               })}

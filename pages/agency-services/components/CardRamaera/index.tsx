@@ -99,7 +99,7 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
-              {expiry}
+              {expiry} Months
             </div>
           </div>
         </div>
