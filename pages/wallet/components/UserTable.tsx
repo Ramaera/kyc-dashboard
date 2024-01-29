@@ -1,5 +1,5 @@
 import { GET_FINAL_WALLET_BALANCE_OF_AGENCY } from '@/apollo/queries/auth';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { Button, TextField, useTheme } from '@mui/material';
 
@@ -25,10 +25,22 @@ import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { WITHDRAW_REQUEST } from '@/apollo/queries/auth';
 import TransactionDetailsCard from './TansactionDetail';
+import { TOTAL_WITHDRAW_REQUEST } from '@/apollo/queries/auth';
 
 const UserTable = () => {
   const [amountToWithdraw, setAmountToWithdraw] = useState('');
+  const [WithdrawlRequest] = useMutation(WITHDRAW_REQUEST);
+  const agencyCode = useSelector(
+    (persistor: any) => persistor.user?.agencyCode?.agencyCode
+  );
+
+  const { data: totalWithdrawRequest } = useQuery(TOTAL_WITHDRAW_REQUEST, {
+    variables: {
+      agencyCode: agencyCode
+    }
+  });
 
   const handleAmountChange = (event) => {
     // Update the state with the entered value
@@ -37,16 +49,24 @@ const UserTable = () => {
 
   const theme = useTheme();
   const [show, setShow] = useState(true);
-  const agencyCode = useSelector(
-    (persistor: any) => persistor.user?.agencyCode?.agencyCode
-  );
 
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
     variables: { agencyCode: agencyCode }
   });
   const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    console.log('clicked', agencyCode, amountToWithdraw);
+    try {
+      const withdrawlData = await WithdrawlRequest({
+        variables: {
+          agencyCode: agencyCode,
+          amount: parseInt(amountToWithdraw)
+        }
+      });
+    } catch (err) {
+      console.log('Error Is ::', err);
+    }
     setShow(!show);
   };
   return (

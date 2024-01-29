@@ -560,3 +560,22 @@ query GetDocumentDetails ($id:String!){
   }
 }
 `);
+
+export const WITHDRAW_REQUEST = gql(`
+mutation WithdrawlRequest($agencyCode:String! $amount:Int!) {
+    withdrawlRequest(data: { agencyCode: $agencyCode, amount: $amount }) {
+        agencyCode
+        amount
+    }
+}
+`);
+
+export const TOTAL_WITHDRAW_REQUEST = gql(`
+query AgencyWithdrawlRequest($agencyCode:String!) {
+    agencyWithdrawlRequest(agencyCode: $agencyCode) {
+        agencyCode
+        amount
+        createdAt
+    }
+}
+`);

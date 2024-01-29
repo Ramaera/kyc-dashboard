@@ -132,7 +132,7 @@ const TransactionDetailsCard = ({ amountToWithdraw }) => {
             <Typography>Agency Wallet</Typography>
           </Box>
 
-          <Box
+          {/* <Box
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -141,7 +141,7 @@ const TransactionDetailsCard = ({ amountToWithdraw }) => {
           >
             <Typography>Account</Typography>
             <Typography>****414</Typography>
-          </Box>
+          </Box> */}
 
           <Box
             style={{
@@ -151,7 +151,7 @@ const TransactionDetailsCard = ({ amountToWithdraw }) => {
             }}
           >
             <Typography>Started on</Typography>
-            <Typography>12/01/2023</Typography>
+            <Typography>30/01/2024</Typography>
           </Box>
 
           <Box

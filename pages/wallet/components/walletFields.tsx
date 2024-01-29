@@ -14,7 +14,11 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import UserTable from './UserTable';
-import { AGENCY_WALLET_HISTORY, GET_USER_DETAILS } from '@/apollo/queries/auth';
+import {
+  AGENCY_WALLET_HISTORY,
+  GET_USER_DETAILS,
+  TOTAL_WITHDRAW_REQUEST
+} from '@/apollo/queries/auth';
 import WalletHistoryRow from './WalletHistoryRow';
 import React, { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -30,6 +34,14 @@ const WalletFields = () => {
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
+  // console.log(agencyCode);
+  const { data: totalWithdrawRequest } = useQuery(TOTAL_WITHDRAW_REQUEST, {
+    variables: {
+      agencyCode: agencyCode
+    }
+  });
+
+  console.log('kk', totalWithdrawRequest?.agencyWithdrawlRequest.length > 0);
 
   const getAllWalletHistory = useQuery(AGENCY_WALLET_HISTORY, {
     variables: {
@@ -94,28 +106,29 @@ const WalletFields = () => {
             >
               Withdraw Amount
             </LoadingButton>
-            {/* <LoadingButton
-              onClick={() => {
-                setCurrentSelectedButton('PreviousWithdrawal');
-                setActive(true);
-              }}
-              variant={
-                currentSelectedButton === 'PreviousWithdrawal'
-                  ? 'contained'
-                  : 'outlined'
-              }
-              sx={{
-                mt: 2,
-                mb: 2,
-                width: '200px',
-                [theme.breakpoints.down('sm')]: {
-                  mt: 1
+            {totalWithdrawRequest?.agencyWithdrawlRequest.length > 0 && (
+              <LoadingButton
+                onClick={() => {
+                  setCurrentSelectedButton('PreviousWithdrawal');
+                  setActive(true);
+                }}
+                variant={
+                  currentSelectedButton === 'PreviousWithdrawal'
+                    ? 'contained'
+                    : 'outlined'
                 }
-              }}
-            >
-              Previous Withdrawal
-            </LoadingButton>
-            */}
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  width: '200px',
+                  [theme.breakpoints.down('sm')]: {
+                    mt: 1
+                  }
+                }}
+              >
+                Previous Withdrawal Requests
+              </LoadingButton>
+            )}
             <LoadingButton
               onClick={() => {
                 setCurrentSelectedButton('TransactionHistory');
@@ -152,9 +165,11 @@ const WalletFields = () => {
               {currentSelectedButton.includes('WithdrawAmount') && (
                 <UserTable />
               )}
-              {currentSelectedButton.includes('PreviousWithdrawal') && (
-                <TransactionDetailsCard amountToWithdraw={567} />
-              )}
+              {currentSelectedButton.includes('PreviousWithdrawal')
+                ? totalWithdrawRequest.agencyWithdrawlRequest.map((data) => (
+                    <TransactionDetailsCard amountToWithdraw={data.amount} />
+                  ))
+                : ''}
               {currentSelectedButton.includes('TransactionHistory') && (
                 <Table>
                   <TableHead>

@@ -16,28 +16,35 @@ import Head from 'next/head';
 import PageHeader from '@/content/Dashboards/Kyc/PageHeader';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import WalletFields from './components/walletFields';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { GET_FINAL_WALLET_BALANCE_OF_AGENCY } from '@/apollo/queries/auth';
 import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import { color } from 'html2canvas/dist/types/css/types/color';
+import { setWalletBalance } from '@/state/slice/walletBalanceSlice';
+import { useAppDispatch } from '@/hooks';
 
 function DashboardTasks() {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
-  // const agencyCode = useSelector(
-  //   (persistor: any) => persistor.user?.agencyCode?.agencyCode
-  // );
+  const agencyCode = useSelector(
+    (persistor: any) => persistor.user?.agencyCode?.agencyCode
+  );
 
-  // const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
-  //   variables: { agencyCode: agencyCode }
-  // });
-  // const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
+  const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
+    variables: { agencyCode: agencyCode }
+  });
+  const walletBalanceFromServer =
+    data?.GetFinalWalletBalanceOfAgency?.finalBalance;
 
   const walletBalance = useSelector(
     (state: any) => state.walletBalance.walletBalance
   );
 
+  useEffect(() => {
+    dispatch(setWalletBalance(walletBalanceFromServer));
+  }, [walletBalanceFromServer]);
   return (
     <ProtectedSSRoute>
       <Head>
