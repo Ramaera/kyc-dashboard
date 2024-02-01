@@ -18,8 +18,7 @@ const handleCardPaymentProofUpload = async (img) => {
         }
       }
     );
-
-    console.log('resp', resp);
+    // console.log('resp', resp);
 
     return resp.data.url;
   } catch (error) {

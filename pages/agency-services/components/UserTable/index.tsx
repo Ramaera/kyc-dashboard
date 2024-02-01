@@ -18,13 +18,25 @@ import { CARD_USERS_DETAIL } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
 
 const UserTable = () => {
+  const [selectedId, setSelectedId] = useState(null);
+
+  // const handleViewCardClick = (id) => {
+  //   setSelectedId(id);
+  // };
+  const [cardUsers, setCardUsers] = useState();
+
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
   const cardUserData = useQuery(CARD_USERS_DETAIL, {
     variables: { agencyCode: agencyCode }
   });
-  // console.log('data', cardUserData.data?.findCardHoldersInAgency, agencyCode);
+
+  useEffect(() => {
+    if (cardUserData) {
+      setCardUsers(cardUserData.data?.findCardHoldersInAgency);
+    }
+  }, [cardUserData]);
   return (
     <>
       <Card>
@@ -41,63 +53,62 @@ const UserTable = () => {
                   <TableCell>Name</TableCell>
                   <TableCell>E-Mail</TableCell>
                   <TableCell>Mobile Number</TableCell>
-                  {/* <TableCell>Address</TableCell> */}
                   <TableCell>Pan No</TableCell>
                   <TableCell>Aadhar No</TableCell>
-                  <TableCell>Apply</TableCell>
+                  <TableCell align="center">Apply</TableCell>
+                  <TableCell>Applied Card</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cardUserData?.data?.findCardHoldersInAgency?.map(
-                  (item, index) => (
-                    <>
-                      <TableRow key={item.id} hover sx={{ cursor: 'pointer' }}>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            width={30}
-                          >
-                            {index + 1}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                          >
-                            {item.name}
-                          </Typography>
-                        </TableCell>
+                {cardUsers?.map((item, index) => (
+                  <>
+                    <TableRow key={item.id} hover sx={{ cursor: 'pointer' }}>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width={30}
+                        >
+                          {index + 1}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                        >
+                          {item.name}
+                        </Typography>
+                      </TableCell>
 
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            width="100px"
-                            color="text.success"
-                            gutterBottom
-                            noWrap
-                          >
-                            {item.email}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            width="80px"
-                          >
-                            {item.mobileNumber}
-                          </Typography>
-                        </TableCell>
-                        {/* <TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          width="100px"
+                          color="text.success"
+                          gutterBottom
+                          noWrap
+                        >
+                          {item.email}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width="80px"
+                        >
+                          {item.mobileNumber}
+                        </Typography>
+                      </TableCell>
+                      {/* <TableCell>
                           <Typography
                             variant="body1"
                             fontWeight="bold"
@@ -107,39 +118,43 @@ const UserTable = () => {
                             width="80px"
                           ></Typography>
                         </TableCell> */}
-                        <TableCell align="center">
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            width="100px"
-                            color="text.success"
-                            gutterBottom
-                            noWrap
-                          >
-                            123456789012
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            width="100px"
-                            color="text.success"
-                            gutterBottom
-                            noWrap
-                          >
-                            123456789012
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Link href={'agency-services/' + `${item.id}`}>
-                            <Button variant="contained">Apply #myCard</Button>
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    </>
-                  )
-                )}
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          width="100px"
+                          color="text.success"
+                          gutterBottom
+                          noWrap
+                        >
+                          123456789012
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          width="100px"
+                          color="text.success"
+                          gutterBottom
+                          noWrap
+                        >
+                          123456789012
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Link href={'agency-services/' + `${item.id}`}>
+                          <Button variant="contained">Apply #myCard</Button>
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link href={'agency-services/' + `${item.id}`}>
+                          <Button variant="contained">View Card</Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
 
                 <Toaster position="bottom-center" reverseOrder={false} />
               </TableBody>

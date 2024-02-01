@@ -4,6 +4,7 @@ import PaymentDetails from './components/paymentDetails';
 import CardRamaera from '../CardRamaera';
 import CardBenefits from './components/cardBenefits';
 import UploadCardPayment from './components/uploadCardPayment';
+
 const Documents = (props: any) => {
   const { id, type, cardNumber, cardHolder, generatedCardData } = props;
   const theme = useTheme();
@@ -24,9 +25,7 @@ const Documents = (props: any) => {
         >
           Card Details
         </Typography>
-        {/* <Typography fontSize={30} fontWeight={600} sx={{ display: 'flex' }}>
-          Staus:Pending
-        </Typography> */}
+
         <Box>
           <Button
             sx={{

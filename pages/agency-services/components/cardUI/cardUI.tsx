@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Box, Button, Typography, Card, useTheme } from '@mui/material';
-import CardPayment from '../CardPayment/CardPayment';
 import CardRamaera from '../CardRamaera';
 import { useQuery } from '@apollo/client';
-
 import toast, { Toaster } from 'react-hot-toast';
 import { CARD_USERS_DETAIL, GENERATE_CARD } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
-// const CardType = ['BRONZE', 'SILVER', 'GOLD', 'DIAMOND'];
+import CardPayment from '../CardPayment/CardPayment';
 enum CARD_TYPE {
   BRONZE = 'BRONZE',
   SILVER = 'SILVER',
@@ -18,13 +16,10 @@ enum CARD_TYPE {
 }
 const Cards = (props) => {
   const { cardId } = props;
-  const [isLoading, setLoading] = React.useState(false);
-
+  const [isLoading, setLoading] = useState(false);
   const [showCardPayment, setShowCardPayment] = useState(false);
   const [generateCard] = useMutation(GENERATE_CARD);
-
   const [selectedCardType, setSelectedCardType] = useState(null);
-
   const [generatedCardData, setGeneratedCardData] = useState(null);
 
   const agencyCode = useSelector(
@@ -33,56 +28,36 @@ const Cards = (props) => {
   const cardUserData = useQuery(CARD_USERS_DETAIL, {
     variables: { agencyCode: agencyCode }
   });
-
   const userData = cardUserData.data?.findCardHoldersInAgency?.find(
     (item) => item.id == cardId
   );
-
-  // console.log(
-  //   'data',
-  //   userData,
-  //   cardUserData.data?.findCardHoldersInAgency,
-  //   agencyCode
-  // );
-
-  // const handleGenerateCard = () => {
-  //   if (selectedCardType) {
-  //     setShowCardPayment(true);
-  //   }
-  // };
-  // console.log('ghj', selectedCardType?.type.toUpperCase());
   const handleCardClick = (cardType) => {
     setSelectedCardType(cardType);
   };
   const handleGenerateCard = async () => {
     if (selectedCardType) {
+      setLoading(true);
+
       try {
-        console.log(
-          'Generating card',
-          selectedCardType,
-          cardId,
-          CARD_TYPE.BRONZE
-        );
         const resp = await generateCard({
           variables: {
-            // cardType: CARD_TYPE.BRONZE,
             cardType: selectedCardType,
             cardHolderId: cardId
           }
         });
-        if (resp.data) {
-          toast.success('Card Generated Sucessfully');
-          console.log('resp', resp.data?.createCard);
+        toast.success('Card Generated Sucessfully');
 
+        if (resp.data) {
           setGeneratedCardData(resp.data?.createCard);
           setShowCardPayment(true);
         }
       } catch (err) {
         console.log('err', err);
 
-        toast.error(err.message);
+        // toast.error(err.message);
       }
     }
+    setLoading(false);
   };
 
   const theme = useTheme();
@@ -131,7 +106,14 @@ const Cards = (props) => {
               ))}
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: 1,
+              marginBottom: 2
+            }}
+          >
             <LoadingButton
               loading={isLoading}
               variant="contained"

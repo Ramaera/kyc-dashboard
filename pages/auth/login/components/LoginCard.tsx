@@ -42,12 +42,14 @@ export default function LoginCard() {
     setLoading(true);
     if (isValid) {
       try {
+        console.log('hi');
         const resp = await login({
           variables: {
             pw_id: PWId,
             password: password
           }
         });
+        console.log('hi2');
         const data = resp.data.login;
         for (let key of Object.keys(data)) {
           localStorage.setItem(key, data[key]);

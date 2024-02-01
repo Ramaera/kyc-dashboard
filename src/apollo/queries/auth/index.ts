@@ -639,14 +639,54 @@ mutation CreatePaymentDocument ($cardUserId:String! $myCardId:Int! $title:String
           utrNo: $utrNo
       }
   ) {
-      exampleField
+   title
   }
 }
 `);
 
 
 
+export const FIND_CARD_OF_A_USER = gql(`
 
+
+query FindCardOfaUser ($userId:String!) {
+  findCardOfaUser(userId: $userId) {
+      cardNumber
+      cardType
+      cardValidity
+      cardValue
+      id
+      isActive
+      maxDiscount
+      Documents {
+        amount
+        status
+        title
+        url
+        utrNo
+      }
+  }
+}
+`)
+
+
+
+
+export const GET_CARD_USER = gql(`
+
+query CardDetails($cardNumber:String!) {
+  CardDetails(cardNumber: $cardNumber) {
+      cardNumber
+      cardType
+      cardValidity
+      cardValue
+      id
+      isActive
+      maxDiscount
+  }
+}
+
+`)
 
 
 
