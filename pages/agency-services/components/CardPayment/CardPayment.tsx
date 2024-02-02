@@ -39,7 +39,7 @@ const Documents = (props: any) => {
             }}
             variant="contained"
           >
-            Activate Your Card
+            Activate Card
           </Button>
         </Box>
       </Box>

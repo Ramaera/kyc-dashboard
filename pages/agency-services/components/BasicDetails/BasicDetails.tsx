@@ -86,7 +86,7 @@ const PersonalInfoForm = () => {
             email: formData.email,
             mobileNumber: formData.mobileNumber,
             name: formData.name,
-            referralAgencyCode: agencyCode,
+            referralAgencyCode: 'RLI1234',
             metaData: [{ aadhar: formData.aadhar, pancard: formData.pancard }]
           }
         });

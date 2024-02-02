@@ -22,7 +22,7 @@ const UserTable = () => {
     (state: any) => state.user?.agencyCode?.agencyCode
   );
   const cardUserData = useQuery(CARD_USERS_DETAIL, {
-    variables: { agencyCode: agencyCode }
+    variables: { agencyCode: 'RLI1234' }
   });
   // console.log('data', cardUserData.data?.findCardHoldersInAgency, agencyCode);
   return (
