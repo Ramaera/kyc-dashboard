@@ -13,7 +13,7 @@ import {
 import toast, { Toaster } from 'react-hot-toast';
 import { CREATE_CARD_USER } from '@/apollo/queries/auth';
 import { LoadingButton } from '@mui/lab';
-const PersonalInfoForm = () => {
+const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
   const [createCardUser] = useMutation(CREATE_CARD_USER);
 
   const [formData, setFormData] = useState({
@@ -26,13 +26,7 @@ const PersonalInfoForm = () => {
     aadhar: '',
     pancard: ''
   });
-  const agencyCode = useSelector(
-    (state: any) => state.user?.agencyCode?.agencyCode
-  );
   const [isLoading, setLoading] = React.useState(false);
-
-  console.log('agencyCode', agencyCode);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -90,6 +84,8 @@ const PersonalInfoForm = () => {
             metaData: [{ aadhar: formData.aadhar, pancard: formData.pancard }]
           }
         });
+
+        onAddUser(resp?.data?.CreateUser);
 
         toast.success('User Created Sucessfully');
       } catch (err) {

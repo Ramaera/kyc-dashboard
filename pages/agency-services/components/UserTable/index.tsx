@@ -17,7 +17,7 @@ import { Toaster } from 'react-hot-toast';
 import { CARD_USERS_DETAIL } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
 
-const UserTable = () => {
+const UserTable = ({ user }) => {
   const [selectedId, setSelectedId] = useState(null);
 
   // const handleViewCardClick = (id) => {
@@ -60,9 +60,9 @@ const UserTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cardUsers?.map((item, index) => (
+                {user?.map((item, index) => (
                   <>
-                    <TableRow key={item.id} hover sx={{ cursor: 'pointer' }}>
+                    <TableRow key={item?.id} hover sx={{ cursor: 'pointer' }}>
                       <TableCell>
                         <Typography
                           variant="body1"
@@ -81,7 +81,7 @@ const UserTable = () => {
                           color="text.primary"
                           gutterBottom
                         >
-                          {item.name}
+                          {item?.name}
                         </Typography>
                       </TableCell>
 
@@ -94,7 +94,7 @@ const UserTable = () => {
                           gutterBottom
                           noWrap
                         >
-                          {item.email}
+                          {item?.email}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -105,7 +105,7 @@ const UserTable = () => {
                           gutterBottom
                           width="80px"
                         >
-                          {item.mobileNumber}
+                          {item?.mobileNumber}
                         </Typography>
                       </TableCell>
                       {/* <TableCell>
@@ -144,14 +144,16 @@ const UserTable = () => {
                       </TableCell>
                       <TableCell>
                         <Link
-                          href={'agency-services/' + `${item.id}` + `&cardui`}
+                          href={'agency-services/' + `${item?.id}` + `&cardui`}
                         >
                           <Button variant="contained">Apply #myCard</Button>
                         </Link>
                       </TableCell>
                       <TableCell>
                         <Link
-                          href={'agency-services/' + `${item.id}` + `&viewcard`}
+                          href={
+                            'agency-services/' + `${item?.id}` + `&viewcard`
+                          }
                         >
                           <Button variant="contained">View Card</Button>
                         </Link>
