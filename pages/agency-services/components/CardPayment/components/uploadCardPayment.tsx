@@ -1,5 +1,6 @@
 import {
   CREATE_PAYMENT_DOCUMENT,
+  GET_CARD_USER,
   UPDATEDOCUMENT,
   UPDATEUSERDETAILS
 } from '@/apollo/queries/auth';
@@ -8,7 +9,7 @@ import { useAppSelector, useAppDispatch } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleCardPaymentProofUpload from '@/utils/uploadCardDocuments';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -20,6 +21,7 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
+import router from 'next/router';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 export const rows = [
@@ -44,8 +46,10 @@ const DocumentRow = ({
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isLoading, setLoading] = useState(false);
   const [statusUpdate, setStatusUpdate] = useState([]);
+  const [amount, setAmount] = useState<Number | any>();
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const _imgs = [];
     for (let _document of documents) {
@@ -53,16 +57,14 @@ const DocumentRow = ({
     }
     setImages(_imgs);
   }, [documents, user]);
-  // console.log(imagesChanged);
+
+  console.log('documents', documents);
+
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({
       variables: {
-        cardUserId: '',
-        myCardId: cardId,
         title,
-        url,
-        amount,
-        utrNo
+        url
       }
     });
   };
@@ -100,8 +102,10 @@ const DocumentRow = ({
       return true;
     }
   };
+
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
+    console.log('newUser', newUser);
     let newDocs = [];
     user?.documents?.map((item) => {
       if (item.id === id) {
@@ -115,20 +119,22 @@ const DocumentRow = ({
 
   const handleDocumentUpload = async () => {
     setLoading(true);
+    console.log('Enter');
 
-    // console.log({ imagesChanged, images });
-    //handle upload
     try {
       for (let i = 0; i < moreRow; i++) {
         // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleCardPaymentProofUpload(images[i]);
+          console.log('imgUrl', imgUrl);
+          console.log('documentTitle', documentTitle);
           const _document = documents.find((document) => {
             if (document.title.toLowerCase() === documentTitle.toLowerCase()) {
               return true;
             }
           });
+          console.log('_document', _document);
           let userAllDocuments = user?.documents;
           if (!userAllDocuments) {
             userAllDocuments = [];
@@ -175,7 +181,7 @@ const DocumentRow = ({
       views.push(
         <Box
           sx={{
-            // width: 200,
+            width: 200,
             height: 160,
             marginTop: 1,
             marginLeft: 1,
@@ -308,24 +314,58 @@ const DocumentRow = ({
       <TableRow
         key={data.config.name}
         sx={{
+          display: 'flex',
+          flexDirection: 'row',
           '&:last-child td, &:last-child th': { border: 0 }
         }}
       >
-        <TableCell
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            border: 'none',
-            [theme.breakpoints.down('sm')]: {
-              paddingRight: 0
-            }
-          }}
-          // width={300}
-        >
-          {getPreview()}
-        </TableCell>
+        <Box>
+          <TableCell
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              border: 'none',
+              [theme.breakpoints.down('sm')]: {
+                paddingRight: 0
+              }
+            }}
+            // width={300}
+          >
+            {getPreview()}
+          </TableCell>
 
-        <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
+          <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
+        </Box>
+        <Box>
+          <TableCell style={{ border: 'none' }}>
+            <Box>
+              <TextField
+                sx={{ width: 150, marginLeft: 3 }}
+                id="outlined"
+                label="Amount*"
+                value={amount}
+                variant="outlined"
+                type="number"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
+            </Box>
+            <Box>
+              <TextField
+                sx={{ width: 150, marginLeft: 3 }}
+                id="outlined"
+                label="UTR No*"
+                value={amount}
+                variant="outlined"
+                type="number"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
+            </Box>
+          </TableCell>
+        </Box>
         {/* <TableCell></TableCell> */}
         {/* <TableCell style={{ border: 'none' }}>
           <LoadingButton
@@ -369,7 +409,9 @@ const DocumentRow = ({
   );
 };
 
-const CardPayment = ({ cardId }) => {
+const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
+  console.log('cardId', cardId);
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
   const [cardPaymentImage, setCardPaymentImage] = useState<any | null>(null);
@@ -382,18 +424,27 @@ const CardPayment = ({ cardId }) => {
   const [createDocument] = useMutation(CREATE_PAYMENT_DOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [updatedetails] = useMutation(UPDATEUSERDETAILS);
-  const [additionalDocuments, setAdditionalDocuments] = useState(false);
-
-  // const {cardId} = props;
-
-  const validateSubmit = (imgUrl) => {
-    if (!imgUrl) {
-      alert('Invalid Image');
-      return false;
+  const { data: getcarduser } = useQuery(GET_CARD_USER, {
+    variables: {
+      cardNumber
     }
+  });
+  const [additionalDocuments, setAdditionalDocuments] = useState(false);
+  const [utrNumber, setUtrNumber] = useState<String>();
+  const [amount, setAmount] = useState<Number | any>();
+  const { index } = router.query;
 
-    return true;
-  };
+  const cardUserId = index.toString().split('&')[0];
+
+  console.log('cardPaymentDocuments', cardPaymentDocuments);
+  // const validateSubmit = (imgUrl) => {
+  //   if (!imgUrl) {
+  //     alert('Invalid Image');
+  //     return false;
+  //   }
+
+  //   return true;
+  // };
 
   const getDocumentsByConfig = (configs) => {
     const documents = [];
@@ -436,25 +487,17 @@ const CardPayment = ({ cardId }) => {
   };
 
   const handleSubmit = async () => {
-    // const isValid = validateSubmit(cardPaymentImage);
-    // if (!isValid) {
-    //   return;
-    // }
-    // setLoading(true);
-
+    console.log('clicked');
     try {
-      console.log('cardPaymentImage', cardPaymentImage);
-
       let imgUrl = '';
       if (isImageChanged) {
         imgUrl = await handleCardPaymentProofUpload(cardPaymentImage);
-        console.log('imgUrl', imgUrl);
       } else {
         imgUrl = cardPaymentImage;
       }
 
-      if (user && user?.documents && user?.documents?.length > 0) {
-        user?.documents?.find((document: DocumentType) => {
+      if (cardPaymentDocuments?.length > 0) {
+        cardPaymentDocuments?.find((document: DocumentType) => {
           if (
             document.title.toLowerCase() ===
             documentsConfig.card_payment_proof.items[0].id
@@ -466,8 +509,6 @@ const CardPayment = ({ cardId }) => {
       }
 
       if (cardPaymentDoc) {
-        console.log('console1', cardPaymentDoc);
-
         await updateDocument({
           variables: {
             title: documentsConfig.card_payment_proof.items[0].id,
@@ -476,37 +517,41 @@ const CardPayment = ({ cardId }) => {
           }
         });
         toast.success('Payment Proof Updated ');
+
         setSubmitButtonEnabled(false);
         // dispatch(setOrUpdateUser(updateUser(cardPaymentDoc.id, imgUrl)));
       } else {
-        console.log('cardPaymentDoc', cardPaymentDoc);
-
-        // await createDocument({
-        //   variables: {
-        //     title: documentsConfig.card_payment_proof.items[0].id,
-        //     url: imgUrl
-        //   }
-        // });
-        toast.success('Card Payment Updated ');
-        setSubmitButtonEnabled(false);
-        setPaymentImage(true);
+        try {
+          await createDocument({
+            variables: {
+              title: documentsConfig.card_payment_proof.items[0].id,
+              url: imgUrl,
+              cardUserId: cardUserId,
+              myCardId: cardId,
+              amount: parseInt(amount),
+              utrNo: utrNumber
+            }
+          });
+          toast.success('Card Payment Updated ');
+          setSubmitButtonEnabled(false);
+          setPaymentImage(true);
+        } catch (err) {
+          console.log('err', err);
+        }
       }
     } catch (err) {}
     setLoading(false);
   };
   useEffect(() => {
-    if (user && user?.documents && user?.documents?.length > 0) {
-      user?.documents?.find((document: DocumentType) => {
-        if (
-          document.title.toLowerCase() ===
-          documentsConfig.card_payment_proof.items[0].id
-        ) {
-          setCardPaymentDoc(document);
-          setCardPaymentImage(document.url);
-        }
+    if (cardPaymentDocuments?.length > 0) {
+      cardPaymentDocuments.map((document) => {
+        setCardPaymentDoc(document);
+        setCardPaymentImage(document?.url);
+        setAmount(document.amount);
+        setUtrNumber(document.utrNo);
       });
     }
-  }, [user]);
+  }, [cardPaymentDocuments]);
 
   useEffect(() => {
     getDocNum();
@@ -590,6 +635,7 @@ const CardPayment = ({ cardId }) => {
                 }}
               />
             </Button>
+
             <Box component="form">
               <LoadingButton
                 loading={isLoading}
@@ -604,6 +650,42 @@ const CardPayment = ({ cardId }) => {
               </LoadingButton>
             </Box>
             <Toaster position="bottom-right" reverseOrder={false} />
+          </Box>
+          <Box>
+            <Grid
+              sx={{ display: 'flex', paddingTop: 3 }}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+            >
+              <Box>
+                <TextField
+                  sx={{ width: 150 }}
+                  id="outlined"
+                  label="UTR No.*"
+                  value={utrNumber}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    setUtrNumber(e.target.value);
+                  }}
+                />
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: 150, marginLeft: 3 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={amount}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
+                />
+              </Box>
+            </Grid>
           </Box>
 
           <Grid item xs={4} />
@@ -623,20 +705,11 @@ const CardPayment = ({ cardId }) => {
                   />
                 ))}
               </>
-
-              //   <LoadingButton
-              //     variant="contained"
-              //     onClick={() => {
-              //       setAdditionalDocuments(true);
-              //     }}
-              //   >
-              //     Additional Documents
-              //   </LoadingButton>
             ))}
         </>
       ) : (
         <>
-          {/* {rows.map((row, index) => (
+          {rows.map((row, index) => (
             <DocumentRow
               hideAdditionalDocuments={hideAdditionalDocuments}
               data={row}
@@ -644,8 +717,9 @@ const CardPayment = ({ cardId }) => {
               key={index}
               user={user}
               documents={getDocumentsByConfig(row.config.items)}
+              cardId={undefined}
             />
-          ))} */}
+          ))}
         </>
       )}
     </>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAppSelector } from '@/hooks';
 import {
   Button,
   Paper,
@@ -11,8 +10,6 @@ import {
   Typography,
   TableHead
 } from '@mui/material';
-import variables from '@/config/variables';
-import { useSelector } from 'react-redux';
 
 const rows = [
   {

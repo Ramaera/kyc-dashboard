@@ -8,15 +8,26 @@ import 'react-photo-view/dist/react-photo-view.css';
 // import userData from '../data.json';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
-import { Box, Card, Container, Grid, Tab, Tabs, styled } from '@mui/material';
+import {
+  Box,
+  Card,
+  Container,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+  styled,
+  useTheme
+} from '@mui/material';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import CardUI from './components/cardUI/cardUI';
-// import DocumentTab from './Tabs/Documents';
-// import InfoTab from './Tabs/Info';
-// import NomineeTab from './Tabs/Nominee';
-// import PaymentTab from './Tabs/Payment';
-// import Projects from './Tabs/Projects';
+import { useQuery } from '@apollo/client';
+import { FIND_CARD_OF_A_USER } from '@/apollo/queries/auth';
+import CardRamaera from './components/CardRamaera';
+import CardBenefits from './components/CardPayment/components/cardBenefits';
+import PaymentDetails from './components/CardPayment/components/paymentDetails';
+import UploadCardPayment from './components/CardPayment/components/uploadCardPayment';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -100,43 +111,40 @@ const TabsContainerWrapper = styled(Box)(
   `
 );
 
-function DashboardTasks() {
+function DashboardTasks(props: any) {
   const router = useRouter();
-  const dispatch = useDispatch();
-  // console.log(router?.query?.payment);
-  //const usersList = userData;
-  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-  //spread ... userList and add the updated user to itthen change it
   const { index } = router.query;
-  const foundUser = usersList.find((user) => user.id === index);
-  console.log(foundUser, index);
-  useEffect(() => {
-    if (foundUser) {
-      dispatch(setFoundUser(foundUser));
-    }
-  }, []);
 
-  // console.log('foundUser [index]', foundUser);
+  const selectedTab = index.toString().split('&')[1];
+  const cardIndex = index.toString().split('&')[0];
+  const [currentTab, setCurrentTab] = useState<string>(selectedTab);
+  const [currentSubTab, setCurrentSubTab] = useState('card_0');
+  const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
+  const foundUser = usersList.find((user) => user.id === cardIndex);
+  const theme = useTheme();
 
-  const [currentTab, setCurrentTab] = useState<string>('cardui');
+  const dispatch = useDispatch();
 
   const tabs = [
-    { value: 'cardui', label: 'Cards' }
-    //{ value: 'payment', label: 'Payment' },
-    // { value: 'projects', label: 'Projects' },
-    // { value: 'documents', label: 'Documents' },
-    // { value: 'nominee', label: 'Nominee' },
-    // { value: 'demat', label: 'Demat Account Details' }
+    { value: 'cardui', label: 'Cards' },
+    { value: 'viewcard', label: 'View Card' }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
 
+  const handleSubTabsChange = (event, newValue) => {
+    setCurrentSubTab(newValue);
+  };
+  const CardsOfAUser = useQuery(FIND_CARD_OF_A_USER, {
+    variables: { userId: cardIndex }
+  });
   useEffect(() => {
-    router.query.payment && setCurrentTab('projects');
+    if (foundUser) {
+      dispatch(setFoundUser(foundUser));
+    }
   }, []);
-
   return (
     <ProtectedSSRoute>
       <Head>
@@ -160,6 +168,7 @@ function DashboardTasks() {
             ))}
           </Tabs>
         </TabsContainerWrapper>
+
         <Card variant="outlined">
           <Grid
             container
@@ -171,55 +180,95 @@ function DashboardTasks() {
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
                 <Box>
-                  <CardUI cardId={index} />
+                  <CardUI currentTab={currentTab} cardId={cardIndex} />
                 </Box>
               </Grid>
             )}
-
-            {/* {currentTab === 'payment' && (
+            {currentTab === 'viewcard' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                  <PaymentTab />
+                  <Tabs
+                    value={currentSubTab}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    textColor="primary"
+                    indicatorColor="primary"
+                    onChange={handleSubTabsChange}
+                  >
+                    {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
+                      <Tab
+                        key={`card_${index}`}
+                        label={`card-${index + 1}`}
+                        value={`card_${index}`}
+                      />
+                    ))}
+                  </Tabs>
+                  {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
+                    <div key={`card_content_${index}`}>
+                      {currentSubTab === `card_${index}` && (
+                        <Box
+                          sx={{
+                            padding: 5
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexWrap: 'wrap',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <CardRamaera
+                              key={`card_ramaera_${index}`}
+                              id={card?.id}
+                              type={card?.cardType}
+                              cardNumber={card?.cardNumber}
+                              expiry={card?.cardValidity}
+                            />
+                            <CardBenefits
+                              key={`card_benefits_${index}`}
+                              id={card?.id}
+                              type={card?.cardType}
+                              amountYouGet={card?.cardValue}
+                              validUpto={card?.cardValidity}
+                              redeemAmount={card?.maxDiscount}
+                            />
+                          </Box>
+                          <Box
+                            marginTop={1}
+                            sx={{
+                              display: 'flex',
+                              [theme.breakpoints.down('sm')]: {
+                                flexDirection: 'column'
+                              }
+                            }}
+                          >
+                            <Box sx={{}}>
+                              <PaymentDetails docStatus={undefined} />
+                            </Box>
+                            <Box
+                              sx={{
+                                marginLeft: 10,
+                                [theme.breakpoints.down('sm')]: {
+                                  marginLeft: 0
+                                }
+                              }}
+                            >
+                              <UploadCardPayment
+                                key={`card_payment_${index}`}
+                                cardId={card?.id}
+                                cardNumber={card?.cardNumber}
+                                cardPaymentDocuments={card.Documents}
+                              />
+                            </Box>
+                          </Box>
+                        </Box>
+                      )}
+                    </div>
+                  ))}
                 </Box>
               </Grid>
             )}
-            {currentTab === 'upgradeKyc' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <ToAdvance />
-                </Box>
-              </Grid>
-            )}
-            {currentTab === 'projects' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <Projects to={router.query.payment} />
-                </Box>
-              </Grid>
-            )}
-
-            {currentTab === 'documents' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <DocumentTab />
-                </Box>
-              </Grid>
-            )}
-
-            {currentTab === 'nominee' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <NomineeTab />
-                </Box>
-              </Grid>
-            )}
-            {currentTab === 'demat' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <DematTab />
-                </Box>
-              </Grid>
-            )} */}
           </Grid>
         </Card>
       </Container>
