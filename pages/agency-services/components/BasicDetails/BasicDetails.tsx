@@ -92,7 +92,6 @@ const PersonalInfoForm = () => {
         });
 
         toast.success('User Created Sucessfully');
-        console.log('resp', resp);
       } catch (err) {
         toast.error(err.message);
       }

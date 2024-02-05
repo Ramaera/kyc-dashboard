@@ -432,8 +432,10 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
   const [utrNumber, setUtrNumber] = useState<String>();
   const [amount, setAmount] = useState<Number | any>();
-
   const { index } = router.query;
+
+  const cardUserId = index.toString().split('&')[0];
+
   console.log('cardPaymentDocuments', cardPaymentDocuments);
   // const validateSubmit = (imgUrl) => {
   //   if (!imgUrl) {
@@ -485,6 +487,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
   };
 
   const handleSubmit = async () => {
+    console.log('clicked');
     try {
       let imgUrl = '';
       if (isImageChanged) {
@@ -523,7 +526,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
             variables: {
               title: documentsConfig.card_payment_proof.items[0].id,
               url: imgUrl,
-              cardUserId: index,
+              cardUserId: cardUserId,
               myCardId: cardId,
               amount: parseInt(amount),
               utrNo: utrNumber
@@ -540,7 +543,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
     setLoading(false);
   };
   useEffect(() => {
-    if (cardPaymentDocuments.length > 0) {
+    if (cardPaymentDocuments?.length > 0) {
       cardPaymentDocuments.map((document) => {
         setCardPaymentDoc(document);
         setCardPaymentImage(document?.url);

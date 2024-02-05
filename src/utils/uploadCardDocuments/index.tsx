@@ -7,10 +7,10 @@ const handleCardPaymentProofUpload = async (img) => {
   form.append('document', img);
 
   try {
-    console.log('swd', process.env.NEXT_PUBLIC_CARD_REST_API);
+    console.log('swd', process.env.NEXT_PUBLIC_API_URL);
 
     const resp = await axios.post(
-      `${process.env.NEXT_PUBLIC_CARD_REST_API}/documents/upload`,
+      `${process.env.NEXT_PUBLIC_API_URL}/documents/upload`,
       form,
       {
         headers: {

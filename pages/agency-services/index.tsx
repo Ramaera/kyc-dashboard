@@ -16,9 +16,12 @@ import { useState } from 'react';
 // import StepForm from './components/Stepper/StepForm';
 import BasicDetails from './components/BasicDetails/BasicDetails';
 import UserTable from './components/UserTable';
+import { useRouter } from 'next/router';
 function index() {
-  const [showStepper, setShowStepper] = useState(false);
-  const [showTable, setshowTable] = useState(false);
+  const [currentPage, setCurrentPage] = useState(true);
+  const [showStepper, setShowStepper] = useState(currentPage);
+  const [showTable, setshowTable] = useState(!currentPage);
+  // const router = useRouter();
 
   const handleShowTableClick = () => {
     setshowTable(true);

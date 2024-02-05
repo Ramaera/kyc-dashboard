@@ -112,15 +112,18 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks(props: any) {
-  const [currentTab, setCurrentTab] = useState<string>();
+  const router = useRouter();
+  const { index } = router.query;
+
+  const selectedTab = index.toString().split('&')[1];
+  const cardIndex = index.toString().split('&')[0];
+  const [currentTab, setCurrentTab] = useState<string>(selectedTab);
   const [currentSubTab, setCurrentSubTab] = useState('card_0');
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
-  const foundUser = usersList.find((user) => user.id === index);
+  const foundUser = usersList.find((user) => user.id === cardIndex);
   const theme = useTheme();
-  const router = useRouter();
-  const dispatch = useDispatch();
 
-  const { index } = router.query;
+  const dispatch = useDispatch();
 
   const tabs = [
     { value: 'cardui', label: 'Cards' },
@@ -135,7 +138,7 @@ function DashboardTasks(props: any) {
     setCurrentSubTab(newValue);
   };
   const CardsOfAUser = useQuery(FIND_CARD_OF_A_USER, {
-    variables: { userId: index }
+    variables: { userId: cardIndex }
   });
   useEffect(() => {
     if (foundUser) {
@@ -177,99 +180,95 @@ function DashboardTasks(props: any) {
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
                 <Box>
-                  <CardUI currentTab={currentTab} cardId={index} />
+                  <CardUI currentTab={currentTab} cardId={cardIndex} />
                 </Box>
               </Grid>
             )}
-            {currentTab === 'viewcard' &&
-              (console.log('here view card', CardsOfAUser),
-              (
-                <Grid item xs={12}>
-                  <Box p={4}>
-                    <Tabs
-                      value={currentSubTab}
-                      variant="scrollable"
-                      scrollButtons="auto"
-                      textColor="primary"
-                      indicatorColor="primary"
-                      onChange={handleSubTabsChange}
-                    >
-                      {CardsOfAUser?.data?.findCardOfaUser?.map(
-                        (card, index) => (
-                          <Tab
-                            key={`card_${index}`}
-                            label={`card-${index + 1}`}
-                            value={`card_${index}`}
-                          />
-                        )
-                      )}
-                    </Tabs>
+            {currentTab === 'viewcard' && (
+              <Grid item xs={12}>
+                <Box p={4}>
+                  <Tabs
+                    value={currentSubTab}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    textColor="primary"
+                    indicatorColor="primary"
+                    onChange={handleSubTabsChange}
+                  >
                     {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
-                      <div key={`card_content_${index}`}>
-                        {currentSubTab === `card_${index}` && (
+                      <Tab
+                        key={`card_${index}`}
+                        label={`card-${index + 1}`}
+                        value={`card_${index}`}
+                      />
+                    ))}
+                  </Tabs>
+                  {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
+                    <div key={`card_content_${index}`}>
+                      {currentSubTab === `card_${index}` && (
+                        <Box
+                          sx={{
+                            padding: 5
+                          }}
+                        >
                           <Box
                             sx={{
-                              padding: 5
+                              display: 'flex',
+                              flexWrap: 'wrap',
+                              alignItems: 'center'
                             }}
                           >
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                alignItems: 'center'
-                              }}
-                            >
-                              <CardRamaera
-                                key={`card_ramaera_${index}`}
-                                id={card?.id}
-                                type={card?.cardType}
-                                cardNumber={card?.cardNumber}
-                                expiry={card?.cardValidity}
-                              />
-                              <CardBenefits
-                                key={`card_benefits_${index}`}
-                                id={card?.id}
-                                type={card?.cardType}
-                                amountYouGet={card?.cardValue}
-                                validUpto={card?.cardValidity}
-                                redeemAmount={card?.maxDiscount}
-                              />
+                            <CardRamaera
+                              key={`card_ramaera_${index}`}
+                              id={card?.id}
+                              type={card?.cardType}
+                              cardNumber={card?.cardNumber}
+                              expiry={card?.cardValidity}
+                            />
+                            <CardBenefits
+                              key={`card_benefits_${index}`}
+                              id={card?.id}
+                              type={card?.cardType}
+                              amountYouGet={card?.cardValue}
+                              validUpto={card?.cardValidity}
+                              redeemAmount={card?.maxDiscount}
+                            />
+                          </Box>
+                          <Box
+                            marginTop={1}
+                            sx={{
+                              display: 'flex',
+                              [theme.breakpoints.down('sm')]: {
+                                flexDirection: 'column'
+                              }
+                            }}
+                          >
+                            <Box sx={{}}>
+                              <PaymentDetails docStatus={undefined} />
                             </Box>
                             <Box
-                              marginTop={1}
                               sx={{
-                                display: 'flex',
+                                marginLeft: 10,
                                 [theme.breakpoints.down('sm')]: {
-                                  flexDirection: 'column'
+                                  marginLeft: 0
                                 }
                               }}
                             >
-                              <Box sx={{}}>
-                                <PaymentDetails docStatus={undefined} />
-                              </Box>
-                              <Box
-                                sx={{
-                                  marginLeft: 10,
-                                  [theme.breakpoints.down('sm')]: {
-                                    marginLeft: 0
-                                  }
-                                }}
-                              >
-                                <UploadCardPayment
-                                  key={`card_payment_${index}`}
-                                  cardId={card?.id}
-                                  cardNumber={card?.cardNumber}
-                                  cardPaymentDocuments={card.Documents}
-                                />
-                              </Box>
+                              <UploadCardPayment
+                                key={`card_payment_${index}`}
+                                cardId={card?.id}
+                                cardNumber={card?.cardNumber}
+                                cardPaymentDocuments={card.Documents}
+                              />
                             </Box>
                           </Box>
-                        )}
-                      </div>
-                    ))}
-                  </Box>
-                </Grid>
-              ))}
+                        </Box>
+                      )}
+                    </div>
+                  ))}
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </Card>
       </Container>

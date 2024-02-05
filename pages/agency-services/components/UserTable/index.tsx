@@ -143,12 +143,16 @@ const UserTable = () => {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Link href={'agency-services/' + `${item.id}`}>
+                        <Link
+                          href={'agency-services/' + `${item.id}` + `&cardui`}
+                        >
                           <Button variant="contained">Apply #myCard</Button>
                         </Link>
                       </TableCell>
                       <TableCell>
-                        <Link href={'agency-services/' + `${item.id}`}>
+                        <Link
+                          href={'agency-services/' + `${item.id}` + `&viewcard`}
+                        >
                           <Button variant="contained">View Card</Button>
                         </Link>
                       </TableCell>
