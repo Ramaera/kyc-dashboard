@@ -28,6 +28,7 @@ import CardRamaera from './components/CardRamaera';
 import CardBenefits from './components/CardPayment/components/cardBenefits';
 import PaymentDetails from './components/CardPayment/components/paymentDetails';
 import UploadCardPayment from './components/CardPayment/components/uploadCardPayment';
+import toast, { Toaster } from 'react-hot-toast';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -115,14 +116,21 @@ function DashboardTasks(props: any) {
   const router = useRouter();
   const { index } = router.query;
 
-  const selectedTab = index.toString().split('&')[1];
+  const changeTab = (tabName) => {
+    console.log('HHHHEHHH', tabName);
+    setCurrentTab(tabName);
+  };
+
+  const [selectedTab, setSelectedTab] = useState(
+    index.toString().split('&')[1]
+  );
   const cardIndex = index.toString().split('&')[0];
   const [currentTab, setCurrentTab] = useState<string>(selectedTab);
   const [currentSubTab, setCurrentSubTab] = useState('card_0');
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const foundUser = usersList.find((user) => user.id === cardIndex);
   const theme = useTheme();
-
+  console.log('currentTab', currentTab);
   const dispatch = useDispatch();
 
   const tabs = [
@@ -180,7 +188,11 @@ function DashboardTasks(props: any) {
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
                 <Box>
-                  <CardUI currentTab={currentTab} cardId={cardIndex} />
+                  <CardUI
+                    changeTab={changeTab}
+                    currentTab={currentTab}
+                    cardId={cardIndex}
+                  />
                 </Box>
               </Grid>
             )}
@@ -271,6 +283,15 @@ function DashboardTasks(props: any) {
             )}
           </Grid>
         </Card>
+        <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              duration: 5000
+            }
+          }}
+        />
       </Container>
       <Footer />
     </ProtectedSSRoute>
