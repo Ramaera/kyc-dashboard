@@ -167,14 +167,14 @@ const Cards = (props) => {
         </Card>
       )}
 
-      {showCardPayment && generatedCardData && (
+      {/* {showCardPayment && generatedCardData && (
         <CardPayment
           id={cardId}
           type={selectedCardType}
           cardHolder={userData?.name}
           generatedCardData={generatedCardData}
         />
-      )}
+      )} */}
     </>
   );
 };

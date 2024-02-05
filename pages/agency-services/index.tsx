@@ -12,15 +12,36 @@ import {
 } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import StepForm from './components/Stepper/StepForm';
 import BasicDetails from './components/BasicDetails/BasicDetails';
 import UserTable from './components/UserTable';
 import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
+import { CARD_USERS_DETAIL } from '@/apollo/queries/auth';
+import { useSelector } from 'react-redux';
 function index() {
   const [currentPage, setCurrentPage] = useState(true);
   const [showStepper, setShowStepper] = useState(currentPage);
   const [showTable, setshowTable] = useState(!currentPage);
+  const [users, setUsers] = useState([]);
+  const agencyCode = useSelector(
+    (state: any) => state.user?.agencyCode?.agencyCode
+  );
+
+  const addUserHandler = (newUser) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
+  const cardUserData = useQuery(CARD_USERS_DETAIL, {
+    variables: { agencyCode: agencyCode }
+  });
+
+  useEffect(() => {
+    if (cardUserData) {
+      setUsers(cardUserData.data?.findCardHoldersInAgency);
+    }
+  }, [cardUserData]);
   // const router = useRouter();
 
   const handleShowTableClick = () => {
@@ -85,7 +106,7 @@ function index() {
               }
             }}
           >
-            <UserTable />
+            <UserTable user={users} />
           </Box>
         )}
 
@@ -100,7 +121,7 @@ function index() {
               }
             }}
           >
-            <BasicDetails />
+            <BasicDetails agencyCode={agencyCode} onAddUser={addUserHandler} />
           </Box>
         )}
       </Box>
