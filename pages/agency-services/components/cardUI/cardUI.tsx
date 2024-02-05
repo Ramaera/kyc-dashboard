@@ -59,6 +59,36 @@ const Cards = (props) => {
     }
     setLoading(false);
   };
+  const CardWithValue = [
+    {
+      type: 'BRONZE',
+      rechargeAmount: 1000,
+      value: 1100,
+      maxDiscount: 100,
+      validity: 11
+    },
+    {
+      type: 'SILVER',
+      rechargeAmount: 2500,
+      value: 3250,
+      maxDiscount: 250,
+      validity: 13
+    },
+    {
+      type: 'GOLD',
+      rechargeAmount: 5000,
+      value: 6750,
+      maxDiscount: 450,
+      validity: 15
+    },
+    {
+      type: 'DIAMOND',
+      rechargeAmount: 10000,
+      value: 16000,
+      maxDiscount: 1000,
+      validity: 16
+    }
+  ];
 
   const theme = useTheme();
 
@@ -93,17 +123,27 @@ const Cards = (props) => {
                 paddingX: '15px'
               }}
             >
-              {Object.keys(CARD_TYPE).map((cardType) => (
-                <CardRamaera
-                  key={cardType}
-                  type={cardType}
-                  cardNumber={'XXXXXXXXXXXXXX34'}
-                  expiry={'Validity'}
-                  cardHolder={userData?.name}
-                  isSelected={selectedCardType === cardType}
-                  onClick={() => handleCardClick(cardType)}
-                />
-              ))}
+              {Object.keys(CARD_TYPE).map((cardType) => {
+                const cardData = CardWithValue.find(
+                  (card) => card.type === cardType
+                );
+
+                return (
+                  <CardRamaera
+                    key={cardType}
+                    type={cardType}
+                    cardNumber={'XXXXXXXXXXXXXX34'}
+                    expiry={'Validity'}
+                    cardHolder={userData?.name}
+                    isSelected={selectedCardType === cardType}
+                    onClick={() => handleCardClick(cardType)}
+                    rechargeAmount={cardData.rechargeAmount}
+                    value={cardData.value}
+                    maxDiscount={cardData.maxDiscount}
+                    validity={cardData.validity}
+                  />
+                );
+              })}
             </Box>
           </Box>
           <Box

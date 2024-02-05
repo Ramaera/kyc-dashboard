@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, useTheme, Box } from '@mui/material';
 const CardRamaera = (props) => {
-  const { cardNumber, cardHolder, expiry, type, isSelected, onClick } = props;
+  const {
+    cardNumber,
+    cardHolder,
+    expiry,
+    type,
+    isSelected,
+    onClick,
+    rechargeAmount,
+    value,
+    validity
+  } = props;
   const theme = useTheme();
 
   return (
@@ -92,6 +102,27 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
+              {rechargeAmount}
+            </div>
+            <div
+              style={{
+                fontSize: '16px'
+              }}
+            >
+              {value}
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
+            <div
+              style={{
+                fontSize: '16px'
+              }}
+            >
               {cardHolder}
             </div>
             <div
@@ -99,7 +130,7 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
-              {expiry} Months
+              {validity} Months
             </div>
           </div>
         </div>

@@ -37,6 +37,8 @@ const UserTable = () => {
       setCardUsers(cardUserData.data?.findCardHoldersInAgency);
     }
   }, [cardUserData]);
+
+  useEffect(() => {}, []);
   return (
     <>
       <Card>
