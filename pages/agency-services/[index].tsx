@@ -145,9 +145,15 @@ function DashboardTasks(props: any) {
   const handleSubTabsChange = (event, newValue) => {
     setCurrentSubTab(newValue);
   };
-  const CardsOfAUser = useQuery(FIND_CARD_OF_A_USER, {
+  const { data, refetch } = useQuery(FIND_CARD_OF_A_USER, {
     variables: { userId: cardIndex }
   });
+  const CardsOfAUser = data;
+
+  useEffect(() => {
+    refetch();
+  }, [currentTab]);
+
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));
@@ -207,7 +213,7 @@ function DashboardTasks(props: any) {
                     indicatorColor="primary"
                     onChange={handleSubTabsChange}
                   >
-                    {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
+                    {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
                       <Tab
                         key={`card_${index}`}
                         label={`card-${index + 1}`}
@@ -215,7 +221,7 @@ function DashboardTasks(props: any) {
                       />
                     ))}
                   </Tabs>
-                  {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
+                  {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
                     <div key={`card_content_${index}`}>
                       {currentSubTab === `card_${index}` && (
                         <Box
