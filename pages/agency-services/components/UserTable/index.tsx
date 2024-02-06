@@ -15,23 +15,20 @@ import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { CARD_USERS_DETAIL } from '@/apollo/queries/auth';
+import { CARD_USERS_DETAIL, FIND_CARD_OF_A_USER } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
 
 const UserTable = ({ user }) => {
   const theme = useTheme();
   const [selectedId, setSelectedId] = useState(null);
 
-  // const handleViewCardClick = (id) => {
-  //   setSelectedId(id);
-  // };
   const [cardUsers, setCardUsers] = useState();
 
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
   const cardUserData = useQuery(CARD_USERS_DETAIL, {
-    variables: { agencyCode: 'RLI1234' }
+    variables: { agencyCode: agencyCode }
   });
 
   useEffect(() => {
@@ -39,6 +36,17 @@ const UserTable = ({ user }) => {
       setCardUsers(cardUserData.data?.findCardHoldersInAgency);
     }
   }, [cardUserData]);
+
+  const viewCardButton = (id) => {
+    const { data } = useQuery(FIND_CARD_OF_A_USER, {
+      variables: { userId: id }
+    });
+    const cardlength = data?.findCardOfaUser;
+
+    if (cardlength?.length > 0) {
+      return true;
+    }
+  };
 
   useEffect(() => {}, []);
   return (
@@ -182,6 +190,9 @@ const UserTable = ({ user }) => {
                           }
                         >
                           <Button
+                            disabled={
+                              viewCardButton(item.id) === true ? false : true
+                            }
                             variant="contained"
                             sx={{
                               fontSize: 10
