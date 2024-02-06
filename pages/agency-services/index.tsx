@@ -24,6 +24,7 @@ function index() {
   const [currentPage, setCurrentPage] = useState(true);
   const [showStepper, setShowStepper] = useState(currentPage);
   const [showTable, setshowTable] = useState(!currentPage);
+  console.log('showTable', showTable);
   const [users, setUsers] = useState([]);
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
@@ -77,17 +78,18 @@ function index() {
             }
           }}
         >
-          <Card sx={{ height: '100%', padding: 4 }}>
+          <Card sx={{ height: '100%', padding: 2 }}>
             <Button
-              variant="contained"
+              variant={!showTable ? 'contained' : 'outlined'}
               component="label"
               onClick={handleApplyCardClick}
+              sx={{ width: '100%' }}
             >
-              Create #myCard User Profile
+              Create #myCard User
             </Button>
             <Button
-              sx={{ marginTop: 2 }}
-              variant="contained"
+              sx={{ marginTop: 2, width: '100%' }}
+              variant={showTable ? 'contained' : 'outlined'}
               component="label"
               onClick={handleShowTableClick}
             >

@@ -51,7 +51,7 @@ const Documents = (props: any) => {
           alignItems: 'center'
         }}
       >
-        <Box sx={{}}>
+        {/* <Box sx={{}}>
           <CardRamaera
             id={id}
             type={type}
@@ -59,8 +59,8 @@ const Documents = (props: any) => {
             cardHolder={cardHolder}
             expiry={generatedCardData?.cardValidity}
           />
-        </Box>
-        <Box>
+        </Box> */}
+        {/* <Box>
           <CardBenefits
             id={id}
             type={type}
@@ -68,7 +68,7 @@ const Documents = (props: any) => {
             validUpto={generatedCardData?.cardValidity}
             redeemAmount={generatedCardData?.maxDiscount}
           />
-        </Box>
+        </Box> */}
       </Box>
       <Typography
         fontSize={30}
