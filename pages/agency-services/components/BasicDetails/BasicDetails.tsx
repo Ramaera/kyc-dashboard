@@ -114,7 +114,7 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
           fontWeight={600}
           sx={{ display: 'flex', justifyContent: 'center' }}
         >
-          Please Fill User Details
+          Create A User For #MyCard
         </Typography>
         <Box
           sx={{

@@ -24,7 +24,7 @@ function index() {
   const [currentPage, setCurrentPage] = useState(true);
   const [showStepper, setShowStepper] = useState(currentPage);
   const [showTable, setshowTable] = useState(!currentPage);
-  console.log('showTable', showTable);
+  // console.log('showTable', showTable);
   const [users, setUsers] = useState([]);
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
@@ -64,7 +64,7 @@ function index() {
 
       <Box padding={2} textAlign={'center'}>
         <Typography fontSize={30} fontWeight={600}>
-          #myCARD
+          #MyCard
         </Typography>
       </Box>
       <Box

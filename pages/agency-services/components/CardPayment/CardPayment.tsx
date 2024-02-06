@@ -7,7 +7,7 @@ import UploadCardPayment from './components/uploadCardPayment';
 
 const Documents = (props: any) => {
   const { id, type, cardNumber, cardHolder, generatedCardData } = props;
-  console.log('id', id, type);
+  // console.log('id', id, type);
   const theme = useTheme();
 
   return (

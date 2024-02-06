@@ -117,7 +117,7 @@ function DashboardTasks(props: any) {
   const { index } = router.query;
 
   const changeTab = (tabName) => {
-    console.log('HHHHEHHH', tabName);
+    // console.log('HHHHEHHH', tabName);
     setCurrentTab(tabName);
   };
 
@@ -130,7 +130,7 @@ function DashboardTasks(props: any) {
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const foundUser = usersList.find((user) => user.id === cardIndex);
   const theme = useTheme();
-  console.log('currentTab', currentTab);
+  // console.log('currentTab', currentTab);
   const dispatch = useDispatch();
 
   const tabs = [
@@ -203,89 +203,99 @@ function DashboardTasks(props: any) {
               </Grid>
             )}
             {currentTab === 'viewcard' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <Tabs
-                    value={currentSubTab}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    textColor="primary"
-                    indicatorColor="primary"
-                    onChange={handleSubTabsChange}
-                  >
-                    {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
-                      <Tab
-                        key={`card_${index}`}
-                        label={`card-${index + 1}`}
-                        value={`card_${index}`}
-                      />
-                    ))}
-                  </Tabs>
-                  {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
-                    <div key={`card_content_${index}`}>
-                      {currentSubTab === `card_${index}` && (
-                        <Box
-                          sx={{
-                            padding: 5
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexWrap: 'wrap',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <CardRamaera
-                              key={`card_ramaera_${index}`}
-                              id={card?.id}
-                              type={card?.cardType}
-                              cardNumber={card?.cardNumber}
-                              expiry={card?.cardValidity}
-                            />
-                            <CardBenefits
-                              key={`card_benefits_${index}`}
-                              id={card?.id}
-                              type={card?.cardType}
-                              amountYouGet={card?.cardValue}
-                              validUpto={card?.cardValidity}
-                              redeemAmount={card?.maxDiscount}
-                            />
-                          </Box>
-                          <Box
-                            marginTop={1}
-                            sx={{
-                              display: 'flex',
-                              [theme.breakpoints.down('sm')]: {
-                                flexDirection: 'column'
-                              }
-                            }}
-                          >
-                            <Box sx={{}}>
-                              <PaymentDetails docStatus={undefined} />
-                            </Box>
+              <>
+                {CardsOfAUser?.findCardOfaUser?.length > 0 ? (
+                  <Grid item xs={12}>
+                    <Box p={4}>
+                      <Tabs
+                        value={currentSubTab}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        textColor="primary"
+                        indicatorColor="primary"
+                        onChange={handleSubTabsChange}
+                      >
+                        {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
+                          <Tab
+                            key={`card_${index}`}
+                            label={`card-${index + 1}`}
+                            value={`card_${index}`}
+                          />
+                        ))}
+                      </Tabs>
+                      {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
+                        <div key={`card_content_${index}`}>
+                          {currentSubTab === `card_${index}` && (
                             <Box
-                              sx={{
-                                marginLeft: 10,
-                                [theme.breakpoints.down('sm')]: {
-                                  marginLeft: 0
+                              sx={
+                                {
+                                  // padding: 5
                                 }
-                              }}
+                              }
                             >
-                              <UploadCardPayment
-                                key={`card_payment_${index}`}
-                                cardId={card?.id}
-                                cardNumber={card?.cardNumber}
-                                cardPaymentDocuments={card.Documents}
-                              />
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexWrap: 'wrap',
+                                  alignItems: 'center'
+                                }}
+                              >
+                                <CardRamaera
+                                  key={`card_ramaera_${index}`}
+                                  id={card?.id}
+                                  type={card?.cardType}
+                                  cardNumber={card?.cardNumber}
+                                  expiry={card?.cardValidity}
+                                />
+                                <CardBenefits
+                                  key={`card_benefits_${index}`}
+                                  id={card?.id}
+                                  type={card?.cardType}
+                                  amountYouGet={card?.cardValue}
+                                  validUpto={card?.cardValidity}
+                                  redeemAmount={card?.maxDiscount}
+                                />
+                              </Box>
+                              <Box
+                                marginTop={1}
+                                sx={{
+                                  display: 'flex',
+                                  [theme.breakpoints.down('sm')]: {
+                                    flexDirection: 'column'
+                                  }
+                                }}
+                              >
+                                <Box sx={{}}>
+                                  <PaymentDetails docStatus={undefined} />
+                                </Box>
+                                <Box
+                                  sx={{
+                                    marginLeft: 10,
+                                    [theme.breakpoints.down('sm')]: {
+                                      marginLeft: 0
+                                    }
+                                  }}
+                                >
+                                  <UploadCardPayment
+                                    key={`card_payment_${index}`}
+                                    cardId={card?.id}
+                                    cardNumber={card?.cardNumber}
+                                    cardPaymentDocuments={card.Documents}
+                                  />
+                                </Box>
+                              </Box>
                             </Box>
-                          </Box>
-                        </Box>
-                      )}
-                    </div>
-                  ))}
-                </Box>
-              </Grid>
+                          )}
+                        </div>
+                      ))}
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Box>
+                    <Typography>No card </Typography>
+                  </Box>
+                )}
+              </>
             )}
           </Grid>
         </Card>

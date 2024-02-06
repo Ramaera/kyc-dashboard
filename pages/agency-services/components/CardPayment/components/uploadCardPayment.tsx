@@ -35,11 +35,10 @@ export const rows = [
 ];
 
 const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
-  console.log('cardId', cardId);
-
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
   const [cardPaymentImage, setCardPaymentImage] = useState<any | null>(null);
+
   const [rowNo, setRowNo] = useState(0);
   const [isPaymentImage, setPaymentImage] = useState(false);
   const [cardPaymentDoc, setCardPaymentDoc] = useState<DocumentType>();
@@ -54,8 +53,6 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
       cardNumber
     }
   });
-
-  console.log('===', cardPaymentDocuments);
 
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
 
@@ -114,16 +111,15 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
       }
       if (cardPaymentDocuments?.length > 0) {
         cardPaymentDocuments?.find((document: DocumentType) => {
-          console.log(
-            'here Comparisaon',
-            document.title.toLowerCase(),
-            documentsConfig.card_payment_proof.items[0].id
-          );
+          // console.log(
+          //   'here Comparisaon',
+          //   document.title.toLowerCase(),
+          //   documentsConfig.card_payment_proof.items[0].id
+          // );
           if (
             document.title.toLowerCase() ===
             documentsConfig.card_payment_proof.items[0].id
           ) {
-            console.log('document', document);
             setCardPaymentDoc(document);
             setCardPaymentImage(document.url);
           }
@@ -131,14 +127,14 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
       }
 
       if (cardPaymentDoc) {
-        console.log(
-          'here update',
-          amount,
-          utrNumber,
-          cardId,
-          cardUserId,
-          cardPaymentDoc.id
-        );
+        // console.log(
+        //   'here update',
+        //   amount,
+        //   utrNumber,
+        //   cardId,
+        //   cardUserId,
+        //   cardPaymentDoc.id
+        // );
 
         await updateDocument({
           variables: {
@@ -179,11 +175,16 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
   };
   useEffect(() => {
     if (cardPaymentDocuments.length > 0) {
-      cardPaymentDocuments.map((document) => {
-        setCardPaymentDoc(document);
-        setCardPaymentImage(document?.url);
-        setAmount(document.amount);
-        setUtrNumber(document.utrNo);
+      cardPaymentDocuments?.map((document) => {
+        if (
+          document.title.toLowerCase() ===
+          documentsConfig.card_payment_proof.items[0].id
+        ) {
+          setCardPaymentDoc(document);
+          setCardPaymentImage(document?.url);
+          setAmount(document?.amount);
+          setUtrNumber(document.utrNo);
+        }
       });
     }
   }, [cardPaymentDocuments]);
@@ -203,7 +204,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
             Kindly Upload Your Payment Proof
           </Typography>
 
-          {cardPaymentImage ? (
+          {cardPaymentImage && (
             <img
               src={
                 typeof cardPaymentImage == 'object'
@@ -213,7 +214,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
               style={{ marginTop: '10px' }}
               height={200}
             />
-          ) : null}
+          )}
           {cardPaymentDoc && cardPaymentDoc.status && (
             <Typography variant="h4" sx={{ mt: 2 }}>
               Status :{' '}
@@ -301,7 +302,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
                   label="UTR No.*"
                   value={utrNumber}
                   variant="outlined"
-                  type="number"
+                  // type="number"
                   onChange={(e) => {
                     setUtrNumber(e.target.value);
                   }}
@@ -345,7 +346,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
         </>
       ) : (
         <>
-          {rows.map((row, index) => (
+          {/* {rows.map((row, index) => (
             <DocumentRow
               hideAdditionalDocuments={hideAdditionalDocuments}
               data={row}
@@ -356,7 +357,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
               documents={getDocumentsByConfig(row.config.items)}
               cardId={cardId}
             />
-          ))}
+          ))} */}
         </>
       )}
     </>
