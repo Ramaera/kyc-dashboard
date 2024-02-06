@@ -4,6 +4,7 @@ const CardRamaera = (props) => {
   const {
     cardNumber,
     cardHolder,
+    maxDiscount,
     expiry,
     type,
     isSelected,
@@ -99,19 +100,26 @@ const CardRamaera = (props) => {
           >
             <div
               style={{
-                fontSize: '16px'
+                fontSize: '13px'
               }}
             >
-              {rechargeAmount}
+              Recharge Amount: ₹{rechargeAmount}
             </div>
             <div
               style={{
-                fontSize: '16px'
+                fontSize: '13px'
               }}
             >
-              {value}
+              Received Amount: ₹{value}
             </div>
           </div>
+          {/* <div
+            style={{
+              fontSize: '13px'
+            }}
+          >
+            Max Discount Per Month: {maxDiscount}
+          </div> */}
           <div
             style={{
               display: 'flex',
@@ -130,7 +138,7 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
-              {validity} Months
+              Validity: {validity} Months
             </div>
           </div>
         </div>
