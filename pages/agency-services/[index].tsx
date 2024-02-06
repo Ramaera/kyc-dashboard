@@ -10,6 +10,7 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
 import {
   Box,
+  Button,
   Card,
   Container,
   Grid,
@@ -149,6 +150,7 @@ function DashboardTasks(props: any) {
     variables: { userId: cardIndex }
   });
   const CardsOfAUser = data;
+  console.log('CardsOfAUser', CardsOfAUser?.findCardOfaUser);
 
   useEffect(() => {
     refetch();
@@ -236,25 +238,43 @@ function DashboardTasks(props: any) {
                               <Box
                                 sx={{
                                   display: 'flex',
-                                  flexWrap: 'wrap',
-                                  alignItems: 'center'
+                                  justifyContent: 'space-between'
                                 }}
                               >
-                                <CardRamaera
-                                  key={`card_ramaera_${index}`}
-                                  id={card?.id}
-                                  type={card?.cardType}
-                                  cardNumber={card?.cardNumber}
-                                  expiry={card?.cardValidity}
-                                />
-                                <CardBenefits
-                                  key={`card_benefits_${index}`}
-                                  id={card?.id}
-                                  type={card?.cardType}
-                                  amountYouGet={card?.cardValue}
-                                  validUpto={card?.cardValidity}
-                                  redeemAmount={card?.maxDiscount}
-                                />
+                                <Box sx={{ display: 'flex' }}>
+                                  <CardRamaera
+                                    key={`card_ramaera_${index}`}
+                                    id={card?.id}
+                                    type={card?.cardType}
+                                    cardNumber={card?.cardNumber}
+                                    expiry={card?.cardValidity}
+                                  />
+                                  <CardBenefits
+                                    key={`card_benefits_${index}`}
+                                    id={card?.id}
+                                    type={card?.cardType}
+                                    amountYouGet={card?.cardValue}
+                                    validUpto={card?.cardValidity}
+                                    redeemAmount={card?.maxDiscount}
+                                  />
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: 'flex'
+                                  }}
+                                >
+                                  <Typography sx={{ fontSize: 20 }}>
+                                    Card Status:
+                                  </Typography>
+                                  <Typography
+                                    marginLeft={1}
+                                    sx={{ fontSize: 20 }}
+                                  >
+                                    {card?.isActive === true
+                                      ? 'Active'
+                                      : 'Not Active'}
+                                  </Typography>
+                                </Box>
                               </Box>
                               <Box
                                 marginTop={1}
