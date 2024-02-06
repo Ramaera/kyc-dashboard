@@ -88,6 +88,16 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
         onAddUser(resp?.data?.CreateUser);
 
         toast.success('User Created Sucessfully');
+        setFormData({
+          name: '',
+          email: '',
+          mobileNumber: '',
+          pincode: '',
+          address: '',
+          metaData: '',
+          aadhar: '',
+          pancard: ''
+        });
       } catch (err) {
         toast.error(err.message);
       }
