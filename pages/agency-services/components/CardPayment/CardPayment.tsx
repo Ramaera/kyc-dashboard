@@ -7,6 +7,7 @@ import UploadCardPayment from './components/uploadCardPayment';
 
 const Documents = (props: any) => {
   const { id, type, cardNumber, cardHolder, generatedCardData } = props;
+  console.log('id', id, type);
   const theme = useTheme();
 
   return (
@@ -103,7 +104,11 @@ const Documents = (props: any) => {
             }
           }}
         >
-          <UploadCardPayment cardId={id} />
+          <UploadCardPayment
+            cardId={id}
+            cardNumber={undefined}
+            cardPaymentDocuments={undefined}
+          />
         </Box>
       </Box>
     </Box>

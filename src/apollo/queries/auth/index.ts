@@ -625,7 +625,7 @@ mutation CreateCard(
 
 `);
 
-export const CREATE_PAYMENT_DOCUMENT= gql(`
+export const CREATE_PAYMENT_DOCUMENT = gql(`
 
 
 mutation CreatePaymentDocument ($cardUserId:String! $myCardId:Int! $title:String! $url:String! $amount:Int! $utrNo:String!) {
@@ -644,7 +644,28 @@ mutation CreatePaymentDocument ($cardUserId:String! $myCardId:Int! $title:String
 }
 `);
 
+export const UPDATE_PAYMENT_DOCUMENT = gql(`
+mutation UpdatePaymentDocument ($cardUserId:String! $myCardId:Int! $id:String! $title:String! $url:String! $amount:Int! $utrNo:String!){
+  updatePaymentDocument(
+      updatePaymentDocumentInput: {
+          amount: $amount
+          cardUserId: $cardUserId
+          id: $id
+          myCardId: $myCardId
+          title: $title
+          url: $url
+          utrNo: $utrNo
+      }
+  ) {
+      amount
+      status
+      title
+      url
+      utrNo
+  }
+}
 
+`);
 
 export const FIND_CARD_OF_A_USER = gql(`
 
@@ -663,14 +684,12 @@ query FindCardOfaUser ($userId:String!) {
         status
         title
         url
+        id
         utrNo
       }
   }
 }
-`)
-
-
-
+`);
 
 export const GET_CARD_USER = gql(`
 
@@ -686,17 +705,4 @@ query CardDetails($cardNumber:String!) {
   }
 }
 
-`)
-
-
-
-
-
-
-
-
-
-
-          
-                   
-
+`);

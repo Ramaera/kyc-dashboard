@@ -397,7 +397,7 @@ function SidebarMenu() {
               )}
               {(user?.membership === variables.membership.BASIC ||
                 user?.documents.find((doc) =>
-                  doc.title.includes('to_advance')
+                  doc?.title.includes('to_advance')
                 )) && (
                 <ListItem component="div">
                   <NextLink href="/dashboard/toAdvance" passHref>
