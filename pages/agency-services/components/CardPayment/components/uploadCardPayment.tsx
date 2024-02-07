@@ -35,8 +35,6 @@ export const rows = [
 ];
 
 const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
-  console.log('cardId', cardId);
-
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user?.data);
   const [cardPaymentImage, setCardPaymentImage] = useState<any | null>(null);
