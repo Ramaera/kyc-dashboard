@@ -7,7 +7,7 @@ import UploadCardPayment from './components/uploadCardPayment';
 
 const Documents = (props: any) => {
   const { id, type, cardNumber, cardHolder, generatedCardData } = props;
-  console.log('id', id, type);
+  // console.log('id', id, type);
   const theme = useTheme();
 
   return (
@@ -39,7 +39,7 @@ const Documents = (props: any) => {
             }}
             variant="contained"
           >
-            Activate Your Card
+            Activate Card
           </Button>
         </Box>
       </Box>
@@ -52,7 +52,7 @@ const Documents = (props: any) => {
           alignItems: 'center'
         }}
       >
-        <Box sx={{}}>
+        {/* <Box sx={{}}>
           <CardRamaera
             id={id}
             type={type}
@@ -60,8 +60,8 @@ const Documents = (props: any) => {
             cardHolder={cardHolder}
             expiry={generatedCardData?.cardValidity}
           />
-        </Box>
-        <Box>
+        </Box> */}
+        {/* <Box>
           <CardBenefits
             id={id}
             type={type}
@@ -69,7 +69,7 @@ const Documents = (props: any) => {
             validUpto={generatedCardData?.cardValidity}
             redeemAmount={generatedCardData?.maxDiscount}
           />
-        </Box>
+        </Box> */}
       </Box>
       <Typography
         fontSize={30}

@@ -33,8 +33,8 @@ const DocumentRow = ({
   const theme = useTheme();
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
-  const [utrNos, setUtrNos] = useState(Array(rowNo).fill(''));
-  const [amounts, setAmounts] = useState(Array(rowNo).fill(''));
+  const [utrNos, setUtrNos] = useState([]);
+  const [amounts, setAmounts] = useState([]);
   const [moreRow, setMoreRow] = useState(rowNo);
   const [createDocument] = useMutation(CREATE_PAYMENT_DOCUMENT);
   const [updateDocument] = useMutation(UPDATE_PAYMENT_DOCUMENT);
@@ -45,13 +45,19 @@ const DocumentRow = ({
 
   useEffect(() => {
     const _imgs = [];
+    const _utr = [];
+    const _amount = [];
+
     for (let _document of documents) {
       _imgs.push(_document.url);
+      _utr.push(_document.utrNo);
+      _amount.push(_document.amount);
     }
-    setImages(_imgs);
-  }, [documents, user]);
 
-  console.log('documents', documents);
+    setImages(_imgs);
+    setUtrNos(_utr);
+    setAmounts(_amount);
+  }, [documents, user]);
 
   const handleCreateDocument = async (
     title: string,
@@ -101,7 +107,6 @@ const DocumentRow = ({
         updatedStatus = stat.status;
       }
     });
-    // console.log(updatedStatus);
     return updatedStatus;
   };
   const isValidToClick = () => {
@@ -117,7 +122,6 @@ const DocumentRow = ({
 
   const updateUser = (id, title, imgUrl) => {
     let newUser = user;
-    console.log('newUser', newUser);
     let newDocs = [];
     user?.documents?.map((item) => {
       if (item.id === id) {
@@ -131,11 +135,9 @@ const DocumentRow = ({
 
   const handleDocumentUpload = async () => {
     setLoading(true);
-    console.log('Enter');
 
     try {
       for (let i = 0; i < moreRow; i++) {
-        // console.log('data.config.items[i].id', data.config.items[i].id);
         if (imagesChanged[i]) {
           const documentTitle = data.config.items[i].id;
           const imgUrl = await handleCardPaymentProofUpload(images[i]);
@@ -204,7 +206,7 @@ const DocumentRow = ({
         <Box
           sx={{
             width: 200,
-            height: 160,
+            // height: 160,
             marginTop: 1,
             marginLeft: 1,
             display: 'flex',
@@ -284,7 +286,6 @@ const DocumentRow = ({
                   const _images = [...images];
                   _images[i] = f.target.files[0];
                   setImages(_images);
-                  // console.log('imageChanged', _images[i]);
                   const _imagesChanged = [...imagesChanged];
                   _imagesChanged[i] = true;
                   setImagesChange(_imagesChanged);
@@ -303,43 +304,52 @@ const DocumentRow = ({
     const items = data.config.items;
     for (let i = 0; i < moreRow; i++) {
       const _img = images[i];
+      const _utr = utrNos[i];
+      const _amount = amounts[i];
       if (_img) {
         views.push(
-          <div style={{ marginTop: 15 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
             <img
               src={typeof _img == 'object' ? URL.createObjectURL(_img) : _img}
               height={150}
               style={{ marginLeft: '5px' }}
             />
             <Box>
-              <TextField
-                sx={{ width: 150, marginLeft: 3 }}
-                id="outlined"
-                label="Amount*"
-                value={amounts[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  const updatedAmounts = [...amounts];
-                  updatedAmounts[i] = e.target.value;
-                  setAmounts(updatedAmounts);
-                }}
-              />
-            </Box>
-            <Box>
-              <TextField
-                sx={{ width: 150, marginLeft: 3 }}
-                id="outlined"
-                label="UTR No*"
-                value={utrNos[i]}
-                variant="outlined"
-                type="number"
-                onChange={(e) => {
-                  const updatedUtrNos = [...utrNos];
-                  updatedUtrNos[i] = e.target.value;
-                  setUtrNos(updatedUtrNos);
-                }}
-              />
+              <Box>
+                <TextField
+                  sx={{ width: 150, marginLeft: 3 }}
+                  id="outlined"
+                  label="Amount*"
+                  value={_amount}
+                  variant="outlined"
+                  type="number"
+                  onChange={(e) => {
+                    const updatedAmounts = [...amounts];
+                    updatedAmounts[i] = e.target.value;
+                    setAmounts(updatedAmounts);
+                  }}
+                />
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: 150, marginLeft: 3 }}
+                  id="outlined"
+                  label="UTR No*"
+                  value={_utr}
+                  variant="outlined"
+                  // type="number"
+                  onChange={(e) => {
+                    const updatedUtrNos = [...utrNos];
+                    updatedUtrNos[i] = e.target.value;
+                    setUtrNos(updatedUtrNos);
+                  }}
+                />
+              </Box>
             </Box>
           </div>
         );
@@ -356,6 +366,7 @@ const DocumentRow = ({
         sx={{
           border: 'none',
           fontWeight: 800,
+          marginTop: 2,
           [theme.breakpoints.down('sm')]: {
             textAlign: 'center'
           }

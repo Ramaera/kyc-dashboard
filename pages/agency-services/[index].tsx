@@ -10,6 +10,7 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
 import {
   Box,
+  Button,
   Card,
   Container,
   Grid,
@@ -28,6 +29,7 @@ import CardRamaera from './components/CardRamaera';
 import CardBenefits from './components/CardPayment/components/cardBenefits';
 import PaymentDetails from './components/CardPayment/components/paymentDetails';
 import UploadCardPayment from './components/CardPayment/components/uploadCardPayment';
+import toast, { Toaster } from 'react-hot-toast';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -115,14 +117,21 @@ function DashboardTasks(props: any) {
   const router = useRouter();
   const { index } = router.query;
 
-  const selectedTab = index.toString().split('&')[1];
+  const changeTab = (tabName) => {
+    // console.log('HHHHEHHH', tabName);
+    setCurrentTab(tabName);
+  };
+
+  const [selectedTab, setSelectedTab] = useState(
+    index.toString().split('&')[1]
+  );
   const cardIndex = index.toString().split('&')[0];
   const [currentTab, setCurrentTab] = useState<string>(selectedTab);
   const [currentSubTab, setCurrentSubTab] = useState('card_0');
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
   const foundUser = usersList.find((user) => user.id === cardIndex);
   const theme = useTheme();
-
+  // console.log('currentTab', currentTab);
   const dispatch = useDispatch();
 
   const tabs = [
@@ -137,9 +146,16 @@ function DashboardTasks(props: any) {
   const handleSubTabsChange = (event, newValue) => {
     setCurrentSubTab(newValue);
   };
-  const CardsOfAUser = useQuery(FIND_CARD_OF_A_USER, {
+  const { data, refetch } = useQuery(FIND_CARD_OF_A_USER, {
     variables: { userId: cardIndex }
   });
+  const CardsOfAUser = data;
+  console.log('CardsOfAUser', CardsOfAUser?.findCardOfaUser);
+
+  useEffect(() => {
+    refetch();
+  }, [currentTab]);
+
   useEffect(() => {
     if (foundUser) {
       dispatch(setFoundUser(foundUser));
@@ -180,97 +196,145 @@ function DashboardTasks(props: any) {
             {currentTab === 'cardui' && (
               <Grid item xs={12}>
                 <Box>
-                  <CardUI currentTab={currentTab} cardId={cardIndex} />
+                  <CardUI
+                    changeTab={changeTab}
+                    currentTab={currentTab}
+                    cardId={cardIndex}
+                  />
                 </Box>
               </Grid>
             )}
             {currentTab === 'viewcard' && (
-              <Grid item xs={12}>
-                <Box p={4}>
-                  <Tabs
-                    value={currentSubTab}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    textColor="primary"
-                    indicatorColor="primary"
-                    onChange={handleSubTabsChange}
-                  >
-                    {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
-                      <Tab
-                        key={`card_${index}`}
-                        label={`card-${index + 1}`}
-                        value={`card_${index}`}
-                      />
-                    ))}
-                  </Tabs>
-                  {CardsOfAUser?.data?.findCardOfaUser?.map((card, index) => (
-                    <div key={`card_content_${index}`}>
-                      {currentSubTab === `card_${index}` && (
-                        <Box
-                          sx={{
-                            padding: 5
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexWrap: 'wrap',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <CardRamaera
-                              key={`card_ramaera_${index}`}
-                              id={card?.id}
-                              type={card?.cardType}
-                              cardNumber={card?.cardNumber}
-                              expiry={card?.cardValidity}
-                            />
-                            <CardBenefits
-                              key={`card_benefits_${index}`}
-                              id={card?.id}
-                              type={card?.cardType}
-                              amountYouGet={card?.cardValue}
-                              validUpto={card?.cardValidity}
-                              redeemAmount={card?.maxDiscount}
-                            />
-                          </Box>
-                          <Box
-                            marginTop={1}
-                            sx={{
-                              display: 'flex',
-                              [theme.breakpoints.down('sm')]: {
-                                flexDirection: 'column'
-                              }
-                            }}
-                          >
-                            <Box sx={{}}>
-                              <PaymentDetails docStatus={undefined} />
-                            </Box>
+              <>
+                {CardsOfAUser?.findCardOfaUser?.length > 0 ? (
+                  <Grid item xs={12}>
+                    <Box p={4}>
+                      <Tabs
+                        value={currentSubTab}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        textColor="primary"
+                        indicatorColor="primary"
+                        onChange={handleSubTabsChange}
+                      >
+                        {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
+                          <Tab
+                            key={`card_${index}`}
+                            label={`card-${index + 1}`}
+                            value={`card_${index}`}
+                          />
+                        ))}
+                      </Tabs>
+                      {CardsOfAUser?.findCardOfaUser?.map((card, index) => (
+                        <div key={`card_content_${index}`}>
+                          {currentSubTab === `card_${index}` && (
                             <Box
-                              sx={{
-                                marginLeft: 10,
-                                [theme.breakpoints.down('sm')]: {
-                                  marginLeft: 0
+                              sx={
+                                {
+                                  // padding: 5
                                 }
-                              }}
+                              }
                             >
-                              <UploadCardPayment
-                                key={`card_payment_${index}`}
-                                cardId={card?.id}
-                                cardNumber={card?.cardNumber}
-                                cardPaymentDocuments={card.Documents}
-                              />
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between'
+                                }}
+                              >
+                                <Box sx={{ display: 'flex' }}>
+                                  <CardRamaera
+                                    key={`card_ramaera_${index}`}
+                                    id={card?.id}
+                                    type={card?.cardType}
+                                    cardNumber={card?.cardNumber}
+                                    expiry={card?.cardValidity}
+                                  />
+                                  <CardBenefits
+                                    key={`card_benefits_${index}`}
+                                    id={card?.id}
+                                    type={card?.cardType}
+                                    amountYouGet={card?.cardValue}
+                                    validUpto={card?.cardValidity}
+                                    redeemAmount={card?.maxDiscount}
+                                  />
+                                </Box>
+                                <Box
+                                  sx={{
+                                    display: 'flex'
+                                  }}
+                                >
+                                  <Typography sx={{ fontSize: 20 }}>
+                                    Card Status:
+                                  </Typography>
+                                  <Typography
+                                    marginLeft={1}
+                                    sx={{
+                                      fontSize: 20,
+
+                                      color:
+                                        card?.isActive === true
+                                          ? 'limegreen'
+                                          : 'red'
+                                    }}
+                                  >
+                                    {card?.isActive === true
+                                      ? 'Active'
+                                      : 'Not Active'}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                              <Box
+                                marginTop={1}
+                                sx={{
+                                  display: 'flex',
+                                  [theme.breakpoints.down('sm')]: {
+                                    flexDirection: 'column'
+                                  }
+                                }}
+                              >
+                                <Box sx={{}}>
+                                  <PaymentDetails docStatus={undefined} />
+                                </Box>
+                                <Box
+                                  sx={{
+                                    marginLeft: 10,
+                                    [theme.breakpoints.down('sm')]: {
+                                      marginLeft: 0
+                                    }
+                                  }}
+                                >
+                                  <UploadCardPayment
+                                    key={`card_payment_${index}`}
+                                    cardId={card?.id}
+                                    cardNumber={card?.cardNumber}
+                                    cardPaymentDocuments={card.Documents}
+                                  />
+                                </Box>
+                              </Box>
                             </Box>
-                          </Box>
-                        </Box>
-                      )}
-                    </div>
-                  ))}
-                </Box>
-              </Grid>
+                          )}
+                        </div>
+                      ))}
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Box>
+                    <Typography>No card </Typography>
+                  </Box>
+                )}
+              </>
             )}
           </Grid>
         </Card>
+        <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              duration: 5000
+            }
+          }}
+        />
       </Container>
       <Footer />
     </ProtectedSSRoute>

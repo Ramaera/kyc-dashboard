@@ -71,7 +71,7 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
     const isValid = validateForm();
     setLoading(true);
     if (isValid) {
-      console.log('Enter');
+      // console.log('Enter');
 
       try {
         const resp = await createCardUser({
@@ -109,11 +109,12 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
     <>
       <Card sx={{}}>
         <Typography
-          fontSize={30}
+          marginTop={2}
+          fontSize={20}
           fontWeight={600}
           sx={{ display: 'flex', justifyContent: 'center' }}
         >
-          Please Fill User Details
+          Create A User For #MyCard
         </Typography>
         <Box
           sx={{

@@ -7,6 +7,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { CARD_USERS_DETAIL, GENERATE_CARD } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
+import { useRouter } from 'next/router';
+import Loading from '@/components/Loading';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import CardPayment from '../CardPayment/CardPayment';
 enum CARD_TYPE {
   BRONZE = 'BRONZE',
@@ -15,12 +19,15 @@ enum CARD_TYPE {
   DIAMOND = 'DIAMOND'
 }
 const Cards = (props) => {
+  const router = useRouter();
   const { cardId } = props;
   const [isLoading, setLoading] = useState(false);
   const [showCardPayment, setShowCardPayment] = useState(false);
   const [generateCard] = useMutation(GENERATE_CARD);
   const [selectedCardType, setSelectedCardType] = useState(null);
   const [generatedCardData, setGeneratedCardData] = useState(null);
+  const [defaultLoading, setDefaultLoading] = useState(false);
+  const [timer, setTimer] = useState(false);
 
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
@@ -31,6 +38,7 @@ const Cards = (props) => {
   const userData = cardUserData.data?.findCardHoldersInAgency?.find(
     (item) => item.id == cardId
   );
+
   const handleCardClick = (cardType) => {
     setSelectedCardType(cardType);
   };
@@ -45,11 +53,13 @@ const Cards = (props) => {
             cardHolderId: cardId
           }
         });
-        toast.success('Card Generated Sucessfully');
 
         if (resp.data) {
-          setGeneratedCardData(resp.data?.createCard);
-          setShowCardPayment(true);
+          // setGeneratedCardData(resp.data?.createCard);
+          // // setShowCardPayment(true);
+          toast.success('Card Generated Sucessfully');
+          setDefaultLoading(true);
+          setTimer(true);
         }
       } catch (err) {
         console.log('err', err);
@@ -89,6 +99,28 @@ const Cards = (props) => {
       validity: 16
     }
   ];
+
+  if (timer)
+    setTimeout(() => {
+      setDefaultLoading(false);
+      setTimer(false);
+      props.changeTab('viewcard');
+    }, 2000);
+
+  // if (defaultLoading) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: 'flex',
+  //         height: '50vh',
+  //         justifyContent: 'center',
+  //         alignItems: 'center'
+  //       }}
+  //     >
+  //       <CircularProgress sx={{ height: '30vh' }} />
+  //     </Box>
+  //   );
+  // }
 
   const theme = useTheme();
 
@@ -155,7 +187,7 @@ const Cards = (props) => {
             }}
           >
             <LoadingButton
-              loading={isLoading}
+              loading={isLoading || defaultLoading}
               variant="contained"
               type="submit"
               onClick={handleGenerateCard}
