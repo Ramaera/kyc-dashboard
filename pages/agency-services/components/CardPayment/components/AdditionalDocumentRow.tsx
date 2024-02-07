@@ -322,7 +322,7 @@ const DocumentRow = ({
               height={150}
               style={{ marginLeft: '5px' }}
             />
-            <Box>
+            <Box sx={{}}>
               <Box>
                 <TextField
                   sx={{ width: 150, marginLeft: 3 }}
@@ -340,7 +340,7 @@ const DocumentRow = ({
               </Box>
               <Box>
                 <TextField
-                  sx={{ width: 150, marginLeft: 3 }}
+                  sx={{ width: 150, marginLeft: 3, marginTop: 1 }}
                   id="outlined"
                   label="UTR No*"
                   value={_utr}

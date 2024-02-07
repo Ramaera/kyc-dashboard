@@ -6,15 +6,14 @@ const CardRamaera = (props) => {
     cardHolder,
     maxDiscount,
     expiry,
+    tab,
     type,
     isSelected,
     onClick,
     rechargeAmount,
-    value,
-    validity
+    value
   } = props;
   const theme = useTheme();
-
   return (
     <>
       <Card
@@ -92,34 +91,29 @@ const CardRamaera = (props) => {
               {cardNumber}
             </Typography>
           </Box>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
-          >
+          {tab != 'viewCard' && (
             <div
               style={{
-                fontSize: '13px'
+                display: 'flex',
+                justifyContent: 'space-between'
               }}
             >
-              Recharge Amount: ₹{rechargeAmount}
+              <div
+                style={{
+                  fontSize: '13px'
+                }}
+              >
+                Recharge Amount: ₹{rechargeAmount}
+              </div>
+              <div
+                style={{
+                  fontSize: '13px'
+                }}
+              >
+                Received Amount: ₹{value}
+              </div>
             </div>
-            <div
-              style={{
-                fontSize: '13px'
-              }}
-            >
-              Received Amount: ₹{value}
-            </div>
-          </div>
-          {/* <div
-            style={{
-              fontSize: '13px'
-            }}
-          >
-            Max Discount Per Month: {maxDiscount}
-          </div> */}
+          )}
           <div
             style={{
               display: 'flex',
@@ -138,7 +132,7 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
-              Validity: {validity} Months
+              Validity: {expiry} Months
             </div>
           </div>
         </div>

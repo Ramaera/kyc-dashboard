@@ -106,22 +106,6 @@ const Cards = (props) => {
       setTimer(false);
       props.changeTab('viewcard');
     }, 2000);
-
-  // if (defaultLoading) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         display: 'flex',
-  //         height: '50vh',
-  //         justifyContent: 'center',
-  //         alignItems: 'center'
-  //       }}
-  //     >
-  //       <CircularProgress sx={{ height: '30vh' }} />
-  //     </Box>
-  //   );
-  // }
-
   const theme = useTheme();
 
   return (
@@ -165,14 +149,14 @@ const Cards = (props) => {
                     key={cardType}
                     type={cardType}
                     cardNumber={'XXXXXXXXXXXXXX34'}
-                    expiry={'Validity'}
+                    expiry={cardData.validity}
+                    tab={'selectCard'}
                     cardHolder={userData?.name}
                     isSelected={selectedCardType === cardType}
                     onClick={() => handleCardClick(cardType)}
                     rechargeAmount={cardData.rechargeAmount}
                     value={cardData.value}
                     maxDiscount={cardData.maxDiscount}
-                    validity={cardData.validity}
                   />
                 );
               })}
@@ -198,15 +182,6 @@ const Cards = (props) => {
           </Box>
         </Card>
       )}
-
-      {/* {showCardPayment && generatedCardData && (
-        <CardPayment
-          id={cardId}
-          type={selectedCardType}
-          cardHolder={userData?.name}
-          generatedCardData={generatedCardData}
-        />
-      )} */}
     </>
   );
 };

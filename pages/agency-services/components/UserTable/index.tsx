@@ -129,40 +129,6 @@ const UserTable = ({ user }) => {
                           {item?.mobileNumber}
                         </Typography>
                       </TableCell>
-                      {/* <TableCell>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                            width="80px"
-                          ></Typography>
-                        </TableCell> */}
-                      {/* <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          123456789012
-                        </Typography>
-                      </TableCell> */}
-                      {/* <TableCell align="center">
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          width="100px"
-                          color="text.success"
-                          gutterBottom
-                          noWrap
-                        >
-                          123456789012
-                        </Typography>
-                      </TableCell> */}
                       <TableCell
                         sx={{
                           padding: 1,

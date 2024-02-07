@@ -101,6 +101,14 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
     return { ...newUser, documents: newDocs };
   };
 
+  useEffect(() => {
+    if (cardPaymentImage && utrNumber && amount) {
+      setSubmitButtonEnabled(true);
+    } else {
+      setSubmitButtonEnabled(false);
+    }
+  }, [utrNumber, amount, cardPaymentImage]);
+
   const handleSubmit = async () => {
     try {
       let imgUrl = '';
@@ -266,7 +274,7 @@ const CardPayment = ({ cardId, cardNumber, cardPaymentDocuments }) => {
                   if (f.target.files.length > 0) {
                     setCardPaymentImage(f.target.files[0]);
                     setImageChanged(true);
-                    setSubmitButtonEnabled(true);
+                    setSubmitButtonEnabled(false);
                   }
                 }}
               />

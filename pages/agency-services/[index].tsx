@@ -245,6 +245,7 @@ function DashboardTasks(props: any) {
                                   <CardRamaera
                                     key={`card_ramaera_${index}`}
                                     id={card?.id}
+                                    tab={'viewCard'}
                                     type={card?.cardType}
                                     cardNumber={card?.cardNumber}
                                     expiry={card?.cardValidity}
