@@ -29,6 +29,7 @@ function index() {
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
+  // console.log('agencyCode', agencyCode);
 
   const addUserHandler = (newUser) => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
@@ -43,6 +44,7 @@ function index() {
       setUsers(cardUserData.data?.findCardHoldersInAgency);
     }
   }, [cardUserData]);
+  // console.log('esdrfcghvbjnk', agencyCode);
   // const router = useRouter();
 
   const handleShowTableClick = () => {

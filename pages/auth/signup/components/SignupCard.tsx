@@ -205,7 +205,7 @@ export default function SignupCard() {
             margin="normal"
             required
             fullWidth
-            label="Referral Id"
+            label="Your Identity Code"
             autoFocus
             onChange={(e) => {
               setPWId(e.target.value);
@@ -254,7 +254,7 @@ export default function SignupCard() {
           <TextField
             margin="normal"
             fullWidth
-            label="Referral Identification Number"
+            label="Authorized Agency Code"
             onChange={(e) => {
               setReferral(e.target.value);
               if (e.target.value.length > 0) {

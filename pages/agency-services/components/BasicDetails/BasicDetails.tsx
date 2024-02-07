@@ -71,7 +71,7 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
     const isValid = validateForm();
     setLoading(true);
     if (isValid) {
-      console.log('Enter');
+      // console.log('Enter');
 
       try {
         const resp = await createCardUser({
