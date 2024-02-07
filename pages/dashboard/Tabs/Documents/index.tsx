@@ -37,6 +37,7 @@ const DocumentRow = ({ data, documents = [], user }) => {
     }
     setImages(_imgs);
   }, [documents, user]);
+  console.log('documents', documents);
 
   const handleCreateDocument = async (title: string, url: string) => {
     return await createDocument({

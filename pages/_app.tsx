@@ -94,6 +94,7 @@ function TokyoApp(props: TokyoAppProps) {
           </SidebarProvider>
         </CacheProvider>
       </ApolloProvider>
+      <ApolloProvider client={client}></ApolloProvider>
     </Provider>
   );
 }

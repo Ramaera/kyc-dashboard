@@ -579,3 +579,149 @@ query AgencyWithdrawlRequest($agencyCode:String!) {
     }
 }
 `);
+export const CREATE_CARD_USER = gql(`
+
+mutation CreateUser (
+   $address: [JSONObject!]!
+   $metaData: [JSONObject!]!
+   $email: String!
+   $mobileNumber: String!
+   $referralAgencyCode: String!
+   $name:String!
+    ) {
+  CreateUser(
+   data: {
+    email: $email
+    mobileNumber: $mobileNumber
+    name: $name
+    referralAgencyCode: $referralAgencyCode
+    metaData: $metaData
+    address: $address
+  }
+  ) {
+    createdAt
+    email
+    id
+    mobileNumber
+    name
+    referralAgencyCode
+    updatedAt
+  }
+}
+
+
+`);
+
+export const CARD_USERS_DETAIL = gql(`
+
+query FindCardHoldersInAgency($agencyCode:String!) {
+  findCardHoldersInAgency(agencyCode: $agencyCode) {
+      createdAt
+      email
+      id
+      mobileNumber
+      name
+      referralAgencyCode
+      updatedAt
+  }
+}
+`);
+
+export const GENERATE_CARD = gql(`
+
+mutation CreateCard(
+  $cardHolderId:String!
+  $cardType:CARD_TYPE!
+  ) {
+  createCard(data: { cardHolderId: $cardHolderId, cardType: $cardType }) {
+      cardValidity
+      cardValue
+      isActive
+      maxDiscount
+      cardNumber
+  }
+}
+
+`);
+
+export const CREATE_PAYMENT_DOCUMENT = gql(`
+
+
+mutation CreatePaymentDocument ($cardUserId:String! $myCardId:Int! $title:String! $url:String! $amount:Int! $utrNo:String!) {
+  createPaymentDocument(
+      createPaymentDocumentInput: {
+          cardUserId: $cardUserId
+          myCardId: $myCardId
+          title: $title
+          url: $url
+          amount:$amount
+          utrNo: $utrNo
+      }
+  ) {
+   title
+  }
+}
+`);
+
+export const UPDATE_PAYMENT_DOCUMENT = gql(`
+mutation UpdatePaymentDocument ($cardUserId:String! $myCardId:Int! $id:String! $title:String! $url:String! $amount:Int! $utrNo:String!){
+  updatePaymentDocument(
+      updatePaymentDocumentInput: {
+          amount: $amount
+          cardUserId: $cardUserId
+          id: $id
+          myCardId: $myCardId
+          title: $title
+          url: $url
+          utrNo: $utrNo
+      }
+  ) {
+      amount
+      status
+      title
+      url
+      utrNo
+  }
+}
+
+`);
+
+export const FIND_CARD_OF_A_USER = gql(`
+
+
+query FindCardOfaUser ($userId:String!) {
+  findCardOfaUser(userId: $userId) {
+      cardNumber
+      cardType
+      cardValidity
+      cardValue
+      id
+      isActive
+      maxDiscount
+      Documents {
+        amount
+        status
+        title
+        url
+        id
+        utrNo
+      }
+  }
+}
+`);
+
+export const GET_CARD_USER = gql(`
+
+query CardDetails($cardNumber:String!) {
+  CardDetails(cardNumber: $cardNumber) {
+      cardNumber
+      cardType
+      cardValidity
+      cardValue
+      id
+      isActive
+      maxDiscount
+  }
+}
+
+`);

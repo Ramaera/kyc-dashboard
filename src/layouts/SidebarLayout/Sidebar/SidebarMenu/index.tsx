@@ -397,7 +397,7 @@ function SidebarMenu() {
               )}
               {(user?.membership === variables.membership.BASIC ||
                 user?.documents.find((doc) =>
-                  doc.title.includes('to_advance')
+                  doc?.title.includes('to_advance')
                 )) && (
                 <ListItem component="div">
                   <NextLink href="/dashboard/toAdvance" passHref>
@@ -575,6 +575,39 @@ function SidebarMenu() {
                     }
                   >
                     RECEIPT
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
+                <NextLink href="/agency-services" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/agency-services' ? 'active' : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/agency-services' ? '#7063C0' : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/agency-services' ? '#7063C0' : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    AGENCY SERVICES
                   </Button>
                 </NextLink>
               </ListItem>
