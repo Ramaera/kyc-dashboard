@@ -268,7 +268,14 @@ function DashboardTasks(props: any) {
                                   </Typography>
                                   <Typography
                                     marginLeft={1}
-                                    sx={{ fontSize: 20 }}
+                                    sx={{
+                                      fontSize: 20,
+
+                                      color:
+                                        card?.isActive === true
+                                          ? 'limegreen'
+                                          : 'red'
+                                    }}
                                   >
                                     {card?.isActive === true
                                       ? 'Active'

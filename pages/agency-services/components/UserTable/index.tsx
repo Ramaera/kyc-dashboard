@@ -30,6 +30,7 @@ const UserTable = ({ user }) => {
   const cardUserData = useQuery(CARD_USERS_DETAIL, {
     variables: { agencyCode: agencyCode }
   });
+  // console.log('user', user);
 
   useEffect(() => {
     if (cardUserData) {
@@ -48,88 +49,87 @@ const UserTable = ({ user }) => {
     }
   };
 
-  console.log('user', user.length);
+  // console.log('user', user);
 
   useEffect(() => {}, []);
   return (
     <>
       <Card>
         <Box>
-          {user.length > 0 ? (
-            <TableContainer
-              sx={{
-                borderLeft: '1px solid #2c3151'
-              }}
-            >
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>S.No</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>E-Mail</TableCell>
-                    <TableCell>Mobile </TableCell>
-                    {/* <TableCell>Pan No</TableCell>
+          <TableContainer
+            sx={{
+              borderLeft: '1px solid #2c3151'
+            }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>S.No</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>E-Mail</TableCell>
+                  <TableCell>Mobile </TableCell>
+                  {/* <TableCell>Pan No</TableCell>
                   <TableCell>Aadhar No</TableCell> */}
-                    <TableCell>Apply For Card</TableCell>
-                    <TableCell>View Card</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {user?.map((item, index) => (
-                    <>
-                      <TableRow key={item?.id} hover sx={{ cursor: 'pointer' }}>
-                        <TableCell sx={{ padding: '2px' }}>
-                          <Typography
-                            textAlign="center"
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            width={30}
-                          >
-                            {index + 1}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ padding: 1 }}>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            sx={{
-                              [theme.breakpoints.down('sm')]: {
-                                minWidth: 150
-                              }
-                            }}
-                          >
-                            {item?.name}
-                          </Typography>
-                        </TableCell>
+                  <TableCell>Apply For Card</TableCell>
+                  <TableCell>View Card</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {user?.map((item, index) => (
+                  <>
+                    <TableRow key={item?.id} hover sx={{ cursor: 'pointer' }}>
+                      <TableCell sx={{ padding: '2px' }}>
+                        <Typography
+                          textAlign="center"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width={30}
+                        >
+                          {index + 1}
+                        </Typography>
+                      </TableCell>
+                      <TableCell sx={{ padding: 1 }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          sx={{
+                            [theme.breakpoints.down('sm')]: {
+                              minWidth: 150
+                            }
+                          }}
+                        >
+                          {item?.name}
+                        </Typography>
+                      </TableCell>
 
-                        <TableCell sx={{ padding: 1 }}>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            width="150px"
-                            color="text.success"
-                            gutterBottom
-                            noWrap
-                          >
-                            {item?.email}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ padding: 1 }}>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            width="100px"
-                          >
-                            {item?.mobileNumber}
-                          </Typography>
-                        </TableCell>
-                        {/* <TableCell>
+                      <TableCell sx={{ padding: 1 }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          width="150px"
+                          color="text.success"
+                          gutterBottom
+                          noWrap
+                        >
+                          {item?.email}
+                        </Typography>
+                      </TableCell>
+                      <TableCell sx={{ padding: 1 }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          width="100px"
+                        >
+                          {item?.mobileNumber}
+                        </Typography>
+                      </TableCell>
+                      {/* <TableCell>
                           <Typography
                             variant="body1"
                             fontWeight="bold"
@@ -139,7 +139,7 @@ const UserTable = ({ user }) => {
                             width="80px"
                           ></Typography>
                         </TableCell> */}
-                        {/* <TableCell align="center">
+                      {/* <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
@@ -151,7 +151,7 @@ const UserTable = ({ user }) => {
                           123456789012
                         </Typography>
                       </TableCell> */}
-                        {/* <TableCell align="center">
+                      {/* <TableCell align="center">
                         <Typography
                           variant="body1"
                           fontWeight="bold"
@@ -163,61 +163,56 @@ const UserTable = ({ user }) => {
                           123456789012
                         </Typography>
                       </TableCell> */}
-                        <TableCell
-                          sx={{
-                            padding: 1,
-                            [theme.breakpoints.down('sm')]: {
-                              minWidth: 150
-                            }
-                          }}
+                      <TableCell
+                        sx={{
+                          padding: 1,
+                          [theme.breakpoints.down('sm')]: {
+                            minWidth: 150
+                          }
+                        }}
+                      >
+                        <Link
+                          href={'agency-services/' + `${item?.id}` + `&cardui`}
                         >
-                          <Link
-                            href={
-                              'agency-services/' + `${item?.id}` + `&cardui`
-                            }
-                          >
-                            <Button variant="contained" sx={{ fontSize: 10 }}>
-                              Apply #myCard
-                            </Button>
-                          </Link>
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            padding: 1,
-                            [theme.breakpoints.down('sm')]: {
-                              minWidth: 120
-                            }
-                          }}
+                          <Button variant="contained" sx={{ fontSize: 10 }}>
+                            Apply #myCard
+                          </Button>
+                        </Link>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          padding: 1,
+                          [theme.breakpoints.down('sm')]: {
+                            minWidth: 120
+                          }
+                        }}
+                      >
+                        <Link
+                          href={
+                            'agency-services/' + `${item?.id}` + `&viewcard`
+                          }
                         >
-                          <Link
-                            href={
-                              'agency-services/' + `${item?.id}` + `&viewcard`
+                          <Button
+                            disabled={
+                              viewCardButton(item.id) === true ? false : true
                             }
+                            variant="contained"
+                            sx={{
+                              fontSize: 10
+                            }}
                           >
-                            <Button
-                              disabled={
-                                viewCardButton(item.id) === true ? false : true
-                              }
-                              variant="contained"
-                              sx={{
-                                fontSize: 10
-                              }}
-                            >
-                              View Card
-                            </Button>
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    </>
-                  ))}
+                            View Card
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
 
-                  <Toaster position="bottom-center" reverseOrder={false} />
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <Typography>No User</Typography>
-          )}
+                <Toaster position="bottom-center" reverseOrder={false} />
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Card>
     </>

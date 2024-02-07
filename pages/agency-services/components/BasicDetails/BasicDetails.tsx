@@ -71,7 +71,7 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
     const isValid = validateForm();
     setLoading(true);
     if (isValid) {
-      console.log('Enter');
+      // console.log('Enter');
 
       try {
         const resp = await createCardUser({
@@ -80,7 +80,7 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
             email: formData.email,
             mobileNumber: formData.mobileNumber,
             name: formData.name,
-            referralAgencyCode: 'RLI1234',
+            referralAgencyCode: agencyCode,
             metaData: [{ aadhar: formData.aadhar, pancard: formData.pancard }]
           }
         });
