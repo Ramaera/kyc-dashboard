@@ -186,6 +186,9 @@ const DocumentRow = ({
               amounts[i]
             );
             toast.success('Document Uploaded');
+            await dispatch(
+              setOrUpdateUser(updateUser(_document.id, documentTitle, imgUrl))
+            );
             userAllDocuments = [...userAllDocuments, resp.data.createDocument];
           }
           const _user = { ...user };
