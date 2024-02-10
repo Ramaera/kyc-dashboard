@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import { projectData } from './projectDetails';
+import { servicesData } from './servicesDetails';
 import { logout } from '@/state/slice/userSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -139,6 +140,7 @@ function SidebarMenu() {
   const currentQuery = router.query;
   const dispatch = useAppDispatch();
   const [listVisible, setListVisible] = useState(false);
+  const [servicesListVisible, setServicesListVisible] = useState(false);
   const [shareList, setShareList] = useState(false);
 
   return (
@@ -578,7 +580,7 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <NextLink href="/agency-services" passHref>
                   <Button
                     className={
@@ -610,7 +612,79 @@ function SidebarMenu() {
                     AGENCY SERVICES
                   </Button>
                 </NextLink>
+              </ListItem> */}
+
+              <ListItem component="div">
+                <Button
+                  className={
+                    currentRoute.includes('/agency-services') ? 'active' : ''
+                  }
+                  style={{
+                    color: currentRoute.includes('/agency-services')
+                      ? '#7063C0'
+                      : ''
+                  }}
+                  onClick={() => {
+                    setServicesListVisible(!servicesListVisible);
+                    setShareList(false);
+                  }}
+                  startIcon={
+                    <span
+                      style={{
+                        color: currentRoute.includes('/agency-services')
+                          ? '#7063C0'
+                          : ''
+                      }}
+                    >
+                      &#x2022;
+                    </span>
+                  }
+                >
+                  AGENCY SERVICES
+                </Button>
               </ListItem>
+
+              {servicesListVisible ? (
+                <List component="div" style={{ marginLeft: '' }}>
+                  {servicesData.map((list) => {
+                    return (
+                      <ListItem component="div" onClick={closeSidebar}>
+                        <NextLink
+                          href={`/agency-services/${list.navigateTo}`}
+                          passHref
+                        >
+                          <Button
+                            onClick={closeSidebar}
+                            style={{
+                              color: currentQuery?.index?.includes(
+                                `${list.navigateTo}`
+                              )
+                                ? '#7063C0'
+                                : '',
+                              fontWeight: 500,
+                              fontSize: '12px',
+                              textAlign: 'right',
+                              padding: '10px 15px'
+                            }}
+                            className={
+                              currentQuery?.index?.includes(
+                                `${list.navigateTo}`
+                              )
+                                ? 'active'
+                                : ''
+                            }
+                          >
+                            {list.projectName}
+                          </Button>
+                        </NextLink>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              ) : (
+                ''
+              )}
+
               {/*   {
                 <ListItem component="div">
                   <NextLink href={`/dashboard/certificate`} passHref>
