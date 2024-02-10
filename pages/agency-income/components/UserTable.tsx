@@ -59,6 +59,7 @@ const UserTable = () => {
     }
   });
 
+  console.log('678', getAgencyPayment);
   function getMonthName(dateString) {
     const myDate = new Date(dateString);
     const ans = myDate.toLocaleString('default', { month: 'long' });
@@ -76,6 +77,14 @@ const UserTable = () => {
 
   //kyc
 
+  // Self Agency Income
+  const totalSelfAgencyAgraPaymentRewardIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgencyAgraPayment;
+  const totalSelfAgencyHajipurPaymentRewardIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgencyHajipurPayment;
+  const selfAgencyIncome =
+    totalSelfAgencyAgraPaymentRewardIncome +
+    totalSelfAgencyHajipurPaymentRewardIncome;
   const kycBasicIncome =
     getAgencyPayment?.data?.AgencyPayment?.BasicKycApprovedUser;
   const kycAdvanceIncome =
@@ -100,6 +109,17 @@ const UserTable = () => {
   const agraIncomeData = [];
   basicAgraIncome?.map((user) => agraIncomeData.push(user));
   advanceAgraIncome?.map((user) => agraIncomeData.push(user));
+
+  // Self
+
+  const selfIncomeData = [];
+  const projectHajipurSelfIncomeDocuments =
+    getAgencyPayment?.data?.AgencyPayment?.selfHajipurInvestmentDocument;
+  const projectAgraSelfIncomeDocuments =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgraInvestmentDocument;
+
+  projectHajipurSelfIncomeDocuments?.map((user) => selfIncomeData.push(user));
+  projectAgraSelfIncomeDocuments?.map((user) => selfIncomeData.push(user));
 
   const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
 
@@ -286,6 +306,16 @@ const UserTable = () => {
               sx={{ mt: 2, mb: 2, width: '180px' }}
             >
               AGRA : ₹{totalAgraIncome | 0}
+            </LoadingButton>
+            <LoadingButton
+              onClick={() => {
+                setActive(true);
+                setCurrentSelectedButton('selfInvestment');
+              }}
+              variant="contained"
+              sx={{ mt: 2, mb: 2, width: '180px' }}
+            >
+              Self Investment : ₹{selfAgencyIncome | 0}
             </LoadingButton>
           </Table>
           {active && (
@@ -476,6 +506,16 @@ const UserTable = () => {
                 <CustomTable
                   projectName="agra"
                   data={agraIncomeData}
+                  walletTransferShowButton={walletTransferShowButton}
+                  isLoading={isLoading}
+                  isDisable={isDisable}
+                  handleTransferToWallet={handleTransferToWallet}
+                />
+              )}
+              {currentSelectedButton.includes('selfInvestment') && (
+                <CustomTable
+                  projectName="selfInvestment"
+                  data={selfIncomeData}
                   walletTransferShowButton={walletTransferShowButton}
                   isLoading={isLoading}
                   isDisable={isDisable}

@@ -268,7 +268,7 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
                   label="UTR No.*"
                   value={additionalUtr[i]}
                   variant="outlined"
-                  type="number"
+                  // type="number"
                   onChange={(e) => {
                     e.target.value
                       ? (newArrUtr[i] = e.target.value)

@@ -418,6 +418,35 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       agraProjectAmount
       hajipurProjectAmount
       kycAmount
+      selfAgencyAgraPayment
+      # selfAgencyHajipurPayment
+      # selfAgraInvestmentDocument{
+      #   id
+      # amount
+      # createdAt
+      # status
+      # user {
+      #     id
+      #     kyc
+      #     membership
+      #     name
+      #     pw_id
+      # }
+      # }
+      # selfHajipurInvestmentDocument{
+      #   id
+      # amount
+      # createdAt
+      # status
+      # user {
+      #     id
+      #     kyc
+      #     membership
+      #     name
+      #     pw_id
+      # }
+      # }
+
       BasicKycApprovedUser {
         id
         pw_id

@@ -51,7 +51,7 @@ const UserTable = () => {
   const [show, setShow] = useState(true);
 
   const { data } = useQuery(GET_FINAL_WALLET_BALANCE_OF_AGENCY, {
-    variables: { agencyCode: agencyCode }
+    variables: { agencyCode }
   });
   const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
 
@@ -140,8 +140,10 @@ const UserTable = () => {
                       }
                     }}
                     disabled={
-                      amountToWithdraw > walletBalance ||
-                      amountToWithdraw <= '0'
+                      walletBalance != undefined
+                        ? amountToWithdraw > walletBalance ||
+                          amountToWithdraw <= '0'
+                        : true
                     }
                   >
                     Place Withdrawal Request

@@ -24,20 +24,20 @@ function index() {
   const [currentPage, setCurrentPage] = useState(true);
   const [showStepper, setShowStepper] = useState(currentPage);
   const [showTable, setshowTable] = useState(!currentPage);
-  // console.log('showTable', showTable);
-  const [users, setUsers] = useState([]);
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
+  const cardUserData = useQuery(CARD_USERS_DETAIL, {
+    variables: { agencyCode: agencyCode }
+  });
+  // console.log('showTable', showTable);
+  const [users, setUsers] = useState([]);
+
   // console.log('agencyCode', agencyCode);
 
   const addUserHandler = (newUser) => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
   };
-
-  const cardUserData = useQuery(CARD_USERS_DETAIL, {
-    variables: { agencyCode: agencyCode }
-  });
 
   useEffect(() => {
     if (cardUserData) {

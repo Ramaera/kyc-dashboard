@@ -759,7 +759,7 @@ const InfoTab = ({ to }) => {
             label="UTR No.*"
             value={utrNumber}
             variant="outlined"
-            type="number"
+            // type="number"
             onChange={(e) => {
               setUtrNumber(e.target.value);
             }}
