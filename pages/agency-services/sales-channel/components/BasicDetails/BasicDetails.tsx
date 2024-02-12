@@ -259,11 +259,10 @@ const PersonalInfoForm = () => {
             <SignatureCanvas
               ref={signatureCanvasRef}
               penColor="white"
-              minWidth={1}
-              maxWidth={3}
               canvasProps={{
-                // width: '100%',
-                height: 200
+                width: 500,
+                height: 200,
+                className: 'sigCanvas'
               }}
             />
           </Box>

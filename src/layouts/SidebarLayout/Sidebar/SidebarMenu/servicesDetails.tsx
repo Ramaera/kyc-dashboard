@@ -6,5 +6,9 @@ export const servicesData = [
   {
     projectName: 'Sales Channel',
     navigateTo: '/agency-services/sales-channel'
+  },
+  {
+    projectName: 'Referred Agency',
+    navigateTo: '/agency-services/referredAgency'
   }
 ];
