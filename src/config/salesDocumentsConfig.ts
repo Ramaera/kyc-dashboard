@@ -1,11 +1,11 @@
 export default {
-  fssai_license: {
-    id: 'fssai_license',
-    name: 'FSSAI License Number',
+  fssai_certificate: {
+    id: 'fssai_certificate',
+    name: 'FSSAI Certificate',
     items: [
       {
-        id: 'fssai_license',
-        name: 'FSSAI License Number'
+        id: 'fssai_certificate',
+        name: 'FSSAI Certificate'
       }
     ]
   },

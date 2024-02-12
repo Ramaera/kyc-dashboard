@@ -1,10 +1,10 @@
 export const servicesData = [
   {
     projectName: 'MyCard',
-    navigateTo: 'myCard'
+    navigateTo: '/agency-services'
   },
   {
     projectName: 'Sales Channel',
-    navigateTo: 'sales-channel'
+    navigateTo: '/agency-services/sales-channel'
   }
 ];

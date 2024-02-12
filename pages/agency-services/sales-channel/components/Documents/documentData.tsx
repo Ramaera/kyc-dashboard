@@ -2,7 +2,7 @@ import documentsConfig from '@/config/salesDocumentsConfig';
 
 export const rows = [
   {
-    config: documentsConfig.fssai_license,
+    config: documentsConfig.fssai_certificate,
     status: -1
   },
   {

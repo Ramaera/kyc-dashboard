@@ -26,6 +26,7 @@ function index() {
         <Typography fontSize={30} fontWeight={600}>
           Sales Channel
         </Typography>
+        <Typography variant="h5">APPOINT CNF | DB | SS</Typography>
       </Box>
       <Box
         sx={{

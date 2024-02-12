@@ -649,10 +649,7 @@ function SidebarMenu() {
                   {servicesData.map((list) => {
                     return (
                       <ListItem component="div" onClick={closeSidebar}>
-                        <NextLink
-                          href={`/agency-services/${list.navigateTo}`}
-                          passHref
-                        >
+                        <NextLink href={`${list.navigateTo}`} passHref>
                           <Button
                             onClick={closeSidebar}
                             style={{

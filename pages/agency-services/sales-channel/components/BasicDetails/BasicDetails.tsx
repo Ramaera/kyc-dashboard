@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
   TextField,
@@ -6,25 +6,47 @@ import {
   Typography,
   Box,
   Card,
-  useTheme
+  useTheme,
+  TableHead,
+  TableRow,
+  CardHeader,
+  Divider,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Checkbox
 } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { CREATE_CARD_USER } from '@/apollo/queries/auth';
 import { LoadingButton } from '@mui/lab';
 import Document from '../Documents/Document';
+import SignatureCanvas from 'react-signature-canvas';
 
 const PersonalInfoForm = () => {
+  const signatureCanvasRef = useRef(null);
+
+  const clearSignature = () => {
+    signatureCanvasRef.current.clear();
+  };
+
+  // const saveSignature = () => {
+  //   const signatureImage = signatureCanvasRef.current.toDataURL();
+  //   console.log('Signature Image:', signatureImage);
+  // };
+
   const [createCardUser] = useMutation(CREATE_CARD_USER);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     mobileNumber: '',
-    pincode: '',
+    pancard: '',
+    fssi: '',
+    gst: '',
     address: '',
-    metaData: '',
-    aadhar: '',
-    pancard: ''
+    metaData: ''
   });
   const [isLoading, setLoading] = React.useState(false);
   const handleInputChange = (e) => {
@@ -45,23 +67,26 @@ const PersonalInfoForm = () => {
       toast.error('Enter Valid Mobile Number');
       return;
     }
-    if (!formData.pincode) {
-      toast.error('Enter Pincode');
+    if (formData.pancard.length !== 10) {
+      toast.error('Enter Valid Pan No');
       return;
     }
+
+    if (!formData.fssi) {
+      toast.error('Enter FSSI No');
+      return;
+    }
+
+    if (!formData.gst) {
+      toast.error('Enter GST No');
+      return;
+    }
+
     if (!formData.address) {
       toast.error('Enter Address');
       return;
     }
 
-    if (formData.aadhar.length !== 12) {
-      toast.error('Enter Valid Adhar No');
-      return;
-    }
-    if (formData.pancard.length !== 10) {
-      toast.error('Enter Valid Pan No');
-      return;
-    }
     return true;
   };
 
@@ -88,10 +113,10 @@ const PersonalInfoForm = () => {
           name: '',
           email: '',
           mobileNumber: '',
-          pincode: '',
+          fssi: '',
           address: '',
           metaData: '',
-          aadhar: '',
+          gst: '',
           pancard: ''
         });
       } catch (err) {
@@ -103,117 +128,160 @@ const PersonalInfoForm = () => {
 
   return (
     <>
-      <Card sx={{}}>
-        <Typography
-          marginTop={2}
-          fontSize={20}
-          fontWeight={600}
-          sx={{ display: 'flex', justifyContent: 'center' }}
-        >
-          APPOINT CNF | DB | SS
-        </Typography>
+      <Card sx={{ paddingY: 2 }}>
+        <CardHeader title="Fills Details" />
+        <Divider />
         <Box
           sx={{
-            padding: 2,
-            paddingInline: 8,
-            width: '100%',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
+            paddingX: 4,
             [theme.breakpoints.down('sm')]: {
-              display: 'block',
-              paddingInline: 1
+              paddingX: 2
             }
           }}
         >
-          <Box sx={{ paddingY: 2 }}>
-            <TextField
-              sx={{ width: '49%', marginRight: '1%' }}
-              required
-              name="name"
-              label="Name"
-              variant="outlined"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            <TextField
-              sx={{ width: '49%', marginLeft: '1%' }}
-              required
-              name="email"
-              label="Email"
-              variant="outlined"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
+          <Box
+            sx={{
+              width: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              [theme.breakpoints.down('sm')]: {
+                display: 'block',
+                paddingInline: 1
+              }
+            }}
+          >
+            <Box sx={{ paddingTop: 2 }}>
+              <Typography fontSize={18}>Select Type of Role</Typography>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value="CNF"
+                    control={<Radio />}
+                    label="CNF"
+                  />
+                  <FormControlLabel value="DB" control={<Radio />} label="DB" />
+                  <FormControlLabel value="SS" control={<Radio />} label="SS" />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+            <Box sx={{ paddingTop: 2 }}>
+              <TextField
+                sx={{ width: '49%', marginRight: '1%' }}
+                required
+                name="name"
+                label="Name"
+                variant="outlined"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+              <TextField
+                sx={{ width: '49%', marginLeft: '1%' }}
+                required
+                name="email"
+                label="Email"
+                variant="outlined"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </Box>
+            <Box sx={{ paddingTop: 2 }}>
+              <TextField
+                sx={{ width: '49%', marginRight: '1%' }}
+                required
+                type="number"
+                name="mobileNumber"
+                label="Mobile Number"
+                variant="outlined"
+                value={formData.mobileNumber}
+                onChange={handleInputChange}
+              />
+              <TextField
+                sx={{ width: '49%', marginLeft: '1%' }}
+                required
+                name="pancard"
+                label="Pan No"
+                variant="outlined"
+                value={formData.pancard}
+                onChange={handleInputChange}
+              />
+            </Box>
+
+            <Box sx={{ paddingTop: 2 }}>
+              <TextField
+                sx={{ width: '49%', marginRight: '1%' }}
+                required
+                name="fssi"
+                label="FSSI No"
+                variant="outlined"
+                value={formData.fssi}
+                onChange={handleInputChange}
+              />
+              <TextField
+                sx={{ width: '49%', marginLeft: '1%' }}
+                required
+                name="gst"
+                label="GST No"
+                variant="outlined"
+                value={formData.gst}
+                onChange={handleInputChange}
+              />
+            </Box>
+            <Box sx={{ paddingY: 2 }}>
+              <TextField
+                sx={{ width: '100%' }}
+                required
+                name="address"
+                label="Address"
+                variant="outlined"
+                multiline
+                rows={3}
+                value={formData.address}
+                onChange={handleInputChange}
+              />
+            </Box>
           </Box>
-          <Box sx={{ paddingY: 2 }}>
-            <TextField
-              sx={{ width: '49%', marginRight: '1%' }}
-              required
-              type="number"
-              name="mobileNumber"
-              label="Mobile Number"
-              variant="outlined"
-              value={formData.mobileNumber}
-              onChange={handleInputChange}
-            />
-            <TextField
-              sx={{ width: '49%', marginLeft: '1%' }}
-              required
-              name="pincode"
-              label="Pin Code"
-              variant="outlined"
-              value={formData.pincode}
-              onChange={handleInputChange}
-            />
+          <Box>
+            <Document />
           </Box>
 
-          <TextField
-            sx={{ width: '100%' }}
+          <FormControlLabel
             required
-            name="address"
-            label="Address"
-            variant="outlined"
-            multiline
-            rows={3}
-            value={formData.address}
-            onChange={handleInputChange}
+            control={<Checkbox />}
+            label="Accept Terms and Conditions "
           />
-          <Box sx={{ paddingY: 2 }}>
-            <TextField
-              sx={{ width: '49%', marginRight: '1%' }}
-              required
-              type="number"
-              name="aadhar"
-              label="Aadhar No"
-              variant="outlined"
-              value={formData.aadhar}
-              onChange={handleInputChange}
-            />
-            <TextField
-              sx={{ width: '49%', marginLeft: '1%' }}
-              required
-              name="pancard"
-              label="Pan No"
-              variant="outlined"
-              value={formData.pancard}
-              onChange={handleInputChange}
+
+          <Box sx={{ border: 1 }}>
+            <SignatureCanvas
+              ref={signatureCanvasRef}
+              penColor="white"
+              minWidth={1}
+              maxWidth={3}
+              canvasProps={{
+                // width: '100%',
+                height: 200
+              }}
             />
           </Box>
+          <Button onClick={clearSignature}>Clear Signature</Button>
+          {/* <button onClick={saveSignature}>Save Signature</button> */}
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
+            <LoadingButton
+              loading={isLoading}
+              onClick={submitData}
+              variant="contained"
+              type="submit"
+            >
+              Submit
+            </LoadingButton>
+          </Box>
+          <Toaster position="bottom-right" reverseOrder={false} />
         </Box>
-        <Box sx={{ padding: 2 }}>
-          <Document />
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1 }}>
-          <LoadingButton
-            loading={isLoading}
-            onClick={submitData}
-            variant="contained"
-            type="submit"
-          >
-            Submit
-          </LoadingButton>
-        </Box>
-        <Toaster position="bottom-right" reverseOrder={false} />
       </Card>
     </>
   );
