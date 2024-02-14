@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, useTheme, Box } from '@mui/material';
 const CardRamaera = (props) => {
   const {
     cardNumber,
+    card,
     cardHolder,
     maxDiscount,
     expiry,
@@ -14,6 +15,12 @@ const CardRamaera = (props) => {
     value
   } = props;
   const theme = useTheme();
+
+  const cardExpiryDate = (activationDate, ValidityMonths) => {
+    var cardExpiry = new Date(activationDate);
+    cardExpiry.setUTCMonth(cardExpiry.getUTCMonth() + ValidityMonths);
+    return cardExpiry;
+  };
   return (
     <>
       <Card
@@ -132,7 +139,10 @@ const CardRamaera = (props) => {
                 fontSize: '16px'
               }}
             >
-              Validity: {expiry} Months
+              Validity:{' '}
+              {card.isActive
+                ? cardExpiryDate(card.activationDate, card.Validity)
+                : `${expiry} Months `}
             </div>
           </div>
         </div>

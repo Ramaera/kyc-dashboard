@@ -56,6 +56,9 @@ function index() {
     setShowStepper(true);
     setshowTable(false);
   };
+
+  const handleAllotedCardShow = () => {};
+
   const theme = useTheme();
 
   return (

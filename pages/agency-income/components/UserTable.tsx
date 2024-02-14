@@ -186,7 +186,6 @@ const UserTable = () => {
       toast.success(` ₹ ${amountGenerate} Transfer To your  Wallet`);
       dispatch(addToWalletBalance(amountGenerate));
     } catch (err) {
-      // console.log('err---', err);
       toast.error(err.message);
     }
     setLoading({ ...isLoading, [document.id]: false });

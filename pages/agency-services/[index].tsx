@@ -150,7 +150,6 @@ function DashboardTasks(props: any) {
     variables: { userId: cardIndex }
   });
   const CardsOfAUser = data;
-  console.log('CardsOfAUser', CardsOfAUser?.findCardOfaUser);
 
   useEffect(() => {
     refetch();
@@ -248,6 +247,7 @@ function DashboardTasks(props: any) {
                                     tab={'viewCard'}
                                     type={card?.cardType}
                                     cardNumber={card?.cardNumber}
+                                    card={card}
                                     expiry={card?.cardValidity}
                                   />
                                   <CardBenefits
