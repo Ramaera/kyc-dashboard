@@ -102,10 +102,12 @@ const UserTable = () => {
   advanceAgraIncome?.map((user) => agraIncomeData.push(user));
 
   const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
+  const hideButtonDate = new Date('2024-02-01'); //YYYY-MM-DD
 
   const getDate = showButtonDate.toISOString().slice(0, 7);
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
+  const walletTransferKYCShowButton = selectedMonthYear == '2024-01';
 
   const handleTransferToWallet = async (document, userId, paymentType) => {
     setLoading({ ...isLoading, [document.id]: true });
@@ -304,7 +306,7 @@ const UserTable = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell>S.No.</TableCell>
-                      {walletTransferShowButton && (
+                      {walletTransferKYCShowButton && (
                         <TableCell>Transfer To Wallet</TableCell>
                       )}
                       <TableCell>Name</TableCell>
@@ -336,7 +338,7 @@ const UserTable = () => {
                               {index + 1}
                             </Typography>
                           </TableCell>
-                          {walletTransferShowButton && (
+                          {walletTransferKYCShowButton && (
                             <TableCell>
                               <LoadingButton
                                 loading={isLoading[user.id]}

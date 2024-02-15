@@ -39,6 +39,7 @@ function ForgotPasswordModal({ open, setOpen }) {
       .post('https://api.ramaera.com/api/PKey', postData, options)
       .then((res) => {
         setPWID(res.data[0]);
+
         if (res.data[0]) {
           setChangePasswordVisible(true);
         } else {
@@ -49,7 +50,7 @@ function ForgotPasswordModal({ open, setOpen }) {
         toast.error(err.message);
       });
   };
-
+  console.log(PWID);
   const handlePasswordChange = async () => {
     if (confirmPassword !== newPassword) {
       toast.error("Passwords Don't Match");
