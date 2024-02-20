@@ -148,6 +148,45 @@ function SidebarMenu() {
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
+                <NextLink href="/project-operation-report" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/project-operation-report'
+                        ? 'active'
+                        : ''
+                    }
+                    style={{
+                      color:
+                        currentRoute === '/project-operation-report'
+                          ? '#7063C0'
+                          : ''
+                    }}
+                    disableRipple
+                    component="a"
+                    onClick={() => {
+                      setListVisible(false);
+                      setShareList(false);
+                      closeSidebar();
+                    }}
+                    // startIcon={<DesignServicesTwoToneIcon />}
+                    startIcon={
+                      <span
+                        style={{
+                          color:
+                            currentRoute === '/project-operation-report'
+                              ? '#7063C0'
+                              : ''
+                        }}
+                      >
+                        &#x2022;
+                      </span>
+                    }
+                  >
+                    Project Operations Report
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
                 <NextLink href="/list" passHref>
                   <Button
                     className={currentRoute === '/list' ? 'active' : ''}

@@ -1,6 +1,8 @@
+import { GetUser } from '@/apollo/queries/auth';
 import variables from '@/config/variables';
 import { User } from '@/models/user';
 import { setOrUpdateAgencyUsersFilters } from '@/state/slice/filtersSlice';
+import { useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
@@ -157,6 +159,10 @@ const UserTable = () => {
   const [searchText, setSearchText] = useState('');
   const debouncedValue = useDebounce<string>(searchText, 400);
   const [filters, setFilters] = useState<Filters>({});
+  const agencyCode = useSelector((state: any) => state.user?.agencyCode);
+
+  const agencyCodeValue = agencyCode?.agencyCode;
+  const agencyCreatedDate = agencyCode?.createdAt?.slice(0, 10);
 
   const statusOptions = [
     {
@@ -429,6 +435,8 @@ const UserTable = () => {
             <TableHead>
               <TableRow>
                 <TableCell>S.No.</TableCell>
+                <TableCell>KYC Created On</TableCell>
+
                 <TableCell>Photo</TableCell>
                 <TableCell sx={{ cursor: 'pointer' }} onClick={sortName}>
                   Name{sortByName ? '⬇' : '⬆'}
@@ -473,6 +481,19 @@ const UserTable = () => {
                           width={30}
                         >
                           {index + 1}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          color:
+                            agencyCreatedDate < user.createdAt.slice(0, 10) &&
+                            'green'
+                        }}
+                      >
+                        <Typography width={90}>
+                          {agencyCreatedDate < user.createdAt.slice(0, 10)
+                            ? 'After Agency'
+                            : 'Before Agency'}
                         </Typography>
                       </TableCell>
 
