@@ -6,7 +6,7 @@ import Confetti from 'react-confetti';
 const index = () => {
   const theme = useTheme();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  var countDownDate = new Date('Dec 22, 2023 23:59:59').getTime();
+  var countDownDate = new Date('Mar 05, 2024 23:59:59').getTime();
   var myfunc = setInterval(function () {
     forceUpdate();
   }, 1000);
@@ -56,17 +56,16 @@ const index = () => {
               }
             }}
           >
-            On achieving the funding for the{' '}
+            We have Launched A{' '}
             <span style={{ fontWeight: 'black', fontSize: 20 }}>
-              Hajipur Spice Factory
+              My Mart My Brand Hyper Mart Hyderabad Project ,
             </span>{' '}
-            project. We sincerely thank all of you for your generous and
-            wholehearted support.
+            Please Complete The Phase 1 Funding ,Before DeadLine 05 /Mar/2024
           </Typography>
 
           {/*
            */}
-          {/* <Box
+          <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -197,7 +196,7 @@ const index = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Box> */}
+          </Box>
         </Box>
       </Box>
       <ConfettiExplosion />

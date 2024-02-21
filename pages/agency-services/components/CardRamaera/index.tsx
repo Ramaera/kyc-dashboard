@@ -10,7 +10,7 @@ const CardRamaera = (props) => {
     type,
     isSelected,
     onClick,
-    rechargeAmount,
+    // rechargeAmount,
     value
   } = props;
   const theme = useTheme();
@@ -60,7 +60,7 @@ const CardRamaera = (props) => {
                 alt=""
               />{' '}
             </div>
-            <div style={{ fontSize: '20px' }}>#myCard</div>
+            <div style={{ fontSize: '20px' }}>myCard</div>
           </div>
 
           <Box
@@ -91,7 +91,7 @@ const CardRamaera = (props) => {
               {cardNumber}
             </Typography>
           </Box>
-          {tab != 'viewCard' && (
+          {/* {tab != 'viewCard' && (
             <div
               style={{
                 display: 'flex',
@@ -113,7 +113,7 @@ const CardRamaera = (props) => {
                 Received Amount: ₹{value}
               </div>
             </div>
-          )}
+          )} */}
           <div
             style={{
               display: 'flex',

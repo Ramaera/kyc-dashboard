@@ -154,7 +154,7 @@ const Cards = (props) => {
                     cardHolder={userData?.name}
                     isSelected={selectedCardType === cardType}
                     onClick={() => handleCardClick(cardType)}
-                    rechargeAmount={cardData.rechargeAmount}
+                    // rechargeAmount={cardData.rechargeAmount}
                     value={cardData.value}
                     maxDiscount={cardData.maxDiscount}
                   />

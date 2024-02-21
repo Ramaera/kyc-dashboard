@@ -54,7 +54,7 @@ export const AllBankDetails = {
     },
     {
       key: 'Branch',
-      info: 'NOIDA SECTOR 62'
+      info: 'NOIDA SECTOR 61'
     },
     {
       key: 'A/C No.',
