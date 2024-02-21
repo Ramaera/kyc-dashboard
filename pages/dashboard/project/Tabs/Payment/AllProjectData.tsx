@@ -42,8 +42,31 @@ export const AllBankDetails = {
       key: 'IFSC CODE ',
       info: 'HDFC0000088'
     }
+  ],
+  HyderabadBankDetails: [
+    {
+      key: 'Company Name',
+      info: 'RAMAERA INDUSTRIES LTD..'
+    },
+    {
+      key: 'Bank Name',
+      info: 'SBI BANK'
+    },
+    {
+      key: 'Branch',
+      info: 'NOIDA SECTOR 62'
+    },
+    {
+      key: 'A/C No.',
+      info: '00000042628262780'
+    },
+    {
+      key: 'IFSC CODE ',
+      info: 'SBIN0005222'
+    }
   ]
 };
+
 export const AllProjectDetails = {
   HajipurProjectDetails: [
     20000000,
@@ -147,6 +170,58 @@ export const AllProjectDetails = {
     {
       key: 'Upcoming Enroll',
       info: '6399'
+    }
+  ],
+  HyderabadProjectDetails: [
+    15000000,
+    0,
+    {
+      key: 'Your Enrollment Amount is ',
+      info: '0'
+    },
+    {
+      key: 'Your No. of profit persons',
+      info: '0'
+    },
+    {
+      key: 'Required Fund',
+      info: 'Rs 60 Lakh'
+    },
+    {
+      key: 'Required No. of Share Holder',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Per Share Holder Required Fund',
+      info: '10000'
+    },
+    {
+      key: 'No. of share allotment',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Net Profit Sharing',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Total Enrolled Share',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Total Enrolled',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Till Raised Fund',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Remain Funding',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Upcoming Enroll',
+      info: 'Announced Soon'
     }
   ]
 };

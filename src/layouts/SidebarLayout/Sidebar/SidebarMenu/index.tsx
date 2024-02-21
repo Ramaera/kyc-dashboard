@@ -412,9 +412,9 @@ function SidebarMenu() {
                                 ? '#7063C0'
                                 : '',
                               fontWeight: 500,
-                              fontSize: '12px',
-                              textAlign: 'right',
-                              padding: '10px 15px'
+                              fontSize: '11px',
+                              // textAlign: 'right',
+                              padding: '10px '
                             }}
                             className={
                               currentQuery?.index?.includes(

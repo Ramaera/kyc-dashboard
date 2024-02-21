@@ -1,6 +1,14 @@
 import Footer from '@/components/Footer';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { Box, Card, CardHeader, Container, Divider, Grid } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardHeader,
+  Container,
+  Divider,
+  Grid,
+  useTheme
+} from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
@@ -10,6 +18,7 @@ import { useAppSelector } from '@/hooks';
 import variables from '@/config/variables';
 
 function index() {
+  const theme = useTheme();
   const user = useAppSelector((state) => state.user?.data);
 
   const router = useRouter();
@@ -35,7 +44,7 @@ function index() {
               textTransform: 'uppercase'
             }}
           />
-          <Divider sx={{ mb: 2 }} />
+          <Divider sx={{ mb: 1 }} />
           <Grid
             container
             direction="row"
@@ -44,7 +53,15 @@ function index() {
             spacing={0}
           >
             <Grid item xs={12}>
-              <Box px={4}>
+              <Box
+                px={4}
+                py={2}
+                sx={{
+                  [theme.breakpoints.down('sm')]: {
+                    padding: 1
+                  }
+                }}
+              >
                 <PaymentTab title={title} />
               </Box>
             </Grid>

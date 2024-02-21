@@ -21,14 +21,15 @@ import {
   linearProgressClasses,
   styled,
   Tab,
-  Tabs
+  Tabs,
+  useTheme
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import ProjectList from '../ProjectList';
 import { AllBankDetails, AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@emotion/react';
+
 import Image from 'next/image';
 
 const TabsContainerWrapper = styled(Box)(
@@ -36,7 +37,7 @@ const TabsContainerWrapper = styled(Box)(
       .MuiTabs-scrollableX {
         overflow-x: auto !important;
       }
-      
+
   `
 );
 
@@ -194,13 +195,27 @@ const DocumentRow = ({
         <Box
           sx={{
             height: 160,
-            marginTop: 10,
+            marginTop: 1,
+            marginLeft: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
             [theme.breakpoints.down('sm')]: {
-              height: 60
+              marginLeft: 0,
+              marginTop: 2
             }
           }}
         >
-          <div style={{ marginBottom: 10 }}>
+          <Box
+            sx={{
+              marginBottom: '10px',
+              marginLeft: '15px',
+              [theme.breakpoints.down('sm')]: {
+                marginBottom: '0px'
+              }
+            }}
+          >
             Status:{' '}
             <span
               style={{
@@ -219,7 +234,7 @@ const DocumentRow = ({
                 documents[i]?.status ||
                 'NOT STARTED'}
             </span>
-          </div>
+          </Box>
           <Button
             style={{
               cursor: documents[i]
@@ -291,16 +306,12 @@ const DocumentRow = ({
     }
     return views;
   };
+
   return (
     <>
       <TableRow
-        key={data.config.name}
         sx={{
-          '&:last-child td, &:last-child th': { border: 0 },
-          [theme.breakpoints.down('sm')]: {
-            display: 'flex',
-            flexDirection: 'column'
-          }
+          '&:last-child td, &:last-child th': { border: 0 }
         }}
       >
         {/*   <TableCell component="th" scope="row" style={{ border: 'none' }}>
@@ -308,16 +319,20 @@ const DocumentRow = ({
         </TableCell> */}
 
         <TableCell
-          style={{ display: 'flex', flexDirection: 'column', border: 'none' }}
-          width={300}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            border: 'none',
+            [theme.breakpoints.down('sm')]: {
+              paddingRight: 0
+            }
+          }}
         >
           {getPreview()}
         </TableCell>
 
-        <TableCell style={{ border: 'none' }} width={300}>
-          {getActionCell()}
-        </TableCell>
-        <TableCell style={{ border: 'none' }} width={300}>
+        <TableCell style={{ border: 'none' }}>{getActionCell()}</TableCell>
+        {/* <TableCell style={{ border: 'none' }} width={300}>
           <LoadingButton
             loading={isLoading}
             // disabled={!isValidToClick()}
@@ -328,7 +343,7 @@ const DocumentRow = ({
           >
             Upload
           </LoadingButton>
-        </TableCell>
+        </TableCell> */}
 
         {/* <TableCell>
           <span
@@ -356,11 +371,23 @@ const DocumentRow = ({
           </LoadingButton>
         )}
         <LoadingButton
-          sx={{ marginLeft: 2 }}
+          sx={{ marginLeft: 1 }}
           variant="contained"
           onClick={hideAdditionalDocuments}
         >
           Go Back
+        </LoadingButton>
+
+        <LoadingButton
+          sx={{ marginLeft: 1 }}
+          loading={isLoading}
+          // disabled={!isValidToClick()}
+          variant="contained"
+          onClick={() => {
+            handleDocumentUpload();
+          }}
+        >
+          Upload
         </LoadingButton>
       </div>
     </>
@@ -374,6 +401,7 @@ const InfoTab = ({ title }) => {
   const [rowNo, setRowNo] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [showBankDetails, setBankDetails] = useState(false);
+  const [showUPIDetails, setUPIDetails] = useState(false);
   const [enrollNow, setEnrollNow] = useState(false);
   const [proofImage, setProofImage] = useState<any | null>(null);
   const [paymentDocument, setPaymentDocument] = useState<DocumentType | null>();
@@ -389,6 +417,7 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
+
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -402,7 +431,12 @@ const InfoTab = ({ title }) => {
 
   const diff = projectAmount / AllProjectDetails[projectTitle][0];
   // console.log('', AllProjectDetails[projectTitle]);
-  const risedFundPer = title.toLowerCase() === 'hajipur' ? 100 : diff * 100;
+  const risedFundPer =
+    title.toLowerCase() === 'hajipur' || title.toLowerCase() === 'agra'
+      ? 100
+      : title.toLowerCase() === 'hyderabad'
+      ? 0
+      : diff * 100;
 
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
@@ -510,7 +544,9 @@ const InfoTab = ({ title }) => {
           title.toLowerCase() + '_' + documentsConfig.project_payment.id
         ) {
           setPaymentDocument(document);
+
           setProofImage(document.url);
+
           setEnrollNow(true);
         }
         if (
@@ -531,9 +567,10 @@ const InfoTab = ({ title }) => {
   };
 
   const tabs = [
-    { value: 'basicInfo', label: 'Basic Info' },
-    { value: 'enrolledAmt', label: 'Enrolled Amount' }
+    { value: 'basicInfo', label: 'Basic Info', title: title },
+    { value: 'enrolledAmt', label: 'Enrolled Amount', title: title }
   ];
+
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
@@ -541,6 +578,16 @@ const InfoTab = ({ title }) => {
   let totalfund = 20000000;
   let proAmt = projectAmount;
   const ramaeraFund = totalfund - proAmt;
+
+  const btnShowBankDetails = () => {
+    setBankDetails(true);
+    setUPIDetails(false);
+  };
+
+  const btnShowUPIDetails = () => {
+    setBankDetails(false);
+    setUPIDetails(true);
+  };
 
   return (
     <>
@@ -554,14 +601,15 @@ const InfoTab = ({ title }) => {
             visibleScrollbar={true}
             indicatorColor="primary"
           >
-            {tabs.map((tab) => (
-              <Tab
-                // style={{ fontSize: mobile ? 8 : 14 }}
-                key={tab.value}
-                label={tab.label}
-                value={tab.value}
-              />
-            ))}
+            {tabs.map((tab) =>
+              tab.title.toLowerCase() === 'hyderabad' ? (
+                tab.label === 'Basic Info' && (
+                  <Tab key={tab.value} label={tab.label} value={tab.value} />
+                )
+              ) : (
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
+              )
+            )}
           </Tabs>
         </TabsContainerWrapper>
       </div>
@@ -645,10 +693,14 @@ const InfoTab = ({ title }) => {
                                   </TableCell>
                                   <TableCell align="right">
                                     {row.key === 'Till Raised Fund'
-                                      ? projectAmount
+                                      ? title.toLowerCase() === 'hyderabad'
+                                        ? row.info
+                                        : projectAmount
                                       : row.key === 'Remain Funding'
-                                      ? AllProjectDetails[projectTitle][0] -
-                                        projectAmount
+                                      ? title.toLowerCase() === 'hyderabad'
+                                        ? row.info
+                                        : AllProjectDetails[projectTitle][0] -
+                                          projectAmount
                                       : row.info}
                                   </TableCell>
                                 </TableRow>
@@ -666,7 +718,9 @@ const InfoTab = ({ title }) => {
                       {`₹ ${
                         title.toLowerCase() === 'hajipur'
                           ? '20000000 / ₹20000000'
-                          : `${projectAmount} / ₹3300000`
+                          : title.toLowerCase() === 'agra'
+                          ? `${projectAmount} / ₹3300000`
+                          : '0 / ₹6000000'
                       } `}
                     </Typography>
                     <BorderLinearProgress
@@ -690,11 +744,25 @@ const InfoTab = ({ title }) => {
                 {enrollNow && (
                   <>
                     <Button
-                      variant="outlined"
-                      onClick={() => setBankDetails(!showBankDetails)}
+                      style={{ marginRight: 20 }}
+                      variant={showBankDetails ? 'contained' : 'outlined'}
+                      onClick={() => {
+                        btnShowBankDetails();
+                      }}
                     >
                       <Typography variant="h4">Bank Details</Typography>
                     </Button>
+
+                    {title.toLowerCase() === 'hyderabad' && (
+                      <Button
+                        variant={showUPIDetails ? 'contained' : 'outlined'}
+                        onClick={() => {
+                          btnShowUPIDetails();
+                        }}
+                      >
+                        <Typography variant="h4">UPI</Typography>
+                      </Button>
+                    )}
                     <br />
                   </>
                 )}
@@ -736,7 +804,7 @@ const InfoTab = ({ title }) => {
                 )}
               </div>
 
-              {showBankDetails && (
+              {showBankDetails && enrollNow && (
                 <TableContainer component={Paper} sx={{ mt: 2 }}>
                   <Table sx={{ minWidth: 100 }} aria-label="simple table">
                     <TableBody>
@@ -759,6 +827,32 @@ const InfoTab = ({ title }) => {
                   </Table>
                 </TableContainer>
               )}
+
+              {showUPIDetails &&
+                enrollNow &&
+                title.toLowerCase() === 'hyderabad' && (
+                  <TableContainer component={Paper} sx={{ mt: 2 }}>
+                    <Table sx={{ minWidth: 100 }} aria-label="simple table">
+                      <TableBody>
+                        <img
+                          style={{
+                            width: '250px',
+                            borderRadius: '20px',
+                            padding: '10px'
+                          }}
+                          src="/images/hyderabad_upi.png"
+                        />
+                        <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
+                          OR
+                        </Typography>
+                        <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
+                          <a href="#">UPI ID : ramaeraindustries@sbi</a>
+                        </Typography>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+
               {enrollNow && (
                 <Grid container py={2} spacing={2}>
                   <Grid item xs={12} sm={5} md={3} lg={3}>

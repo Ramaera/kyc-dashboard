@@ -1,7 +1,8 @@
 export default {
   project: {
     AGRA: 'agra',
-    HAJIPUR: 'hajipur'
+    HAJIPUR: 'hajipur',
+    HYDERABAD: 'hyderabad'
   },
   role: {
     ADMIN: 'ADMIN',
