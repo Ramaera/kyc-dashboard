@@ -56,7 +56,7 @@ const index = () => {
               }
             }}
           >
-            We have Launched A{' '}
+            We have Launched{' '}
             <span style={{ fontWeight: 'black', fontSize: 20 }}>
               My Mart My Brand Hyper Mart Hyderabad Project ,
             </span>{' '}
