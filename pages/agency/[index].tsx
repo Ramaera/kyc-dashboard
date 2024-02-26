@@ -17,6 +17,7 @@ import InfoTab from './Tabs/Info';
 import NomineeTab from './Tabs/Nominee';
 import PaymentTab from './Tabs/Payment';
 import Projects from './Tabs/Projects';
+import ToAdvance from 'pages/dashboard/toAdvance';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `

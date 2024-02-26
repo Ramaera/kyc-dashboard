@@ -7,12 +7,14 @@ const initialState = {
   allAgencyList: [],
   totalHajipurAmount: 0,
   totalAgraAmount: 0,
+  totalHyderabadAmount: 0,
   totalNumbers: {
     totalSubscribers: 0,
     totalAgraSubscribers: 0,
     totalBasicSubscribers: 0,
     totalAdvanceSubscribers: 0,
-    totalHajipurSubscribers: 0
+    totalHajipurSubscribers: 0,
+    totalHyderabadSubscribers: 0
   },
 
   isData: false
@@ -40,6 +42,9 @@ export const allUSersSlice = createSlice({
     setTotalAgraAmount: (state, action) => {
       state.totalAgraAmount = action.payload;
     },
+    setTotalHyderabadAmount: (state, action) => {
+      state.totalHyderabadAmount = action.payload;
+    },
     setNumbers: (state, action) => {
       state.totalNumbers = action.payload;
     },
@@ -58,6 +63,7 @@ export const {
   setTotalHajipurAmount,
   setAllAgencyList,
   setTotalAgraAmount,
+  setTotalHyderabadAmount,
   setAllKycHandlerList
 } = allUSersSlice.actions;
 

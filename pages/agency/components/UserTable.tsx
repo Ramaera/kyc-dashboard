@@ -148,7 +148,7 @@ const UserTable = () => {
 
   const theme = useTheme();
   const [usersList, setUsersList] = useState(
-    useSelector((state: any) => state.allUsers.allTheUsers)
+    useSelector((state: any) => state?.allUsers?.allTheUsers)
   );
   const [sortByName, setSortByName] = useState(true);
   const [sortByPWID, setSortByPWID] = useState(true);

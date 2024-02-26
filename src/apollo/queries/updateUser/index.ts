@@ -66,6 +66,16 @@ $membsership:Membership!,
   }
 }`);
 
+export const UPDATE_UTR_AMOUNT = gql(`
+mutation UpdateDocumentUTR ($amount:Int! $documentId:String! $utrNo:String!){
+    updateDocumentUTR(data: { amount: $amount, documentId:$documentId, utrNo: $utrNo }) {
+        updatedAt
+    }
+}
+
+
+`);
+
 export const UPDATE_KYC_BY_ADMIN = gql(`
 mutation updateStatus($id: String!, $kyc: KYC!) {
   updateStatus(data: { id: $id, kyc: $kyc }) {
@@ -147,6 +157,8 @@ query{
   getProjectsPayment{
     ProjectAgraAmountReceived
     ProjectHajipurAmountReceived
+    ProjectHyderabadAmountReceived
+    
   }
 }
 `);

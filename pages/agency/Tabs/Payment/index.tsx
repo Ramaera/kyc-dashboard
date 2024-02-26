@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 // import { useAppSelector } from '@/hooks';
 import {
   UPDATE_BY_ADMIN,
-  UPDATE_STATUS_BY_ADMIN
+  UPDATE_STATUS_BY_ADMIN,
+  UPDATE_UTR_AMOUNT
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
@@ -36,6 +37,7 @@ export const rows = [
 const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
+
   const [moreRow, setMoreRow] = useState(0);
   const [statusUpdate, setStatusUpdate] = useState([]);
   const [additionalAmounts, setAdditionalAmounts] = useState([
@@ -424,9 +426,13 @@ const InfoTab = () => {
   const [paymentDocument, setPaymentDocument] = useState<DocumentType>();
   const [isImageChanged, setImageChanged] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
+  const [updateUTRandAmount] = useMutation(UPDATE_UTR_AMOUNT);
   //const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
+
+  const updateUTRandAmountFunction = async (documentId) => {};
+
   const getDocNum = async () => {
     let count = 0;
     user?.documents?.map((doc) => {
@@ -499,14 +505,21 @@ const InfoTab = () => {
 
   const handleAmountSubmit = async () => {
     try {
-      await updateDataByAdmin({
+      await updateUTRandAmount({
         variables: {
-          id: user.id,
-          documentId: paymentDocument.id,
-          amount: parseInt(amount),
-          utrNo: utrNumber
+          utrNo: utrNumber,
+          amount: amount,
+          documentId: paymentDocument.id
         }
       });
+      // await updateDataByAdmin({
+      //   variables: {
+      //     id: user.id,
+      //     documentId: paymentDocument.id,
+      //     amount: parseInt(amount),
+      //     utrNo: utrNumber
+      //   }
+      // });
       dispatch(
         setFoundUser(
           updateUserAmount(paymentDocument.id, parseInt(amount), utrNumber)
@@ -523,6 +536,7 @@ const InfoTab = () => {
 
       toast.success('Details Updated');
     } catch (err) {
+      console.log('erroridhar', err);
       toast.error(err);
     }
     // setLoading(false);
@@ -536,13 +550,11 @@ const InfoTab = () => {
         try {
           imgUrl = await handleImageUpload(proofImage);
         } catch (err) {
-          // imgUrl = 'lorem';
           toast.error('Error, Try Again!');
         }
       } else {
         imgUrl = proofImage;
       }
-      // const isValid = validateSubmit(imgUrl);
       if (paymentDocument) {
         await updateDataByAdmin({
           variables: {

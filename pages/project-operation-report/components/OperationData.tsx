@@ -11,22 +11,10 @@ const OperationData = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://erp.ramaera.com/api/method/frappe.charts.api.get',
+          'https://erp.ramaera.com/api/resource/{doctype}',
           {
             headers: {
               Authorization: 'token 602ac7d2d573f32:6acaed00eb0733d'
-            },
-            params: {
-              chart_name: 'Purchase Order Trends',
-              filters: {
-                doc_type: 'Purchase Order',
-                date_field: 'creation_date',
-                group_by: 'supplier',
-                aggregation: 'count',
-                range: 'Year',
-                from_date: '2023-01-01',
-                to_date: '2024-01-31'
-              }
             }
           }
         );

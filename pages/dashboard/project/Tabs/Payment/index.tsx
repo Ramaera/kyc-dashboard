@@ -413,11 +413,12 @@ const InfoTab = ({ title }) => {
   const [isEnrolled, setEnrolled] = useState(false);
   const [loadList, startLoadingList] = useState(false);
   let projectTitle = title + 'ProjectDetails';
+  console.log('title', title);
   const amountFromProject = `total${title}Amount`;
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
-
+  console.log('pp', projectAmount);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -720,7 +721,7 @@ const InfoTab = ({ title }) => {
                           ? '20000000 / ₹20000000'
                           : title.toLowerCase() === 'agra'
                           ? `${projectAmount} / ₹3300000`
-                          : '0 / ₹6000000'
+                          : `${projectAmount}/ ₹6000000`
                       } `}
                     </Typography>
                     <BorderLinearProgress
