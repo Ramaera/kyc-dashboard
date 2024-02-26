@@ -14,7 +14,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'not available'
+  uri: process.env.NEXT_PUBLIC_SERVER_URL
 });
 
 let ACCESSTOKEN;

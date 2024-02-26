@@ -1,4 +1,4 @@
-import { UPDATE_BY_ADMIN } from '@/apollo/queries/updateUser';
+import { UPDATE_BASIC_DETAILS_BY_ADMIN } from '@/apollo/queries/updateUser';
 import variables from '@/config/variables';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { setFoundUser } from '@/state/slice/foundUserSlice';
@@ -24,7 +24,7 @@ const InfoTab = () => {
   const [email, setEmail] = useState('');
   const [referral, setReferral] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateDataByAdmin] = useMutation(UPDATE_BASIC_DETAILS_BY_ADMIN);
 
   const handleSubmit = async () => {
     setLoading(true);

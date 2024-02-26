@@ -16,7 +16,8 @@ import { useEffect, useState } from 'react';
 //import { CREATEDOCUMENT } from '@/apollo/queries/auth';
 // import { useAppSelector } from '@/hooks';
 import {
-  UPDATE_BY_ADMIN,
+  UPDATE_UTR_AMOUNT,
+  UPDATE_DOCUMENT_URL_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
@@ -63,7 +64,8 @@ const DocumentRow = ({
     setProjectName(getProjectName);
   }, [rowNo, getProjectName]);
   // const [createDocument] = useMutation(CREATEDOCUMENT);
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateUTRandAmount] = useMutation(UPDATE_UTR_AMOUNT);
+  const [updateDocumentByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   const [isLoading, setLoading] = useState(false);
   // const dispatch = useAppDispatch();
@@ -100,9 +102,8 @@ const DocumentRow = ({
   const handleCreateDocument = async () => {};
 
   const handleUpdateDocument = async (id: string, url: string) => {
-    return await updateDataByAdmin({
+    return await updateDocumentByAdmin({
       variables: {
-        id: user.id,
         documentId: id,
         url: url
       }
@@ -114,15 +115,13 @@ const DocumentRow = ({
       // console.log('dokss', documents);
       // const documentTitle = data.config.items[i].id;
       if (additionalAmounts[i]) {
-        await updateDataByAdmin({
+        await updateUTRandAmount({
           variables: {
-            id: user.id,
             documentId: documents[i].id,
-            amount: additionalAmounts[i],
+            amount: parseInt(additionalAmounts[i]),
             utrNo: additionalUtr[i]
           }
         });
-        // console.log('resp', resp.data.updateDataByAdmin);
         toast.success(`Details Updated`);
       }
     }
@@ -429,7 +428,8 @@ const InfoTab = ({ to }) => {
     // console.log(data);
   }, [data]);
 
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateUTRandAmount] = useMutation(UPDATE_UTR_AMOUNT);
+  const [updateDocumentByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   // console.log(user);
   /* const handleImageUpload = async () => {
@@ -534,9 +534,8 @@ const InfoTab = ({ to }) => {
   const handleAmountSubmit = async () => {
     // setLoading(true);
     try {
-      await updateDataByAdmin({
+      await updateUTRandAmount({
         variables: {
-          id: user.id,
           documentId: paymentDocument.id,
           amount: parseInt(amount),
           utrNo: utrNumber
@@ -580,9 +579,8 @@ const InfoTab = ({ to }) => {
       }
       // const isValid = validateSubmit(imgUrl);
       if (paymentDocument) {
-        await updateDataByAdmin({
+        await updateDocumentByAdmin({
           variables: {
-            id: user.id,
             documentId: paymentDocument.id,
             url: imgUrl
           }

@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 // import { useAppSelector } from '@/hooks';
 import {
-  UPDATE_BY_ADMIN,
+  UPDATE_DOCUMENT_URL_BY_ADMIN,
+  UPDATE_NOMINEE_DETAILS_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
@@ -27,7 +28,8 @@ const NomineeTab = () => {
   const user = useSelector((state: any) => state.foundUser.foundUser);
   const usersList = useSelector((state: any) => state.allUsers.allTheUsers);
 
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateDataByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
+  const [updateNomineByAdmin] = useMutation(UPDATE_NOMINEE_DETAILS_BY_ADMIN);
   const [updateDocumentStatusByAdmin, { data }] = useMutation(
     UPDATE_STATUS_BY_ADMIN
   );
@@ -116,7 +118,6 @@ const NomineeTab = () => {
     // console.log('idurl', user.id, id, url);
     const resp = await updateDataByAdmin({
       variables: {
-        id: user.id,
         documentId: id,
         url: url
       }
@@ -162,11 +163,11 @@ const NomineeTab = () => {
     }
     setLoading(true);
     try {
-      await updateDataByAdmin({
+      await updateNomineByAdmin({
         variables: {
-          id: user.id,
-          nomineeName: nomineeName,
-          nomineeRelationship: relationship
+          userId: user.id,
+          name: nomineeName,
+          relationship: relationship
         }
       });
       await dispatch(

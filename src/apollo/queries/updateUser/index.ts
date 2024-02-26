@@ -1,5 +1,71 @@
 import { gql } from '@apollo/client';
 
+export const UPDATE_DEMAT_DATA_BY_ADMIN = gql(`
+mutation UpdateDematDetailsByAdmin($demat_account:String! $userId:String!) {
+    updateDematDetailsByAdmin(data: { demat_account: $demat_account, userId:$userId  }) {
+      id
+      demat_account
+    }
+}
+
+`);
+
+export const UPDATE_DOCUMENT_URL_BY_ADMIN = gql(`
+mutation UpdateDocumentByAdmin($documentId:String! $url:String!) {
+    updateDocumentByAdmin(data: { documentId: $documentId, url: $url }) {
+        createdAt
+        id
+        status
+        title
+        updatedAt
+        url
+    }
+}
+`);
+
+export const UPDATE_NOMINEE_DETAILS_BY_ADMIN = gql(`
+mutation UpdateNomineeDetailByAdmin ($userId:String! $name:String! $relationship:String!){
+    updateNomineeDetailByAdmin(
+        data: { name: $name, relationship: $relationship, userId: $userId }
+    ) {
+        
+        id
+        updatedAt
+    }
+}
+
+`);
+
+export const UPDATE_BASIC_DETAILS_BY_ADMIN = gql(`
+mutation UpdateBasicDetailsByAdmin($Address:String 
+$aadharCardNumber:String $alternate_mobile_number:String 
+$date_of_birth:String $email:String $father_or_husband_name:String 
+$id:String $mobile_number:String
+$name:String
+$panCardNumber:String
+
+
+) {
+    updateBasicDetailsByAdmin(
+        data: {
+            Address: $Address
+            aadharCardNumber: $aadharCardNumber
+            alternate_mobile_number: $alternate_mobile_number
+            date_of_birth: $date_of_birth
+            email: $email
+            father_or_husband_name: $father_or_husband_name
+            id: $id
+            mobile_number: $mobile_number
+            name: $name
+            panCardNumber: $panCardNumber
+        }
+    ) {
+    id
+    
+    
+    }
+}`);
+
 export const UPDATE_BY_ADMIN = gql(`
 mutation updateDataByAdmin(
   $id: String!

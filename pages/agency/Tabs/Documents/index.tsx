@@ -1,5 +1,5 @@
 import {
-  UPDATE_BY_ADMIN,
+  UPDATE_DOCUMENT_URL_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
@@ -66,7 +66,7 @@ const DocumentRow = ({ user, data, documents = [] }) => {
   } */
   const [images, setImages] = useState([]);
   const [imagesChanged, setImagesChange] = useState([]);
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateDataByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   //const [createDocument] = useMutation(CREATEDOCUMENT);
   // const [updateDocument] = useMutation(UPDATEDOCUMENT);

@@ -12,9 +12,9 @@ import { useEffect, useState } from 'react';
 //import { CREATEDOCUMENT } from '@/apollo/queries/auth';
 // import { useAppSelector } from '@/hooks';
 import {
-  UPDATE_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN,
-  UPDATE_UTR_AMOUNT
+  UPDATE_UTR_AMOUNT,
+  UPDATE_DOCUMENT_URL_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
@@ -50,8 +50,8 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   useEffect(() => {
     setMoreRow(rowNo);
   }, [rowNo]);
-  // const [createDocument] = useMutation(CREATEDOCUMENT);
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateUTRandAmount] = useMutation(UPDATE_UTR_AMOUNT);
+  const [updateDocumentByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
   const [isLoading, setLoading] = useState(false);
 
@@ -80,9 +80,8 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
   const handleCreateDocument = async () => {};
 
   const handleUpdateDocument = async (id: string, url: string) => {
-    return await updateDataByAdmin({
+    return await updateDocumentByAdmin({
       variables: {
-        id: user.id,
         documentId: id,
         url: url
       }
@@ -102,12 +101,11 @@ const DocumentRow = ({ data, documents = [], user, rowNo }) => {
     for (let i = 0; i < moreRow; i++) {
       const documentTitle = data.config.items[i].id;
       if (additionalAmounts[i]) {
-        await updateDataByAdmin({
+        await updateUTRandAmount({
           variables: {
-            id: user.id,
-            documentId: findDocId(documentTitle),
-            amount: additionalAmounts[i],
-            utrNo: additionalUtr[i]
+            utrNo: additionalUtr[i],
+            amount: parseInt(additionalAmounts[i]),
+            documentId: findDocId(documentTitle)
           }
         });
         toast.success(`Details Updated`);
@@ -428,7 +426,7 @@ const InfoTab = () => {
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
   const [updateUTRandAmount] = useMutation(UPDATE_UTR_AMOUNT);
   //const [createDocument] = useMutation(CREATEDOCUMENT);
-  const [updateDataByAdmin] = useMutation(UPDATE_BY_ADMIN);
+  const [updateDocumentByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin] = useMutation(UPDATE_STATUS_BY_ADMIN);
 
   const updateUTRandAmountFunction = async (documentId) => {};
@@ -508,7 +506,7 @@ const InfoTab = () => {
       await updateUTRandAmount({
         variables: {
           utrNo: utrNumber,
-          amount: amount,
+          amount: parseInt(amount),
           documentId: paymentDocument.id
         }
       });
@@ -556,9 +554,8 @@ const InfoTab = () => {
         imgUrl = proofImage;
       }
       if (paymentDocument) {
-        await updateDataByAdmin({
+        await updateDocumentByAdmin({
           variables: {
-            id: user.id,
             documentId: paymentDocument.id,
             url: imgUrl
           }
