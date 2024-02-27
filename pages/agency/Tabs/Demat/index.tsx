@@ -1,5 +1,6 @@
 import {
   UPDATE_DEMAT_DATA_BY_ADMIN,
+  UPDATE_DOCUMENT_URL_BY_ADMIN,
   UPDATE_STATUS_BY_ADMIN
 } from '@/apollo/queries/updateUser';
 import documentsConfig from '@/config/documentsConfig';
@@ -32,7 +33,8 @@ const DematTab = () => {
   const [isImageChanged, setImageChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
-  const [updateDataByAdmin] = useMutation(UPDATE_DEMAT_DATA_BY_ADMIN);
+  const [updateDematDataByAdmin] = useMutation(UPDATE_DEMAT_DATA_BY_ADMIN);
+  const [updateDataByAdmin] = useMutation(UPDATE_DOCUMENT_URL_BY_ADMIN);
   const [updateDocumentStatusByAdmin, { data }] = useMutation(
     UPDATE_STATUS_BY_ADMIN
   );
@@ -96,7 +98,7 @@ const DematTab = () => {
 
     try {
       if (dematAccount) {
-        await updateDataByAdmin({
+        await updateDematDataByAdmin({
           variables: {
             userId: user.id,
             demat_account: dematAccount
