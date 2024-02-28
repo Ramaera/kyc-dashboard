@@ -99,6 +99,7 @@ const AllUserTable = () => {
                   <TableCell align="center">Demat</TableCell>
                   <TableCell align="center">Hajipur Project</TableCell>
                   <TableCell align="center">Agra Project</TableCell>
+                  <TableCell align="center">Hyderabad Project</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -225,6 +226,21 @@ const AllUserTable = () => {
                           {projectChecker(
                             user?.documents,
                             'agra_project_payment'
+                          )}
+                        </Typography>
+                      </TableCell>
+
+                      <TableCell align="center">
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {projectChecker(
+                            user?.documents,
+                            'hyderabad_project_payment'
                           )}
                         </Typography>
                       </TableCell>

@@ -56,6 +56,7 @@ interface Filters {
   status?: 'all' | 'NOT STARTED' | 'APPROVED' | 'PENDING' | 'REJECTED';
   hajipur?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
   agra?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
+  hyderabad?: 'all' | 'NOT ENROLLED' | 'APPROVED' | 'PENDING';
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
@@ -93,7 +94,13 @@ const applyFilters = (users: User[], filters: Filters): any => {
     ) {
       matches = false;
     }
-
+    if (
+      filters.hyderabad &&
+      projectChecker(user?.documents, 'hyderabad_project_payment') !==
+        filters.hyderabad
+    ) {
+      matches = false;
+    }
     return matches;
   });
 };
@@ -176,7 +183,8 @@ const UserTable = () => {
   const [filters, setFilters] = useState<Filters>({
     status: null,
     hajipur: null,
-    agra: null
+    agra: null,
+    hyderabad: null
   });
   useEffect(() => {
     if (
@@ -298,6 +306,25 @@ const UserTable = () => {
     }
   ];
 
+  const hyderabadOptions = [
+    {
+      id: 'all',
+      name: 'All'
+    },
+    {
+      id: 'NOT ENROLLED',
+      name: 'Not Enrolled'
+    },
+    {
+      id: 'APPROVED',
+      name: 'Approved'
+    },
+    {
+      id: 'PENDING',
+      name: 'Pending'
+    }
+  ];
+
   /* const handleProjectChange = (e) => {
     setKycList(e);
   }; */
@@ -347,6 +374,18 @@ const UserTable = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       agra: value
+    }));
+  };
+  const handleHyderabadChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== 'all') {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      hyderabad: value
     }));
   };
   /*   const handlePageChange = (_event: any, newPage: number): void => {
@@ -600,6 +639,22 @@ const UserTable = () => {
                       ))}
                     </Select>
                   </FormControl>
+
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Hyderabad </InputLabel>
+                    <Select
+                      value={filters.hyderabad || 'all'}
+                      onChange={handleHyderabadChange}
+                      label="Status"
+                      autoWidth
+                    >
+                      {hyderabadOptions.map((statusOption) => (
+                        <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Box>
               </Box>
             }
@@ -728,6 +783,7 @@ const UserTable = () => {
                     <TableCell align="center">Demat</TableCell>
                     <TableCell align="center">Hajipur Project</TableCell>
                     <TableCell align="center">Agra Project</TableCell>
+                    <TableCell align="center">Hyderabad Project</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -867,6 +923,20 @@ const UserTable = () => {
                             {projectChecker(
                               user?.documents,
                               'agra_project_payment'
+                            )}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            {projectChecker(
+                              user?.documents,
+                              'hyderabad_project_payment'
                             )}
                           </Typography>
                         </TableCell>

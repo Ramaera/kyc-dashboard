@@ -53,13 +53,15 @@ function Header() {
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalHajipur: 0,
-    totalAgra: 0
+    totalAgra: 0,
+    totalHyderabad: 0
   });
   useEffect(() => {
     setNumbers({
       totalKYC: _numbers.totalSubscribers,
       totalHajipur: _numbers.totalHajipurSubscribers,
-      totalAgra: _numbers.totalAgraSubscribers
+      totalAgra: _numbers.totalAgraSubscribers,
+      totalHyderabad: _numbers.totalHyderabadSubscribers
     });
   }, [_numbers]);
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
@@ -192,6 +194,20 @@ function Header() {
               }}
             >
               Agra Enrolled : {numbers.totalAgra}
+            </Typography>
+          )}
+
+          {numbers.totalHyderabad && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Hyderabad Enrolled : {numbers.totalHyderabad}
             </Typography>
           )}
         </Stack>
