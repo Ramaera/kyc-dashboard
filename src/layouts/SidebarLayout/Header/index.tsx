@@ -53,13 +53,15 @@ function Header() {
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
     totalHajipur: 0,
-    totalAgra: 0
+    totalAgra: 0,
+    totalHyderabad: 0
   });
   useEffect(() => {
     setNumbers({
       totalKYC: _numbers.totalSubscribers,
       totalHajipur: _numbers.totalHajipurSubscribers,
-      totalAgra: _numbers.totalAgraSubscribers
+      totalAgra: _numbers.totalAgraSubscribers,
+      totalHyderabad: _numbers.totalHyderabadSubscribers
     });
   }, [_numbers]);
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
@@ -195,7 +197,7 @@ function Header() {
             </Typography>
           )}
 
-          {/* {numbers.totalHyderabad && (
+          {numbers.totalHyderabad && (
             <Typography
               variant="h4"
               sx={{
@@ -207,7 +209,7 @@ function Header() {
             >
               Hyderabad Enrolled : {numbers.totalHyderabad}
             </Typography>
-          )} */}
+          )}
         </Stack>
       )}
       {router.pathname === '/star-of-the-week' && (

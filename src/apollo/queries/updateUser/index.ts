@@ -209,6 +209,7 @@ query{
     totalBasicSubscribers
     totalAdvanceSubscribers
     totalHajipurSubscribers
+    totalHyderabadSubscribers
   }
 }
 `);
