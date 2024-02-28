@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 // import StepForm from './components/Stepper/StepForm';
 import BasicDetails from './components/BasicDetails/BasicDetails';
 import UserTable from './components/UserTable';
+import CardUserTable from './components/CardUserTable';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 import { CARD_USERS_DETAIL } from '@/apollo/queries/auth';
@@ -24,6 +25,8 @@ function index() {
   const [currentPage, setCurrentPage] = useState(true);
   const [showStepper, setShowStepper] = useState(currentPage);
   const [showTable, setshowTable] = useState(!currentPage);
+  const [showCardTable, setshowCardTable] = useState(!currentPage);
+
   // console.log('showTable', showTable);
   const [users, setUsers] = useState([]);
   const agencyCode = useSelector(
@@ -47,14 +50,22 @@ function index() {
   // console.log('esdrfcghvbjnk', agencyCode);
   // const router = useRouter();
 
+  const handleShowCardTableClick = () => {
+    setshowCardTable(true);
+    setshowTable(false);
+    setShowStepper(false);
+  };
+
   const handleShowTableClick = () => {
     setshowTable(true);
     setShowStepper(false);
+    setshowCardTable(false);
   };
 
   const handleApplyCardClick = () => {
     setShowStepper(true);
     setshowTable(false);
+    setshowCardTable(false);
   };
   const theme = useTheme();
 
@@ -88,7 +99,7 @@ function index() {
         >
           <Card sx={{ height: '100%', padding: 2 }}>
             <Button
-              variant={!showTable ? 'contained' : 'outlined'}
+              variant={showStepper ? 'contained' : 'outlined'}
               component="label"
               onClick={handleApplyCardClick}
               sx={{ width: '100%' }}
@@ -102,6 +113,15 @@ function index() {
               onClick={handleShowTableClick}
             >
               Users Applied
+            </Button>
+
+            <Button
+              sx={{ marginTop: 2, width: '100%' }}
+              variant={showCardTable ? 'contained' : 'outlined'}
+              component="label"
+              onClick={handleShowCardTableClick}
+            >
+              Card Applied
             </Button>
           </Card>
         </Box>
@@ -117,6 +137,21 @@ function index() {
             }}
           >
             <UserTable user={users} />
+          </Box>
+        )}
+
+        {showCardTable && (
+          <Box
+            sx={{
+              width: '75%',
+
+              padding: 2,
+              [theme.breakpoints.down('sm')]: {
+                width: '100%'
+              }
+            }}
+          >
+            <CardUserTable user={users} />
           </Box>
         )}
 

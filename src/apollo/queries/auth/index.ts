@@ -623,6 +623,13 @@ query FindCardHoldersInAgency($agencyCode:String!) {
       name
       referralAgencyCode
       updatedAt
+      emailVerified
+      myCard {
+        cardNumber
+        cardType
+        id
+        isActive
+    }
   }
 }
 `);
@@ -724,4 +731,12 @@ query CardDetails($cardNumber:String!) {
   }
 }
 
+`);
+
+export const SEND_VERIFICATION_EMAIL = gql(`
+mutation SendVerificationEmail ($id: String!){
+  sendVerificationEmail(id: $id) {
+      message
+  }
+}
 `);
