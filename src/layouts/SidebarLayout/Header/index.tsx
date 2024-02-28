@@ -194,6 +194,20 @@ function Header() {
               Agra Enrolled : {numbers.totalAgra}
             </Typography>
           )}
+
+          {/* {numbers.totalHyderabad && (
+            <Typography
+              variant="h4"
+              sx={{
+                my: 2,
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: 12
+                }
+              }}
+            >
+              Hyderabad Enrolled : {numbers.totalHyderabad}
+            </Typography>
+          )} */}
         </Stack>
       )}
       {router.pathname === '/star-of-the-week' && (
