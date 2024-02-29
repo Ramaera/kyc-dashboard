@@ -2,6 +2,11 @@ import {
   Box,
   Button,
   Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Table,
   TableBody,
   TableCell,
@@ -12,31 +17,41 @@ import {
   useTheme
 } from '@mui/material';
 import Link from 'next/link';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { CARD_USERS_DETAIL, FIND_CARD_OF_A_USER } from '@/apollo/queries/auth';
+import {
+  CARD_USERS_DETAIL,
+  FIND_CARD_OF_A_USER,
+  SEND_VERIFICATION_EMAIL
+} from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
+import { LoadingButton } from '@mui/lab';
 
 const UserTable = ({ user }) => {
+  const [sendVerificationEmail] = useMutation(SEND_VERIFICATION_EMAIL);
   const theme = useTheme();
-  const [selectedId, setSelectedId] = useState(null);
+  // const [selectedId, setSelectedId] = useState(null);
+  const [disabled, setDisabled] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [emailUser, setEmailUser] = useState();
 
-  const [cardUsers, setCardUsers] = useState();
+  // const [cardUsers, setCardUsers] = useState();
 
-  const agencyCode = useSelector(
-    (state: any) => state.user?.agencyCode?.agencyCode
-  );
-  const cardUserData = useQuery(CARD_USERS_DETAIL, {
-    variables: { agencyCode: agencyCode }
-  });
+  // const agencyCode = useSelector(
+  //   (state: any) => state.user?.agencyCode?.agencyCode
+  // );
+  // const cardUserData = useQuery(CARD_USERS_DETAIL, {
+  //   variables: { agencyCode: agencyCode }
+  // });
   // console.log('user', user);
 
-  useEffect(() => {
-    if (cardUserData) {
-      setCardUsers(cardUserData.data?.findCardHoldersInAgency);
-    }
-  }, [cardUserData]);
+  // useEffect(() => {
+  //   if (cardUserData) {
+  //     setCardUsers(cardUserData.data?.findCardHoldersInAgency);
+  //   }
+  // }, [cardUserData, user]);
 
   const viewCardButton = (id) => {
     const { data } = useQuery(FIND_CARD_OF_A_USER, {
@@ -49,6 +64,33 @@ const UserTable = ({ user }) => {
     }
   };
 
+  const handleSendVerificationEmail = async (id, email) => {
+    setLoading(true);
+    try {
+      await sendVerificationEmail({
+        variables: {
+          id: id
+        }
+      });
+      setEmailUser(email);
+      await handleVerifyEmail(id);
+    } catch (err) {
+      console.log(err.message);
+    }
+    setLoading(false);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleVerifyEmail = (id) => {
+    setDisabled(id);
+    setOpen(true);
+
+    setTimeout(() => {
+      setDisabled(null);
+    }, 30000);
+  };
   // console.log('user', user);
 
   useEffect(() => {}, []);
@@ -68,8 +110,7 @@ const UserTable = ({ user }) => {
                   <TableCell>Name</TableCell>
                   <TableCell>E-Mail</TableCell>
                   <TableCell>Mobile </TableCell>
-                  {/* <TableCell>Pan No</TableCell>
-                  <TableCell>Aadhar No</TableCell> */}
+                  <TableCell>Email Verify</TableCell>
                   <TableCell>Apply For Card</TableCell>
                   <TableCell>View Card</TableCell>
                 </TableRow>
@@ -129,6 +170,50 @@ const UserTable = ({ user }) => {
                           {item?.mobileNumber}
                         </Typography>
                       </TableCell>
+
+                      <TableCell
+                        sx={{
+                          padding: 1,
+                          [theme.breakpoints.down('sm')]: {
+                            minWidth: 150
+                          }
+                        }}
+                      >
+                        <LoadingButton
+                          loading={isLoading}
+                          onClick={() => {
+                            handleSendVerificationEmail(item?.id, item?.email);
+                          }}
+                          disabled={disabled || item?.emailVerified}
+                          variant="contained"
+                          sx={{
+                            fontSize: 10
+                          }}
+                        >
+                          {item?.emailVerified ? 'Verified' : ' Verify Email'}
+                        </LoadingButton>
+                      </TableCell>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {'Verify Email?'}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            We have sent a verification email on {emailUser}
+                            {/* <br /> */}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose} autoFocus>
+                            OK
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                       <TableCell
                         sx={{
                           padding: 1,
@@ -160,7 +245,7 @@ const UserTable = ({ user }) => {
                         >
                           <Button
                             disabled={
-                              viewCardButton(item.id) === true ? false : true
+                              viewCardButton(item?.id) === true ? false : true
                             }
                             variant="contained"
                             sx={{

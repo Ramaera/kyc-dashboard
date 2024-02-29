@@ -418,6 +418,9 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
       agraProjectAmount
       hajipurProjectAmount
       kycAmount
+      kycRewardAmount
+      selfAgencyAgraPaymentAmount
+      selfAgencyHajipurPaymentAmount
       BasicKycApprovedUser {
         id
         pw_id
@@ -486,8 +489,34 @@ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
           pw_id
       }
     }
-  }
+    selfAgraInvestmentDocument {
+      id
+      amount
+      createdAt
+      status
+      user {
+        id
+        kyc
+        membership
+        name
+        pw_id
+      }
+    }
+    selfHajipurInvestmentDocument {
+      amount
+      createdAt
+      id
+      status
+      user {
+        id
+        kyc
+        membership
+        name
+        pw_id
+      }
+    }
 
+  }
 }
 `);
 
@@ -623,6 +652,13 @@ query FindCardHoldersInAgency($agencyCode:String!) {
       name
       referralAgencyCode
       updatedAt
+      emailVerified
+      myCard {
+        cardNumber
+        cardType
+        id
+        isActive
+    }
   }
 }
 `);
@@ -724,4 +760,12 @@ query CardDetails($cardNumber:String!) {
   }
 }
 
+`);
+
+export const SEND_VERIFICATION_EMAIL = gql(`
+mutation SendVerificationEmail ($id: String!){
+  sendVerificationEmail(id: $id) {
+      message
+  }
+}
 `);
