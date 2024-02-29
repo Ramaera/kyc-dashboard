@@ -25,7 +25,7 @@ const OperationData = () => {
 
         // const data = await response.json();
 
-        console.log('-->>', response);
+        // console.log('-->>', response);
         // setUserData(data);
       } catch (error) {
         console.error('Error fetching data:', error);

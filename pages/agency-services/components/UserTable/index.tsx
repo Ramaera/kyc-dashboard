@@ -26,30 +26,32 @@ import {
   SEND_VERIFICATION_EMAIL
 } from '@/apollo/queries/auth';
 import { useSelector } from 'react-redux';
+import { LoadingButton } from '@mui/lab';
 
 const UserTable = ({ user }) => {
   const [sendVerificationEmail] = useMutation(SEND_VERIFICATION_EMAIL);
   const theme = useTheme();
-  const [selectedId, setSelectedId] = useState(null);
-  const [disabled, setDisabled] = useState(false);
+  // const [selectedId, setSelectedId] = useState(null);
+  const [disabled, setDisabled] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [emailUser, setEmailUser] = useState();
 
-  const [cardUsers, setCardUsers] = useState();
+  // const [cardUsers, setCardUsers] = useState();
 
-  const agencyCode = useSelector(
-    (state: any) => state.user?.agencyCode?.agencyCode
-  );
-  const cardUserData = useQuery(CARD_USERS_DETAIL, {
-    variables: { agencyCode: agencyCode }
-  });
+  // const agencyCode = useSelector(
+  //   (state: any) => state.user?.agencyCode?.agencyCode
+  // );
+  // const cardUserData = useQuery(CARD_USERS_DETAIL, {
+  //   variables: { agencyCode: agencyCode }
+  // });
   // console.log('user', user);
 
-  useEffect(() => {
-    if (cardUserData) {
-      setCardUsers(cardUserData.data?.findCardHoldersInAgency);
-    }
-  }, [cardUserData, user]);
+  // useEffect(() => {
+  //   if (cardUserData) {
+  //     setCardUsers(cardUserData.data?.findCardHoldersInAgency);
+  //   }
+  // }, [cardUserData, user]);
 
   const viewCardButton = (id) => {
     const { data } = useQuery(FIND_CARD_OF_A_USER, {
@@ -63,6 +65,7 @@ const UserTable = ({ user }) => {
   };
 
   const handleSendVerificationEmail = async (id, email) => {
+    setLoading(true);
     try {
       await sendVerificationEmail({
         variables: {
@@ -70,21 +73,22 @@ const UserTable = ({ user }) => {
         }
       });
       setEmailUser(email);
-      await handleVerifyEmail();
+      await handleVerifyEmail(id);
     } catch (err) {
       console.log(err.message);
     }
+    setLoading(false);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleVerifyEmail = () => {
-    setDisabled(true);
+  const handleVerifyEmail = (id) => {
+    setDisabled(id);
     setOpen(true);
 
     setTimeout(() => {
-      setDisabled(false);
+      setDisabled(null);
     }, 30000);
   };
   // console.log('user', user);
@@ -175,18 +179,19 @@ const UserTable = ({ user }) => {
                           }
                         }}
                       >
-                        <Button
+                        <LoadingButton
+                          loading={isLoading}
                           onClick={() => {
                             handleSendVerificationEmail(item?.id, item?.email);
                           }}
-                          disabled={item?.emailVerified}
+                          disabled={disabled || item?.emailVerified}
                           variant="contained"
                           sx={{
                             fontSize: 10
                           }}
                         >
                           {item?.emailVerified ? 'Verified' : ' Verify Email'}
-                        </Button>
+                        </LoadingButton>
                       </TableCell>
                       <Dialog
                         open={open}

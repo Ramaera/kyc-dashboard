@@ -101,7 +101,7 @@ function DashboardTasks() {
               }}
             >
               <sup style={{ fontSize: '14px' }}>*</sup> Withdrawals are only
-              processed on the 15th and 30th of the month.
+              processed on the 1st day of each month.
             </Typography>
           </Box>
         </Box>
