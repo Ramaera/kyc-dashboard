@@ -5,6 +5,8 @@ import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 // import UserTable from './components/UserTable';
 import OperationData from './components/OperationData';
+import ChartData from './components/ChartData';
+('./components/ChartData');
 
 function index() {
   return (
@@ -13,6 +15,7 @@ function index() {
         <title>Project Operation Report </title>
       </Head>
       <OperationData />
+      <ChartData />
       <Footer />
     </ProtectedSSRoute>
   );
