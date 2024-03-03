@@ -56,7 +56,7 @@ const UserTable = () => {
   const walletBalance = data?.GetFinalWalletBalanceOfAgency?.finalBalance;
 
   const handleButtonClick = async () => {
-    console.log('clicked', agencyCode, amountToWithdraw);
+    // console.log('clicked', agencyCode, amountToWithdraw);
     try {
       const withdrawlData = await WithdrawlRequest({
         variables: {

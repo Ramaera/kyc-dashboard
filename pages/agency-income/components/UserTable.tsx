@@ -1,5 +1,13 @@
 import { LoadingButton } from '@mui/lab';
-import { Button, useTheme } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  useTheme
+} from '@mui/material';
 import {
   GET_AGENCY_PAYMENT,
   TRANSACTION_TO_WALLET,
@@ -40,6 +48,7 @@ const UserTable = () => {
   const [transactionToWalletMutation] = useMutation(TRANSACTION_TO_WALLET);
   const [isLoading, setLoading] = useState({});
   const [isDisable, setDisable] = useState({});
+  const [open, setOpen] = useState(false);
 
   const theme = useTheme();
   const [active, setActive] = useState(false);
@@ -65,6 +74,10 @@ const UserTable = () => {
     return ans;
   }
 
+  // KyC Rewar Amount
+  const kycRewardAmountPerKyc =
+    getAgencyPayment?.data?.AgencyPayment?.kycRewardAmount;
+
   //total amount of each agency
   const totalKycIncome = getAgencyPayment?.data?.AgencyPayment?.kycAmount;
   const totalAgraIncome =
@@ -73,6 +86,10 @@ const UserTable = () => {
     getAgencyPayment?.data?.AgencyPayment?.hajipurProjectAmount;
   const totalMonthIncome =
     totalKycIncome + totalAgraIncome + totalHajipurIncome;
+  const totalSelfAgraIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgencyAgraPaymentAmount;
+  const totalSelfHajipurIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgencyHajipurPaymentAmount;
 
   //kyc
 
@@ -101,13 +118,34 @@ const UserTable = () => {
   basicAgraIncome?.map((user) => agraIncomeData.push(user));
   advanceAgraIncome?.map((user) => agraIncomeData.push(user));
 
+  // Self Hajipur
+  const selfHajipurIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfHajipurInvestmentDocument;
+  const selfHajipurIncomeData = [];
+  selfHajipurIncome?.map((user) => selfHajipurIncomeData.push(user));
+
+  // Self Agra
+  const selfAgraIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgraInvestmentDocument;
+  const selfAgraIncomeData = [];
+  selfAgraIncome?.map((user) => selfAgraIncomeData.push(user));
+
   const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
   const hideButtonDate = new Date('2024-02-01'); //YYYY-MM-DD
 
   const getDate = showButtonDate.toISOString().slice(0, 7);
 
   const walletTransferShowButton = selectedMonthYear >= getDate;
-  const walletTransferKYCShowButton = selectedMonthYear == '2024-01';
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const currentMonthYear = `${currentYear}-${
+    currentMonth < 10 ? '0' : ''
+  }${currentMonth}`;
+
+  const walletTransferKYCShowButton =
+    walletTransferShowButton && selectedMonthYear < currentMonthYear;
 
   const handleTransferToWallet = async (document, userId, paymentType) => {
     setLoading({ ...isLoading, [document.id]: true });
@@ -123,10 +161,14 @@ const UserTable = () => {
     }
 
     const amountGenerate = currentSelectedButton.includes('kyc')
-      ? 200
+      ? kycRewardAmountPerKyc
       : currentSelectedButton.includes('hajipur')
       ? document?.amount * 0.01
       : currentSelectedButton.includes('agra')
+      ? document?.amount * 0.1
+      : currentSelectedButton.includes('selfHajipur')
+      ? document?.amount * 0.01
+      : currentSelectedButton.includes('selfAgra')
       ? document?.amount * 0.1
       : '';
 
@@ -155,24 +197,31 @@ const UserTable = () => {
       metaData.push({ documentId: document.id });
     }
 
-    try {
-      await transactionToWalletMutation({
-        variables: {
-          agencyCode: agencyCode,
-          category,
-          type: 'DEPOSIT',
-          amount: amountGenerate,
-          metaData: metaData
-        }
-      });
-      toast.success(` ₹ ${amountGenerate} Transfer To your  Wallet`);
-      dispatch(addToWalletBalance(amountGenerate));
-    } catch (err) {
-      // console.log('err---', err);
-      toast.error(err.message);
+    if (amountGenerate !== 0 || '' || null) {
+      try {
+        await transactionToWalletMutation({
+          variables: {
+            agencyCode: agencyCode,
+            category,
+            type: 'DEPOSIT',
+            amount: amountGenerate,
+            metaData: metaData
+          }
+        });
+        toast.success(` ₹ ${amountGenerate} Transfer To your  Wallet`);
+        dispatch(addToWalletBalance(amountGenerate));
+      } catch (err) {
+        toast.error(err.message);
+      }
+    } else {
+      setOpen(true);
     }
     setLoading({ ...isLoading, [document.id]: false });
     setDisable({ ...isDisable, [document.id]: true });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -288,6 +337,28 @@ const UserTable = () => {
               sx={{ mt: 2, mb: 2, width: '180px' }}
             >
               AGRA : ₹{totalAgraIncome | 0}
+            </LoadingButton>
+
+            <LoadingButton
+              onClick={() => {
+                setActive(true);
+                setCurrentSelectedButton('selfHajipur');
+              }}
+              variant="contained"
+              sx={{ mt: 2, mb: 2, width: '180px' }}
+            >
+              SELF HAJIPUR : ₹{totalSelfHajipurIncome | 0}
+            </LoadingButton>
+
+            <LoadingButton
+              onClick={() => {
+                setActive(true);
+                setCurrentSelectedButton('selfAgra');
+              }}
+              variant="contained"
+              sx={{ mt: 2, mb: 2, width: '180px' }}
+            >
+              SELF AGRA : ₹{totalSelfAgraIncome | 0}
             </LoadingButton>
           </Table>
           {active && (
@@ -452,7 +523,7 @@ const UserTable = () => {
                               gutterBottom
                               noWrap
                             >
-                              200
+                              {kycRewardAmountPerKyc}
                             </Typography>
                           </TableCell>
                         </TableRow>
@@ -484,9 +555,54 @@ const UserTable = () => {
                   handleTransferToWallet={handleTransferToWallet}
                 />
               )}
+
+              {currentSelectedButton.includes('selfHajipur') && (
+                <CustomTable
+                  projectName="selfHajipur"
+                  data={selfHajipurIncomeData}
+                  walletTransferShowButton={walletTransferShowButton}
+                  isLoading={isLoading}
+                  isDisable={isDisable}
+                  handleTransferToWallet={handleTransferToWallet}
+                />
+              )}
+
+              {currentSelectedButton.includes('selfAgra') && (
+                <CustomTable
+                  projectName="selfAgra"
+                  data={selfAgraIncomeData}
+                  walletTransferShowButton={walletTransferShowButton}
+                  isLoading={isLoading}
+                  isDisable={isDisable}
+                  handleTransferToWallet={handleTransferToWallet}
+                />
+              )}
             </TableContainer>
           )}
         </Box>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {'Zero Amount Issue?'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Kindly Contact to Kyc Person
+              <br />
+              <br />
+              Regarding Mention Amount Of Project
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     </>
   );

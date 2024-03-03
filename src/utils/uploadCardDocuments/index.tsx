@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const handleCardPaymentProofUpload = async (img) => {
   const form = new FormData();
-  console.log('img', img);
+  // console.log('img', img);
 
   form.append('document', img);
 
   try {
-    console.log('swd', process.env.NEXT_PUBLIC_API_URL);
+    // console.log('swd', process.env.NEXT_PUBLIC_API_URL);
 
     const resp = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/documents/upload`,

@@ -261,16 +261,18 @@ function DashboardTasks(props: any) {
                                 </Box>
                                 <Box
                                   sx={{
-                                    display: 'flex'
+                                    display: 'flex',
+                                    flexDirection: 'column'
                                   }}
                                 >
-                                  <Typography sx={{ fontSize: 20 }}>
-                                    Card Status:
+                                  <Typography sx={{ fontSize: 16 }}>
+                                    Card Status
                                   </Typography>
                                   <Typography
-                                    marginLeft={1}
+                                    // marginLeft={1}
                                     sx={{
                                       fontSize: 20,
+                                      fontWeight: 500,
 
                                       color:
                                         card?.isActive === true

@@ -8,14 +8,20 @@ import {
   Typography,
   Box,
   Card,
-  useTheme
+  useTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { CREATE_CARD_USER } from '@/apollo/queries/auth';
 import { LoadingButton } from '@mui/lab';
 const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
   const [createCardUser] = useMutation(CREATE_CARD_USER);
-
+  const [open, setOpen] = useState(false);
+  const [emailAlert, setEmailAlert] = useState();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -67,6 +73,10 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
 
   const theme = useTheme();
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const submitData = async () => {
     const isValid = validateForm();
     setLoading(true);
@@ -86,18 +96,21 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
         });
 
         onAddUser(resp?.data?.CreateUser);
-
-        toast.success('User Created Sucessfully');
-        setFormData({
-          name: '',
-          email: '',
-          mobileNumber: '',
-          pincode: '',
-          address: '',
-          metaData: '',
-          aadhar: '',
-          pancard: ''
-        });
+        if (resp?.data) {
+          toast.success('User Created Sucessfully');
+          setEmailAlert(resp?.data?.CreateUser?.email);
+          setOpen(true);
+          setFormData({
+            name: '',
+            email: '',
+            mobileNumber: '',
+            pincode: '',
+            address: '',
+            metaData: '',
+            aadhar: '',
+            pancard: ''
+          });
+        }
       } catch (err) {
         toast.error(err.message);
       }
@@ -214,6 +227,26 @@ const PersonalInfoForm = ({ onAddUser, agencyCode }) => {
             Submit
           </LoadingButton>
         </Box>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{'Vefify Email?'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              We have sent a verification email on {emailAlert}
+              <br />
+              Kindly Verify
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Toaster position="bottom-right" reverseOrder={false} />
       </Card>
     </>

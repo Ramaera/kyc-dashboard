@@ -41,7 +41,7 @@ const WalletFields = () => {
     }
   });
 
-  console.log('kk', totalWithdrawRequest?.agencyWithdrawlRequest.length > 0);
+  // console.log('kk', totalWithdrawRequest?.agencyWithdrawlRequest.length > 0);
 
   const getAllWalletHistory = useQuery(AGENCY_WALLET_HISTORY, {
     variables: {
@@ -53,8 +53,8 @@ const WalletFields = () => {
     const currentDate = new Date();
     const currentDay = currentDate.getDate();
 
-    // Enable the button on the 15th and 30th of every month
-    return currentDay === 15 || currentDay === 30;
+    // Enable the button on the 1st day of every month
+    return currentDay === 1;
   };
 
   const allWalletHistory = getAllWalletHistory?.data?.AgencyWalletHistory;
