@@ -100,8 +100,8 @@ mutation updateUser(
 `);
 
 export const CREATEDOCUMENT =
-  gql(`mutation createDocument($title: String!, $url: String!) {
-  createDocument(data: { title: $title, url: $url }) {
+  gql(`mutation createDocument($title: String!, $url: String!,$referralAgencyCode:String) {
+  createDocument(data: { title: $title, url: $url, referralAgencyCode:$referralAgencyCode}) {
     title
     url
   }
@@ -152,6 +152,7 @@ query GetUser {
       updatedAt
       id
       title
+      referralAgencyCode
       url
       status
       amount

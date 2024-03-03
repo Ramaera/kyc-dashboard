@@ -5,6 +5,7 @@ export type DocumentType = {
   status: string;
   createdAt: string;
   amount: number;
+  referralAgencyCode: string;
 };
 
 export default DocumentType;

@@ -62,6 +62,7 @@
     "react-hot-toast": "^2.4.0",
     "react-photo-view": "^1.2.4",
     "react-redux": "^8.0.5",
+    "react-signature-canvas": "^1.0.6",
     "redux-persist": "^6.0.0",
     "search-array": "^1.6.0",
     "sort-objects-array": "^2.0.0",
