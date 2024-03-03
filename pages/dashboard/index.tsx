@@ -79,7 +79,6 @@ function DashboardTasks() {
   };
   useEffect(() => {
     var countDownDate = new Date('Mar 05, 2024 23:59:59').getTime();
-    console.log('--->>', countDownDate, now);
     var now = new Date().getTime();
     if (countDownDate > now) {
       setOpen(true);

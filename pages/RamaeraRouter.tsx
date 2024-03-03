@@ -25,10 +25,6 @@ const RamaeraRouter = ({ children }) => {
   const allNumbers = useQuery(GET_NUMBERS);
   const allShareHolder = useQuery(GET_ALL_SHARE_HOLDER);
   const allProjectAmounts = useQuery(GET_PROJECT_AMOUNTS);
-  console.log(
-    allProjectAmounts?.data?.getProjectsPayment.ProjectHyderabadAmountReceived
-  );
-
   const [agencyCode, { loading, data }] = useLazyQuery(GET_AGENCY_CODE, {
     variables: { userID: userResp?.data?.me.id }
   });
