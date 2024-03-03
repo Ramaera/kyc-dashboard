@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6810],{23495:function(n,_,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/agency-income/components/UserTable",function(){return e(67682)}])}},function(n){n.O(0,[1385,400,9260,9213,4753,6827,6549,7305,7058,788,8584,1664,3560,8349,7682,9774,2888,179],(function(){return _=23495,n(n.s=_);var _}));var _=n.O();_N_E=_}]);
