@@ -275,7 +275,7 @@ const DocumentRow = ({
           <TextField
             required
             id="outlined"
-            label="Referral Agency Code"
+            label="Secondary Promoter"
             disabled={user?.kyc === variables.status.APPROVED}
             fullWidth
             value={additionalProjectAmountAgencyCode[i]}
