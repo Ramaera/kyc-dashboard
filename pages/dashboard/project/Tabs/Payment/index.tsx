@@ -574,7 +574,7 @@ const InfoTab = ({ title }) => {
                     <TextField
                       required
                       id="outlined"
-                      label="ReferralAgencyCOde"
+                      label="Secondary Promoter"
                       disabled={user?.kyc === variables.status.APPROVED}
                       fullWidth
                       value={paymentReferralCode}
