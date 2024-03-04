@@ -104,15 +104,17 @@ export const CREATEDOCUMENT =
   createDocument(data: { title: $title, url: $url, referralAgencyCode:$referralAgencyCode}) {
     title
     url
+    referralAgencyCode
   }
 }`);
 
 export const UPDATEDOCUMENT =
-  gql(`mutation updateDocument($id: String!, $title: String!, $url: String!) {
-  updateDocument(data: { title: $title, url: $url, id: $id }) {
+  gql(`mutation updateDocument($id: String!, $title: String!, $url: String!,$referralAgencyCode:String) {
+  updateDocument(data: { title: $title, url: $url, id: $id,referralAgencyCode:$referralAgencyCode }) {
     title
     url
     id
+    referralAgencyCode
     status
   }
 }`);

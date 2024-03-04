@@ -193,7 +193,7 @@ export const AllProjectDetails = {
     },
     {
       key: 'Per Share Holder Required Fund',
-      info: '10000'
+      info: '5000'
     },
     {
       key: 'No. of share allotment',

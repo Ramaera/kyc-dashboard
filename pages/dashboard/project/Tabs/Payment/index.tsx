@@ -174,11 +174,16 @@ const InfoTab = ({ title }) => {
             title:
               title.toLowerCase() + '_' + documentsConfig.project_payment.id,
             url: imgUrl,
-            id: paymentDocument.id
+            id: paymentDocument.id,
+            referralAgencyCode: paymentReferralCode
           }
         });
 
-        dispatch(setOrUpdateUser(updateUser(paymentDocument.id, imgUrl)));
+        dispatch(
+          setOrUpdateUser(
+            updateUser(paymentDocument.id, imgUrl, paymentReferralCode)
+          )
+        );
       } else {
         await createDocument({
           variables: {

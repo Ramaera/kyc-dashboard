@@ -84,13 +84,15 @@ const DocumentRow = ({
   const handleUpdateDocument = async (
     id: string,
     title: string,
-    url: string
+    url: string,
+    referralAgencyCode: string
   ) => {
     return await updateDocument({
       variables: {
         id,
         title,
-        url
+        url,
+        referralAgencyCode
       }
     });
   };
@@ -140,7 +142,8 @@ const DocumentRow = ({
             const resp = await handleUpdateDocument(
               _document.id,
               documentTitle.toLowerCase(),
-              imgUrl
+              imgUrl,
+              referAgencyCode
             );
             await dispatch(
               setOrUpdateUser(updateUser(_document.id, documentTitle, imgUrl))
@@ -162,6 +165,7 @@ const DocumentRow = ({
               imgUrl,
               referAgencyCode
             );
+            console.log('resp', resp);
             toast.success(`${documentTitle} Uploaded`);
             userAllDocuments = [...userAllDocuments, resp.data.createDocument];
           }
