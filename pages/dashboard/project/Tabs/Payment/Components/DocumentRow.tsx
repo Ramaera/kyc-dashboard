@@ -277,7 +277,13 @@ const DocumentRow = ({
               required
               id="outlined"
               label="Secondary Promoter"
-              disabled={user?.kyc === variables.status.APPROVED}
+              disabled={
+                documents[i]
+                  ? documents[i].status === 'APPROVED'
+                    ? true
+                    : false
+                  : false
+              }
               fullWidth
               value={additionalProjectAmountAgencyCode[i]}
               variant="outlined"
