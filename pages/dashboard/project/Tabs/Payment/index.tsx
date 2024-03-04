@@ -575,7 +575,13 @@ const InfoTab = ({ title }) => {
                       required
                       id="outlined"
                       label="Secondary Promoter"
-                      disabled={user?.kyc === variables.status.APPROVED}
+                      disabled={
+                        paymentDocument
+                          ? paymentDocument.status === 'APPROVED'
+                            ? true
+                            : false
+                          : false
+                      }
                       fullWidth
                       value={paymentReferralCode}
                       variant="outlined"
