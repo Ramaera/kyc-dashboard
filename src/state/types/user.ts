@@ -15,6 +15,7 @@ type UserType = {
   name?: String;
   pw_id?: String;
   rm_id?: String;
+  isKycAgent: Boolean;
   kyc?: KYCType | undefined;
   updatedAt?: String;
   password?: String;

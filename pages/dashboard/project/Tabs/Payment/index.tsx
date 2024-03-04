@@ -74,6 +74,8 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
+
+  console.log('--', user.isKycAgent);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -97,10 +99,6 @@ const InfoTab = ({ title }) => {
   const validateSubmit = (imgUrl) => {
     if (!imgUrl) {
       alert('Invalid Image');
-      return false;
-    }
-    if (!paymentReferralCode) {
-      alert('Enter Referral Code');
       return false;
     }
 
@@ -570,26 +568,28 @@ const InfoTab = ({ title }) => {
                       />
                     </Button>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <TextField
-                      required
-                      id="outlined"
-                      label="Secondary Promoter"
-                      disabled={
-                        paymentDocument
-                          ? paymentDocument.status === 'APPROVED'
-                            ? true
+                  {!user.isKycAgent && (
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        required
+                        id="outlined"
+                        label="Secondary Promoter"
+                        disabled={
+                          paymentDocument
+                            ? paymentDocument.status === 'APPROVED'
+                              ? true
+                              : false
                             : false
-                          : false
-                      }
-                      fullWidth
-                      value={paymentReferralCode}
-                      variant="outlined"
-                      onChange={(e) => {
-                        setPaymentReferralCode(e.target.value);
-                      }}
-                    />
-                  </Grid>
+                        }
+                        fullWidth
+                        value={paymentReferralCode}
+                        variant="outlined"
+                        onChange={(e) => {
+                          setPaymentReferralCode(e.target.value);
+                        }}
+                      />
+                    </Grid>
+                  )}
                   <Grid item xs={2}>
                     <LoadingButton
                       loading={isLoading}

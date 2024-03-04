@@ -272,21 +272,23 @@ const DocumentRow = ({
               }}
             />
           </Button>
-          <TextField
-            required
-            id="outlined"
-            label="Secondary Promoter"
-            disabled={user?.kyc === variables.status.APPROVED}
-            fullWidth
-            value={additionalProjectAmountAgencyCode[i]}
-            variant="outlined"
-            onChange={(e) => {
-              e.target.value
-                ? (newArrReferralAgencyCode[i] = e.target.value)
-                : (newArrReferralAgencyCode[i] = null);
-              setAdditionalProjectAmountAgencyCode(newArrReferralAgencyCode);
-            }}
-          />
+          {!user.isKycAgent && (
+            <TextField
+              required
+              id="outlined"
+              label="Secondary Promoter"
+              disabled={user?.kyc === variables.status.APPROVED}
+              fullWidth
+              value={additionalProjectAmountAgencyCode[i]}
+              variant="outlined"
+              onChange={(e) => {
+                e.target.value
+                  ? (newArrReferralAgencyCode[i] = e.target.value)
+                  : (newArrReferralAgencyCode[i] = null);
+                setAdditionalProjectAmountAgencyCode(newArrReferralAgencyCode);
+              }}
+            />
+          )}
         </Box>
       );
     }

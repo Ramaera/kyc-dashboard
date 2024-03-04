@@ -137,6 +137,7 @@ query GetUser {
     createdAt
     referralAgencyCode
     date_of_birth
+    isKycAgent
     membership
     demat_account
     DSCDetails {
