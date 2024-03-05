@@ -144,6 +144,7 @@ const UserTable = () => {
     currentMonth < 10 ? '0' : ''
   }${currentMonth}`;
 
+  // const walletTransferKYCShowButton = selectedMonthYear < currentMonthYear;
   const walletTransferKYCShowButton =
     walletTransferShowButton && selectedMonthYear < currentMonthYear;
 
@@ -197,7 +198,11 @@ const UserTable = () => {
       metaData.push({ documentId: document.id });
     }
 
-    if (amountGenerate !== 0 || '' || null) {
+    if (
+      amountGenerate !== 0 &&
+      amountGenerate !== '' &&
+      amountGenerate !== null
+    ) {
       try {
         await transactionToWalletMutation({
           variables: {
@@ -538,6 +543,7 @@ const UserTable = () => {
                 <CustomTable
                   projectName="hajipur"
                   data={hajipurIncomeData}
+                  // walletTransferShowButton={true}
                   walletTransferShowButton={walletTransferShowButton}
                   isLoading={isLoading}
                   isDisable={isDisable}
