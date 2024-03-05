@@ -1,39 +1,17 @@
 import { Box, Button, Card, Divider, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import DataTable from './DataTable';
 
 const OperationData = () => {
   const theme = useTheme();
+  const [showProjectData, setShowProjectData] = useState('');
 
   //   const [userData, setUserData] = useState(null);
   const [chartData, setChartData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          'https://erp.ramaera.com/api/resource/{doctype}',
-          {
-            headers: {
-              Authorization: 'token 602ac7d2d573f32:6acaed00eb0733d'
-            }
-          }
-        );
-
-        // if (!response.ok) {
-        //   throw new Error('Network response was not ok');
-        // }
-
-        // const data = await response.json();
-
-        // console.log('-->>', response);
-        // setUserData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const onButtonClick = (projectTitle) => {
+    setShowProjectData(projectTitle);
+  };
 
   return (
     <>
@@ -49,17 +27,19 @@ const OperationData = () => {
         >
           Project Operations Report{' '}
         </Box>
-        <Box
-          sx={{
-            height: '300px',
-            fontSize: '40px',
-            display: 'flex',
-            justifyContent: 'center'
-          }}
-        >
-          Coming Soon
+        <Box>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              onButtonClick('hajipur');
+            }}
+          >
+            Hajipur Spice Factory
+          </Button>
         </Box>
-
+        <Box>
+          <DataTable />
+        </Box>
         <Divider />
 
         {/* <Toaster position="bottom-center" reverseOrder={false} /> */}

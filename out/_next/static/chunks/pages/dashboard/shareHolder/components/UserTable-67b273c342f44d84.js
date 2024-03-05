@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2095],{44273:function(n,_,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/dashboard/shareHolder/components/UserTable",function(){return e(75175)}])}},function(n){n.O(0,[8244,9990,9260,9213,6827,4753,6549,7305,7058,788,8584,1378,41,6914,5175,9774,2888,179],(function(){return _=44273,n(n.s=_);var _}));var _=n.O();_N_E=_}]);
