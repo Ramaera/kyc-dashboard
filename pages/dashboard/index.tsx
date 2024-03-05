@@ -183,7 +183,7 @@ function DashboardTasks() {
             )}
           </Grid>
         </Card>
-        <Dialog onClose={handleClose} open={open}>
+        {/* <Dialog onClose={handleClose} open={open}>
           <Box zIndex={1000}></Box>
 
           <Grid component={Paper} elevation={6} square>
@@ -211,7 +211,7 @@ function DashboardTasks() {
               </Button>
             </Box>
           </Grid>
-        </Dialog>
+        </Dialog> */}
       </Container>
       <Footer />
     </ProtectedSSRoute>
