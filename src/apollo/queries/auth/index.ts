@@ -100,19 +100,21 @@ mutation updateUser(
 `);
 
 export const CREATEDOCUMENT =
-  gql(`mutation createDocument($title: String!, $url: String!) {
-  createDocument(data: { title: $title, url: $url }) {
+  gql(`mutation createDocument($title: String!, $url: String!,$referralAgencyCode:String) {
+  createDocument(data: { title: $title, url: $url, referralAgencyCode:$referralAgencyCode}) {
     title
     url
+    referralAgencyCode
   }
 }`);
 
 export const UPDATEDOCUMENT =
-  gql(`mutation updateDocument($id: String!, $title: String!, $url: String!) {
-  updateDocument(data: { title: $title, url: $url, id: $id }) {
+  gql(`mutation updateDocument($id: String!, $title: String!, $url: String!,$referralAgencyCode:String) {
+  updateDocument(data: { title: $title, url: $url, id: $id,referralAgencyCode:$referralAgencyCode }) {
     title
     url
     id
+    referralAgencyCode
     status
   }
 }`);
@@ -135,6 +137,7 @@ query GetUser {
     createdAt
     referralAgencyCode
     date_of_birth
+    isKycAgent
     membership
     demat_account
     DSCDetails {
@@ -152,6 +155,7 @@ query GetUser {
       updatedAt
       id
       title
+      referralAgencyCode
       url
       status
       amount

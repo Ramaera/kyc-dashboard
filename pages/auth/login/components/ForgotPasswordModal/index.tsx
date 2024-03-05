@@ -50,7 +50,7 @@ function ForgotPasswordModal({ open, setOpen }) {
         toast.error(err.message);
       });
   };
-  console.log(PWID);
+
   const handlePasswordChange = async () => {
     if (confirmPassword !== newPassword) {
       toast.error("Passwords Don't Match");
