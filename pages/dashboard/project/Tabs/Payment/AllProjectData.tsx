@@ -185,11 +185,11 @@ export const AllProjectDetails = {
     },
     {
       key: 'Required Fund',
-      info: 'Rs 60 Lakh'
+      info: 'Rs 1.5 Cr.'
     },
     {
       key: 'Required No. of Share Holder',
-      info: 'Announced Soon'
+      info: '30000'
     },
     {
       key: 'Per Share Holder Required Fund',
@@ -197,15 +197,15 @@ export const AllProjectDetails = {
     },
     {
       key: 'No. of share allotment',
-      info: 'Announced Soon'
+      info: 'Rs 500/Share'
     },
     {
       key: 'Net Profit Sharing',
-      info: 'Announced Soon'
+      info: '55%'
     },
     {
       key: 'Total Enrolled Share',
-      info: 'Announced Soon'
+      info: '30000'
     },
     {
       key: 'Total Enrolled',

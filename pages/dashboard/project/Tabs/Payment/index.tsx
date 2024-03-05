@@ -75,7 +75,7 @@ const InfoTab = ({ title }) => {
     (state: any) => state.allUsers[amountFromProject]
   );
 
-  console.log('--', user.isKycAgent);
+  // console.log('--', user.isKycAgent);
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -93,7 +93,7 @@ const InfoTab = ({ title }) => {
     title.toLowerCase() === 'hajipur' || title.toLowerCase() === 'agra'
       ? 100
       : title.toLowerCase() === 'hyderabad'
-      ? 0
+      ? diff * 100
       : diff * 100;
 
   const validateSubmit = (imgUrl) => {
@@ -360,14 +360,20 @@ const InfoTab = ({ title }) => {
                                   </TableCell>
                                   <TableCell align="right">
                                     {row.key === 'Till Raised Fund'
-                                      ? title.toLowerCase() === 'hyderabad'
-                                        ? row.info
-                                        : projectAmount
+                                      ? projectAmount
                                       : row.key === 'Remain Funding'
+                                      ? AllProjectDetails[projectTitle][0] -
+                                        projectAmount
+                                      : row.key === 'Total Enrolled'
                                       ? title.toLowerCase() === 'hyderabad'
-                                        ? row.info
-                                        : AllProjectDetails[projectTitle][0] -
-                                          projectAmount
+                                        ? projectAmount / 5000
+                                        : row.info
+                                      : row.key === 'Upcoming Enroll'
+                                      ? title.toLowerCase() === 'hyderabad'
+                                        ? (AllProjectDetails[projectTitle][0] -
+                                            projectAmount) /
+                                          5000
+                                        : row.info
                                       : row.info}
                                   </TableCell>
                                 </TableRow>
@@ -387,7 +393,7 @@ const InfoTab = ({ title }) => {
                           ? '20000000 / ₹20000000'
                           : title.toLowerCase() === 'agra'
                           ? `${projectAmount} / ₹3300000`
-                          : `${projectAmount}/ ₹6000000`
+                          : `${projectAmount}/ ₹15000000`
                       } `}
                     </Typography>
                     <BorderLinearProgress
