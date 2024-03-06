@@ -33,6 +33,7 @@ import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
+import React from 'react';
 // import AllUserTable from './AllUserTable';
 
 const projectChecker = (user, project) => {
@@ -133,6 +134,13 @@ const DataTable = () => {
   const [allData, setAllData] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [kycList, setKycList] = useState<string | null>();
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const [poNumber, setCurrentPONumber] = useState('');
+
+  const handleRowClick = (index, poName) => {
+    setSelectedRowIndex((prevIndex) => (prevIndex === index ? null : index));
+    setCurrentPONumber(poName);
+  };
   const [currentSelectedButton, setCurrentSelectedButton] =
     useState<string>('');
 
@@ -150,6 +158,34 @@ const DataTable = () => {
       }
     }
   });
+
+  useEffect(() => {
+    const fetchsubData = async () => {
+      try {
+        const response = await fetch(
+          `https://erp.ramaera.com/api/resource/Purchase Order/${poNumber}`,
+          {
+            headers: {
+              Authorization: `token ${process.env.NEXT_PUBLIC_ERP_TOKEN}`
+            }
+          }
+        );
+        if (!response.ok) {
+          console.log('err');
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const data3 = data.data;
+        console.log('--', data3);
+        setSubItemData(data3);
+        // setUserData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchsubData();
+  }, [poNumber]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,6 +223,7 @@ const DataTable = () => {
   let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
   let _usersList = [];
   const [usersList, setUsersList] = useState([]);
+  const [subItemData, setSubItemData] = useState([]);
 
   const [numbers, setNumbers] = useState({
     totalKYC: 0,
@@ -194,7 +231,10 @@ const DataTable = () => {
     totalBasic: 0
   });
 
+  const [showItemData, setShowItemData] = useState(false);
+
   const data1 = usersList;
+  const subItem = subItemData;
   //   useEffect(() => {
   //     if (allKycUsers.data) {
   //       setUsersList(allKycUsers.data.allKycUser);
@@ -288,80 +328,163 @@ const DataTable = () => {
                     <TableCell>Purchase Date</TableCell>
                     <TableCell>Purchase Order Number</TableCell>
                     <TableCell>Supplier Name</TableCell>
-                    <TableCell align="center">Bill Amount</TableCell>
-                    {/* <TableCell align="center">Moibile No.</TableCell> */}
-                    {/* <TableCell align="center">Email</TableCell> */}
-                    {/* <TableCell align="center">KYC Status</TableCell>
-                    <TableCell align="center">Demat</TableCell>
-                    <TableCell align="center">Hajipur Project</TableCell>
-                    <TableCell align="center">Agra Project</TableCell>
-                    <TableCell align="center">Hyderabad Project</TableCell> */}
+                    <TableCell>Bill Amount</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data1.map((data, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={50}
-                        >
-                          {index + 1}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={150}
-                        >
-                          {data?.transaction_date}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={200}
-                        >
-                          {data?.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={150}
-                        >
-                          {data?.supplier_name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          width={150}
-                        >
-                          ₹ {data?.grand_total}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
+                  {data1?.map((data, index) => (
+                    <React.Fragment>
+                      <TableRow
+                        onClick={() => handleRowClick(index, data?.name)}
+                        key={index}
+                      >
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={50}
+                          >
+                            {index + 1}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={150}
+                          >
+                            {data?.transaction_date}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={200}
+                          >
+                            {data?.name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={150}
+                          >
+                            {data?.supplier_name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            width={150}
+                          >
+                            ₹ {data?.grand_total}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                      {selectedRowIndex === index && (
+                        <TableRow>
+                          <TableCell colSpan={5}>
+                            <Table>
+                              <TableHead>
+                                <TableRow
+                                  style={{ backgroundColor: '#7063C0' }}
+                                >
+                                  <TableCell>S.No.</TableCell>
+                                  <TableCell>Items</TableCell>
+                                  <TableCell>Qty</TableCell>
+                                  <TableCell>Price</TableCell>
+                                  <TableCell>Total</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {subItem?.items?.map((details, index) => (
+                                  <TableRow>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                        width={10}
+                                      >
+                                        {index + 1}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                        width={300}
+                                      >
+                                        {details.description}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                        width={150}
+                                      >
+                                        {details.qty} {details.uom}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                        width={150}
+                                      >
+                                        ₹ {details.rate}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body1"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                        width={150}
+                                      >
+                                        ₹ {details.amount}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </React.Fragment>
                   ))}
                 </TableBody>
               </Table>

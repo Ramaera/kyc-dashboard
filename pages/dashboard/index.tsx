@@ -77,13 +77,13 @@ function DashboardTasks() {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    var countDownDate = new Date('Mar 05, 2024 23:59:59').getTime();
-    var now = new Date().getTime();
-    if (countDownDate > now) {
-      setOpen(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   var countDownDate = new Date('Mar 05, 2024 23:59:59').getTime();
+  //   var now = new Date().getTime();
+  //   if (countDownDate > now) {
+  //     setOpen(true);
+  //   }
+  // }, []);
   setTimeout(function () {
     setOpen(false);
   }, 10000);
