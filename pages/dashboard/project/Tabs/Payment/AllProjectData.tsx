@@ -192,36 +192,29 @@ export const AllProjectDetails = {
       info: 'Announced Soon'
     },
     {
-      key: 'Per Share Holder Required Fund',
-      info: '2500'
+      key: 'Minimum Funding',
+      info: 'Rs 2500 to Multiple '
     },
     {
-      key: 'No. of share allotment',
-      info: 'Announced Soon'
+      key: 'Total Profit Units',
+      info: '6000 '
     },
+
     {
       key: 'Net Profit Sharing',
       info: '55%'
     },
     {
-      key: 'Total Enrolled Share',
-      info: '30000'
+      key: 'Phase 1 ',
+      info: '6000000'
     },
     {
-      key: 'Total Enrolled',
-      info: 'Announced Soon'
+      key: 'Phase 2 ',
+      info: '7000000'
     },
     {
-      key: 'Till Raised Fund',
-      info: 'Announced Soon'
-    },
-    {
-      key: 'Remain Funding',
-      info: 'Announced Soon'
-    },
-    {
-      key: 'Upcoming Enroll',
-      info: 'Announced Soon'
+      key: 'Phase 3 ',
+      info: '2000000'
     }
   ]
 };

@@ -69,13 +69,45 @@ const InfoTab = ({ title }) => {
   const [isHidden, setHidden] = useState({ project: false });
   const [isEnrolled, setEnrolled] = useState(false);
   let projectTitle = title + 'ProjectDetails';
+  var investmentAmount = 0;
   const amountFromProject = `total${title}Amount`;
   const [paymentReferralCode, setPaymentReferralCode] = useState('');
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
 
-  // console.log('--', user.isKycAgent);
+  const phaseData = {
+    Phase1: [
+      {
+        key: 'Phase 1 Running',
+        info: 6000000
+      },
+      {
+        key: 'Last Date',
+        info: '15/Mar/2024'
+      },
+      {
+        key: 'Your Enrolled Funds',
+        info: investmentAmount
+      },
+      {
+        key: 'Your Total Profit Units',
+        info: investmentAmount / 2500
+      },
+      {
+        key: 'Till Raised Fund By Public',
+        info: projectAmount
+      },
+      {
+        key: 'Total Units Distributed',
+        info: projectAmount / 2500
+      },
+      {
+        key: 'Remaining Funding',
+        info: AllProjectDetails[projectTitle][0] - projectAmount
+      }
+    ]
+  };
   const [currentTab, setCurrentTab] = useState<string>('basicInfo');
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -128,7 +160,6 @@ const InfoTab = ({ title }) => {
             return true;
           }
         });
-        console.log('documents', document);
         if (document) {
           documents.push(document);
         }
@@ -143,7 +174,6 @@ const InfoTab = ({ title }) => {
     user?.documents?.map((item) => {
       if (item.id === id) {
         newDocs.push({ ...item, url: imgUrl });
-        // newDocs.push(...item, url:imgUrl);
       } else {
         newDocs.push(item);
       }
@@ -196,6 +226,7 @@ const InfoTab = ({ title }) => {
     setLoading(false);
     setSubmitButtonEnabled(false);
   };
+
   useEffect(() => {
     setPaymentDocument(null);
     setEnrolled(false);
@@ -209,6 +240,7 @@ const InfoTab = ({ title }) => {
           document.title.toLowerCase() ===
           title.toLowerCase() + '_' + documentsConfig.project_payment.id
         ) {
+          investmentAmount += document.amount;
           setPaymentDocument(document);
 
           setProofImage(document.url);
@@ -382,6 +414,24 @@ const InfoTab = ({ title }) => {
                           </TableBody>
                         </Table>
                       </TableContainer>
+
+                      {title.toLowerCase() === 'hyderabad' && (
+                        <TableContainer component={Paper} sx={{ mt: 2 }}>
+                          <Table
+                            sx={{ minWidth: 100 }}
+                            aria-label="simple table"
+                          >
+                            <TableBody>
+                              {phaseData['Phase1'].map((row) => (
+                                <TableRow>
+                                  <TableCell>{row.key}</TableCell>
+                                  <TableCell>{row.info}</TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      )}
                     </>
                   )}
 
