@@ -1,10 +1,27 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import EnglishContent from './EnglishContent';
 import SignatureCanvas from 'react-signature-canvas';
 import handleImageUpload from '@/utils/upload';
+import { useQuery } from '@apollo/client';
+import { AGREEMENT_DATA } from '@/apollo/queries/auth';
+import moment from 'moment';
 
 const OtherPage = () => {
+  const [signData, setSignData] = useState(null);
   const signatureCanvasRef = useRef(null);
+  const { loading, data, error } = useQuery(AGREEMENT_DATA, {
+    variables: {
+      PWID: 'RIL-14'
+    }
+  });
+
+  if (loading) {
+    return <div>Loading .......</div>;
+  }
+
+  if (error) {
+    console.log('err', error);
+  }
 
   const clearSignature = () => {
     signatureCanvasRef.current.clear();
@@ -12,6 +29,7 @@ const OtherPage = () => {
 
   const saveSignature = async () => {
     const signatureImage = signatureCanvasRef.current.toDataURL();
+    setSignData(signatureImage);
     // const data = URL.createObjectURL(signatureImage);
     // console.log(data);
 
@@ -34,7 +52,7 @@ const OtherPage = () => {
   }
 
   return (
-    <div style={{ fontSize: 14 }}>
+    <div style={{ fontSize: 14, height: 'auto' }}>
       <h3
         style={{
           display: 'flex',
@@ -47,8 +65,8 @@ const OtherPage = () => {
       </h3>
       <p style={{ marginBottom: 20 }}>
         The Advance KYC Agreement, hereinafter referred to as the{' '}
-        <span style={{ fontWeight: 'bold' }}>“Agreement”</span> is made on
-        ……………………..{' '}
+        <span style={{ fontWeight: 'bold' }}>“Agreement”</span> is made on{' '}
+        {data.getAgreementData.agreementFieldData['1']}{' '}
         <span style={{ fontWeight: 'bold' }}>(‘‘Execution dateʼʼ)</span> at
         <span style={{ fontWeight: 'bold' }}>
           {' '}
@@ -56,27 +74,31 @@ const OtherPage = () => {
         </span>
       </p>
       <p>
-        अग्रिम केवाईसी एग्रीमेंट, जोकि "एग्रीमेंट" के रूप
-        में………………………..('निष्पादन तिथि’) को……….………………(स्थान) पर संदर्भित किया गया
-        है।
+        अग्रिम केवाईसी एग्रीमेंट, जोकि "एग्रीमेंट" के रूप में
+        {data.getAgreementData.agreementFieldData['1']}('निष्पादन तिथि’) को
+        नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।
       </p>
       <strong> By and amongst/ समझौते के पक्ष: -</strong>
       <p style={{ marginBottom: 30 }}>
-        Mr./Ms. ………………………….. (Name of the Subscriber) having PAN…………………………….,
-        S/O ………. and having Residential Address at ……………………………………………………………….,
+        Mr./Ms. {data.getAgreementData.agreementFieldData['2']} (Name of the
+        Subscriber) having PAN{data.getAgreementData.agreementFieldData['3']}{' '}
+        S/O {data.getAgreementData.agreementFieldData['4']} and having
+        Residential Address at {data.getAgreementData.agreementFieldData['5']},
         hereinafter referred to as the “Subscriber” (which expression shall,
         unless repugnant to the context or meaning thereof, be deemed to means
         and include its successors, nominee and permitted assigns), Of{' '}
         <strong> The FIRST PART</strong>
       </p>
       <p>
-        श्री/श्रीमती…………………………………………………………………………। (कंपनी के सदस्या का नाम) जिनका
-        स्थायी खाता संख्या (पैन कार्ड):………….……………………………………तथा निवास का पता
-        …………………………………………………………………………...,जिनको "सब्सक्राइबर" (जो अभिव्यक्ति, जब
-        तक कि इस संदर्भ या इसके अर्थ के प्रतिकूल न हो, इसका मतलब यही माना जाएगा
-        और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स शामिल होंगे ){' '}
-        <strong>समझौते के लिए पहली पार्टी</strong> के रूप में संदर्भित किया गया
-        है,
+        श्री/श्रीमती {data.getAgreementData.agreementFieldData['2']} (कंपनी के
+        सदस्या का नाम) जिनका स्थायी खाता संख्या (पैन कार्ड):
+        {data.getAgreementData.agreementFieldData['3']} S/O{' '}
+        {data.getAgreementData.agreementFieldData['4']} तथा निवास का पता
+        {data.getAgreementData.agreementFieldData['5']}.,जिनको "सब्सक्राइबर" (जो
+        अभिव्यक्ति, जब तक कि इस संदर्भ या इसके अर्थ के प्रतिकूल न हो, इसका मतलब
+        यही माना जाएगा और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स शामिल
+        होंगे ) <strong>समझौते के लिए पहली पार्टी</strong> के रूप में संदर्भित
+        किया गया है,
       </p>
       <strong>And/ और</strong>
       <p style={{ marginBottom: 20 }}>
@@ -89,7 +111,8 @@ const OtherPage = () => {
         </strong>
         is represented by the Managing Director (Mr. Devendra Kumar Mishra)
         (hereinafter referreed as “Authorised Person”) duly authorized by MD
-        dated ……………………………. hereinafter referred to as
+        dated {data.getAgreementData.agreementFieldData['6']} hereinafter
+        referred to as
         <strong>“Ramaera/Company” </strong>(which expression shall, unless
         repugnant to the context or meaning thereof, be deemed to means and
         include its successors and permitted assigns), Of The SECOND PART.
@@ -97,14 +120,15 @@ const OtherPage = () => {
         as <strong>“Party” </strong>and collectively as the{' '}
         <strong>“Parties”.</strong>
       </p>
-      <p style={{ marginBottom: 20 }}>
+      <p style={{ marginBottom: 110 }}>
         <strong>रामाएरा इंडस्ट्रीज लिमिटेड </strong>,कंपनी जो कंपनी अधिनियम,
         2013 के तहत निगमित हुई है, जिसका
         <strong> CIN: U74110UP2022PLC168553 </strong>है और पंजीकृत कार्यालय{' '}
         <strong>
           H-150, सेक्टर 63, नोएडा, गौतम बुद्ध नगर, उत्तर प्रदेश -201301
         </strong>{' '}
-        है, तथा इसका प्रतिनिधित्व बोर्ड के रेसोलुशन द्वारा दिनांक …………………………
+        है, तथा इसका प्रतिनिधित्व बोर्ड के रेसोलुशन द्वारा दिनांक{' '}
+        {data.getAgreementData.agreementFieldData['6']}
         विधिवत अधिकृत श्री देवेंद्र कुमार मिश्रा कर रहे हैं। इनको{' '}
         <strong>" रामाएरा /कंपनी" </strong> (जो अभिव्यक्ति, जब तक कि संदर्भ या
         उसके अर्थ के प्रतिकूल न हो, इसका अर्थ समझा जाएगा और इसमें इसके
@@ -219,11 +243,13 @@ const OtherPage = () => {
         </li>
         <li style={{ marginBottom: 30 }}>
           {/* todo */}
-          <strong>“Sale Shares”</strong> means Rs….. equity shares, of face
+          <strong>“Sale Shares”</strong> means Rs
+          {data.getAgreementData.agreementFieldData['7']} equity shares, of face
           value and quantity.
           <br />
-          "बिक्री शेयरों" का अर्थ अंकित मूल्य और मात्रा के रुपये....... इक्विटी
-          शेयर हैं। "आर्टिकल" का अर्थ है कंपनी के संस्था के अंतर्नियम;
+          "बिक्री शेयरों" का अर्थ अंकित मूल्य और मात्रा के रुपये{' '}
+          {data.getAgreementData.agreementFieldData['7']} इक्विटी शेयर हैं।
+          "आर्टिकल" का अर्थ है कंपनी के संस्था के अंतर्नियम;
         </li>
         <li style={{ marginBottom: 30 }}>
           <strong>“ADVANCE KYC AMOUNT”</strong> means the Subscription amount
@@ -376,13 +402,17 @@ const OtherPage = () => {
           का वचन देता है।
         </li>
         <li>
-          The Subscriber wishes to subscribe for ……………………………. (amount)/- (In
-          figures) (…………………………….) Equity Shares of the Company of the face value
-          of Rs. 10, at the subscription price of Rs. ……………………………. (In figures)
-          (…………………………….ONLY) per share. <br />
-          सब्सक्राइबर, रामाएरा इंडस्ट्रीज लिमिटेड के ________ इक्विटी शेयरों के
-          लिए प्रति शेयर रुपये ______ के सब्सक्रिप्शन मूल्य पर सब्सक्राइब करना
-          चाहते हैं।
+          The Subscriber wishes to subscribe for{' '}
+          {data.getAgreementData.agreementFieldData['8']}(In figures) (
+          {data.getAgreementData.agreementFieldData['9']}) Equity Shares of the
+          Company of the face value of Rs. 10, at the subscription price of Rs.
+          {data.getAgreementData.agreementFieldData['10']} (In figures) ({' '}
+          {data.getAgreementData.agreementFieldData['11']}ONLY) per share.{' '}
+          <br />
+          सब्सक्राइबर, रामाएरा इंडस्ट्रीज लिमिटेड के{' '}
+          {data.getAgreementData.agreementFieldData['8']} इक्विटी शेयरों के लिए
+          प्रति शेयर रुपये {data.getAgreementData.agreementFieldData['10']} के
+          सब्सक्रिप्शन मूल्य पर सब्सक्राइब करना चाहते हैं।
         </li>
         <li>
           The Subscriber hereby acknowledges that the Company is relying upon
@@ -449,48 +479,54 @@ const OtherPage = () => {
       <ol>
         {/* todo */}
         <li>
-          Name of the Subscriber (As per PAN and Adhaar): …………………………………………………..
+          Name of the Subscriber (As per PAN and Adhaar):{' '}
+          {data.getAgreementData.agreementFieldData['2']}
           ; [In case of sole proprietorship]: i) Aadhar OR Enrolment No (ii) Pan
           card OR Form 60 (Mandatory) “Officially Valid Documents” i) Passport
-          ii) Voter’s Identity Card iii) Driving License iv) NREGA Job Card:
-          ………………………………………………………………………………….. ; * With any one document as proof
-          of business/ activity in the name of the proprietary firm. [In case of
-          case of companies] : (i) Certificate of Incorporation (ii) Memorandum
-          & Articles of Association (iii) Permanent Account Number of the
-          company. (iv) Resolution of the Board of Directors to open an account
-          and identification of those who have authority to operate the account:
-          Name of the Company: ………………………………………………………………… CIN:
-          …………………………………………………….
+          ii) Voter’s Identity Card iii) Driving License iv) NREGA Job Card: NA
+          ; * With any one document as proof of business/ activity in the name
+          of the proprietary firm. [In case of case of companies] : (i)
+          Certificate of Incorporation (ii) Memorandum & Articles of Association
+          (iii) Permanent Account Number of the company. (iv) Resolution of the
+          Board of Directors to open an account and identification of those who
+          have authority to operate the account: Name of the Company: NA CIN: NA
           <br />
-          सब्सक्राइबर का नाम (पैन और आधार के अनुसार): ……………………………………………..;
-          [एकमात्र स्वामित्व के मामले में]: i) आधार या नामांकन संख्या (ii) पैन
-          कार्ड या फॉर्म 60 (अनिवार्य) "आधिकारिक तौर पर वैध दस्तावेज़" i)
-          पासपोर्ट ii) मतदाता पहचान पत्र iii) ड्राइविंग लाइसेंस iv) नरेगा जॉब
-          कार्ड: …… ………………………………………………………………….. ; * मालिकाना फर्म के नाम पर
-          व्यवसाय/गतिविधि के प्रमाण के रूप में किसी एक दस्तावेज़ के साथ।
-          [कंपनियों के मामले में]: (i) निगमन प्रमाणपत्र (ii) मेमोरेंडम और
-          आर्टिकल्स ऑफ एसोसिएशन (iii) कंपनी का स्थायी खाता नंबर। (iv) खाता खोलने
-          के लिए निदेशक मंडल का संकल्प और उन लोगों की पहचान जिनके पास खाता
-          संचालित करने का अधिकार है: कंपनी का नाम: …………………………………………………………………
-          सीआईएन: ……………………………………………….
+          सब्सक्राइबर का नाम (पैन और आधार के अनुसार):{' '}
+          {data.getAgreementData.agreementFieldData['2']}.; [एकमात्र स्वामित्व
+          के मामले में]: i) आधार या नामांकन संख्या (ii) पैन कार्ड या फॉर्म 60
+          (अनिवार्य) "आधिकारिक तौर पर वैध दस्तावेज़" i) पासपोर्ट ii) मतदाता
+          पहचान पत्र iii) ड्राइविंग लाइसेंस iv) नरेगा जॉब कार्ड: NA * मालिकाना
+          फर्म के नाम पर व्यवसाय/गतिविधि के प्रमाण के रूप में किसी एक दस्तावेज़
+          के साथ। [कंपनियों के मामले में]: (i) निगमन प्रमाणपत्र (ii) मेमोरेंडम
+          और आर्टिकल्स ऑफ एसोसिएशन (iii) कंपनी का स्थायी खाता नंबर। (iv) खाता
+          खोलने के लिए निदेशक मंडल का संकल्प और उन लोगों की पहचान जिनके पास खाता
+          संचालित करने का अधिकार है: कंपनी का नाम: NA सीआईएन: NA
           <br />
           Address of the Subscriber/sole proprietorship/ company (As per Adhaar
-          Card/ company registration certificate):
-          ..........................................
+          Card/ company registration certificate): .
+          {data.getAgreementData.agreementFieldData['5']}
           <br />
           अभिदाता/एकमात्र स्वामित्व/कंपनी का पता (आधार कार्ड/कंपनी पंजीकरण
-          प्रमाणपत्र के अनुसार): …………………………………………………………
+          प्रमाणपत्र के अनुसार): {data.getAgreementData.agreementFieldData['5']}
         </li>
         <li>
           Number of Shares: The Subscriber wishes to subscribe for
-          ……………………………./- (In figures) (…………………………….) Equity Shares of the
-          Company of the face value of Rs. ……………………………., at the subscription
-          price of Rs. ……………………………. (In figures) (TEN RUPEES ONLY) per share.
+          {data.getAgreementData.agreementFieldData['8']}/- (In figures) (
+          {data.getAgreementData.agreementFieldData['9']}) Equity Shares of the
+          Company of the face value of Rs.{' '}
+          {data.getAgreementData.agreementFieldData['7']} at the subscription
+          price of Rs.{data.getAgreementData.agreementFieldData['10']} (In
+          figures) {data.getAgreementData.agreementFieldData['11']}(TEN RUPEES
+          ONLY) per share.
           <br />
-          शेयरों की संख्या: सब्सक्राइबर कंपनी के …………………………./- (आंकड़ों में)
-          (………………………….) इक्विटी शेयरों की सदस्यता लेना चाहता है। रुपये का अंकित
-          मूल्य. …………………………., रुपये की सदस्यता कीमत पर। ……………………………. (आंकड़ों
-          में) (केवल दस रुपये) प्रति शेयर।
+          शेयरों की संख्या: सब्सक्राइबर कंपनी के
+          {data.getAgreementData.agreementFieldData['8']}/- (आंकड़ों में) (
+          {data.getAgreementData.agreementFieldData['9']}) इक्विटी शेयरों की
+          सदस्यता लेना चाहता है। रुपये का अंकित मूल्य.{' '}
+          {data.getAgreementData.agreementFieldData['7']}, रुपये की सदस्यता कीमत
+          पर।{data.getAgreementData.agreementFieldData['10']} (आंकड़ों में)
+          {data.getAgreementData.agreementFieldData['11']} (केवल दस रुपये) प्रति
+          शेयर।
         </li>
         <li>
           Class of Shares: Specify the class or classes of shares being
@@ -716,11 +752,12 @@ const OtherPage = () => {
         </li>
         <li>
           The Shares will be credited to the demat account of the subscriber (on
-          the opening of their demat account) by …………………………….or through any
-          agency by the subscriber.
+          the opening of their demat account) which is received by the Company
+          {data.getAgreementData.agreementFieldData['12']}from the subscriber.
           <br />
           शेयरों को ग्राहक के डीमैट खाते में (उनके डीमैट खाते के खुलने पर)
-          ……………………….या ग्राहक द्वारा किसी एजेंसी के माध्यम से जमा किया जाएगा।
+          {data.getAgreementData.agreementFieldData['12']}या ग्राहक के माध्यम से
+          जमा किया जाएगा।
         </li>
         <li>
           If any subscriber’s sales their shares to a third party without the
@@ -882,53 +919,73 @@ const OtherPage = () => {
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black', width: '50%' }}>
-            Number of Equity Shares
+            Number of Equity Shares <br /> (Value Rs.{' '}
+            {data.getAgreementData.agreementFieldData['10']}/- Per Share)
           </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
-        </tr>
-        <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>
-            (Value Rs.______/- Per Share)
+            {' '}
+            {data.getAgreementData.agreementFieldData['8']}
           </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>
             Name(s) of Subscriber(s)
           </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['2']}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>
             Signature of Subscriber(s)
           </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            <img src={signData} width={200} height={40} />
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>
             Details of Nominee/legal heirs
           </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['15']}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>Date</th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {moment().format('DD-MM-YYYY')}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>Residence Address</th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['5']}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>Pan Number</th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['3']}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>Contact No </th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['16']}
+          </th>
         </tr>
         <tr style={{ border: '1px solid black' }}>
           <th style={{ border: '1px solid black' }}>E-Mail Id</th>
-          <th style={{ border: '1px solid black' }}>.....</th>
+          <th style={{ border: '1px solid black' }}>
+            {' '}
+            {data.getAgreementData.agreementFieldData['17']}
+          </th>
         </tr>
       </table>
       <strong>
@@ -946,25 +1003,35 @@ const OtherPage = () => {
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            Date:
+            Date: {moment().format('DD-MM-YYYY')}
             <br />
-            तारीख: <br />
           </div>
           <div>
             Subscriber’s Signature:
             <br />
             सब्सक्राइबर के हस्ताक्षर
-            <div>
+            <div
+              style={{
+                borderWidth: 2,
+                borderColor: 'black',
+                border: 2,
+                borderStyle: 'solid'
+              }}
+            >
               <SignatureCanvas
-                penColor="green"
+                penColor="black"
                 ref={signatureCanvasRef}
-                backgroundColor="red"
+                backgroundColor="white"
+                style={{}}
                 canvasProps={{
-                  width: 500,
-                  height: 200,
+                  width: 250,
+
+                  height: 110,
                   className: 'sigCanvas'
                 }}
               />
+            </div>
+            <div style={{ display: 'flex', gap: 5 }}>
               <button onClick={clearSignature}>Clear Signature</button>
               <button onClick={saveSignature}>Save Signature</button>
             </div>
@@ -972,12 +1039,21 @@ const OtherPage = () => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            Place:
+            Place:{' '}
+            <input
+              // color="black"
+
+              style={{ backgroundColor: 'white', color: 'black' }}
+              type="text"
+              placeholder="Type Place Here"
+              id="place"
+              name="place"
+            />
             <br />
-            स्थान: <br />
           </div>
           <div>
-            Name of the Subscriber :
+            Name of the Subscriber :{' '}
+            {data.getAgreementData.agreementFieldData['2']}
             <br />
             सब्सक्राइबर का नाम
             <div></div>

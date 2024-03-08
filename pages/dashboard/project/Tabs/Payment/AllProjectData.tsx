@@ -189,15 +189,15 @@ export const AllProjectDetails = {
     },
     {
       key: 'Required No. of Share Holder',
-      info: '30000'
+      info: 'Announced Soon'
     },
     {
       key: 'Per Share Holder Required Fund',
-      info: '5000'
+      info: '2500'
     },
     {
       key: 'No. of share allotment',
-      info: 'Rs 500/Share'
+      info: 'Announced Soon'
     },
     {
       key: 'Net Profit Sharing',

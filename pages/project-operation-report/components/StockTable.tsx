@@ -61,70 +61,7 @@ interface Filters {
   membership?: 'all' | 'ADVANCE' | 'BASIC';
 }
 
-// const applyFilters = (users: User[], filters: Filters): any => {
-//   return users.filter((user) => {
-//     let matches = true;
-//     /*  if (
-//         !user?.name?.toLowerCase().includes(searchText) &&
-//         !user?.pw_id?.toLowerCase().includes(searchText)
-//       ) {
-//         matches = false;
-//       } */
-//     if (user.role === variables.role.ADMIN) {
-//       matches = false;
-//     }
-//     if ((filters.membership && user?.membership) !== filters.membership) {
-//       matches = false;
-//     }
-//     if ((filters.status && user?.kyc) !== filters.status) {
-//       matches = false;
-//     }
-//     if (
-//       filters.hajipur &&
-//       projectChecker(user?.documents, 'hajipur_project_payment') !==
-//         filters.hajipur
-//     ) {
-//       matches = false;
-//     }
-//     // if (filters.demat && checkDemat(user) !== filters.demat) {
-//     //   matches = false;
-//     // }
-//     if (
-//       filters.agra &&
-//       projectChecker(user?.documents, 'agra_project_payment') !== filters.agra
-//     ) {
-//       matches = false;
-//     }
-//     if (
-//       filters.hyderabad &&
-//       projectChecker(user?.documents, 'hyderabad_project_payment') !==
-//         filters.hyderabad
-//     ) {
-//       matches = false;
-//     }
-//     return matches;
-//   });
-// };
-
-/* const applyPagination = (
-    users: User[],
-    page: number,
-    limit: number
-  ): User[] => {
-    return users.slice(page * limit, page * limit + limit);
-  }; */
-
-// const checkDemat = (user) => {
-//   let status = 'NOT_RECIEVED';
-//   user.documents.map((doc) => {
-//     if (doc.title.includes('demat')) {
-//       status = doc.status;
-//     }
-//   });
-//   return status;
-// };
-
-const DataTable = () => {
+const StockTable = () => {
   const matches = useMediaQuery('(min-width:600px)');
   const theme = useTheme();
   const tableRef = useRef(null);
@@ -159,38 +96,38 @@ const DataTable = () => {
     }
   });
 
-  useEffect(() => {
-    const fetchsubData = async () => {
-      try {
-        const response = await fetch(
-          `https://erp.ramaera.com/api/resource/Purchase Order/${poNumber}`,
-          {
-            headers: {
-              Authorization: `token ${process.env.NEXT_PUBLIC_ERP_TOKEN}`
-            }
-          }
-        );
-        if (!response.ok) {
-          console.log('err');
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        const data3 = data.data;
-        setSubItemData(data3);
-        // setUserData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  //   useEffect(() => {
+  //     const fetchsubData = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `https://erp.ramaera.com/api/resource/Purchase Order/${poNumber}`,
+  //           {
+  //             headers: {
+  //               Authorization: `token ${process.env.NEXT_PUBLIC_ERP_TOKEN}`
+  //             }
+  //           }
+  //         );
+  //         if (!response.ok) {
+  //           console.log('err');
+  //           throw new Error('Network response was not ok');
+  //         }
+  //         const data = await response.json();
+  //         const data3 = data.data;
+  //         // setSubItemData(data3);
+  //         // setUserData(data);
+  //       } catch (error) {
+  //         console.error('Error fetching data:', error);
+  //       }
+  //     };
 
-    fetchsubData();
-  }, [poNumber]);
+  //     fetchsubData();
+  //   }, [poNumber]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://erp.ramaera.com/api/resource/Purchase Order?fields=["status","name","transaction_date","supplier_name","grand_total"]&filters=[["status","IN",["To Receive","To Receive and Bill"]]]&limit=60&order_by=transaction_date%20asc',
+          'https://erp.ramaera.com/api/resource/Stock Balance',
           {
             headers: {
               Authorization: `token ${process.env.NEXT_PUBLIC_ERP_TOKEN}`
@@ -203,7 +140,8 @@ const DataTable = () => {
         }
         const data = await response.json();
         const data2 = data.data;
-        setUsersList(data2);
+        console.log('data', data2);
+
         // setUserData(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -213,28 +151,6 @@ const DataTable = () => {
     fetchData();
   }, []);
 
-  const [search, { data }] = useLazyQuery(SEARCH_USERS, {
-    variables: {
-      searchTerm: searchText
-    }
-  });
-
-  let _numbers = useSelector((state: any) => state.allUsers.totalNumbers);
-  let _usersList = [];
-  const [usersList, setUsersList] = useState([]);
-  const [subItemData, setSubItemData] = useState([]);
-
-  const [numbers, setNumbers] = useState({
-    totalKYC: 0,
-    totalAdvance: 0,
-    totalBasic: 0
-  });
-
-  const [showItemData, setShowItemData] = useState(false);
-
-  const data1 = usersList;
-  const subItem = subItemData;
-  //   useEffect(() => {
   //     if (allKycUsers.data) {
   //       setUsersList(allKycUsers.data.allKycUser);
   //       _usersList = allKycUsers.data.allKycUser;
@@ -331,7 +247,7 @@ const DataTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data1?.map((data, index) => (
+                  {/* {map((data, index) => (
                     <React.Fragment>
                       <TableRow
                         onClick={() => handleRowClick(index, data?.name)}
@@ -484,7 +400,7 @@ const DataTable = () => {
                         </TableRow>
                       )}
                     </React.Fragment>
-                  ))}
+                  ))} */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -504,4 +420,4 @@ const DataTable = () => {
 //   usersList: []
 // };
 
-export default DataTable;
+export default StockTable;

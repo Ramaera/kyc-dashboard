@@ -1,6 +1,7 @@
 import { Box, Button, Card, Divider, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DataTable from './DataTable';
+import StockTable from './StockTable';
 
 const OperationData = () => {
   const theme = useTheme();
@@ -38,7 +39,8 @@ const OperationData = () => {
           </Button>
         </Box>
         <Box>
-          <DataTable />
+          {/* <DataTable /> */}
+          <StockTable />
         </Box>
         <Divider />
 

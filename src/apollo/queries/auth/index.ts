@@ -766,6 +766,17 @@ query CardDetails($cardNumber:String!) {
 
 `);
 
+export const AGREEMENT_DATA = gql(`
+ query GetAgreementData ($PWID:String!){
+    getAgreementData(PWID: $PWID) {
+        agreementFieldData
+        agreementUrl
+        isCompleted
+        pwId
+    }
+}
+`);
+
 export const SEND_VERIFICATION_EMAIL = gql(`
 mutation SendVerificationEmail ($id: String!){
   sendVerificationEmail(id: $id) {
