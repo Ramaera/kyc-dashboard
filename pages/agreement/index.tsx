@@ -58,9 +58,7 @@ function Agreement() {
           Ramaera 30% net profit partner mutual agreement consent
         </Typography>
       </PageTitleWrapper>
-      <Container maxWidth={false}>
-        <AgreementDetails />
-      </Container>
+      <Container maxWidth={false}>{/* <AgreementDetails /> */}</Container>
       <Footer />
     </ProtectedSSRoute>
   );
