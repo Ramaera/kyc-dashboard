@@ -9,41 +9,41 @@
 // import { PDFDownloadLink } from '@react-pdf/renderer';
 // import AgreementPages from './AgreementPages';
 
-// const AgreementDetails = () => {
-//   const [signData, setSignData] = useState(null);
-//   const signatureCanvasRef = useRef(null);
-//   const clearSignature = () => {
-//     signatureCanvasRef.current.clear();
-//   };
-//   const saveSignature = async () => {
-//     const signatureImage = signatureCanvasRef.current.toDataURL();
-//     setSignData(signatureImage);
-//   };
-//   const { loading, data, error } = useQuery(AGREEMENT_DATA, {
-//     variables: {
-//       PWID: 'RIL-14'
-//     }
-//   });
+const AgreementDetails = () => {
+  //   const [signData, setSignData] = useState(null);
+  //   const signatureCanvasRef = useRef(null);
+  //   const clearSignature = () => {
+  //     signatureCanvasRef.current.clear();
+  //   };
+  //   const saveSignature = async () => {
+  //     const signatureImage = signatureCanvasRef.current.toDataURL();
+  //     setSignData(signatureImage);
+  //   };
+  //   const { loading, data, error } = useQuery(AGREEMENT_DATA, {
+  //     variables: {
+  //       PWID: 'RIL-14'
+  //     }
+  //   });
 
-//   if (loading) {
-//     return <div>Loading .......</div>;
-//   }
-//   if (error) {
-//     console.log('err', error);
-//   }
-//   const generatePdf = async () => {
-//     return (
-//       <PDFDownloadLink document={<AgreementDetails />} fileName="example1.pdf">
-//         {({ blob, url, loading, error }) =>
-//           loading ? 'Loading document...' : 'Download PDF'
-//         }
-//       </PDFDownloadLink>
-//     );
-//   };
+  //   if (loading) {
+  //     return <div>Loading .......</div>;
+  //   }
+  //   if (error) {
+  //     console.log('err', error);
+  //   }
+  //   const generatePdf = async () => {
+  //     return (
+  //       <PDFDownloadLink document={<AgreementDetails />} fileName="example1.pdf">
+  //         {({ blob, url, loading, error }) =>
+  //           loading ? 'Loading document...' : 'Download PDF'
+  //         }
+  //       </PDFDownloadLink>
+  //     );
+  //   };
 
-//   return (
-//     <>
-//       <Document style={{ display: 'flex', flexDirection: 'column' }}>
+  return (
+    <>
+      {/* //       <Document style={{ display: 'flex', flexDirection: 'column' }}>
 //         <Page size="A4" style={styles.page}>
 //           <View style={styles.section}>
 //             <MainPage />
@@ -57,10 +57,10 @@
 //           signData={signData}
 //         />
 //       </Document>
-//       <button onClick={generatePdf}>Generate PDF</button>
-//     </>
-//   );
-// };
+//       <button onClick={generatePdf}>Generate PDF</button> */}
+    </>
+  );
+};
 // const styles = StyleSheet.create({
 //   page: {
 //     display: 'flex',
@@ -74,4 +74,4 @@
 //     paddingHorizontal: 10
 //   }
 // });
-// export default AgreementDetails;
+export default AgreementDetails;

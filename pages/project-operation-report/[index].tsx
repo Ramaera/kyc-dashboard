@@ -1,3 +1,0 @@
-const ItemData = () => {
-  return <></>;
-};
