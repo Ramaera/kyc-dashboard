@@ -147,6 +147,40 @@ function SidebarMenu() {
         <List component="div">
           <SubMenuWrapper>
             <List component="div">
+              {user.kyc === 'APPROVED' && user.membership === 'ADVANCE' && (
+                <ListItem component="div">
+                  <NextLink href="/agreement" passHref>
+                    <Button
+                      className={currentRoute === '/agreement' ? 'active' : ''}
+                      style={{
+                        color: currentRoute === '/agreement' ? '#7063C0' : ''
+                      }}
+                      disableRipple
+                      component="a"
+                      onClick={() => {
+                        setListVisible(false);
+                        setShareList(false);
+                        closeSidebar();
+                      }}
+                      // startIcon={<DesignServicesTwoToneIcon />}
+                      startIcon={
+                        <span
+                          style={{
+                            color:
+                              currentRoute === '/project-operation-report'
+                                ? '#7063C0'
+                                : ''
+                          }}
+                        >
+                          &#x2022;
+                        </span>
+                      }
+                    >
+                      Agreement
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              )}
               <ListItem component="div">
                 <NextLink href="/project-operation-report" passHref>
                   <Button

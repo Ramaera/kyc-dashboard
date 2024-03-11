@@ -1,4 +1,4 @@
-import { GET_ALL_AGENCY_USERS } from '@/apollo/queries/auth';
+import { AGREEMENT_DATA, GET_ALL_AGENCY_USERS } from '@/apollo/queries/auth';
 import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/Loading';
 import AgreementDetails from './components/AgreementDetails';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { useAppSelector } from '@/hooks';
 
 function Agreement() {
   const dispatch = useDispatch();
@@ -19,27 +21,41 @@ function Agreement() {
   const agencyCode = useSelector(
     (state: any) => state.user?.agencyCode?.agencyCode
   );
-
-  const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
+  const user = useAppSelector((state) => state.user?.data);
+  const { loading, data, error } = useQuery(AGREEMENT_DATA, {
     variables: {
-      agencyCode: agencyCode
+      PWID: user?.pw_id
     }
   });
-  // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
-  // console.log(useSelector((state) => state.allUsers.allTheUsers));
-  useEffect(() => {
-    refetch();
-  }, [foundUser]);
+
   if (loading) {
-    return <Loading />;
+    return <div>Loading.........</div>;
   }
   if (error) {
-    console.log(error);
-    // return <h3>error</h3>;
+    console.log('err', error);
   }
-  if (data) {
-    dispatch(setAllTheUsers(data.GetAllKycAgencyUser));
-  }
+
+  // const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
+  //   variables: {
+  //     agencyCode: agencyCode
+  //   }
+  // });
+  // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
+  // console.log(useSelector((state) => state.allUsers.allTheUsers));
+
+  const generatePdf = () => {
+    console.log('clicked');
+    return (
+      <PDFDownloadLink
+        document={<AgreementDetails data={data} />}
+        fileName="example.pdf"
+      >
+        {({ blob, url, loading, error }) =>
+          loading ? 'Loading document...' : 'Download PDF'
+        }
+      </PDFDownloadLink>
+    );
+  };
 
   //console.log(helloW)
 
@@ -58,7 +74,16 @@ function Agreement() {
           Ramaera 30% net profit partner mutual agreement consent
         </Typography>
       </PageTitleWrapper>
-      <Container maxWidth={false}>{/* <AgreementDetails /> */}</Container>
+      <Container maxWidth={false}>
+        {data ? (
+          <AgreementDetails data={data} />
+        ) : (
+          'Kindly Contact KYC Team ,Regarding Your Agreement'
+        )}
+        {/* <AgreementDetails data={data} />
+        <button onClick={() => generatePdf()}>Generate PDF</button>
+        {generatePdf()} */}
+      </Container>
       <Footer />
     </ProtectedSSRoute>
   );
