@@ -441,7 +441,7 @@ const DematTab = () => {
   const handleSubmit = async () => {
     const isValid = validateSubmit(dematDocumentImage);
     if (!isValid) {
-      return;
+      return alert('Error');
     }
     setLoading(true);
 
@@ -505,7 +505,9 @@ const DematTab = () => {
         //   setOrUpdateUser(updateUser(dematDocument.id, imgUrl, dematAccount))
         // );
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log('err', err.message);
+    }
     setLoading(false);
   };
   useEffect(() => {

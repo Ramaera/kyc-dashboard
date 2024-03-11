@@ -1,25 +1,25 @@
+import { View, Text } from '@react-pdf/renderer';
+
 const MainPage = () => {
   return (
-    <div
+    <View
       style={{
         display: 'flex',
         justifyContent: 'center',
+        flexDirection: 'column',
         alignContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column',
-        fontSize: 24,
-        fontWeight: 'bold',
-        height: '1024px',
         gap: 4
       }}
     >
-      {' '}
-      <p style={{ marginBottom: 0 }}>ADVANCE KYC AGREEMENT</p>
-      <p style={{ marginTop: 0 }}>by and between</p>
-      <p style={{ marginBottom: 0 }}>RAMAERA INDUSTRIES LIMITED</p>
-      <p style={{ marginTop: 0 }}>and</p>
-      <p style={{ marginTop: 0 }}>PUBLIC SHAREHOLDER</p>
-    </div>
+      <Text style={{ marginBottom: 0, color: 'black' }}>
+        ADVANCE KYC AGREEMENT
+      </Text>
+      <Text style={{ marginTop: 0 }}>by and between</Text>
+      <Text style={{ marginBottom: 0 }}>RAMAERA INDUSTRIES LIMITED</Text>
+      <Text style={{ marginTop: 0 }}>and</Text>
+      <Text style={{ marginTop: 0 }}>PUBLIC SHAREHOLDER</Text>
+    </View>
   );
 };
 

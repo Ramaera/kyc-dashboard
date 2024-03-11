@@ -20,8 +20,10 @@ import createEmotionCache from 'src/createEmotionCache';
 import ThemeProvider from 'src/theme/ThemeProvider';
 import { persistor, store } from '../src/state/store';
 import RamaeraRouter from './RamaeraRouter';
+import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
 
 import './style.css';
+import { __DEV__ } from '@apollo/client/utilities/globals';
 library.add(faEye, faEyeSlash);
 // import type { AppProps } from 'next/app'
 
@@ -45,6 +47,12 @@ function TokyoApp(props: TokyoAppProps) {
   Router.events.on('routeChangeStart', nProgress.start);
   Router.events.on('routeChangeError', nProgress.done);
   Router.events.on('routeChangeComplete', nProgress.done);
+
+  if (__DEV__) {
+    // Adds messages only in a dev environment
+    loadDevMessages();
+    loadErrorMessages();
+  }
 
   return (
     <Provider store={store}>
@@ -94,7 +102,6 @@ function TokyoApp(props: TokyoAppProps) {
           </SidebarProvider>
         </CacheProvider>
       </ApolloProvider>
-      <ApolloProvider client={client}></ApolloProvider>
     </Provider>
   );
 }
