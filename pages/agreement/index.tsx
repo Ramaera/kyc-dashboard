@@ -64,18 +64,18 @@ function Agreement() {
 
       <PDFGenerator
         data={data}
-        signData={signData}
+        // signData={signData}
         // saveSignature={saveSignature}
         // clearSignature={clearSignature}
       />
       <Container maxWidth={false}>
-        {data ? (
-          <>
-            <AgreementDetails data={data} />
-          </>
+        {/* {data ? (
+          <> */}
+        <AgreementDetails data={data} />
+        {/* </>
         ) : (
           'Kindly Contact KYC Team ,Regarding Your Agreement'
-        )}
+        )} */}
       </Container>
 
       <Footer />
