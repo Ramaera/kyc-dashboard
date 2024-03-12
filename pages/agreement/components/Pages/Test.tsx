@@ -76,71 +76,27 @@ const PDFGenerator = ({ data }) => {
           ]
         },
         {
-          text: `अग्रिम केवाईसी एग्रीमेंट, जोकि 'एग्रीमेंट' के रूप में ${data?.getAgreementData?.agreementFieldData['1']}`,
-          style: { font: 'Hindi' }
-        },
-        // {
-        //   text: data?.getAgreementData?.agreementFieldData['1'],
-        //   style: 'englishText'
-        // },
-        {
-          text: " ('निष्पादन तिथि') को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।",
+          text: `अग्रिम केवाईसी एग्रीमेंट, जोकि 'एग्रीमेंट' के रूप में ${data?.getAgreementData?.agreementFieldData['1']} ('निष्पादन तिथि') को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।`,
           style: { font: 'Hindi' }
         },
         { text: 'By and amongst/ समझौते के पक्ष: -', style: { font: 'Hindi' } },
-        `Mr./Ms. ${data?.getAgreementData?.agreementFieldData['2']}`,
-        ,
-        // {
-        //   text: data?.getAgreementData?.agreementFieldData['2'],
-        //   style: 'bold'
-        // },
-        ' (Name of the Subscriber) having PAN ',
-        {
-          text: data?.getAgreementData?.agreementFieldData['3'],
-          style: 'bold'
-        },
-        ' S/O ',
-        {
-          text: data?.getAgreementData?.agreementFieldData['4'],
-          style: 'bold'
-        },
-        ' and having Residential Address at ',
-        {
-          text: data?.getAgreementData?.agreementFieldData['5'],
-          style: 'bold'
-        },
-        ', hereinafter referred to as the “Subscriber” (which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors, nominee and permitted assigns), Of The FIRST PART',
-        'श्री/श्रीमती ',
-        {
-          text: data?.getAgreementData?.agreementFieldData['2'],
-          style: 'bold'
-        },
-        ' (कंपनी के सदस्या का नाम) जिनका स्थायी खाता संख्या (पैन कार्ड): ',
 
         {
-          text: data?.getAgreementData?.agreementFieldData['3'],
-          style: 'bold'
+          text: `Mr. ${data?.getAgreementData?.agreementFieldData['2']} having PAN ${data?.getAgreementData?.agreementFieldData['3']}  S/O ${data?.getAgreementData?.agreementFieldData['4']} and having Residential Address at ${data?.getAgreementData?.agreementFieldData['5']}  hereinafter referred to as the “Subscriber” (which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors, nominee and permitted assigns), Of The FIRST PART',
+          '`,
+          style: { font: 'Hindi' }
         },
-        ' S/O ',
         {
-          text: data?.getAgreementData?.agreementFieldData['4'],
-          style: 'bold'
+          text: `श्री/श्रीमती ${data?.getAgreementData?.agreementFieldData['2']} (कंपनी के सदस्या का नाम) जिनका स्थायी खाता संख्या (पैन कार्ड):${data?.getAgreementData?.agreementFieldData['3']}  S/O ${data?.getAgreementData?.agreementFieldData['4']} तथा निवास का पता ${data?.getAgreementData?.agreementFieldData['5']} , जिनको 'सब्सक्राइबर' (जो अभिव्यक्ति, जब तक कि इस संदर्भ या इसके अर्थ के प्रतिकूल न हो, इसका मतलब यही माना जाएगा और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स शामिल होंगे ) समझौते के लिए पहली पार्टी के रूप में संदर्भित किया गया है,`,
+          style: { font: 'Hindi' }
         },
-        ' तथा निवास का पता ',
-        {
-          text: data?.getAgreementData?.agreementFieldData['5'],
-          style: 'bold'
-        },
-        ", जिनको 'सब्सक्राइबर' (जो अभिव्यक्ति, जब तक कि इस संदर्भ या इसके अर्थ के प्रतिकूल न हो, इसका मतलब यही माना जाएगा और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स शामिल होंगे ) समझौते के लिए पहली पार्टी के रूप में संदर्भित किया गया है,",
+
         { text: 'And', style: 'bold' },
-        'और',
-        'Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having ',
-        'CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, ',
-        'is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ',
-        data?.getAgreementData?.agreementFieldData['6'],
-        ' hereinafter referred to as',
-        '“Ramaera/Company” ',
-        '(which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors and permitted assigns), Of The SECOND PART.',
+        { text: 'और', style: { font: 'Hindi', fontWeight: 'bold' } },
+        {
+          text: `Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having ,CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,${data?.getAgreementData?.agreementFieldData['6']} hereinafter referred to as “Ramaera/Company” ',(which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors and permitted assigns), Of The SECOND PART.`
+        },
+
         {
           text: [
             'The Company and the Subscriber shall individually be referred to as ',
