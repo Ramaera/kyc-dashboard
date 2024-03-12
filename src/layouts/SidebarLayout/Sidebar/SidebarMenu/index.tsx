@@ -147,7 +147,7 @@ function SidebarMenu() {
         <List component="div">
           <SubMenuWrapper>
             <List component="div">
-              {user.kyc === 'APPROVED' && user.membership === 'ADVANCE' && (
+              {user.pw_id === 'PWID' && (
                 <ListItem component="div">
                   <NextLink href="/agreement" passHref>
                     <Button
