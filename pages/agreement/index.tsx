@@ -7,13 +7,14 @@ import { useQuery } from '@apollo/client';
 import { Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/Loading';
 import AgreementDetails from './components/AgreementDetails';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useAppSelector } from '@/hooks';
+import PDFGenerator from './components/Pages/Test';
 
 function Agreement() {
   const dispatch = useDispatch();
@@ -27,6 +28,16 @@ function Agreement() {
       PWID: user?.pw_id
     }
   });
+  const [signData, setSignData] = useState(null);
+  const signatureCanvasRef = useRef(null);
+  const clearSignature = () => {
+    signatureCanvasRef.current.clear();
+  };
+
+  const saveSignature = async () => {
+    const signatureImage = signatureCanvasRef?.current?.toDataURL();
+    setSignData(signatureImage);
+  };
 
   if (loading) {
     return <div>Loading.........</div>;
@@ -34,30 +45,6 @@ function Agreement() {
   if (error) {
     console.log('err', error);
   }
-
-  // const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
-  //   variables: {
-  //     agencyCode: agencyCode
-  //   }
-  // });
-  // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
-  // console.log(useSelector((state) => state.allUsers.allTheUsers));
-
-  const generatePdf = () => {
-    console.log('clicked');
-    return (
-      <PDFDownloadLink
-        document={<AgreementDetails data={data} />}
-        fileName="example.pdf"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? 'Loading document...' : 'Download PDF'
-        }
-      </PDFDownloadLink>
-    );
-  };
-
-  //console.log(helloW)
 
   return (
     <ProtectedSSRoute>
@@ -74,16 +61,23 @@ function Agreement() {
           Ramaera 30% net profit partner mutual agreement consent
         </Typography>
       </PageTitleWrapper>
+
+      <PDFGenerator
+        data={data}
+        signData={signData}
+        // saveSignature={saveSignature}
+        // clearSignature={clearSignature}
+      />
       <Container maxWidth={false}>
         {data ? (
-          <AgreementDetails data={data} />
+          <>
+            <AgreementDetails data={data} />
+          </>
         ) : (
           'Kindly Contact KYC Team ,Regarding Your Agreement'
         )}
-        {/* <AgreementDetails data={data} />
-        <button onClick={() => generatePdf()}>Generate PDF</button>
-        {generatePdf()} */}
       </Container>
+
       <Footer />
     </ProtectedSSRoute>
   );

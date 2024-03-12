@@ -14,12 +14,14 @@ import Test from './Pages/Test';
 const AgreementDetails = ({ data }) => {
   return (
     <>
-      <Document style={{ paddingLeft: 10, paddingRight: 10 }}>
+      <Document style={{}}>
         <Page size="A4" style={styles.page}>
           <View style={styles.section}>
             <MainPage />
           </View>
         </Page>
+        <Test />
+
         <OtherPage data={data} />
       </Document>
     </>
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     backgroundColor: '#E4E4E4',
+    padding: 20,
     color: 'black'
   },
   section: {

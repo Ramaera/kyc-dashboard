@@ -78,21 +78,18 @@ const OtherPage = ({ data }) => {
           </Text>
         </View>
 
-        {/* <Text style={{ fontFamily: 'Tiro Sans Devanagari' }}>
+        <Text style={{ fontFamily: 'Tiro Sans Devanagari' }}>
           अग्रिम केवाईसी एग्रीमेंट, जोकि &#39;एग्रीमेंट&#39; के रूप में
           {data?.getAgreementData.agreementFieldData['1']}(&#39;निष्पादन
           तिथि&#39;) को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।
-        </Text> */}
-
-        <Text style={styles.heading}>
-          {' '}
-          By and amongst/
-          {/* समझौते के पक्ष:  */}-
         </Text>
+
+        <Text style={styles.heading}> By and amongst/ समझौते के पक्ष: -</Text>
         <Text>
           Mr./Ms.{' '}
           <Text style={styles.bold}>
-            {data?.getAgreementData.agreementFieldData['2']}
+            {data?.getAgreementData.agreementFieldData['2']} (Name of the
+            Subscriber)
           </Text>{' '}
           having PAN{' '}
           <Text style={styles.bold}>
@@ -112,7 +109,7 @@ const OtherPage = ({ data }) => {
           <Text> The FIRST PART</Text>
         </Text>
 
-        {/* <Text>
+        <Text>
           श्री/श्रीमती {data?.getAgreementData.agreementFieldData['2']} (कंपनी
           के सदस्या का नाम) जिनका स्थायी खाता संख्या (पैन कार्ड):
           {data?.getAgreementData.agreementFieldData['3']} S/O{' '}
@@ -122,9 +119,9 @@ const OtherPage = ({ data }) => {
           मतलब यही माना जाएगा और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स
           शामिल होंगे ) <Text>समझौते के लिए पहली पार्टी</Text> के रूप में
           संदर्भित किया गया है,
-        </Text> */}
+        </Text>
         <Text style={styles.bold}>And</Text>
-        {/* <Text>और</Text> */}
+        <Text>और</Text>
         <Text>
           Ramaera Industries Limited a Company incorporated under the Companies
           Act, 2013 having{' '}
@@ -149,7 +146,7 @@ const OtherPage = ({ data }) => {
             <Text style={styles.bold}>“Parties”.</Text>
           </Text>
         </Text>
-        {/* <Text>
+        <Text>
           <Text>रामाएरा इंडस्ट्रीज लिमिटेड </Text>,कंपनी जो कंपनी अधिनियम, 2013
           के तहत निगमित हुई है, जिसका
           <Text> CIN: U74110UP2022PLC168553 </Text>है और पंजीकृत कार्यालय{' '}
@@ -167,7 +164,7 @@ const OtherPage = ({ data }) => {
           कंपनी और सब्सक्राइबर को व्यक्तिगत रूप से <Text> "पार्टी"</Text> और
           सामूहिक रूप से
           <Text>&#39;पार्टियाँ&#39;</Text> कहा जाएगा।
-        </Text> */}
+        </Text>
 
         <Text style={styles.heading}>Definition: </Text>
 
@@ -176,7 +173,7 @@ const OtherPage = ({ data }) => {
             <Text>
               &#8226; <Text style={styles.bold}>“Articles”</Text> means the
               Articles of Association of the Company; <br />
-              {/* <Text> "आर्टिकल" का अर्थ है कंपनी के संस्था के अंतर्नियम;</Text> */}
+              <Text> "आर्टिकल" का अर्थ है कंपनी के संस्था के अंतर्नियम;</Text>
             </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
@@ -185,11 +182,11 @@ const OtherPage = ({ data }) => {
               mutual contract entered between the Company and the Subscriber
               upon agreed terms and conditions.
               <br />
-              {/* <Text>
+              <Text>
                 {' '}
                 "एग्रीमेंट" का अर्थ है सहमत नियमों और शर्तों पर कंपनी और निवेशक
                 के बीच एक पारस्परिक अनुबंध।
-              </Text> */}
+              </Text>
             </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
@@ -198,10 +195,10 @@ const OtherPage = ({ data }) => {
               means in the context of company that a group of directors in the
               organization.
               <br />
-              {/* <Text>
+              <Text>
                 बोर्ड ऑफ़ डायरेक्टर्स - कंपनी के संबंध में बोर्ड ऑफ़ डायरेक्टर्स
                 का अर्थ है कंपनी के डायरेक्टर्स का सामूहिक निकाय।
-              </Text> */}
+              </Text>
             </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
@@ -211,69 +208,69 @@ const OtherPage = ({ data }) => {
             such other similar business as the Company may undertake from time
             to time;
             <br />
-            {/* <Text>
+            <Text>
               "बिजनेस" का अर्थ है फास्ट मूविंग कंज्यूमर गुड्स ("एफएमसीजी") जैसे
               मसाले, नूडल्स, टूथपेस्ट, खाद्य तेल, आटा और इसी तरह के अन्य व्यवसाय
               का निर्माण, वितरण और बिक्री, जिसे कंपनी समय-समय पर कर सकती है;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30, marginTop: 60 }}>
             &#8226; <Text style={styles.bold}>“Business Day”</Text> means any
             day other than a Sunday or any days on which commercial banks in
             India are closed under the applicable Law or action of any
             Governmental Authority;; <br />
-            {/* <Text>
+            <Text>
               "बिजनेस डे " का अर्थ है रविवार और जिस दिन भारत में वाणिज्यिक बैंक
               लागू कानून या किसी सरकारी प्राधिकरण की कार्रवाई के तहत बंद रहते
               हैं;को छोड़कर कोई भी दिन,
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Companies Act”</Text>means the
             Companies Act, 2013, as amended from time to time;
             <br />
-            {/* <Text>
+            <Text>
               {' '}
               "कंपनी एक्ट " का अर्थ कंपनी अधिनियम, 2013 है, जो समय-समय पर
               संशोधित होता है;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Company”</Text> means the Ramaera
             Industries Limited having its registered office at H-150, Sector –
             63, Noida, Gautam Buddha Nagar, Uttar Pradesh – 201301. <br />
-            {/* <Text>
+            <Text>
               "कपनी" का अर्थ है रमेरा इंडस्ट्रीज लिमिटेड जिसका पंजीकृत कार्यालय
               एच-150, सेक्टर - 63, नोएडा, गौतम बुद्ध नगर, उत्तर प्रदेश - 201301
               में है।
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Directors”</Text> mean the
             directors on the Board and “Director” has the corresponding meaning;
             <br />
-            {/* <Text>
+            <Text>
               "डायरेक्टर्स" का अर्थ बोर्ड के निदेशकों से हैं और जिसका अर्थ
               "निदेशक" के अनुरूप है ;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Equity Shares”</Text> means the
             equity shares of the Company having a Face value of Rs 10/-; <br />
-            {/* <Text>
+            <Text>
               {' '}
               "इक्विटी शेयर" का अर्थ है कंपनी के हिस्सेदारी शेयर जिनका अंकित
               मूल्य 10/- रुपये (केवल दस रुपये) है;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Financial Statements”</Text>{' '}
             means the audited financial statements of the Company.
-            {/* <br />
+            <br />
             <Text>
               "फाइनेंसियल स्टेटमेंट " का अर्थ है कंपनी के लेखापरीक्षित वित्तीय
               विवरण।
-            </Text> */}
+            </Text>
           </Text>
           <br />
           <Text style={{ marginBottom: 30 }}>
@@ -286,7 +283,7 @@ const OtherPage = ({ data }) => {
             quasi-judicial, legislative, police, administrative, regulatory or
             taxing authority or power of any nature;
             <br />
-            {/* <Text>
+            <Text>
               "गवर्नमेंटल अथॉरिटी " का अर्थ है कोई भी (अ) राष्ट्रीय, राज्य,
               स्थानीय, नगरपालिका, विदेशी या अन्य सरकारी, (ब) किसी भी प्रकृति का
               सरकारी या अर्ध-सरकारी प्राधिकरण (किसी भी सरकारी एजेंसी, शाखा,
@@ -294,36 +291,36 @@ const OtherPage = ({ data }) => {
               (स) किसी भी प्रशासनिक, कार्यकारी, न्यायिक, अर्ध-न्यायिक, विधायी,
               पुलिस, प्रशासनिक, नियामक या कर लगाने वाले प्राधिकरण या किसी भी
               प्रकृति की शक्ति का प्रयोग या प्रयोग करने का हकदार निकाय;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“KYC”</Text> the abbreviation
             stands for Know your Customer, which is implies on the information
             provided to the company by the share subscriber to prove his legal
             self. <br />
-            {/* <Text>
+            <Text>
               "केवाईसी" का संक्षिप्त नाम नो योर कस्टमर है, जिसका तात्पर्य शेयर
               ग्राहक द्वारा अपनी कानूनी पहचान साबित करने के लिए कंपनी को प्रदान
               की गई जानकारी से है।
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Sale Shares”</Text> means Rs
             {data?.getAgreementData.agreementFieldData['7']} equity shares, of
             face value and quantity.
             <br />
-            {/* <Text>
+            <Text>
               "बिक्री शेयरों" का अर्थ अंकित मूल्य और मात्रा के रुपये{' '}
               {data?.getAgreementData.agreementFieldData['7']} इक्विटी शेयर हैं।
               "आर्टिकल" का अर्थ है कंपनी के संस्था के अंतर्नियम;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“ADVANCE KYC AMOUNT”</Text> means
             the Subscription amount subscribed by the subscriber. ; <br />
-            {/* <Text>
+            <Text>
               "अग्रिम केवाईसी राशि" का अर्थ ग्राहक द्वारा ली गई सदस्यता राशि है।
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226;{' '}
@@ -334,13 +331,13 @@ const OtherPage = ({ data }) => {
             amount of Rs. 1,00,000 or more (Rupees One Lakh or more Only) in the
             Equity share of Ramaera Industries Limited. (Hereinafter referred to
             as “the Company”). ; <br />
-            {/* <Text style={{ marginBottom: 30 }}>
+            <Text style={{ marginBottom: 30 }}>
               "सब्सक्राइबर सह शुद्ध लाभ मार्जिन पार्टनर" का अर्थ एक व्यक्तिगत
               व्यक्ति या कोई अन्य व्यक्ति है जिसने रुपये की राशि की सदस्यता ली
               है। रामाएरा इंडस्ट्रीज लिमिटेड के इक्विटी शेयर में 1,00,000 या
               अधिक (केवल एक लाख रुपये या अधिक)। (इसके बाद इसे "कंपनी" के रूप में
               संदर्भित किया जाएगा)।
-            </Text> */}
+            </Text>
           </Text>
 
           <Text style={{ marginBottom: 30 }}>
@@ -350,13 +347,13 @@ const OtherPage = ({ data }) => {
             code, case law, or principle of common law and includes any
             delegated legislation or a directive of a Governmental Authority;{' '}
             <br />
-            {/* <Text>
+            <Text>
               "लॉ" का अर्थ है कोई भी संघीय, राज्य, स्थानीय, नगरपालिका, विदेशी,
               अंतर्राष्ट्रीय, बहुराष्ट्रीय, संविधान, कानून, क़ानून, संधि, नियम,
               विनियमन, अध्यादेश, कोड, मामला कानून या सामान्य कानून का सिद्धांत
               और इसमें कोई भी प्रत्यायोजित कानून शामिल है या एक सरकारी प्राधिकरण
               का निर्देश;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Liability”</Text>includes
@@ -365,17 +362,17 @@ const OtherPage = ({ data }) => {
             to become due or otherwise, and whether or not required to be
             reflected in the Financial Statements of the Company;
             <br />
-            {/* <Text>
+            <Text>
               "लायबिलिटी" में देयताएं, ऋण या किसी भी प्रकृति के अन्य दायित्व
               शामिल हैं, चाहे ज्ञात या अज्ञात, पूर्ण, उपार्जित, आकस्मिक या
               अन्यथा, देय या देय हो या अन्यथा, और कंपनी के वित्तीय विवरणों में
               परिलक्षित होने की आवश्यकता हो या नहीं ;
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Memorandum”</Text> means the
             memorandum of association of the Company; <br />
-            {/* <Text>"मेमोरेंडम" का अर्थ कंपनी के सहयोग का ज्ञापन है;</Text> */}
+            <Text>"मेमोरेंडम" का अर्थ कंपनी के सहयोग का ज्ञापन है;</Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226;{' '}
@@ -386,13 +383,13 @@ const OtherPage = ({ data }) => {
             accordance with the Business Plan and in each case only to the
             extent consistent with the Transaction Documents and Applicable Law;
             <br />
-            {/* <Text>
+            <Text>
               "आर्डिनरी कोर्स ऑफ़ बिज़नेस" कंपनी के किसी भी कार्य, लेन-देन या
               गतिविधि के संबंध में "आर्डिनरी कोर्स ऑफ़ बिज़नेस" का अर्थ है व्यवसाय
               योजना के अनुसार और प्रत्येक में कंपनी की पिछली प्रथाओं के अनुसार
               ऐसी कार्रवाई, लेन-देन या गतिविधि करना या उपक्रम करना। मामला केवल
               लेन-देन दस्तावेजों और लागू कानून के अनुरूप होने की सीमा तक
-            </Text> */}
+            </Text>
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Profit”</Text> means the net
@@ -400,24 +397,24 @@ const OtherPage = ({ data }) => {
             limited to (including any adjustment or any type of taxes paid to
             any authority on behalf of the Company) from revenue of the Company{' '}
             <br />
-            {/* "प्रॉफिट" का अर्थ कंपनी के राजस्व से सभी प्रकार के खर्चों में कटौती
+            "प्रॉफिट" का अर्थ कंपनी के राजस्व से सभी प्रकार के खर्चों में कटौती
             के बाद कंपनी का लाभ है, लेकिन कंपनी के राजस्व से (कंपनी की ओर से
             किसी भी प्राधिकरण को भुगतान किए गए किसी भी समायोजन या किसी भी प्रकार
-            के करों सहित) तक सीमित नहीं है। */}
+            के करों सहित) तक सीमित नहीं है।
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Net profit Sharing Ratio”</Text>{' '}
             means the net profit of the Company distributed among the Subscriber
             as per terms and conditions set out in the said Agreement.
             <br />
-            {/* "नेट प्रॉफिट शेयरिंग रेशियो" का अर्थ उक्त समझौते में निर्धारित
-            नियमों और शर्तों के अनुसार निवेशक के बीच वितरित कंपनी का लाभ है। */}
+            "नेट प्रॉफिट शेयरिंग रेशियो" का अर्थ उक्त समझौते में निर्धारित
+            नियमों और शर्तों के अनुसार निवेशक के बीच वितरित कंपनी का लाभ है।
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“ROC”</Text> means the relevant
             Registrar of Companies;
             <br />
-            {/* "आर ओ सी " का अर्थ संबंधित कंपनी रजिस्ट्रार है; */}
+            "आर ओ सी " का अर्थ संबंधित कंपनी रजिस्ट्रार है;
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Securities”</Text> means the
@@ -428,27 +425,28 @@ const OtherPage = ({ data }) => {
             any instrument or certificate representing a legal or beneficial
             ownership interest in Equity Shares, including global depository
             receipts or American depository receipts; <br />
-            {/* "सिक्योरिटीज" का अर्थ इक्विटी शेयर, वरीयता शेयर, डिबेंचर, बॉन्ड, ऋण,
+            "सिक्योरिटीज" का अर्थ इक्विटी शेयर, वरीयता शेयर, डिबेंचर, बॉन्ड, ऋण,
             वारंट, विकल्प या कंपनी के अन्य समान उपकरण या प्रतिभूतियां हैं जो
             परिवर्तनीय हैं या प्रयोग करने योग्य या विनिमय योग्य हैं या जो
             सदस्यता लेने या खरीदने का अधिकार रखते हैं , इक्विटी शेयर या वैश्विक
             डिपॉजिटरी रसीदें या अमेरिकी डिपॉजिटरी रसीदें सहित इक्विटी शेयरों में
             कानूनी या लाभकारी स्वामित्व हित का प्रतिनिधित्व करने वाला कोई उपकरण
-            या प्रमाणपत्र; */}
+            या प्रमाणपत्र;
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Shareholder”</Text> means any
             Person who owns the Securities;
             <br />
-            {/* "शेयर होल्डर" का अर्थ किसी भी व्यक्ति से है जो प्रतिभूतियों का मालिक       है; */}
+            "शेयर होल्डर" का अर्थ किसी भी व्यक्ति से है जो प्रतिभूतियों का मालिक
+            है;
           </Text>
 
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Share Capital”</Text>means the
             issued and fully paid-up Equity Share capital of the Company, on a
             Fully Diluted Basis; <br />
-            {/* "शेयर कैपिटल" का अर्थ है पूरी तरह से भुगतान किया हुआ और और कंपनी की
-            तरफ से जारी इक्विटी शेयर पूंजी; */}
+            "शेयर कैपिटल" का अर्थ है पूरी तरह से भुगतान किया हुआ और और कंपनी की
+            तरफ से जारी इक्विटी शेयर पूंजी;
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Subscriber”</Text>The Subscriber
@@ -456,26 +454,26 @@ const OtherPage = ({ data }) => {
             sign on behalf of such Entity or is a duly appointed agent or
             representative of the Entity and hereby warrants.
             <br />
-            {/* सब्सक्राइबर- सब्सक्राइबर एक इकाई ("इकाई") है और ऐसी इकाई की ओर से
+            सब्सक्राइबर- सब्सक्राइबर एक इकाई ("इकाई") है और ऐसी इकाई की ओर से
             हस्ताक्षर करने के लिए अधिकृत व्यक्ति एक विधिवत नियुक्त एजेंट या इकाई
-            का प्रतिनिधि है और इसे प्रमाणित करता है।) */}
+            का प्रतिनिधि है और इसे प्रमाणित करता है।)
           </Text>
           <Text style={{ marginBottom: 30 }}>
             &#8226; <Text style={styles.bold}>“Project Unit “</Text>Means a unit
             set up by the Company in any place in India for the Manufacturing of
             Fast-Moving Consumer Goods (“FMCG”).
             <br />
-            {/* प्रोजेक्ट यूनिट - का अर्थ है कंपनी द्वारा भारत में किसी भी स्थान पर
+            प्रोजेक्ट यूनिट - का अर्थ है कंपनी द्वारा भारत में किसी भी स्थान पर
             फास्ट मूविंग कंज्यूमर गुड्स ("एफएमसीजी") के निर्माण के लिए स्थापित
             की गई इकाई। का अर्थ है सभी इकाइयां जहां एफएमसीजी उत्पादों का निर्माण
-            कंपनी द्वारा किया जाना है। */}
+            कंपनी द्वारा किया जाना है।
           </Text>
         </ol>
 
         <Text style={styles.heading}>
           WHEREAS
           <br />
-          {/* अतएव: */}
+          अतएव:
         </Text>
         <ol>
           &#8226;{' '}
@@ -484,9 +482,9 @@ const OtherPage = ({ data }) => {
             Company for which the subscriber undertakes to provide complete
             information under this Advance KYC agreement.
             <br />
-            {/* सब्सक्राइबर कंपनी के इक्विटी शेयरों की सदस्यता लेना चाहता है जिसके
+            सब्सक्राइबर कंपनी के इक्विटी शेयरों की सदस्यता लेना चाहता है जिसके
             लिए सब्सक्राइबर इस एडवांस केवाईसी समझौते के तहत पूरी जानकारी प्रदान
-            करने का वचन देता है। */}
+            करने का वचन देता है।
           </Text>
           &#8226;{' '}
           <Text>
@@ -496,12 +494,13 @@ const OtherPage = ({ data }) => {
             the Company of the face value of Rs. 10, at the subscription price
             of Rs.
             {data?.getAgreementData.agreementFieldData['10']} (In figures) ({' '}
-            {data?.getAgreementData.agreementFieldData['11']}) per share. <br />
-            {/* सब्सक्राइबर, रामाएरा इंडस्ट्रीज लिमिटेड के{' '}
+            {data?.getAgreementData.agreementFieldData['11']}ONLY) per share.{' '}
+            <br />
+            सब्सक्राइबर, रामाएरा इंडस्ट्रीज लिमिटेड के{' '}
             {data?.getAgreementData.agreementFieldData['8']} इक्विटी शेयरों के
             लिए प्रति शेयर रुपये{' '}
             {data?.getAgreementData.agreementFieldData['10']} के सब्सक्रिप्शन
-            मूल्य पर सब्सक्राइब करना चाहते हैं। */}
+            मूल्य पर सब्सक्राइब करना चाहते हैं।
           </Text>
           &#8226;{' '}
           <Text>
@@ -510,9 +509,9 @@ const OtherPage = ({ data }) => {
             and documents in this Agreement and in compliance with its
             obligations under applicable Laws, Rules and Regulations.
             <br />
-            {/* सब्सक्राइबर एतदद्वारा स्वीकार करता है कि कंपनी इस समझौते में
+            सब्सक्राइबर एतदद्वारा स्वीकार करता है कि कंपनी इस समझौते में
             प्रतिनिधित्व की सटीकता और पूर्णता पर भरोसा कर रही है और लागू
-            कानूनों, नियमों और विनियमों के तहत अपने दायित्वों के अनुपालन में है। */}
+            कानूनों, नियमों और विनियमों के तहत अपने दायित्वों के अनुपालन में है।
           </Text>
         </ol>
         <Text>
@@ -520,29 +519,28 @@ const OtherPage = ({ data }) => {
           stipulate the terms and conditions pertaining to the subscription of
           Investor Subscription Shares by the Investors.
           <br />
-          {/* निवेशकों द्वारा निवेशक सदस्यता शेयरों की सदस्यता से संबंधित नियमों और
+          निवेशकों द्वारा निवेशक सदस्यता शेयरों की सदस्यता से संबंधित नियमों और
           शर्तों को निर्धारित करने के लिए पार्टियां इस समझौते को निष्पादित करने
-          के लिए सहमत हुई हैं। */}
+          के लिए सहमत हुई हैं।
         </Text>
         <Text>
           <Text>NOW, THEREFORE,</Text> in consideration of the mutual
           agreements, covenants, representations, and warranties set forth in
           this Agreement, and for other good and valuable consideration, the
           receipt and sufficiency of which is acknowledged by the Parties, the
-          Parties hereby agree as follows
-          {/* अब, इसलिए, ऊपर दिए गए कारणों के लिए, और कंपनी और सब्सक्राइबर के
-          पूर्वगामी और आपसी वादों और अनुबंधों को ध्यान में रखते हुए, और अन्य
-          अच्छे और मूल्यवान विचार के लिए, जिसकी प्राप्ति एतदद्वारा स्वीकार की
-          जाती है, कंपनी और सब्सक्राइबर्स निम्नलिखित बातों के लिए सहमत करती है */}
-          :-
+          Parties hereby agree as follows अब, इसलिए, ऊपर दिए गए कारणों के लिए,
+          और कंपनी और सब्सक्राइबर के पूर्वगामी और आपसी वादों और अनुबंधों को
+          ध्यान में रखते हुए, और अन्य अच्छे और मूल्यवान विचार के लिए, जिसकी
+          प्राप्ति एतदद्वारा स्वीकार की जाती है, कंपनी और सब्सक्राइबर्स
+          निम्नलिखित बातों के लिए सहमत करती है :-
         </Text>
         <ol type="A">
           &#65;)
           <Text>
             Such an Entity is an existing entity, and has not been organized or
             reorganized for the purpose of making this subscription <br />
-            {/* संस्था एक मौजूदा संस्था है और इसे निवेश को करने के उद्देश्य से
-            संगठित या पुनर्गठित नहीं किया गया है; */}
+            संस्था एक मौजूदा संस्था है और इसे निवेश को करने के उद्देश्य से
+            संगठित या पुनर्गठित नहीं किया गया है;
           </Text>
           &#66;){' '}
           <Text>
@@ -550,8 +548,8 @@ const OtherPage = ({ data }) => {
             connection with the Company are valid and binding documents of the
             Entity enforceable in accordance with their terms.
             <br />
-            {/* कंपनी के संबंध में दर्ज और निष्पादित किए गए सभी दस्तावेज उनकी शर्तों
-            के अनुसार लागू करने योग्य इकाई के वैध और अनिवार्य दस्तावेज हैं। */}
+            कंपनी के संबंध में दर्ज और निष्पादित किए गए सभी दस्तावेज उनकी शर्तों
+            के अनुसार लागू करने योग्य इकाई के वैध और अनिवार्य दस्तावेज हैं।
           </Text>
           &#67;){' '}
           <Text>
@@ -559,15 +557,15 @@ const OtherPage = ({ data }) => {
             ROI, Types of Subscription, Fixed Deposit, Recurring Deposit
             Accounts, or any money monetary subscription center.
             <br />
-            {/* कंपनी रामाएरा इंडस्ट्रीज लिमिटेड किसी भी प्रकार की योजना प्रत्यक्ष
+            कंपनी रामाएरा इंडस्ट्रीज लिमिटेड किसी भी प्रकार की योजना प्रत्यक्ष
             बिक्री, जैसे आरओआई, निवेश के प्रकार, सावधि जमा, आवर्ती जमा खाता और
-            किसी भी धन मौद्रिक निवेश केंद्र को बढ़ावा नहीं दे रहा है। */}
+            किसी भी धन मौद्रिक निवेश केंद्र को बढ़ावा नहीं दे रहा है।
           </Text>
         </ol>
         <Text style={styles.heading}>
           IDENTIFICATION CLAUSE
           <br />
-          {/* पहचान खंड */}
+          पहचान खंड
         </Text>
         <ol>
           <Text>
@@ -584,7 +582,7 @@ const OtherPage = ({ data }) => {
             account and identification of those who have authority to operate
             the account: Name of the Company: NA CIN: NA
             <br />
-            {/* सब्सक्राइबर का नाम (पैन और आधार के अनुसार):{' '}
+            सब्सक्राइबर का नाम (पैन और आधार के अनुसार):{' '}
             {data?.getAgreementData.agreementFieldData['2']}.; [एकमात्र
             स्वामित्व के मामले में]: i) आधार या नामांकन संख्या (ii) पैन कार्ड या
             फॉर्म 60 (अनिवार्य) "आधिकारिक तौर पर वैध दस्तावेज़" i) पासपोर्ट ii)
@@ -595,13 +593,13 @@ const OtherPage = ({ data }) => {
             (iv) खाता खोलने के लिए निदेशक मंडल का संकल्प और उन लोगों की पहचान
             जिनके पास खाता संचालित करने का अधिकार है: कंपनी का नाम: NA सीआईएन:
             NA
-            <br /> */}
+            <br />
             Address of the Subscriber/sole proprietorship/ company (As per
             Adhaar Card/ company registration certificate): .
             {data?.getAgreementData.agreementFieldData['5']}
             <br />
-            {/* अभिदाता/एकमात्र स्वामित्व/कंपनी का पता (आधार कार्ड/कंपनी पंजीकरण
-            प्रमाणपत्र के अनुसार):{' '} */}
+            अभिदाता/एकमात्र स्वामित्व/कंपनी का पता (आधार कार्ड/कंपनी पंजीकरण
+            प्रमाणपत्र के अनुसार):{' '}
             {data?.getAgreementData.agreementFieldData['5']}
           </Text>
           <Text style={{ marginTop: 100 }}>
@@ -615,7 +613,7 @@ const OtherPage = ({ data }) => {
             {data?.getAgreementData.agreementFieldData['11']}(TEN RUPEES ONLY)
             per share.
             <br />
-            {/* शेयरों की संख्या: सब्सक्राइबर कंपनी के
+            शेयरों की संख्या: सब्सक्राइबर कंपनी के
             {data?.getAgreementData.agreementFieldData['8']}/- (आंकड़ों में) (
             {data?.getAgreementData.agreementFieldData['9']}) इक्विटी शेयरों की
             सदस्यता लेना चाहता है। रुपये का अंकित मूल्य.{' '}
@@ -623,13 +621,13 @@ const OtherPage = ({ data }) => {
             कीमत पर।{data?.getAgreementData.agreementFieldData['10']} (आंकड़ों
             में)
             {data?.getAgreementData.agreementFieldData['11']} (केवल दस रुपये)
-            प्रति शेयर। */}
+            प्रति शेयर।
           </Text>
           <Text>
             Class of Shares: Specify the class or classes of shares being
             transacted. <br />
-            {/* शेयरों की श्रेणी: लेन-देन किए जाने वाले शेयरों की श्रेणी या
-            श्रेणियां निर्दिष्ट करें। */}
+            शेयरों की श्रेणी: लेन-देन किए जाने वाले शेयरों की श्रेणी या
+            श्रेणियां निर्दिष्ट करें।
           </Text>
           <Text>
             Purchase Price: {data?.getAgreementData.agreementFieldData['10']} (
@@ -640,7 +638,7 @@ const OtherPage = ({ data }) => {
         <Text style={styles.heading}>
           TERMS OF SUBSCRIPTION:
           <br />
-          {/* सदस्यता की शर्तें */}
+          सदस्यता की शर्तें
         </Text>
         <ol type="a">
           &#8226;{' '}
@@ -650,48 +648,47 @@ const OtherPage = ({ data }) => {
             whole or in part, in its sole and absolute discretion, to accept or
             reject this:
             <br />
-            {/* सब्सक्राइबर स्वीकार करता है कि शेयरों की यह सदस्यता रामाएरा द्वारा
+            सब्सक्राइबर स्वीकार करता है कि शेयरों की यह सदस्यता रामाएरा द्वारा
             स्वीकृति के अधीन है। रामाएरा इस सदस्यता को स्वीकार या अस्वीकार करने
             के लिए, अपने एकमात्र और पूर्ण विवेकाधिकार में, पूर्ण या आंशिक रूप से
             अधिकार सुरक्षित रखता है और कंपनी द्वारा लिखित रूप में स्वीकार किए
-            जाने तक सदस्यता बाध्यकारी नहीं होगी।) */}
+            जाने तक सदस्यता बाध्यकारी नहीं होगी।)
           </Text>
           &#8226;{' '}
           <Text>
             The Subscriber acknowledges that, in order to subscribe for Shares,
-            the Subscriber must hereby deliver to the Company:
-            {/* सब्सक्राइबर
+            the Subscriber must hereby deliver to the Company: सब्सक्राइबर
             स्वीकार करता है कि, शेयरों की सदस्यता लेने के लिए उन्हें निम्नलिखित
-            दस्तावेजों को कंपनी में उपलब्ध करवानी पड़ेगी */}
+            दस्तावेजों को कंपनी में उपलब्ध करवानी पड़ेगी
             <br />
           </Text>
           &#8226;{' '}
           <Text>
             Duly signed copies of this Subscription Agreement, <br />
-            {/* इस सदस्यता अनुबंध की विधिवत हस्ताक्षरित प्रतियां */}
+            इस सदस्यता अनुबंध की विधिवत हस्ताक्षरित प्रतियां
           </Text>
           &#8226;{' '}
           <Text>
             Receipt of all funds for the subscription of shares hereunder.
             <br />
-            {/* शेयरों की सदस्यता लेने के लिए शेयर्स के आवेदन में भुगतान किए गए राशि
-            की रसीद। */}
+            शेयरों की सदस्यता लेने के लिए शेयर्स के आवेदन में भुगतान किए गए राशि
+            की रसीद।
           </Text>
           &#8226;{' '}
           <Text>
             The closing of the Subscription of Shares hereunder (the “Closing”)
             shall occur as specified in the Act related hereto.
             <br />
-            {/* इसके तहत शेयरों की सदस्यता का समापन ("समापन") अधिनियम से संबंधित
-            अधिनियम में निर्दिष्ट के अनुसार होगा। */}
+            इसके तहत शेयरों की सदस्यता का समापन ("समापन") अधिनियम से संबंधित
+            अधिनियम में निर्दिष्ट के अनुसार होगा।
           </Text>
           &#8226;{' '}
           <Text>
             Once executed counterpart of the Signature Page attached to this
             Agreement together with appropriate notarization;
             <br />
-            {/* एक बार ये निष्पादित हो जाये तो इस समझौते और इससे जुड़े हस्ताक्षर
-            पृष्ठ के प्रतिरूप को उचित नोटरीकरण के साथ संलग्न किये जाएं, */}
+            एक बार ये निष्पादित हो जाये तो इस समझौते और इससे जुड़े हस्ताक्षर
+            पृष्ठ के प्रतिरूप को उचित नोटरीकरण के साथ संलग्न किये जाएं,
           </Text>
           &#8226;{' '}
           <Text>
@@ -700,16 +697,16 @@ const OtherPage = ({ data }) => {
             in full for the Shares desired to be subscribed hereunder, made
             payable in favor of the Company as per the Companies Act, 2013.
             <br />
-            {/* सब्सक्राइब किए जाने वाले शेयरों के पूर्ण भुगतान करने एवं कंपनी
+            सब्सक्राइब किए जाने वाले शेयरों के पूर्ण भुगतान करने एवं कंपनी
             अधिनियम, 2013 के अनुसार, इस समझौते से जुड़े हस्ताक्षर पृष्ठ पर
             उल्लिखित निर्धारित राशि का एक चेक, ट्रेड ड्राफ्ट या मीडिया देय बिल,
-            कंपनी के पक्ष में देय है; इस समझौता पत्र के साथ संलग्न किया जाएगा। */}
+            कंपनी के पक्ष में देय है; इस समझौता पत्र के साथ संलग्न किया जाएगा।
           </Text>
         </ol>
         <Text style={styles.heading}>
           REPRESENTATION AND WARRANTY
           <br />
-          {/* प्रतिनिधित्व और वारंटी */}
+          प्रतिनिधित्व और वारंटी
         </Text>
         <ol type="a">
           &#8226;{' '}
@@ -718,25 +715,25 @@ const OtherPage = ({ data }) => {
             representations, declarations and warranties to the Company, with
             the intent and understanding that the Company will rely thereon:
             <br />
-            {/* इस समझौते को क्रियान्वित करके, सब्सक्राइबर कंपनी को निम्नलिखित
+            इस समझौते को क्रियान्वित करके, सब्सक्राइबर कंपनी को निम्नलिखित
             अभ्यावेदन, घोषणाएँ और वारंटी देता है, कि इस इरादे और समझ के साथ कि
-            कंपनी उस पर भरोसा करेगी: */}
+            कंपनी उस पर भरोसा करेगी:
           </Text>
           &#8226;{' '}
           <Text>
             The Subscriber has the right to invest in the upcoming project, as
             per the time period notified by the Company.
             <br />
-            {/* कंपनी द्वारा अधिसूचित समय अवधि के अनुसार सब्सक्राइबर को आगामी
-            परियोजना में निवेश करने का अधिकार है। */}
+            कंपनी द्वारा अधिसूचित समय अवधि के अनुसार सब्सक्राइबर को आगामी
+            परियोजना में निवेश करने का अधिकार है।
           </Text>
           &#8226;{' '}
           <Text>
             The Board of Directors of Ramaera has full right to issue the Shares
             at premium after complying the requirement of the Act.
             <br />
-            {/* रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स को अधिनियम की आवश्यकता का अनुपालन
-            करने के बाद प्रीमियम पर शेयर जारी करने का पूरा अधिकार है । */}
+            रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स को अधिनियम की आवश्यकता का अनुपालन
+            करने के बाद प्रीमियम पर शेयर जारी करने का पूरा अधिकार है ।
           </Text>
           &#8226;{' '}
           <Text>
@@ -744,9 +741,9 @@ const OtherPage = ({ data }) => {
             guaranteed, or warranted the achievement of any particular financial
             result by the Company.
             <br />
-            {/* सब्सक्राइबर स्वीकार करता है कि कंपनी द्वारा किसी विशेष वित्तीय
+            सब्सक्राइबर स्वीकार करता है कि कंपनी द्वारा किसी विशेष वित्तीय
             परिणाम/ या लाभ के उपलब्धि या प्राप्ति केलिए किसी भी प्रकार का गारंटी
-            या वारंटी प्रस्तुत नहीं किया गया है। */}
+            या वारंटी प्रस्तुत नहीं किया गया है।
           </Text>
           &#8226;{' '}
           <Text>
@@ -760,14 +757,14 @@ const OtherPage = ({ data }) => {
             authorizing its subscription amount in the Company, and/or
             evidencing the satisfaction of the foregoing.
             <br />
-            {/* यदि सब्सक्राइबर किसी अन्य व्यक्ति या संस्था के लिए एक प्रत्ययी
+            यदि सब्सक्राइबर किसी अन्य व्यक्ति या संस्था के लिए एक प्रत्ययी
             क्षमता में शेयर खरीद रहा है, जिसमें बिना किसी सीमा के एक निगम,
             साझेदारी, ट्रस्ट या कोई अन्य संस्था शामिल है, तो सब्सक्राइबर को इस
             सदस्यता समझौते और अन्य सभी सदस्यता दस्तावेजों को निष्पादित करने के
             लिए विधिवत अधिकृत और सशक्त किया गया है। कंपनी के अनुरोध पर,
             सब्सक्राइबर, सब्सक्राइबर बनाने वाले, कंपनी में अपने निवेश को अधिकृत
             करने वाले और/या पूर्वगामी की संतुष्टि का प्रमाण देने वाले सभी
-            प्रासंगिक दस्तावेजों की सही, पूर्ण और वर्तमान प्रतियां प्रदान करेगा। */}
+            प्रासंगिक दस्तावेजों की सही, पूर्ण और वर्तमान प्रतियां प्रदान करेगा।
           </Text>
           &#8226;{' '}
           <Text>
@@ -778,17 +775,17 @@ const OtherPage = ({ data }) => {
             details of the return based on contribution is mentioned herein
             below.
             <br />
-            {/* इस समझौते में प्रवेश करने से पहले. सब्सक्राइबर ने निर्धारित किया है
+            इस समझौते में प्रवेश करने से पहले. सब्सक्राइबर ने निर्धारित किया है
             कि कंपनी की सदस्यता एक उपयुक्त निर्णय है, कंपनी के नियमों और शर्तों
             के अनुसार, अनुपात के मुकाबले शुद्ध लाभ साझाकरण के आधार पर। ग्राहक
             द्वारा स्वीकृत योजना. निवेश के आधार पर रिटर्न का विवरण नीचे दिया गया
-            है। */}
+            है।
           </Text>
         </ol>
         <Text style={styles.heading}>
           TERMS AND CONDITIONS
           <br />
-          {/* नियम और शर्तें */}
+          नियम और शर्तें
         </Text>
         <ol type="a">
           <Text>
@@ -798,19 +795,19 @@ const OtherPage = ({ data }) => {
             agreement which shall be distributed to the Subscriber (as defined
             in this said Agreement), as per the following conditions:
             <br />
-            {/* उक्त समझौते के निष्पादन और हस्ताक्षर के बाद, सब्सक्राइबर को वार्षिक
+            उक्त समझौते के निष्पादन और हस्ताक्षर के बाद, सब्सक्राइबर को वार्षिक
             आधार पर कंपनी के शुद्ध लाभ का 30% का हिस्सा सहमत शुद्ध लाभ-बंटवारे
             के अनुसार मिलेगा। उक्त समझौते में निर्धारित अनुपात जो सब्सक्राइबर को
             निम्नलिखित शर्तों के अनुसार वितरित किया जाएगा (जैसा कि इस समझौते में
-            परिभाषित किया गया है): */}
+            परिभाषित किया गया है):
             <ol type="I">
               &#8226;{' '}
               <Text>
                 The 30 % of the net profit is only applicable in case where the
                 amount invested is more than Rs. 1,00,000/- (One Lakh only).
                 <br />
-                {/* लाभ का 30% केवल उस स्थिति में लागू होता है जहां निवेश की गई राशि
-                रुपये 1,00,000/- (केवल एक लाख) से अधिक है। । */}
+                लाभ का 30% केवल उस स्थिति में लागू होता है जहां निवेश की गई राशि
+                रुपये 1,00,000/- (केवल एक लाख) से अधिक है। ।
               </Text>
               &#8226;{' '}
               <Text>
@@ -819,10 +816,10 @@ const OtherPage = ({ data }) => {
                 set forth by the company/board, then also board reserves the
                 right to the net profit sharing as decided in the agreement.
                 <br />
-                {/* 30% लाभ कंपनी के वित्तीय वर्ष में लाभदायक होने के अधीन है, यदि
+                30% लाभ कंपनी के वित्तीय वर्ष में लाभदायक होने के अधीन है, यदि
                 कंपनी/बोर्ड द्वारा निर्धारित लक्ष्य को प्राप्त करने में विफल
                 रहती है, तो बोर्ड शुद्ध लाभ साझा करने का अधिकार सुरक्षित रखता
-                है। समझौते में तय हुआ. */}
+                है। समझौते में तय हुआ.
               </Text>
             </ol>
           </Text>
@@ -831,16 +828,16 @@ const OtherPage = ({ data }) => {
             The Amount of subscription in equity shares shall not be refundable
             to the Subscribers, the subscriber will be only entitled to profits
             and losses of the Company. <br />
-            {/* इक्विटी शेयरों में सदस्यता की राशि सब्सक्राइबर्स को वापस नहीं की
-            जाएगी, सब्सक्राइबर केवल योजना के लाभ और हानि के हकदार होंगे। */}
+            इक्विटी शेयरों में सदस्यता की राशि सब्सक्राइबर्स को वापस नहीं की
+            जाएगी, सब्सक्राइबर केवल योजना के लाभ और हानि के हकदार होंगे।
           </Text>
           &#8226;{' '}
           <Text>
             The Amount of subscription is not based on (ROI) return on
             contribution; this amount will not be refunded.
             <br />
-            {/* निवेश की राशि निवेश पर वापसी (रिटर्न ऑफ़ इन्वेस्टमेंट) पर आधारित नहीं
-            होगी, यह राशि किसी भी हाल में वापस नहीं की जाएगी । */}
+            निवेश की राशि निवेश पर वापसी (रिटर्न ऑफ़ इन्वेस्टमेंट) पर आधारित नहीं
+            होगी, यह राशि किसी भी हाल में वापस नहीं की जाएगी ।
           </Text>
           &#8226;{' '}
           <Text>
@@ -851,11 +848,11 @@ const OtherPage = ({ data }) => {
             legal heirs have the valid and legal documents under the laws of
             India.
             <br />
-            {/* सब्सक्राइबर की मृत्यु के मामले में, उनके शेयर और कंपनी के लाभ का
+            सब्सक्राइबर की मृत्यु के मामले में, उनके शेयर और कंपनी के लाभ का
             हिस्सा उनके कानूनी उत्तराधिकारियों/नामितों को हस्तांतरित कर दिया
             जाएगा और एक पीढ़ी से दूसरी पीढ़ी तक नामांकित व्यक्तियों को
             हस्तांतरित कर दिया जाएगा, बशर्ते कि कानूनी उत्तराधिकारियों के पास
-            भारत के कानूनों के तहत वैध और कानूनी दस्तावेज हैं। */}
+            भारत के कानूनों के तहत वैध और कानूनी दस्तावेज हैं।
           </Text>
           &#8226;{' '}
           <Text>
@@ -865,10 +862,10 @@ const OtherPage = ({ data }) => {
             subscriber has no right to transfer the share to anyone without
             permission of Ramaera ’s Board of Directors.
             <br />
-            {/* रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स की लिखित अनुमति के बिना सब्सक्राइबर
+            रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स की लिखित अनुमति के बिना सब्सक्राइबर
             अपने शेयर किसी तीसरे पक्ष को हस्तांतरित नहीं कर सकते। इसका अर्थ है,
             सब्सक्राइबर को रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स की अनुमति के बिना
-            शेयर को किसी को हस्तांतरित करने का कोई अधिकार नहीं है । */}
+            शेयर को किसी को हस्तांतरित करने का कोई अधिकार नहीं है ।
           </Text>
           &#8226;{' '}
           <Text>
@@ -878,33 +875,33 @@ const OtherPage = ({ data }) => {
             {data?.getAgreementData.agreementFieldData['12']}from the
             subscriber.
             <br />
-            {/* शेयरों को ग्राहक के डीमैट खाते में (उनके डीमैट खाते के खुलने पर)
+            शेयरों को ग्राहक के डीमैट खाते में (उनके डीमैट खाते के खुलने पर)
             {data?.getAgreementData.agreementFieldData['12']}या ग्राहक के माध्यम
-            से जमा किया जाएगा। */}
+            से जमा किया जाएगा।
           </Text>
           <Text>
             If any subscriber’s sales their shares to a third party without the
             written permission of Ramaera ’s board of directors, the mutual
             agreement will be immediate become null and void.
             <br />
-            {/* अगर कोई सब्सक्राइबर रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स की लिखित अनुमति
+            अगर कोई सब्सक्राइबर रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स की लिखित अनुमति
             के बिना किसी तीसरे पक्ष को अपने शेयर बेचता है, तो उपर्युक्त लिखा
-            आपसी समझौता निष्क्रिय (नल्ल और वोइड) हो जाएगा । */}
+            आपसी समझौता निष्क्रिय (नल्ल और वोइड) हो जाएगा ।
           </Text>
         </ol>
         <Text style={styles.heading}>
           APPLICABLE LAW <br />
-          {/* लागू कानून{' '} */}
+          लागू कानून{' '}
         </Text>
         <Text style={{ marginBottom: 30 }}>
           This Agreement shall be executed in accordance with and governed by
           the laws applicable to contracts made and wholly performed in the
           state of Uttar Pradesh.
         </Text>
-        {/* <Text style={{ marginBottom: 30 }}>
+        <Text style={{ marginBottom: 30 }}>
           यह समझौता राज्य - उत्तर प्रदेश में पूरी तरह से किए गए अनुबंधों पर लागू
           कानूनों के अनुसार निष्पादित और शासित होगा।
-        </Text> */}
+        </Text>
         <Text style={{ marginBottom: 30 }}>
           Any dispute or difference whatsoever arising between the parties out
           of or relating to the construction, meaning, scope, operation or
@@ -916,7 +913,7 @@ const OtherPage = ({ data }) => {
           Both the parties further agree to appoint sole arbitrator as mutually
           agreed between the parties.
         </Text>
-        {/* <Text style={{ marginBottom: 30 }}>
+        <Text style={{ marginBottom: 30 }}>
           इस समझौते के निर्माण, अर्थ, दायरे, संचालन या प्रभाव या इसकी वैधता या
           उल्लंघन से संबंधित पक्षों के बीच उत्पन्न होने वाला कोई भी विवाद या
           मतभेद भारतीय परिषद के मध्यस्थता के नियमों के अनुसार मध्यस्थता द्वारा
@@ -924,20 +921,20 @@ const OtherPage = ({ data }) => {
           अनुसरण में दिया गया पुरस्कार पार्टियों के लिए बाध्यकारी होगा।",
           मध्यस्थता की सीट कानपुर, उत्तर प्रदेश होगी। दोनों पक्ष आपसी सहमति से
           एकमात्र मध्यस्थ नियुक्त करने पर सहमत हैं। दलों।
-        </Text> */}
+        </Text>
         <Text style={styles.heading}>
           EXECUTION IN COUNTERPARTS
           <br />
-          {/* समकक्षों में निष्पादन */}
+          समकक्षों में निष्पादन
         </Text>
         <Text>
           This Agreement may be executed in one or more counterparts.
-          {/* <br /> यह एग्रीमेंट एक या अधिक समकक्षों में निष्पादित किया जा सकता है। */}
+          <br /> यह एग्रीमेंट एक या अधिक समकक्षों में निष्पादित किया जा सकता है।
         </Text>
         <Text style={styles.heading}>
           PERSONS BOUND
           <br />
-          {/* बाध्य व्यक्ति */}
+          बाध्य व्यक्ति
         </Text>
         <Text>
           This Agreement shall, except as otherwise provided herein, insure to
@@ -945,15 +942,15 @@ const OtherPage = ({ data }) => {
           assigns and on each Subscriber and his respective heirs, executors,
           administrators, successors, and assigns.
           <br />
-          {/* यह एग्रीमेंट, यहां प्रदान किए जाने के अलावा, कंपनी और उसके
+          यह एग्रीमेंट, यहां प्रदान किए जाने के अलावा, कंपनी और उसके
           उत्तराधिकारियों और समनुदेशितियों और प्रत्येक सब्सक्राइबर और उनके
           संबंधित उत्तराधिकारियों, निष्पादकों, प्रशासकों, उत्तराधिकारियों और
-          समनुदेशितियों के लाभ के लिए बाध्य होगा और उनके लिए बाध्यकारी होगा। */}
+          समनुदेशितियों के लाभ के लिए बाध्य होगा और उनके लिए बाध्यकारी होगा।
         </Text>
         <Text style={styles.heading}>
           NOTICES
           <br />
-          {/* सूचना */}
+          सूचना
         </Text>
         <Text>
           Any notice or other communication required or permitted hereunder
@@ -962,16 +959,16 @@ const OtherPage = ({ data }) => {
           prepaid, to the address of each party set forth herein. Any such
           notice shall be deemed given when delivered.
           <br />
-          {/* कोई भी नोटिस या आवश्यक अन्य संचार हमेशा लिखित रूप में होगी और
+          कोई भी नोटिस या आवश्यक अन्य संचार हमेशा लिखित रूप में होगी और
           व्यक्तिगत रूप से भेजी जाएगी। ये हमेशा फैक्समाइल या प्रमाणित, पंजीकृत
           या एक्सप्रेस मेल, पोस्टेज प्रीपेड द्वारा एवं निर्धारित पार्टी के पते
           पर भेजी जाएगी। ऐसी कोई भी सुचना केवल सुचना के डिलेवरी के उपरांत ही
-          वितरित मानी जाएगी। */}
+          वितरित मानी जाएगी।
         </Text>
         <Text style={styles.heading}>
           REVOCATION OF OFFER
           <br />
-          {/* प्रस्ताव का रद्द होना */}
+          प्रस्ताव का रद्द होना
         </Text>
         <Text>
           The Subscriber agrees that whenever Ramaera comes to know about any
@@ -979,30 +976,30 @@ const OtherPage = ({ data }) => {
           affairs of Company in any terms, Ramaera reserves the right to
           terminate or revoke such agreement by way of transfer/buyback of
           shares after complying the applicable provision of the Act.
-          {/* <br />
+          <br />
           सब्सक्राइबर इस बात से सहमत है कि जब भी रामाएरा को सब्सक्राइबर द्वारा
           कंपनी के मामलों के बारे में किसी भी तरह की विसंगति/गलतफहमी/कदाचार
           फ़ैलाने के बारे में पता चलता है तो रामाएरा के पास लागू प्रावधान/
           अधिनियम का पालन करने के बाद शेयरों के हस्तांतरण/बायबैक के माध्यम से इस
-          तरह के समझौते को समाप्त करने या रद्द करने का अधिकार सुरक्षित है। */}
+          तरह के समझौते को समाप्त करने या रद्द करने का अधिकार सुरक्षित है।
         </Text>
         <Text style={styles.heading}>
           MISCELLANEOUS <br />
-          {/* विविध */}
+          विविध
         </Text>
         <Text>
           This Agreement shall be governed by and executed/construed in
           accordance with the laws of the State of Uttar Pradesh.
           <br />
-          {/* यह समझौता उत्तर प्रदेश राज्य के कानूनों के अनुसार शासित और निष्पादित
-          होगा। */}
+          यह समझौता उत्तर प्रदेश राज्य के कानूनों के अनुसार शासित और निष्पादित
+          होगा।
         </Text>
         <Text>
           This Agreement constitutes the entire agreement between the Company
           and the Subscriber with respect to the subject matter.
           <br />
-          {/* यह अनुबंध विषय वस्तु के संबंध में कंपनी और सब्सक्राइबर के बीच संपूर्ण
-          अनुबंध का गठन करता है। */}
+          यह अनुबंध विषय वस्तु के संबंध में कंपनी और सब्सक्राइबर के बीच संपूर्ण
+          अनुबंध का गठन करता है।
         </Text>
         <Text>
           Force Majeure: Ramaera shall not be liable for any failure in
@@ -1010,15 +1007,15 @@ const OtherPage = ({ data }) => {
           that Ramaera's reasonable control (including and not limited to any
           pandemic, fire, strike, act or order of public authority, and other
           acts of God) during the pendency of such event.
-          {/* <br />
+          <br />
           अप्रत्याशितता- रामाएरा इस समझौते के तहत दायित्व के प्रदर्शन में किसी
           भी प्रकार की विफलता, जो कि रामाएरा के उचित नियंत्रण से परे है, (जैसे-
           किसी भी महामारी, आग, हड़ताल, अधिनियम या सार्वजनिक प्राधिकरण के आदेश,
-          और भगवान के अन्य कृत्यों तक सीमित) के लिए उत्तरदायी नहीं होगा। */}
+          और भगवान के अन्य कृत्यों तक सीमित) के लिए उत्तरदायी नहीं होगा।
         </Text>
         <Text style={styles.heading}>
           SUBSCRIBER SIGNATURE <br />
-          {/* सब्सक्राइबर हस्ताक्षर */}
+          सब्सक्राइबर हस्ताक्षर
         </Text>
         <Text>
           The undersigned, desiring to subscribe for the number of Shares of
@@ -1026,17 +1023,17 @@ const OtherPage = ({ data }) => {
           acknowledges that he/she has received and understands the terms and
           conditions of this Agreement attached hereto and that he/she does
           hereby agree to all the terms and conditions contained therein. <br />
-          {/* अधोहस्ताक्षरी, रामेरा इंडस्ट्रीज लिमिटेड के शेयरों की संख्या के लिए
+          अधोहस्ताक्षरी, रामेरा इंडस्ट्रीज लिमिटेड के शेयरों की संख्या के लिए
           सदस्यता लेने के इच्छुक हैं, जैसा कि नीचे निर्धारित किया गया है, यह
           स्वीकार करता है कि उसने समझौते के नियमों और शर्तों को प्राप्त कर लिया
           है और उसे समझ लिया है और वह उसमें निहित सभी नियमों और शर्तों से सहमत
-          है। */}
+          है।
         </Text>
         <Text>
           IN WITNESS WHEREOF, the undersigned has hereby executed this Advance
           KYC Agreement as of the date set forth below. <br />
-          {/* इसके साक्ष्य में, अधोहस्ताक्षरी ने नीचे दी गई तिथि के अनुसार इस समझौते
-          को निष्पादित किया है। */}
+          इसके साक्ष्य में, अधोहस्ताक्षरी ने नीचे दी गई तिथि के अनुसार इस समझौते
+          को निष्पादित किया है।
         </Text>
         <table style={{ borderCollapse: 'collapse', width: '100%' }}>
           <tr>
@@ -1117,63 +1114,49 @@ const OtherPage = ({ data }) => {
         </table>
         <Text>
           DECLARATION BY THE SUBSCRIBER <br />
-          {/* सब्सक्राइबर द्वारा घोषणा */}
+          सब्सक्राइबर द्वारा घोषणा
         </Text>
         <Text>
           I, hereby declare that I have read and understood the terms and
           conditions of this Agreement. I shall abide with Ramaera Industries
           Limited and the terms and conditions of this Agreement. <br />
-          {/* मैं,
-          एतत्द्वारा घोषणा करता हूं कि मैंने इस समझौते के नियमों और शर्तों को
-          पढ़ और समझ लिया है। मैं रामेरा इंडस्ट्रीज लिमिटेड और इस समझौते के
-          नियमों और शर्तों का पालन करूंगा। */}
+          मैं, एतत्द्वारा घोषणा करता हूं कि मैंने इस समझौते के नियमों और शर्तों
+          को पढ़ और समझ लिया है। मैं रामेरा इंडस्ट्रीज लिमिटेड और इस समझौते के
+          नियमों और शर्तों का पालन करूंगा।
         </Text>
         <View>
           <View style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Text>Date: {moment().format('DD-MM-YYYY')}</Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
+            <Text>
+              Date: {moment().format('DD-MM-YYYY')}
+              <br />
+            </Text>
+            <View>
               Subscriber’s Signature:
-              {/* सब्सक्राइबर के हस्ताक्षर */}
-              {/* <View
-                style={{
-                  borderWidth: 2,
-                  borderColor: 'black',
-                  border: 2,
-                  borderStyle: 'solid'
-                }}
-              > */}
-              {/* <SignatureCanvas
-                penColor="black"
-                style={{
-                  borderWidth: 2,
-                  borderColor: 'black',
-                  border: 2,
-                  borderStyle: 'solid'
-                }}
+              <br />
+              सब्सक्राइबर के हस्ताक्षर
+              <SignatureCanvas
+                penColor="green"
+                ref={signatureCanvasRef}
                 canvasProps={{
-                  className: 'sigCanvas'
-                  // width: 250
-                  // height: 200
+                  width: 500,
+                  height: 200
                 }}
-              /> */}
-              {/* </View> */},
-              {/* <div style={{ display: 'flex', gap: 5 }}>
+              />
+              ,
+              <div style={{ display: 'flex', gap: 5 }}>
                 <button onClick={() => clearSignature()}>
                   Clear Signature
                 </button>
                 <button onClick={() => saveSignature()}>Save Signature</button>
-              </div> */}
+              </div>
             </View>
           </View>
           <View style={{ display: 'flex', justifyContent: 'space-between' }}>
             <View>
               Place:{' '}
               <input
+                // color="black"
+
                 style={{ backgroundColor: 'white', color: 'black' }}
                 type="text"
                 placeholder="Type Place Here"
@@ -1186,7 +1169,7 @@ const OtherPage = ({ data }) => {
               <Text>Name of the Subscriber : </Text>
               {data?.getAgreementData.agreementFieldData['2']}
               <br />
-              {/* <Text>सब्सक्राइबर का नाम</Text> */}
+              <Text>सब्सक्राइबर का नाम</Text>
               <View></View>
             </View>
           </View>
