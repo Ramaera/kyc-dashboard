@@ -17,7 +17,13 @@ pdfMake.vfs['Hindi.ttf'] = Hindi;
 pdfMake.vfs['HindiBold.ttf'] = HindiBold;
 pdfMake.vfs['English.ttf'] = English;
 
-const PDFGenerator = ({ data }) => {
+const PDFGenerator = ({
+  data,
+  signData,
+  saveSignature,
+  clearSignature,
+  place
+}) => {
   console.log('ji', data);
   const generatePDF = () => {
     pdfMake.fonts = {
@@ -105,13 +111,13 @@ const PDFGenerator = ({ data }) => {
               text: data?.getAgreementData?.agreementFieldData['1'],
               style: 'englishText'
             },
-            " ('DD-MM-YYYY') at ",
+            " ('MM-DD-YYYY') at ",
             { text: 'Noida, Uttar Pradesh (Place).', bold: true }
           ],
           margin: [0, 10]
         },
         {
-          text: `एग्रीमेंट, जोकि 'एग्रीमेंट' के रूप में ${data?.getAgreementData?.agreementFieldData['1']} ('निष्पादन तिथि') को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।`,
+          text: `एग्रीमेंट, जोकि 'एग्रीमेंट' के रूप में ${data?.getAgreementData?.agreementFieldData['1']} ('MM-DD-YYYY') को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।`,
           style: { font: 'Hindi' }
         },
         {
@@ -171,13 +177,27 @@ const PDFGenerator = ({ data }) => {
               bold: true
             },
             {
-              text: `is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,${data?.getAgreementData?.agreementFieldData['6']} hereinafter referred to as `
+              text: `is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,${data?.getAgreementData?.agreementFieldData['6']} (MM-DD-YYYY) hereinafter referred to as `
             },
             { text: '“Ramaera/Company” ', bold: true },
             {
               text: '(which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors and permitted assigns), Of The '
             },
             { text: 'SECOND PART.', bold: true }
+          ],
+          margin: [0, 10]
+        },
+
+        {
+          text: [
+            {
+              text: 'The Company and the Subscriber shall individually be referred to as '
+            },
+            { text: '“Party” ', bold: true },
+            {
+              text: 'and collectively as the '
+            },
+            { text: '“Parties”.', bold: true }
           ],
           margin: [0, 10]
         },
@@ -205,7 +225,7 @@ const PDFGenerator = ({ data }) => {
               style: { font: 'Hindi' }
             },
             {
-              text: `है, तथा इसका प्रतिनिधित्व बोर्ड के रेसोलुशन द्वारा दिनांक ${data?.getAgreementData?.agreementFieldData['6']} विधिवत अधिकृत श्री देवेंद्र कुमार मिश्रा कर रहे हैं। इनको `,
+              text: `है, तथा इसका प्रतिनिधित्व बोर्ड के रेसोलुशन द्वारा दिनांक ${data?.getAgreementData?.agreementFieldData['6']} (MM-DD-YYY) विधिवत अधिकृत श्री देवेंद्र कुमार मिश्रा कर रहे हैं। इनको `,
               style: { font: 'Hindi' }
             },
             { text: '" रामाएरा /कंपनी"  ', style: { font: 'Hindi' } },
@@ -1736,7 +1756,7 @@ const PDFGenerator = ({ data }) => {
                     'Number of Equity Shares\n(Value Rs. ' +
                     (data?.getAgreementData?.agreementFieldData['10'] || '') +
                     '/- Per Share)',
-                  style: { border: '1px solid black', width: '50%' }
+                  style: { border: '1px solid black', width: '100%' }
                 },
                 {
                   text:
@@ -1754,18 +1774,18 @@ const PDFGenerator = ({ data }) => {
                   style: { border: '1px solid black' }
                 }
               ],
-              // [
-              //   {
-              //     text: 'Signature of Subscriber(s)',
-              //     style: { border: '1px solid black' }
-              //   },
-              //   {
-              //     image: signData,
-              //     width: 200,
-              //     height: 40,
-              //     style: { border: '1px solid black' }
-              //   }
-              // ],
+              [
+                {
+                  text: `Signature of Subscriber(s) :`,
+                  style: { border: '1px solid black' }
+                },
+                {
+                  image: signData,
+                  width: 100,
+                  height: 40,
+                  style: { border: '1px solid black' }
+                }
+              ],
               [
                 {
                   text: 'Details of Nominee/legal heirs',
@@ -1777,7 +1797,10 @@ const PDFGenerator = ({ data }) => {
                 }
               ],
               [
-                { text: 'Date', style: { border: '1px solid black' } },
+                {
+                  text: `Date :${place}`,
+                  style: { border: '1px solid black' }
+                },
                 {
                   text: moment().format('DD-MM-YYYY'),
                   style: { border: '1px solid black' }
@@ -1873,9 +1896,9 @@ const PDFGenerator = ({ data }) => {
                       style: { fontSize: 10, font: 'Hindi' }
                     },
                     {
-                      //  image: 'signatureImage', // Assuming you have a variable 'signatureImage' containing the signature image data
-                      // width: 200,
-                      // height: 40
+                      image: signData, // Assuming you have a variable 'signatureImage' containing the signature image data
+                      width: 200,
+                      height: 40
                     },
                     {
                       stack: [
@@ -1885,15 +1908,8 @@ const PDFGenerator = ({ data }) => {
                               text: 'Place: ',
                               style: { fontSize: 10 }
                             },
-                            {
-                              text: {
-                                canvas: [
-                                  { type: 'rect', x: 0, y: 0, w: 100, h: 20 }
-                                ]
-                              }
-                              //   Placeholder for the place input
-                              //  style: { fontSize: 10 }
-                            }
+
+                            { text: `${place}` }
                           ]
                         },
                         {
@@ -1938,8 +1954,16 @@ const PDFGenerator = ({ data }) => {
   };
 
   return (
-    <div>
-      <button onClick={generatePDF}>Generate PDF</button>
+    <div
+      style={{
+        margin: 20,
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <button onClick={generatePDF}>Download agreement PDF</button>
     </div>
   );
 };

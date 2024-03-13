@@ -11,7 +11,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import AgreementPages from './AgreementPages';
 import Test from './Pages/Test';
 
-const AgreementDetails = ({ data }) => {
+const AgreementDetails = ({ data, signData, place }) => {
   return (
     <>
       <Document style={{}}>
@@ -22,7 +22,7 @@ const AgreementDetails = ({ data }) => {
         </Page>
         {/* <Test /> */}
 
-        <OtherPage data={data} />
+        <OtherPage data={data} signData={signData} place={place} />
       </Document>
     </>
   );
