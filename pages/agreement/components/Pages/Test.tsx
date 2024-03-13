@@ -90,13 +90,15 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: `श्री/श्रीमती ${data?.getAgreementData?.agreementFieldData['2']} (कंपनी के सदस्या का नाम) जिनका स्थायी खाता संख्या (पैन कार्ड):${data?.getAgreementData?.agreementFieldData['3']}  S/O ${data?.getAgreementData?.agreementFieldData['4']} तथा निवास का पता ${data?.getAgreementData?.agreementFieldData['5']} , जिनको 'सब्सक्राइबर' (जो अभिव्यक्ति, जब तक कि इस संदर्भ या इसके अर्थ के प्रतिकूल न हो, इसका मतलब यही माना जाएगा और इसके उत्तराधिकारी, नामांकित और अनुमत असाइनर्स शामिल होंगे ) समझौते के लिए पहली पार्टी के रूप में संदर्भित किया गया है,`,
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
 
         { text: 'And', style: 'bold' },
         { text: 'और', style: { font: 'Hindi', fontWeight: 'bold' } },
         {
-          text: `Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having ,CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,${data?.getAgreementData?.agreementFieldData['6']} hereinafter referred to as “Ramaera/Company” ',(which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors and permitted assigns), Of The SECOND PART.`
+          text: `Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having ,CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,Ramaera Industries Limited a Company incorporated under the Companies Act, 2013 having CIN: U74110UP2022PLC168553 and having its registered office H-150, Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301, is represented by the Managing Director (Mr. Devendra Kumar Mishra) (hereinafter referreed as “Authorised Person”) duly authorized by MD dated ,${data?.getAgreementData?.agreementFieldData['6']} hereinafter referred to as “Ramaera/Company” ',(which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors and permitted assigns), Of The SECOND PART.`,
+          margin: [0, 0, 0, 10]
         },
 
         {
@@ -117,7 +119,8 @@ const PDFGenerator = ({ data }) => {
                 'means the Articles of Association of the Company;',
                 {
                   text: '\n“आर्टिकल” का अर्थ है कंपनी के संस्था के अंतर्नियम;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -127,7 +130,8 @@ const PDFGenerator = ({ data }) => {
                 'means a mutual contract entered between the Company and the Subscriber upon agreed terms and conditions.',
                 {
                   text: '\n“एग्रीमेंट” का अर्थ है सहमत नियमों और शर्तों पर कंपनी और निवेशक के बीच एक पारस्परिक अनुबंध।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -137,7 +141,8 @@ const PDFGenerator = ({ data }) => {
                 'means the Board of Directors of the Company;',
                 {
                   text: '\n“बोर्ड” का अर्थ कंपनी के निदेशक मंडल से है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -147,7 +152,8 @@ const PDFGenerator = ({ data }) => {
                 'means in the context of company that a group of directors in the organization.',
                 {
                   text: '\n“बोर्ड ऑफ़ डायरेक्टर्स” - कंपनी के संबंध में बोर्ड ऑफ़ डायरेक्टर्स का अर्थ है कंपनी के डायरेक्टर्स का सामूहिक निकाय।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -157,7 +163,8 @@ const PDFGenerator = ({ data }) => {
                 'means manufacture, distribution and sale of Fast-Moving Consumer Goods (“FMCG”) such as Spices, Noodles, Toothpaste, Edible Oil, Flour and such other similar business as the Company may undertake from time to time;',
                 {
                   text: "\n“बिजनेस” का अर्थ है फास्ट मूविंग कंज्यूमर गुड्स ('एफएमसीजी') जैसे मसाले, नूडल्स, टूथपेस्ट, खाद्य तेल, आटा और इसी तरह के अन्य व्यवसाय का निर्माण, वितरण और बिक्री, जिसे कंपनी समय-समय पर कर सकती है;",
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -167,7 +174,8 @@ const PDFGenerator = ({ data }) => {
                 ' means any day other than a Sunday or any days on which commercial banks in India are closed under the applicable Law or action of any Governmental Authority;',
                 {
                   text: '\n“बिजनेस डे” का अर्थ है रविवार और जिस दिन भारत में वाणिज्यिक बैंक लागू कानून या किसी सरकारी प्राधिकरण की कार्रवाई के तहत बंद रहते हैं; को छोड़कर कोई भी दिन;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -177,7 +185,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the Companies Act, 2013, as amended from time to time;',
                 {
                   text: '\n“कंपनी एक्ट” का अर्थ कंपनी अधिनियम, 2013 है, जो समय-समय पर संशोधित होता है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -187,7 +196,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the Ramaera Industries Limited having its registered office at H-150, Sector – 63, Noida, Gautam Buddha Nagar, Uttar Pradesh – 201301.',
                 {
                   text: '\n“कपनी” का अर्थ है रमेरा इंडस्ट्रीज लिमिटेड जिसका पंजीकृत कार्यालय एच-150, सेक्टर - 63, नोएडा, गौतम बुद्ध नगर, उत्तर प्रदेश - 201301 में है।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -197,7 +207,8 @@ const PDFGenerator = ({ data }) => {
                 ' mean the directors on the Board and “Director” has the corresponding meaning;',
                 {
                   text: "\n“डायरेक्टर्स” का अर्थ बोर्ड के निदेशकों से हैं और जिसका अर्थ 'निदेशक' के अनुरूप है;",
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -207,7 +218,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the equity shares of the Company having a Face value of Rs 10/-;',
                 {
                   text: '\n“इक्विटी शेयर” का अर्थ है कंपनी के हिस्सेदारी शेयर जिनका अंकित मूल्य 10/- रुपये (केवल दस रुपये) है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -217,7 +229,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the audited financial statements of the Company.',
                 {
                   text: '\n“फाइनेंसियल स्टेटमेंट” का अर्थ है कंपनी के लेखापरीक्षित वित्तीय विवरण।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -227,7 +240,8 @@ const PDFGenerator = ({ data }) => {
                 ' means any (a) national, state, local, municipal, foreign, or other government, (b) governmental or quasi-governmental authority of any nature (including any governmental agency, branch, department, or other entity and any court or other tribunal) or (c) body exercising or entitled to exercise, any administrative, executive, judicial, quasi-judicial, legislative, police, administrative, regulatory or taxing authority or power of any nature;',
                 {
                   text: '\n“गवर्नमेंटल अथॉरिटी” का अर्थ है कोई भी (अ) राष्ट्रीय, राज्य, स्थानीय, नगरपालिका, विदेशी या अन्य सरकारी, (ब) किसी भी प्रकृति का सरकारी या अर्ध-सरकारी प्राधिकरण (किसी भी सरकारी एजेंसी, शाखा, विभाग या अन्य संस्था सहित और कोई भी अदालत या अन्य न्यायाधिकरण) या (स) किसी भी प्रशासनिक, कार्यकारी, न्यायिक, अर्ध-न्यायिक, विधायी, पुलिस, प्रशासनिक, नियामक या कर लगाने वाले प्राधिकरण या किसी भी प्रकृति की शक्ति का प्रयोग या प्रयोग करने का हकदार निकाय;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -237,7 +251,8 @@ const PDFGenerator = ({ data }) => {
                 ' the abbreviation stands for Know your Customer, which is implies on the information provided to the company by the share subscriber to prove his legal self.',
                 {
                   text: '\n“केवाईसी” का संक्षिप्त नाम नो योर कस्टमर है, जिसका तात्पर्य शेयर ग्राहक द्वारा अपनी कानूनी पहचान साबित करने के लिए कंपनी को प्रदान की गई जानकारी से है।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 10, 0, 10]
                 }
               ]
             },
@@ -252,7 +267,8 @@ const PDFGenerator = ({ data }) => {
                     '\n“बिक्री शेयरों” का अर्थ अंकित मूल्य और मात्रा के रुपये ' +
                     data?.getAgreementData?.agreementFieldData['7'] +
                     ' इक्विटी शेयर हैं।  आर्टिकल  का अर्थ है कंपनी के संस्था के अंतर्नियम;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -262,7 +278,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the Subscription amount subscribed by the subscriber.',
                 {
                   text: '\n“राशि” का अर्थ ग्राहक द्वारा ली गई सदस्यता राशि है।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 10, 0, 10]
                 }
               ]
             },
@@ -275,7 +292,8 @@ const PDFGenerator = ({ data }) => {
                 ' means an individual person or any other person who has subscribed an amount of Rs. 1,00,000 or more (Rupees One Lakh or more Only) in the Equity share of Ramaera Industries Limited. (Hereinafter referred to as “the Company”).',
                 {
                   text: '\n“सब्सक्राइबर सह शुद्ध लाभ मार्जिन पार्टनर” का अर्थ एक व्यक्तिगत व्यक्ति या कोई अन्य व्यक्ति है जिसने रुपये की राशि की सदस्यता ली है। रामाएरा इंडस्ट्रीज लिमिटेड के इक्विटी शेयर में 1,00,000 या अधिक (केवल एक लाख रुपये या अधिक)। (इसके बाद इसे "कंपनी" के रूप में संदर्भित किया जाएगा)।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 10, 0, 10]
                 }
               ]
             },
@@ -285,7 +303,8 @@ const PDFGenerator = ({ data }) => {
                 ' means any federal, state, local, municipal, foreign, international, multinational, constitution, law, statute, treaty, rule, regulation, ordinance, code, case law, or principle of common law and includes any delegated legislation or a directive of a Governmental Authority;',
                 {
                   text: '\n“लॉ” का अर्थ है कोई भी संघीय, राज्य, स्थानीय, नगरपालिका, विदेशी, अंतर्राष्ट्रीय, बहुराष्ट्रीय, संविधान, कानून, क़ानून, संधि, नियम, विनियमन, अध्यादेश, कोड, मामला कानून या सामान्य कानून का सिद्धांत और इसमें कोई भी प्रत्यायोजित कानून शामिल है या एक सरकारी प्राधिकरण का निर्देश;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 10, 0, 10]
                 }
               ]
             },
@@ -295,7 +314,8 @@ const PDFGenerator = ({ data }) => {
                 ' includes liabilities, debts, or other obligations of any nature, whether known or unknown, absolute, accrued, contingent or otherwise, due or to become due or otherwise, and whether or not required to be reflected in the Financial Statements of the Company;',
                 {
                   text: '\n“लायबिलिटी” में देयताएं, ऋण या किसी भी प्रकृति के अन्य दायित्व शामिल हैं, चाहे ज्ञात या अज्ञात, पूर्ण, उपार्जित, आकस्मिक या अन्यथा, देय या देय हो या अन्यथा, और कंपनी के वित्तीय विवरणों में परिलक्षित होने की आवश्यकता हो या नहीं ;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -305,7 +325,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the memorandum of association of the Company;',
                 {
                   text: '\n“मेमोरेंडम” का अर्थ कंपनी के सहयोग का ज्ञापन है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -315,7 +336,8 @@ const PDFGenerator = ({ data }) => {
                 ' in relation to any action, transaction, or activity of the Company means the carrying out or undertaking of such action, transaction, or activity in accordance with past practices of the Company in accordance with the Business Plan and in each case only to the extent consistent with the Transaction Documents and Applicable Law;',
                 {
                   text: '\n“आर्डिनरी कोर्स ऑफ़ बिज़नेस” कंपनी के किसी भी कार्य, लेन-देन या गतिविधि के संबंध में "आर्डिनरी कोर्स ऑफ़ बिज़नेस" का अर्थ है व्यवसाय योजना के अनुसार और प्रत्येक में कंपनी की पिछली प्रथाओं के अनुसार ऐसी कार्रवाई, लेन-देन या गतिविधि करना या उपक्रम करना। मामला केवल लेन-देन दस्तावेजों और लागू कानून के अनुरूप होने की सीमा तक',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -325,7 +347,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the net profit of the Company after deducting all types of expenses but not limited to (including any adjustment or any type of taxes paid to any authority on behalf of the Company) from revenue of the Company',
                 {
                   text: '\n“प्रॉफिट” का अर्थ कंपनी के राजस्व से सभी प्रकार के खर्चों में कटौती के बाद कंपनी का लाभ है, लेकिन कंपनी के राजस्व से (कंपनी की ओर से किसी भी प्राधिकरण को भुगतान किए गए किसी भी समायोजन या किसी भी प्रकार के करों सहित) तक सीमित नहीं है।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -335,7 +358,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the net profit of the Company distributed among the Subscriber as per terms and conditions set out in the said Agreement.',
                 {
                   text: '\n“नेट प्रॉफिट शेयरिंग रेशियो” का अर्थ उक्त समझौते में निर्धारित नियमों और शर्तों के अनुसार निवेशक के बीच वितरित कंपनी का लाभ है।',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -345,7 +369,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the relevant Registrar of Companies;',
                 {
                   text: '\n“आर ओ सी” का अर्थ संबंधित कंपनी रजिस्ट्रार है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -353,9 +378,11 @@ const PDFGenerator = ({ data }) => {
               text: [
                 { text: '“Securities” ', bold: true },
                 ' means the Equity Shares, preference shares, debentures, bonds, loans, warrants, options, or other similar instruments or securities of the Company that are convertible into or exercisable or exchangeable for or which carry a right to subscribe to or purchase, Equity Shares or any instrument or certificate representing a legal or beneficial ownership interest in Equity Shares, including global depository receipts or American depository receipts;',
+
                 {
                   text: '\n“सिक्योरिटीज” का अर्थ इक्विटी शेयर, वरीयता शेयर, डिबेंचर, बॉन्ड, ऋण, वारंट, विकल्प या कंपनी के अन्य समान उपकरण या प्रतिभूतियां हैं जो परिवर्तनीय हैं या प्रयोग करने योग्य या विनिमय योग्य हैं या जो सदस्यता लेने या खरीदने का अधिकार रखते हैं , इक्विटी शेयर या वैश्विक डिपॉजिटरी रसीदें या अमेरिकी डिपॉजिटरी रसीदें सहित इक्विटी शेयरों में कानूनी या लाभकारी स्वामित्व हित का प्रतिनिधित्व करने वाला कोई उपकरण या प्रमाणपत्र;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -365,7 +392,8 @@ const PDFGenerator = ({ data }) => {
                 ' means any Person who owns the Securities;',
                 {
                   text: '\n“शेयर होल्डर” का अर्थ किसी भी व्यक्ति से है जो प्रतिभूतियों का मालिक है;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -375,7 +403,8 @@ const PDFGenerator = ({ data }) => {
                 ' means the issued and fully paid-up Equity Share capital of the Company, on a Fully Diluted Basis;',
                 {
                   text: '\n“शेयर कैपिटल” का अर्थ है पूरी तरह से भुगतान किया हुआ और और कंपनी की तरफ से जारी इक्विटी शेयर पूंजी;',
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -385,7 +414,8 @@ const PDFGenerator = ({ data }) => {
                 'The Subscriber is any individual person or an entity and a person authorized to sign on behalf of such Entity or is a duly appointed agent or representative of the Entity and hereby warrants.',
                 {
                   text: "\n“सब्सक्राइबर-” सब्सक्राइबर एक इकाई ('इकाई') है और ऐसी इकाई की ओर से हस्ताक्षर करने के लिए अधिकृत व्यक्ति एक विधिवत नियुक्त एजेंट या इकाई का प्रतिनिधि है और इसे प्रमाणित करता है।",
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -395,7 +425,8 @@ const PDFGenerator = ({ data }) => {
                 'Means a unit set up by the Company in any place in India for the Manufacturing of Fast-Moving Consumer Goods (“FMCG”)',
                 {
                   text: "\n“प्रोजेक्ट यूनिट -” का अर्थ है कंपनी द्वारा भारत में किसी भी स्थान पर फास्ट मूविंग कंज्यूमर गुड्स ('एफएमसीजी') के निर्माण के लिए स्थापित की गई इकाई। का अर्थ है सभी इकाइयां जहां एफएमसीजी उत्पादों का निर्माण कंपनी द्वारा किया जाना है।",
-                  style: { font: 'Hindi', fontWeight: 'bold' }
+                  style: { font: 'Hindi', fontWeight: 'bold' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -414,11 +445,13 @@ const PDFGenerator = ({ data }) => {
             {
               text: [
                 {
-                  text: 'The Subscriber desires to subscribe to the Equity Shares of the Company for which the subscriber undertakes to provide complete information under this agreement.'
+                  text: 'The Subscriber desires to subscribe to the Equity Shares of the Company for which the subscriber undertakes to provide complete information under this agreement.',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: '\nसब्सक्राइबर कंपनी के इक्विटी शेयरों की सदस्यता लेना चाहता है जिसके लिए सब्सक्राइबर इस समझौते के तहत पूरी जानकारी प्रदान करने का वचन देता है।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -430,7 +463,6 @@ const PDFGenerator = ({ data }) => {
                   text: data?.getAgreementData?.agreementFieldData['8'],
                   style: 'italic'
                 },
-                // { text: ' (In figures) (' },
                 {
                   text: data?.getAgreementData?.agreementFieldData['9'],
                   style: 'italic'
@@ -442,7 +474,7 @@ const PDFGenerator = ({ data }) => {
                   text: data?.getAgreementData?.agreementFieldData['10'],
                   style: 'italic'
                 },
-                // { text: ' (In figures) (' },
+
                 {
                   text: data?.getAgreementData?.agreementFieldData['11'],
                   style: 'italic'
@@ -452,7 +484,8 @@ const PDFGenerator = ({ data }) => {
                 },
                 {
                   text: '\nसब्सक्राइबर, रामाएरा इंडस्ट्रीज लिमिटेड के ',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: data?.getAgreementData?.agreementFieldData['8'],
@@ -460,7 +493,8 @@ const PDFGenerator = ({ data }) => {
                 },
                 {
                   text: ' इक्विटी शेयरों के लिए प्रति शेयर रुपये ',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: data?.getAgreementData?.agreementFieldData['10'],
@@ -468,7 +502,8 @@ const PDFGenerator = ({ data }) => {
                 },
                 {
                   text: ' के सब्सक्रिप्शन मूल्य पर सब्सक्राइब करना चाहते हैं।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -476,11 +511,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber hereby acknowledges that the Company is relying upon the accuracy and completeness of the representations, information and documents in this Agreement and in compliance with its obligations under applicable Laws, Rules and Regulations.',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: ' \nसब्सक्राइबर एतदद्वारा स्वीकार करता है कि कंपनी इस समझौते में प्रतिनिधित्व की सटीकता और पूर्णता पर भरोसा कर रही है और लागू कानूनों, नियमों और विनियमों के तहत अपने दायित्वों के अनुपालन में है।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -490,11 +527,13 @@ const PDFGenerator = ({ data }) => {
           text: [
             {
               text: 'The Parties have agreed to execute this Agreement in order to stipulate the terms and conditions pertaining to the subscription of Investor Subscription Shares by the Investors.',
-              style: 'text'
+              style: 'text',
+              margin: [0, 0, 0, 10]
             },
             {
               text: '\nनिवेशकों द्वारा निवेशक सदस्यता शेयरों की सदस्यता से संबंधित नियमों और शर्तों को निर्धारित करने के लिए पार्टियां इस समझौते को निष्पादित करने के लिए सहमत हुई हैं।',
-              style: { font: 'Hindi' }
+              style: { font: 'Hindi' },
+              margin: [0, 0, 0, 10]
             }
           ]
         },
@@ -502,10 +541,12 @@ const PDFGenerator = ({ data }) => {
           text: [
             { text: 'NOW, THEREFORE,', bold: true },
             ' in consideration of the mutual agreements, covenants, representations, and warranties set forth in this Agreement, and for other good and valuable consideration, the receipt and sufficiency of which is acknowledged by the Parties, the Parties hereby agree as follows:',
+
             {
               text: '\nअब, इसलिए, ऊपर दिए गए कारणों के लिए, और कंपनी और सब्सक्राइबर के पूर्वगामी और आपसी वादों और अनुबंधों को ध्यान में रखते हुए, और अन्य अच्छे और मूल्यवान विचार के लिए, जिसकी प्राप्ति एतदद्वारा स्वीकार की जाती है, कंपनी और सब्सक्राइबर्स निम्नलिखित बातों के लिए सहमत करती है :-,',
               style: 'heading',
-              font: 'Hindi'
+              font: 'Hindi',
+              margin: [0, 0, 0, 10]
             }
           ]
         },
@@ -516,11 +557,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Such an Entity is an existing entity, and has not been organized or reorganized for the purpose of making this subscription',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: '\nसंस्था एक मौजूदा संस्था है और इसे निवेश को करने के उद्देश्य से संगठित या पुनर्गठित नहीं किया गया है;',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -528,11 +571,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Any and all documents entered into and executed by the entity in connection with the Company are valid and binding documents of the Entity enforceable in accordance with their terms.',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: '\nकंपनी के संबंध में दर्ज और निष्पादित किए गए सभी दस्तावेज उनकी शर्तों के अनुसार लागू करने योग्य इकाई के वैध और अनिवार्य दस्तावेज हैं।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -540,11 +585,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Company is not promoting any type of direct selling, such as ROI, Types of Subscription, Fixed Deposit, Recurring Deposit Accounts, or any money monetary subscription center.',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: '\nकंपनी रामाएरा इंडस्ट्रीज लिमिटेड किसी भी प्रकार की योजना प्रत्यक्ष बिक्री, जैसे आरओआई, निवेश के प्रकार, सावधि जमा, आवर्ती जमा खाता और किसी भी धन मौद्रिक निवेश केंद्र को बढ़ावा नहीं दे रहा है।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -552,7 +599,12 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: [
-            { text: 'IDENTIFICATION CLAUSE', style: 'heading', bold: true },
+            {
+              text: 'IDENTIFICATION CLAUSE',
+              style: 'heading',
+              bold: true,
+              margin: [0, 0, 0, 10]
+            },
             { text: '\nपहचान खंड', style: 'heading', font: 'Hindi' }
           ],
           margin: [0, 20, 0, 0]
@@ -574,7 +626,8 @@ const PDFGenerator = ({ data }) => {
             {
               text: [
                 {
-                  text: 'Address of the Subscriber/sole proprietorship/ company (As per Adhaar Card/ company registration certificate): '
+                  text: 'Address of the Subscriber/sole proprietorship/ company (As per Adhaar Card/ company registration certificate): ',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: data?.getAgreementData?.agreementFieldData['5'],
@@ -591,7 +644,7 @@ const PDFGenerator = ({ data }) => {
                   text: data?.getAgreementData?.agreementFieldData['8'],
                   style: 'italic'
                 },
-                { text: '/- (In figures) (' },
+                { text: '/-(' },
                 {
                   text: data?.getAgreementData?.agreementFieldData['9'],
                   style: 'italic'
@@ -608,7 +661,7 @@ const PDFGenerator = ({ data }) => {
                   text: data?.getAgreementData?.agreementFieldData['10'],
                   style: 'italic'
                 },
-                { text: ' (In figures) ' },
+
                 {
                   text: data?.getAgreementData?.agreementFieldData['11'],
                   style: 'italic'
@@ -619,7 +672,8 @@ const PDFGenerator = ({ data }) => {
             {
               text: [
                 {
-                  text: 'Class of Shares: Specify the class or classes of shares being transacted.'
+                  text: 'Class of Shares: Specify the class or classes of shares being transacted.',
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -654,11 +708,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber acknowledges that this subscription of the Shares is subject to acceptance by the Company. Company reserves the right, in whole or in part, in its sole and absolute discretion, to accept or reject this:\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सब्सक्राइबर स्वीकार करता है कि शेयरों की यह सदस्यता रामाएरा द्वारा स्वीकृति के अधीन है। रामाएरा इस सदस्यता को स्वीकार या अस्वीकार करने के लिए, अपने एकमात्र और पूर्ण विवेकाधिकार में, पूर्ण या आंशिक रूप से अधिकार सुरक्षित रखता है और कंपनी द्वारा लिखित रूप में स्वीकार किए जाने तक सदस्यता बाध्यकारी नहीं होगी।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -666,11 +722,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber acknowledges that, in order to subscribe for Shares, the Subscriber must hereby deliver to the Company:\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सब्सक्राइबर स्वीकार करता है कि, शेयरों की सदस्यता लेने के लिए उन्हें निम्नलिखित दस्तावेजों को कंपनी में उपलब्ध करवानी पड़ेगी।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -678,11 +736,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Duly signed copies of this Subscription Agreement,\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'इस सदस्यता अनुबंध की विधिवत हस्ताक्षरित प्रतियां',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -690,11 +750,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Receipt of all funds for the subscription of shares hereunder.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'शेयरों की सदस्यता लेने के लिए शेयर्स के आवेदन में भुगतान किए गए राशि की रसीद।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -702,11 +764,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The closing of the Subscription of Shares hereunder (the “Closing”) shall occur as specified in the Act related hereto.\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'इसके तहत शेयरों की सदस्यता का समापन ("समापन") अधिनियम से संबंधित अधिनियम में निर्दिष्ट के अनुसार होगा।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -714,11 +778,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Once executed counterpart of the Signature Page attached to this Agreement together with appropriate notarization;\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'एक बार ये निष्पादित हो जाये तो इस समझौते और इससे जुड़े हस्ताक्षर पृष्ठ को उचित नोटरीकरण के साथ संलग्न किये जाएं,',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -726,11 +792,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'A cheque, trade draft or media due bill in the amount set forth on the Signature Page attached to this Agreement, representing payment in full for the Shares desired to be subscribed hereunder, made payable in favor of the Company as per the Companies Act, 2013.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सब्सक्राइब किए जाने वाले शेयरों के पूर्ण भुगतान करने एवं कंपनी अधिनियम, 2013 के अनुसार, इस समझौते से जुड़े हस्ताक्षर पृष्ठ पर उल्लिखित निर्धारित राशि का एक चेक, ट्रेड ड्राफ्ट या मीडिया देय बिल, कंपनी के पक्ष में देय है; इस समझौता पत्र के साथ संलग्न किया जाएगा।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -741,7 +809,8 @@ const PDFGenerator = ({ data }) => {
             {
               text: 'REPRESENTATION AND WARRANTY\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'प्रतिनिधित्व और वारंटी\n',
@@ -758,11 +827,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'By executing this Agreement, the Subscriber makes the following representations, declarations and warranties to the Company, with the intent and understanding that the Company will rely thereon:\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'इस समझौते को क्रियान्वित करके, सब्सक्राइबर कंपनी को निम्नलिखित अभ्यावेदन, घोषणाएँ और वारंटी देता है, कि इस इरादे और समझ के साथ कि कंपनी उस पर भरोसा करेगी:\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -770,11 +841,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber has the right to invest in the upcoming project, as per the time period notified by the Company.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'कंपनी द्वारा अधिसूचित समय अवधि के अनुसार सब्सक्राइबर को आगामी परियोजना में निवेश करने का अधिकार है।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -782,11 +855,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Board of Directors of Ramaera has full right to issue the Shares at premium after complying the requirement of the Act.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'रामाएरा के बोर्ड ऑफ़ डायरेक्टर्स को अधिनियम की आवश्यकता का अनुपालन करने के बाद प्रीमियम पर शेयर जारी करने का पूरा अधिकार है ।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -794,11 +869,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber acknowledges that the Company has not represented, guaranteed, or warranted the achievement of any particular financial result by the Company.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सब्सक्राइबर स्वीकार करता है कि कंपनी द्वारा किसी विशेष वित्तीय परिणाम/ या लाभ के उपलब्धि या प्राप्ति केलिए किसी भी प्रकार का गारंटी या वारंटी प्रस्तुत नहीं किया गया है।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -806,11 +883,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'If the Subscriber is purchasing the Shares in a fiduciary capacity for another person or entity, including without limitation a corporation, partnership, trust, or any other entity, the Subscriber has been duly authorized and empowered to execute this Subscription Agreement and all other subscription documents. Upon request of the Company, the Subscriber will provide true, complete, and current copies of all relevant documents creating the Subscriber, authorizing its subscription amount in the Company, and/or evidencing the satisfaction of the foregoing.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'यदि सब्सक्राइबर किसी अन्य व्यक्ति या संस्था के लिए एक प्रत्ययी क्षमता में शेयर खरीद रहा है, जिसमें बिना किसी सीमा के एक निगम, साझेदारी, ट्रस्ट या कोई अन्य संस्था शामिल है, तो सब्सक्राइबर को इस सदस्यता समझौते और अन्य सभी सदस्यता दस्तावेजों को निष्पादित करने के लिए विधिवत अधिकृत और सशक्त किया गया है। कंपनी के अनुरोध पर, सब्सक्राइबर, सब्सक्राइबर बनाने वाले, कंपनी में अपने निवेश को अधिकृत करने वाले और/या पूर्वगामी की संतुष्टि का प्रमाण देने वाले सभी प्रासंगिक दस्तावेजों की सही, पूर्ण और वर्तमान प्रतियां प्रदान करेगा।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -818,11 +897,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'Prior to entering into this Agreement. The subscriber has determined that the subscription of the company is a suitable decision, with the terms and conditions of Company on the basis of net profit sharing, in accordance with the accepted by the subscriber. The details of the return based on contribution is mentioned herein below.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'इस समझौते में प्रवेश करने से पहले. सब्सक्राइबर ने निर्धारित किया है कि कंपनी की सदस्यता एक उपयुक्त निर्णय है, कंपनी के नियमों और शर्तों के अनुसार, अनुपात के मुकाबले शुद्ध लाभ साझाकरण के आधार पर। ग्राहक द्वारा स्वीकृत योजना. निवेश के आधार पर रिटर्न का विवरण नीचे दिया गया है।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -842,11 +923,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'After, execution and signing of the said Agreement the Subscriber shall get 30% of the Net profit of the Company on an annual basis as on the agreed net profit - sharing ratio set out in the said agreement which shall be distributed to the Subscriber (as defined in this said Agreement), as per the following conditions:\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'उक्त समझौते के निष्पादन और हस्ताक्षर के बाद, सब्सक्राइबर को वार्षिक आधार पर कंपनी के शुद्ध लाभ का 30% का हिस्सा सहमत शुद्ध लाभ-बंटवारे के अनुसार मिलेगा। उक्त समझौते में उल्लिखित सदस्य को निम्नलिखित शर्तों के अनुसार वितरित किया जाएगा।',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -854,11 +937,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber shall get the profit share on a yearly basis.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सदस्य वार्षिक आधार पर लाभ साझाकरण प्राप्त करेगा।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             },
@@ -866,11 +951,13 @@ const PDFGenerator = ({ data }) => {
               text: [
                 {
                   text: 'The Subscriber shall be entitled to receive the share of profit after the adjustment of all operational expenses and liabilities of the company. It is clarified that all expenses, debts, liabilities, borrowings, advances etc., shall be adjusted before the calculation of Net Profit and sharing to the subscriber.\n',
-                  style: 'text'
+                  style: 'text',
+                  margin: [0, 0, 0, 10]
                 },
                 {
                   text: 'सदस्य को कंपनी के सभी परिचालन खर्च और दायित्वों के समायोजन के बाद लाभ का हिस्सा प्राप्त करने का अधिकार होगा। स्पष्ट किया जाता है कि शुद्ध लाभ और इसके वितरण से पहले सभी खर्च, ऋण, दायित्व, उधार, आगामी आदि का समायोजन किया जाएगा।\n',
-                  style: { font: 'Hindi' }
+                  style: { font: 'Hindi' },
+                  margin: [0, 0, 0, 10]
                 }
               ]
             }
@@ -878,37 +965,48 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: [
-            { text: 'APPLICABLE LAW\n', style: 'heading', bold: true },
+            {
+              text: 'APPLICABLE LAW\n',
+              style: 'heading',
+              bold: true,
+              margin: [0, 0, 0, 10]
+            },
             { text: 'लागू कानून\n', style: 'heading', font: 'Hindi' }
           ],
           margin: [0, 20, 0, 0]
         },
         {
-          text: 'This Agreement shall be executed in accordance with and governed by the laws applicable to contracts made and wholly performed in the state of Uttar Pradesh.\n'
+          text: 'This Agreement shall be executed in accordance with and governed by the laws applicable to contracts made and wholly performed in the state of Uttar Pradesh.\n',
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'यह समझौता राज्य - उत्तर प्रदेश में पूरी तरह से किए गए अनुबंधों पर लागू कानूनों के अनुसार निष्पादित और शासित होगा।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'Any dispute or difference whatsoever arising between the parties out of or relating to the construction, meaning, scope, operation or effect of this agreement or the validity or the breach thereof shall be settled by arbitration in accordance with the Rules of Arbitration of the Indian Council of Arbitration and Arbitration and Conciliation Act, 1996 and the award made in pursuance thereof shall be binding on the parties.',
-          style: { marginBottom: 30 }
+          style: { marginBottom: 30 },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'इस समझौते के निर्माण, अर्थ, दायरे, संचालन या प्रभाव या इसकी वैधता या उल्लंघन से संबंधित पक्षों के बीच उत्पन्न होने वाला कोई भी विवाद या मतभेद भारतीय परिषद के मध्यस्थता के नियमों के अनुसार मध्यस्थता द्वारा तय किया जाएगा। मध्यस्थता और मध्यस्थता और सुलह अधिनियम, 1996 और उसके अनुसरण में दिया गया पुरस्कार पार्टियों के लिए बाध्यकारी होगा। मध्यस्थता की सीट कानपुर, उत्तर प्रदेश होगी। दोनों पक्ष आपसी सहमति से एकमात्र मध्यस्थ नियुक्त करने पर सहमत हैं। दलों।',
-          style: { marginBottom: 30, font: 'Hindi' }
+          style: { marginBottom: 30, font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: [
             {
               text: 'EXECUTION IN COUNTERPARTS\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'समकक्षों में निष्पादन \n',
               style: 'heading',
-              font: 'Hindi'
+              font: 'Hindi',
+              margin: [0, 0, 0, 10]
             }
           ],
           margin: [0, 10, 0, 10]
@@ -918,14 +1016,16 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: 'यह एग्रीमेंट एक या अधिक समकक्षों में निष्पादित किया जा सकता है।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: [
             {
               text: 'PERSONS BOUND\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'बाध्य व्यक्ति \n',
@@ -937,18 +1037,21 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: 'This Agreement shall, except as otherwise provided herein, insure to the benefit of and be binding on the Company and its successors and assigns and on each Subscriber and his respective heirs, executors, administrators, successors, and assigns.\n',
-          style: { marginBottom: 30, font: 'Hindi' }
+          style: { marginBottom: 30, font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'यह एग्रीमेंट, यहां प्रदान किए जाने के अलावा, कंपनी और उसके उत्तराधिकारियों और समनुदेशितियों और प्रत्येक सब्सक्राइबर और उनके संबंधित उत्तराधिकारियों, निष्पादकों, प्रशासकों, उत्तराधिकारियों और समनुदेशितियों के लाभ के लिए बाध्य होगा और उनके लिए बाध्यकारी होगा।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: [
             {
               text: 'NOTICES\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'सूचना\n',
@@ -960,18 +1063,21 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: 'Any notice or other communication required or permitted hereunder shall be in writing and shall be delivered personally, sent by facsimile or sent by certified, registered or express mail, postage prepaid, to the address of each party set forth herein. Any such notice shall be deemed given when delivered.\n',
-          style: { marginBottom: 30 }
+          style: { marginBottom: 30 },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'कोई भी नोटिस या आवश्यक अन्य संचार हमेशा लिखित रूप में होगी और व्यक्तिगत रूप से भेजी जाएगी। ये हमेशा फैक्समाइल या प्रमाणित, पंजीकृत या एक्सप्रेस मेल, पोस्टेज प्रीपेड द्वारा एवं निर्धारित पार्टी के पते पर भेजी जाएगी। ऐसी कोई भी सुचना केवल सुचना के डिलेवरी के उपरांत ही वितरित मानी जाएगी।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: [
             {
               text: 'REVOCATION OF OFFER\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'प्रस्ताव का रद्द होना\n',
@@ -983,11 +1089,13 @@ const PDFGenerator = ({ data }) => {
         },
         {
           text: 'The Subscriber agrees that whenever Ramaera comes to know about any discrepancy /miscommunication/misconduct by subscriber about the affairs of Company in any terms, Ramaera reserves the right to terminate or revoke such agreement by way of transfer/buyback of shares after complying the applicable provision of the Act.\n',
-          style: { marginBottom: 30 }
+          style: { marginBottom: 30 },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'सब्सक्राइबर इस बात से सहमत है कि जब भी रामाएरा को सब्सक्राइबर द्वारा कंपनी के मामलों के बारे में किसी भी तरह की विसंगति/गलतफहमी/कदाचार फ़ैलाने के बारे में पता चलता है तो रामाएरा के पास लागू प्रावधान/ अधिनियम का पालन करने के बाद शेयरों के हस्तांतरण/बायबैक के माध्यम से इस तरह के समझौते को समाप्त करने या रद्द करने का अधिकार सुरक्षित है।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
 
         {
@@ -995,7 +1103,8 @@ const PDFGenerator = ({ data }) => {
             {
               text: 'MISCELLANEOUS\n',
               style: 'heading',
-              bold: true
+              bold: true,
+              margin: [0, 0, 0, 10]
             },
             {
               text: 'विविध\n',
@@ -1006,22 +1115,27 @@ const PDFGenerator = ({ data }) => {
           margin: [0, 10, 0, 10]
         },
         {
-          text: 'This Agreement shall be governed by and executed/construed in accordance with the laws of the State of Uttar Pradesh.\n'
+          text: 'This Agreement shall be governed by and executed/construed in accordance with the laws of the State of Uttar Pradesh.\n',
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'यह समझौता उत्तर प्रदेश राज्य के कानूनों के अनुसार शासित और निष्पादित होगा।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
-          text: 'This Agreement constitutes the entire agreement between the Company and the Subscriber with respect to the subject matter.\n'
+          text: 'This Agreement constitutes the entire agreement between the Company and the Subscriber with respect to the subject matter.\n',
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'यह अनुबंध विषय वस्तु के संबंध में कंपनी और सब्सक्राइबर के बीच संपूर्ण अनुबंध का गठन करता है।\n',
-          style: { font: 'Hindi' }
+          style: { font: 'Hindi' },
+          margin: [0, 0, 0, 10]
         },
         {
           text: "Force Majeure: Ramaera shall not be liable for any failure in performance of the obligation under this Agreement due to cause beyond that Ramaera's reasonable control (including and not limited to any pandemic, fire, strike, act or order of public authority, and other acts of God) during the pendency of such event.\n",
-          style: { marginBottom: 30 }
+          style: { marginBottom: 30 },
+          margin: [0, 0, 0, 10]
         },
         {
           text: 'अप्रत्याशितता- रामाएरा इस समझौते के तहत दायित्व के प्रदर्शन में किसी भी प्रकार की विफलता, जो कि रामाएरा के उचित नियंत्रण से परे है, (जैसे- किसी भी महामारी, आग, हड़ताल, अधिनियम या सार्वजनिक प्राधिकरण के आदेश, और भगवान के अन्य कृत्यों तक सीमित) के लिए उत्तरदायी नहीं होगा।\n',
