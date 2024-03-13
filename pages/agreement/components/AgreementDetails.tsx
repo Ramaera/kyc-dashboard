@@ -20,7 +20,7 @@ const AgreementDetails = ({ data }) => {
             <MainPage />
           </View>
         </Page>
-        <Test />
+        {/* <Test /> */}
 
         <OtherPage data={data} />
       </Document>
