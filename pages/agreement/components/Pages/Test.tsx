@@ -19,6 +19,7 @@ pdfMake.vfs['HindiBold.ttf'] = HindiBold;
 pdfMake.vfs['English.ttf'] = English;
 
 const PDFGenerator = ({
+  PWID,
   data,
   signData,
   saveSignature,
@@ -132,14 +133,46 @@ const PDFGenerator = ({
         {
           text: [
             {
-              text: `Mr./Ms. ${data?.getAgreementData?.agreementFieldData['2']} having PAN ${data?.getAgreementData?.agreementFieldData['3']}  S/O ${data?.getAgreementData?.agreementFieldData['4']} and having Residential Address at ${data?.getAgreementData?.agreementFieldData['5']}  hereinafter referred to as the '`
+              text: 'Mr./Ms. '
+            },
+            {
+              text: `${data?.getAgreementData?.agreementFieldData['2']} (Name of the Subscriber) `,
+              bold: true
+            },
+            {
+              text: 'having PAN '
+            },
+            {
+              text: `${data?.getAgreementData?.agreementFieldData['3']} `,
+              bold: true
+            },
+            {
+              text: 'S/O '
+            },
+            {
+              text: `${data?.getAgreementData?.agreementFieldData['4']} `,
+              bold: true
+            },
+            {
+              text: 'and having Residential Address at '
+            },
+            {
+              text: `${data?.getAgreementData?.agreementFieldData['5']} `,
+              bold: true
+            },
+            {
+              text: 'hereinafter referred to as the '
             },
             {
               text: '“Subscriber”',
               bold: true
             },
             {
-              text: " (which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors, nominee and permitted assigns), Of The FIRST PART ',"
+              text: ' (which expression shall, unless repugnant to the context or meaning thereof, be deemed to means and include its successors, nominee and permitted assigns), Of '
+            },
+            {
+              text: 'The FIRST PART ',
+              bold: true
             }
           ],
           margin: [0, 10]
@@ -1726,7 +1759,7 @@ const PDFGenerator = ({
           style: { font: 'Hindi' }
         },
 
-        // { text: '', pageBreak: 'after' },
+        { text: '', pageBreak: 'after' },
 
         {
           text: [
@@ -1742,12 +1775,16 @@ const PDFGenerator = ({
 
         {
           table: {
-            headerRows: 1,
+            // headerRows: 1,
             widths: ['*', '*'],
             body: [
               [
                 {
                   text: 'SUBSCRIBER DETAILS',
+                  style: { border: '1px solid black' }
+                },
+                {
+                  text: 'Values',
                   style: { border: '1px solid black' }
                 }
               ],
@@ -1757,7 +1794,7 @@ const PDFGenerator = ({
                     'Number of Equity Shares\n(Value Rs. ' +
                     (data?.getAgreementData?.agreementFieldData['10'] || '') +
                     '/- Per Share)',
-                  style: { border: '1px solid black', width: '100%' }
+                  style: { border: '1px solid black' }
                 },
                 {
                   text:
@@ -1809,7 +1846,7 @@ const PDFGenerator = ({
               ],
               [
                 {
-                  text: `Date :${place}`,
+                  text: `Date :`,
                   style: { border: '1px solid black' }
                 },
                 {
@@ -1978,7 +2015,10 @@ const PDFGenerator = ({
 
     pdfDocGenerator.getBuffer((buffer) => {
       const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
-      saveAs(pdfBlob, 'generated_pdf.pdf');
+      saveAs(
+        pdfBlob,
+        `Agreement_${data?.getAgreementData?.agreementFieldData['2']}_${PWID}.pdf`
+      );
       console.log('no');
       console.log(buffer);
     });
