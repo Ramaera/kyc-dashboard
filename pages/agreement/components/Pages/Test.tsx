@@ -11,6 +11,7 @@ import { Hindi } from '../Hindi';
 import { English } from '../English';
 import { HindiBold } from '../HindiBold';
 import { Button } from '@mui/material';
+import handlePdfUpload from '@/utils/uploadPdf';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -2013,13 +2014,22 @@ const PDFGenerator = ({
     console.log('here');
     const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
 
-    pdfDocGenerator.getBuffer((buffer) => {
+    pdfDocGenerator.getBuffer(async (buffer) => {
       const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
-      saveAs(pdfBlob, 'generated_pdf.pdf');
+      const pdffile = new File(
+        [buffer],
+        `Agreement_${data?.getAgreementData?.agreementFieldData['2']}_${PWID}`,
+        { type: 'application/pdf' }
+      );
+
+      saveAs(
+        pdfBlob,
+        `Agreement_${data?.getAgreementData?.agreementFieldData['2']}_${PWID}.pdf`
+      );
 
       try {
-        const agreementUrl = await handlePdfUpload(pdfBlob);
-        console.log(agreementUrl);
+        const agreementUrl = await handlePdfUpload(pdffile);
+        // console.log('agreementUrl', agreementUrl);
       } catch (err) {
         console.log('err is dta ', err);
       }
