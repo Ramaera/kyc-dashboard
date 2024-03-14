@@ -108,8 +108,9 @@ function Agreement() {
                     penColor="black"
                     ref={signatureCanvasRef}
                     canvasProps={{
-                      width: 500,
-                      height: 200,
+                      className: 'signCanvas',
+                      // width: 500,
+                      // height: 200,
                       style: {
                         border: '1px solid black',
                         backgroundColor: 'white'
@@ -143,6 +144,7 @@ function Agreement() {
       </Container>
       {acceptedTerms && signData && place && (
         <PDFGenerator
+          PWID={user?.pw_id}
           data={data}
           place={place}
           signData={signData}

@@ -24,9 +24,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#E4E4E4',
     paddingLeft: 30,
+    paddingRight: 20,
+    paddingBottom: 20,
     fontSize: 20,
     gap: 10,
-    color: 'black'
+    color: 'black',
+    overflow: 'hidden'
   },
   section: {
     margin: 10,
@@ -84,7 +87,7 @@ const OtherPage = ({ data, signData, place }) => {
         </View>
 
         <Text style={{ fontFamily: 'Tiro Sans Devanagari' }}>
-          एग्रीमेंट, जोकि &#39;एग्रीमेंट&#39; के रूप में
+          एग्रीमेंट, जोकि &#39;एग्रीमेंट&#39; के रूप में{' '}
           {data?.getAgreementData.agreementFieldData['1']}(&#39;MM-DD-YYYY
           &#39;) को नोएडा उत्तर प्रदेश (स्थान) पर संदर्भित किया गया है।
         </Text>
@@ -111,7 +114,7 @@ const OtherPage = ({ data, signData, place }) => {
           hereinafter referred to as the “Subscriber” (which expression shall,
           unless repugnant to the context or meaning thereof, be deemed to means
           and include its successors, nominee and permitted assigns), Of{' '}
-          <Text> The FIRST PART</Text>
+          <Text style={styles.bold}>The FIRST PART</Text>
         </Text>
 
         <Text>
@@ -127,20 +130,25 @@ const OtherPage = ({ data, signData, place }) => {
         </Text>
         <Text style={styles.bold}>And/और</Text>
         <Text>
-          Ramaera Industries Limited a Company incorporated under the Companies
-          Act, 2013 having{' '}
+          <Text style={styles.bold}>Ramaera Industries Limited</Text> a Company
+          incorporated under the Companies Act, 2013 having{' '}
           <Text>
             {' '}
-            CIN: U74110UP2022PLC168553 and having its registered office H-150,
-            Sector 63, Noida, Gautam Buddha Nagar, Uttar Pradesh-201301,{' '}
+            <Text style={styles.bold}>CIN: U74110UP2022PLC168553</Text> and
+            having its{' '}
+            <Text style={styles.bold}>
+              registered office H-150, Sector 63, Noida, Gautam Buddha Nagar,
+              Uttar Pradesh-201301,
+            </Text>{' '}
           </Text>
           is represented by the Managing Director (Mr. Devendra Kumar Mishra)
           (hereinafter referreed as “Authorised Person”) duly authorized by MD
           dated {data?.getAgreementData.agreementFieldData['6']} (MM-DD-YYYY)
           hereinafter referred to as
-          <Text>“Ramaera/Company” </Text>(which expression shall, unless
-          repugnant to the context or meaning thereof, be deemed to means and
-          include its successors and permitted assigns), Of The SECOND PART.
+          <Text style={styles.bold}>“Ramaera/Company” </Text>(which expression
+          shall, unless repugnant to the context or meaning thereof, be deemed
+          to means and include its successors and permitted assigns), Of The{' '}
+          <Text style={styles.bold}>SECOND PART</Text>.
         </Text>
         <Text style={{ marginTop: 10, marginBottom: 20 }}>
           <Text style={{}}>
@@ -1122,80 +1130,70 @@ const OtherPage = ({ data, signData, place }) => {
         </table>
         <table style={{ borderCollapse: 'collapse', width: '100%' }}>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black', width: '50%' }}>
+            <th className="thFont">
               Number of Equity Shares <br /> (Value Rs.{' '}
               {data?.getAgreementData.agreementFieldData['10']}/- Per Share)
             </th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['8']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>
-              Total Amount of Subscription
-            </th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Total Amount of Subscription</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['14']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>
-              Name(s) of Subscriber(s)
-            </th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Name(s) of Subscriber(s)</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['2']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>
-              Signature of Subscriber(s)
-            </th>
-            <th style={{ border: '1px solid black' }}>
-              <img src={signData} width={200} height={40} />
+            <th className="thFont">Signature of Subscriber(s)</th>
+            <th className="thFont">
+              <img src={signData} height={40} />
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>
-              Details of Nominee/legal heirs
-            </th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Details of Nominee/legal heirs</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['15']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>Date</th>
-            <th style={{ border: '1px solid black' }}>
-              {moment().format('DD-MM-YYYY')}
-            </th>
+            <th className="thFont">Date</th>
+            <th className="thFont">{moment().format('DD-MM-YYYY')}</th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>Residence Address</th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Residence Address</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['5']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>Pan Number</th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Pan Number</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['3']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>Contact No </th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">Contact No </th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['16']}
             </th>
           </tr>
           <tr style={{ border: '1px solid black' }}>
-            <th style={{ border: '1px solid black' }}>E-Mail Id</th>
-            <th style={{ border: '1px solid black' }}>
+            <th className="thFont">E-Mail Id</th>
+            <th className="thFont">
               {' '}
               {data?.getAgreementData.agreementFieldData['17']}
             </th>
@@ -1217,18 +1215,12 @@ const OtherPage = ({ data, signData, place }) => {
           नियमों और शर्तों का पालन करूंगा।
         </Text>
         <View>
-          <View style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Text>
+          <View className="divColumn">
+            <Text style={{ marginBottom: 10 }}>
               Date: {moment().format('DD-MM-YYYY')}
               <br />
             </Text>
-            <View
-              style={{
-                marginRight: 20,
-                display: 'flex',
-                width: 500
-              }}
-            >
+            <View className="divColumnWidth">
               <div style={{ marginRight: 20 }}>
                 <Text>Name of the Subscriber : </Text>
                 <br />
@@ -1238,9 +1230,9 @@ const OtherPage = ({ data, signData, place }) => {
               <View>{data?.getAgreementData.agreementFieldData['2']}</View>
             </View>
           </View>
-          <View style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <View className="divColumn">
             <View style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <View>
+              <View style={{ marginBottom: 10 }}>
                 Place:{' '}
                 <input
                   style={{ backgroundColor: 'white', color: 'black' }}
@@ -1254,13 +1246,7 @@ const OtherPage = ({ data, signData, place }) => {
                 <br />
               </View>
             </View>
-            <View
-              style={{
-                display: 'flex',
-                width: 500,
-                marginRight: 20
-              }}
-            >
+            <View className="divColumnWidth">
               <div style={{ marginRight: 20 }}>
                 <Text> Subscriber’s Signature:</Text>
                 <br />
