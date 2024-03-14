@@ -15,6 +15,7 @@ import AgreementDetails from './components/AgreementDetails';
 import { PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 import { useAppSelector } from '@/hooks';
 import PDFGenerator from './components/Pages/Test';
+import AgreementFile from './components/AgreementFile';
 
 function Agreement() {
   const dispatch = useDispatch();
@@ -62,96 +63,14 @@ function Agreement() {
           sx={{ textTransform: 'uppercase', marginTop: 2, marginBottom: 2 }}
           gutterBottom
         >
-          Ramaera 30% net profit partner mutual agreement consent
+          View or Submit Agreements
         </Typography>
       </PageTitleWrapper>
 
       <Container maxWidth={false}>
-        {/* {data ? (
-          <> */}
-        <AgreementDetails data={data} signData={signData} place={place} />
-        {/* </>
-        ) : (
-          'Kindly Contact KYC Team ,Regarding Your Agreement'
-        )} */}
-        <Box
-          style={{
-            display: 'flex',
-            marginTop: 20,
-            flexDirection: 'column',
-            backgroundColor: 'lightGray',
-            padding: 20,
-            color: 'black'
-          }}
-        >
-          <Box style={{ fontSize: 25 }}>
-            <input
-              type="checkbox"
-              id="acceptTerms"
-              name="acceptTerms"
-              style={{ fontSize: 30, marginRight: 10 }}
-              onChange={() => setAcceptedTerms(!acceptedTerms)}
-            />
-            <label htmlFor="acceptTerms">
-              I accept the terms and conditions
-            </label>
-          </Box>
-          {acceptedTerms && (
-            <View>
-              <Text style={{ marginVertical: 20 }}>
-                Subscriber’s Signature / सब्सक्राइबर के हस्ताक्षर :
-              </Text>
-
-              <View style={{ display: 'flex', flexDirection: 'column' }}>
-                <View>
-                  <SignatureCanvas
-                    penColor="black"
-                    ref={signatureCanvasRef}
-                    canvasProps={{
-                      className: 'signCanvas',
-                      // width: 500,
-                      // height: 200,
-                      style: {
-                        border: '1px solid black',
-                        backgroundColor: 'white'
-                      }
-                    }}
-                  />
-                </View>
-              </View>
-              <div style={{ display: 'flex', gap: 5 }}>
-                <button onClick={() => clearSignature()}>
-                  Clear Signature
-                </button>
-                <button onClick={() => saveSignature()}>Save Signature</button>
-              </div>
-              <View>
-                <div style={{ marginTop: 10 }}>
-                  Place:{' '}
-                  <input
-                    style={{ backgroundColor: 'white', color: 'black' }}
-                    type="text"
-                    placeholder="Type Place Here"
-                    id="place"
-                    name="place"
-                    onChange={(e) => setPlace(e.target.value)}
-                  />
-                </div>
-              </View>
-            </View>
-          )}
-        </Box>
+        <AgreementFile />
       </Container>
-      {acceptedTerms && signData && place && (
-        <PDFGenerator
-          PWID={user?.pw_id}
-          data={data}
-          place={place}
-          signData={signData}
-          saveSignature={saveSignature}
-          clearSignature={clearSignature}
-        />
-      )}
+
       <Footer />
     </ProtectedSSRoute>
   );
