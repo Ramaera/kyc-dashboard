@@ -11,6 +11,7 @@ import { Hindi } from '../Hindi';
 import { English } from '../English';
 import { HindiBold } from '../HindiBold';
 import { Button } from '@mui/material';
+import handlePdfUpload from '@/utils/uploadPdf';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -1726,7 +1727,7 @@ const PDFGenerator = ({
           style: { font: 'Hindi' }
         },
 
-        // { text: '', pageBreak: 'after' },
+        { text: '', pageBreak: 'after' },
 
         {
           text: [
@@ -1976,11 +1977,16 @@ const PDFGenerator = ({
     console.log('here');
     const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
 
-    pdfDocGenerator.getBuffer((buffer) => {
+    pdfDocGenerator.getBuffer(async (buffer) => {
       const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
       saveAs(pdfBlob, 'generated_pdf.pdf');
-      console.log('no');
-      console.log(buffer);
+
+      try {
+        const agreementUrl = await handlePdfUpload(pdfBlob);
+        console.log(agreementUrl);
+      } catch (err) {
+        console.log('err', err);
+      }
     });
   };
 
