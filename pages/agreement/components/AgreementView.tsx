@@ -4,7 +4,7 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
 import { useEffect, useRef, useState } from 'react';
@@ -16,7 +16,7 @@ import { PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 import { useAppSelector } from '@/hooks';
 import PDFGenerator from './Pages/Test';
 
-function Agreement() {
+function AgreementView() {
   const dispatch = useDispatch();
   const foundUser = useSelector((state: any) => state.foundUser.foundUser);
   const agencyCode = useSelector(
@@ -50,6 +50,9 @@ function Agreement() {
     console.log('err', error);
   }
 
+  if (!data) {
+    return <div>No Data Found , Kindly contact kyc team.</div>;
+  }
   return (
     <ProtectedSSRoute>
       <Head>
@@ -143,6 +146,19 @@ function Agreement() {
         </Box>
       </Container>
       {acceptedTerms && signData && place && (
+        // <div
+        //   style={{
+        //     margin: 20,
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     alignContent: 'center',
+        //     justifyContent: 'center'
+        //   }}
+        // >
+        //   <Button variant="contained" onClick={generatePDF}>
+        //     Download Agreement PDF
+        //   </Button>
+        // </div>
         <PDFGenerator
           PWID={user?.pw_id}
           data={data}
@@ -157,6 +173,6 @@ function Agreement() {
   );
 }
 
-Agreement.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+AgreementView.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default Agreement;
+export default AgreementView;

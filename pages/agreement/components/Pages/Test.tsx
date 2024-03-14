@@ -12,6 +12,9 @@ import { English } from '../English';
 import { HindiBold } from '../HindiBold';
 import { Button } from '@mui/material';
 import handlePdfUpload from '@/utils/uploadPdf';
+import { UPDATE_AGREEMENT_DATA } from '@/apollo/queries/auth';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -27,6 +30,28 @@ const PDFGenerator = ({
   clearSignature,
   place
 }) => {
+  let router = useRouter();
+
+  const [UpdateAgreementData] = useMutation(UPDATE_AGREEMENT_DATA);
+
+  const handleUpdateAgreementData = async (imgUrl) => {
+    try {
+      const resp = await UpdateAgreementData({
+        variables: {
+          PWID: PWID,
+          url: imgUrl
+        }
+      });
+      console.log('resp', resp);
+
+      if (resp) {
+        router.push('/agreement');
+      }
+    } catch (err) {
+      console.error('Error:', err.message);
+    }
+  };
+
   console.log('ji', data);
   const generatePDF = () => {
     pdfMake.fonts = {
@@ -2011,7 +2036,7 @@ const PDFGenerator = ({
       }
     };
 
-    console.log('here');
+    // console.log('here');
     const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
 
     pdfDocGenerator.getBuffer(async (buffer) => {
@@ -2022,14 +2047,14 @@ const PDFGenerator = ({
         { type: 'application/pdf' }
       );
 
-      saveAs(
-        pdfBlob,
-        `Agreement_${data?.getAgreementData?.agreementFieldData['2']}_${PWID}.pdf`
-      );
+      // saveAs(
+      //   pdfBlob,
+      //   `Agreement_${data?.getAgreementData?.agreementFieldData['2']}_${PWID}.pdf`
+      // );
 
       try {
         const agreementUrl = await handlePdfUpload(pdffile);
-        // console.log('agreementUrl', agreementUrl);
+        handleUpdateAgreementData(agreementUrl);
       } catch (err) {
         console.log('err is dta ', err);
       }
@@ -2047,7 +2072,7 @@ const PDFGenerator = ({
       }}
     >
       <Button variant="contained" onClick={generatePDF}>
-        Download Agreement PDF
+        Submit Agreement
       </Button>
     </div>
   );

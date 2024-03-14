@@ -4,8 +4,8 @@ const handlePdfUpload = async (file) => {
   form.append('document', file);
   try {
     const resp = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/documents/pdfUpload`,
-      `https://l83w6jqz-6770.inc1.devtunnels.ms/documents/pdfUpload`,
+      `${process.env.NEXT_PUBLIC_API_URL}/documents/pdfUpload`,
+      //   `https://l83w6jqz-6770.inc1.devtunnels.ms/documents/pdfUpload`,
       form,
       {
         headers: {
