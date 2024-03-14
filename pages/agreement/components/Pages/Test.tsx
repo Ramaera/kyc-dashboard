@@ -1985,7 +1985,7 @@ const PDFGenerator = ({
         const agreementUrl = await handlePdfUpload(pdfBlob);
         console.log(agreementUrl);
       } catch (err) {
-        console.log('err', err);
+        console.log('err is dta ', err);
       }
     });
   };
