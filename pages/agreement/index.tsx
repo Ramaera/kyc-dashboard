@@ -35,6 +35,7 @@ function Agreement() {
   const signatureCanvasRef = useRef(null);
   const clearSignature = () => {
     signatureCanvasRef.current.clear();
+    setSignData('');
   };
 
   const saveSignature = async () => {
@@ -103,13 +104,16 @@ function Agreement() {
 
               <View style={{ display: 'flex', flexDirection: 'column' }}>
                 <View>
-                  {' '}
                   <SignatureCanvas
-                    penColor="green"
+                    penColor="black"
                     ref={signatureCanvasRef}
                     canvasProps={{
                       width: 500,
-                      height: 200
+                      height: 200,
+                      style: {
+                        border: '1px solid black',
+                        backgroundColor: 'white'
+                      }
                     }}
                   />
                 </View>

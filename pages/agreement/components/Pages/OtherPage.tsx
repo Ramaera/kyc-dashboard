@@ -1133,6 +1133,15 @@ const OtherPage = ({ data, signData, place }) => {
           </tr>
           <tr style={{ border: '1px solid black' }}>
             <th style={{ border: '1px solid black' }}>
+              Total Amount of Subscription
+            </th>
+            <th style={{ border: '1px solid black' }}>
+              {' '}
+              {data?.getAgreementData.agreementFieldData['14']}
+            </th>
+          </tr>
+          <tr style={{ border: '1px solid black' }}>
+            <th style={{ border: '1px solid black' }}>
               Name(s) of Subscriber(s)
             </th>
             <th style={{ border: '1px solid black' }}>
@@ -1236,7 +1245,7 @@ const OtherPage = ({ data, signData, place }) => {
                 <input
                   style={{ backgroundColor: 'white', color: 'black' }}
                   type="text"
-                  placeholder="Please Fill Place"
+                  placeholder=""
                   id="place"
                   name="place"
                   value={place}

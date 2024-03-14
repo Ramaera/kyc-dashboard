@@ -10,6 +10,7 @@ import hindi from '../../../../public/static/fonts/Hindi.ttf';
 import { Hindi } from '../Hindi';
 import { English } from '../English';
 import { HindiBold } from '../HindiBold';
+import { Button } from '@mui/material';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -1766,6 +1767,16 @@ const PDFGenerator = ({
               ],
               [
                 {
+                  text: 'Total Amount of Subscription	',
+                  style: { border: '1px solid black' }
+                },
+                {
+                  text: data?.getAgreementData?.agreementFieldData['14'] || '',
+                  style: { border: '1px solid black' }
+                }
+              ],
+              [
+                {
                   text: 'Name(s) of Subscriber(s)',
                   style: { border: '1px solid black' }
                 },
@@ -1875,7 +1886,8 @@ const PDFGenerator = ({
                   text: 'मैं, एतत्द्वारा घोषणा करता हूं कि मैंने इस समझौते के नियमों और शर्तों को पढ़ और समझ लिया है। मैं रामेरा इंडस्ट्रीज लिमिटेड और इस समझौते के नियमों और शर्तों का पालन करूंगा।\n',
                   style: { fontSize: 10, font: 'Hindi' }
                 }
-              ]
+              ],
+              margin: [0, 0, 0, 10]
             },
             {
               columns: [
@@ -1884,47 +1896,66 @@ const PDFGenerator = ({
                   text: 'Date: ' + moment().format('DD-MM-YYYY'),
                   style: { fontSize: 10 }
                 },
+
                 {
                   width: '*',
                   stack: [
                     {
-                      text: 'Subscriber’s Signature:',
+                      text:
+                        'Name of the Subscriber: ' +
+                        (data?.getAgreementData?.agreementFieldData['2'] || ''),
                       style: { fontSize: 10 }
                     },
                     {
-                      text: 'सब्सक्राइबर के हस्ताक्षर',
+                      text: 'सब्सक्राइबर का नाम',
                       style: { fontSize: 10, font: 'Hindi' }
-                    },
+                    }
+                  ]
+                }
+              ],
+              margin: [0, 0, 0, 10]
+            },
+            {
+              columns: [
+                {
+                  width: '*',
+                  stack: [
                     {
-                      image: signData, // Assuming you have a variable 'signatureImage' containing the signature image data
-                      width: 200,
-                      height: 40
-                    },
+                      text: [
+                        {
+                          text: 'Place: ',
+                          style: { fontSize: 10 }
+                        },
+
+                        { text: `${place}` }
+                      ]
+                    }
+                  ],
+                  style: { marginLeft: 5 }
+                },
+                {
+                  width: '*',
+                  stack: [
                     {
-                      stack: [
+                      columns: [
                         {
                           text: [
                             {
-                              text: 'Place: ',
+                              text: 'Subscriber’s Signature:\n',
                               style: { fontSize: 10 }
                             },
-
-                            { text: `${place}` }
+                            {
+                              text: 'सब्सक्राइबर के हस्ताक्षर',
+                              style: { fontSize: 10, font: 'Hindi' }
+                            }
                           ]
                         },
                         {
-                          text:
-                            'Name of the Subscriber: ' +
-                            (data?.getAgreementData?.agreementFieldData['2'] ||
-                              ''),
-                          style: { fontSize: 10 }
-                        },
-                        {
-                          text: 'सब्सक्राइबर का नाम',
-                          style: { fontSize: 10, font: 'Hindi' }
+                          image: signData, // Assuming you have a variable 'signatureImage' containing the signature image data
+                          width: 150,
+                          height: 40
                         }
-                      ],
-                      style: { marginLeft: 5 }
+                      ]
                     }
                   ]
                 }
@@ -1963,7 +1994,9 @@ const PDFGenerator = ({
         justifyContent: 'center'
       }}
     >
-      <button onClick={generatePDF}>Download agreement PDF</button>
+      <Button variant="contained" onClick={generatePDF}>
+        Download Agreement PDF
+      </Button>
     </div>
   );
 };
