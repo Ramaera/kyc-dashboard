@@ -96,13 +96,19 @@ function AgreementView() {
               onChange={() => setAcceptedTerms(!acceptedTerms)}
             />
             <label htmlFor="acceptTerms">
-              I accept the terms and conditions
+              I accept the terms and conditions{' '}
             </label>
           </Box>
+          <span style={{ color: 'red', fontSize: 20 }}>
+            (↑ Please Accept Terms And Conditions By Clicking here )
+          </span>
           {acceptedTerms && (
             <View>
               <Text style={{ marginVertical: 20 }}>
-                Subscriber’s Signature / सब्सक्राइबर के हस्ताक्षर :
+                Subscriber’s Signature / सब्सक्राइबर के हस्ताक्षर :{' '}
+                <span style={{ color: 'red', fontSize: 20 }}>
+                  (Please Sign Here ↓)
+                </span>
               </Text>
 
               <View style={{ display: 'flex', flexDirection: 'column' }}>
@@ -127,9 +133,18 @@ function AgreementView() {
                   Clear Signature
                 </button>
                 <button onClick={() => saveSignature()}>Save Signature</button>
+                <p style={{ color: 'red', fontSize: 20 }}>
+                  ← Click Here To Save Signature{' '}
+                </p>
               </div>
               <View>
-                <div style={{ marginTop: 10 }}>
+                <div
+                  style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
                   Place:{' '}
                   <input
                     style={{ backgroundColor: 'white', color: 'black' }}
@@ -139,6 +154,9 @@ function AgreementView() {
                     name="place"
                     onChange={(e) => setPlace(e.target.value)}
                   />
+                  <p style={{ color: 'red', fontSize: 20 }}>
+                    ← Type Your Location Here{' '}
+                  </p>
                 </div>
               </View>
             </View>

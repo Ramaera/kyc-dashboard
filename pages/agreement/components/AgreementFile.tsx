@@ -15,8 +15,6 @@ const AgreementFile = () => {
 
   const checkStatusComplete = data?.checkAgreementDataStatus?.isCompleted;
   const url = data?.checkAgreementDataStatus?.agreementUrl;
-
-  console.log('data', url);
   return (
     <>
       <Box>
