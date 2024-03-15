@@ -107,7 +107,7 @@ function AgreementView() {
               <Text style={{ marginVertical: 20 }}>
                 Subscriber’s Signature / सब्सक्राइबर के हस्ताक्षर :{' '}
                 <span style={{ color: 'red', fontSize: 20 }}>
-                  (Please Sign Here ↓)
+                  (Please Sign Here,कृपया यहां साइन करें ↓)
                 </span>
               </Text>
 
@@ -134,7 +134,8 @@ function AgreementView() {
                 </button>
                 <button onClick={() => saveSignature()}>Save Signature</button>
                 <p style={{ color: 'red', fontSize: 20 }}>
-                  ← Click Here To Save Signature{' '}
+                  ← हस्ताक्षर save करने के लिए यहां क्लिक करें( Click Here To
+                  Save Signature)
                 </p>
               </div>
               <View>
@@ -155,7 +156,7 @@ function AgreementView() {
                     onChange={(e) => setPlace(e.target.value)}
                   />
                   <p style={{ color: 'red', fontSize: 20 }}>
-                    ← Type Your Location Here{' '}
+                    ←यहां अपना स्थान टाइप करें( Type Your Location Here){' '}
                   </p>
                 </div>
               </View>
