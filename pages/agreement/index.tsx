@@ -4,16 +4,18 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import { setAllTheUsers } from '@/state/slice/allUsersSlice';
 import { useQuery } from '@apollo/client';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import Head from 'next/head';
 import ProtectedSSRoute from 'pages/libs/ProtectedRoute';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import SignatureCanvas from 'react-signature-canvas';
 import Loading from '@/components/Loading';
 import AgreementDetails from './components/AgreementDetails';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 import { useAppSelector } from '@/hooks';
+import PDFGenerator from './components/Pages/Test';
+import AgreementFile from './components/AgreementFile';
 
 function Agreement() {
   const dispatch = useDispatch();
@@ -27,6 +29,20 @@ function Agreement() {
       PWID: 'PW671946'
     }
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [place, setPlace] = useState('');
+
+  const [signData, setSignData] = useState(null);
+  const signatureCanvasRef = useRef(null);
+  const clearSignature = () => {
+    signatureCanvasRef.current.clear();
+    setSignData('');
+  };
+
+  const saveSignature = async () => {
+    const signatureImage = signatureCanvasRef?.current?.toDataURL();
+    setSignData(signatureImage);
+  };
 
   if (loading) {
     return <div>Loading.........</div>;
@@ -34,30 +50,6 @@ function Agreement() {
   if (error) {
     console.log('err', error);
   }
-
-  // const { loading, error, data, refetch } = useQuery(GET_ALL_AGENCY_USERS, {
-  //   variables: {
-  //     agencyCode: agencyCode
-  //   }
-  // });
-  // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
-  // console.log(useSelector((state) => state.allUsers.allTheUsers));
-
-  const generatePdf = () => {
-    console.log('clicked');
-    return (
-      <PDFDownloadLink
-        document={<AgreementDetails data={data} />}
-        fileName="example.pdf"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? 'Loading document...' : 'Download PDF'
-        }
-      </PDFDownloadLink>
-    );
-  };
-
-  //console.log(helloW)
 
   return (
     <ProtectedSSRoute>
@@ -71,19 +63,14 @@ function Agreement() {
           sx={{ textTransform: 'uppercase', marginTop: 2, marginBottom: 2 }}
           gutterBottom
         >
-          Ramaera 30% net profit partner mutual agreement consent
+          View or Submit Agreements
         </Typography>
       </PageTitleWrapper>
+
       <Container maxWidth={false}>
-        {data ? (
-          <AgreementDetails data={data} />
-        ) : (
-          'Kindly Contact KYC Team ,Regarding Your Agreement'
-        )}
-        {/* <AgreementDetails data={data} />
-        <button onClick={() => generatePdf()}>Generate PDF</button>
-        {generatePdf()} */}
+        <AgreementFile />
       </Container>
+
       <Footer />
     </ProtectedSSRoute>
   );

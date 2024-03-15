@@ -784,3 +784,25 @@ mutation SendVerificationEmail ($id: String!){
   }
 }
 `);
+
+export const CHECK_AGREEMENT_DATA_STATUS = gql(`
+query CheckAgreementDataStatus($pwid:String!) {
+  checkAgreementDataStatus(pwid: $pwid) {
+      agreementFieldData
+      agreementUrl
+      isCompleted
+      pwId
+  }
+}
+`);
+
+export const UPDATE_AGREEMENT_DATA = gql(`
+mutation UpdateAgreementData($PWID: String!  $url: String!) {
+  UpdateAgreementData(PWID: $PWID, url: $url) {
+      agreementFieldData
+      agreementUrl
+      isCompleted
+      pwId
+  }
+}
+`);
