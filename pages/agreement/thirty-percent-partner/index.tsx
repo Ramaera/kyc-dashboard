@@ -5,8 +5,10 @@ import AgreementView from '../components/AgreementView';
 import { useAppSelector } from '@/hooks';
 import { useQuery } from '@apollo/client';
 import { CHECK_AGREEMENT_DATA_STATUS } from '@/apollo/queries/auth';
+import { useRouter } from 'next/router';
 
 function Agreement() {
+  const router = useRouter();
   const user = useAppSelector((state) => state.user?.data);
 
   const { loading, data, error } = useQuery(CHECK_AGREEMENT_DATA_STATUS, {
@@ -16,6 +18,10 @@ function Agreement() {
   });
 
   const checkStatusComplete = data?.checkAgreementDataStatus?.isCompleted;
+
+  if (checkStatusComplete) {
+    router.push('/agreement');
+  }
 
   return (
     <ProtectedSSRoute>

@@ -15,6 +15,8 @@ import handlePdfUpload from '@/utils/uploadPdf';
 import { UPDATE_AGREEMENT_DATA } from '@/apollo/queries/auth';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -31,7 +33,7 @@ const PDFGenerator = ({
   place
 }) => {
   let router = useRouter();
-
+  const [isLoading, setLoading] = useState(false);
   const [UpdateAgreementData] = useMutation(UPDATE_AGREEMENT_DATA);
 
   const handleUpdateAgreementData = async (imgUrl) => {
@@ -2040,6 +2042,7 @@ const PDFGenerator = ({
     const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
 
     pdfDocGenerator.getBuffer(async (buffer) => {
+      setLoading(true);
       const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
       const pdffile = new File(
         [buffer],
@@ -2058,6 +2061,7 @@ const PDFGenerator = ({
       } catch (err) {
         console.log('err is dta ', err);
       }
+      setLoading(false);
     });
   };
 
@@ -2071,9 +2075,13 @@ const PDFGenerator = ({
         justifyContent: 'center'
       }}
     >
-      <Button variant="contained" onClick={generatePDF}>
+      <LoadingButton
+        loading={isLoading}
+        variant="contained"
+        onClick={generatePDF}
+      >
         Submit Agreement
-      </Button>
+      </LoadingButton>
     </div>
   );
 };
