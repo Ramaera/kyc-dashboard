@@ -417,112 +417,213 @@ query{
 `);
 
 export const GET_AGENCY_PAYMENT = gql(`
-query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
-  AgencyPayment(agencyCode: $agencyCode, month: $month, year: $year) {
+ query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
+    AgencyPayment(agencyCode: $agencyCode, month: $month, year: $year) {
       agraProjectAmount
       hajipurProjectAmount
+      hyderabadProjectAmount
       kycAmount
       kycRewardAmount
       selfAgencyAgraPaymentAmount
       selfAgencyHajipurPaymentAmount
-      BasicKycApprovedUser {
-        id
-        pw_id
-        createdAt
-        kyc
-        name
-        membership
-    }
-    AdvanceKycApprovedUser {
-        id
-        pw_id
-        createdAt
-        kyc
-        name
-        membership
-    }
-    basicHajipurprojectDocument {
-      id
-      amount
-      createdAt
-      status
-      user {
+      selfAgencyHyderabadPaymentAmount
+      AgraprojectDocument {
+          amount
+          createdAt
           id
-          kyc
-          membership
-          name
-          pw_id
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
       }
-    }
-    advanceHajipurprojectDocument {
-      id
-      amount
-      createdAt
-      status
-      user {
+      HajipurprojectDocument {
           id
-          kyc
-          membership
-          name
-          pw_id
+          amount
+          createdAt
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
       }
-    }
-    basicAgraprojectDocument {
-      id
-      amount
-      createdAt
-      status
-      user {
+      HyderabadprojectDocument {
           id
-          kyc
-          membership
-          name
-          pw_id
+          amount
+          createdAt
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
       }
-    }
-    advanceAgraprojectDocument {
-      id
-      amount
-      createdAt
-      status
-      user {
+      KycApprovedUser {
           id
-          kyc
-          membership
-          name
           pw_id
+          createdAt
+          kyc
+          name
+          membership
       }
-    }
-    selfAgraInvestmentDocument {
-      id
-      amount
-      createdAt
-      status
-      user {
-        id
-        kyc
-        membership
-        name
-        pw_id
+      selfAgraInvestmentDocument {
+          id
+          amount
+          createdAt
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
       }
-    }
-    selfHajipurInvestmentDocument {
-      amount
-      createdAt
-      id
-      status
-      user {
-        id
-        kyc
-        membership
-        name
-        pw_id
+      selfHajipurInvestmentDocument {
+          amount
+          createdAt
+          id
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
       }
-    }
-
+      selfHyderabadInvestmentDocument {
+          amount
+          createdAt
+          id
+          status
+          user {
+              id
+              kyc
+              membership
+              name
+              pw_id
+          }
+      }
   }
 }
 `);
+
+// export const GET_AGENCY_PAYMENT = gql(`
+// query AgencyPayment($agencyCode: String!, $month: Int!, $year: Int!) {
+//   AgencyPayment(agencyCode: $agencyCode, month: $month, year: $year) {
+//       agraProjectAmount
+//       hajipurProjectAmount
+//       kycAmount
+//       kycRewardAmount
+//       selfAgencyAgraPaymentAmount
+//       selfAgencyHajipurPaymentAmount
+//       BasicKycApprovedUser {
+//         id
+//         pw_id
+//         createdAt
+//         kyc
+//         name
+//         membership
+//     }
+//     AdvanceKycApprovedUser {
+//         id
+//         pw_id
+//         createdAt
+//         kyc
+//         name
+//         membership
+//     }
+//     basicHajipurprojectDocument {
+//       id
+//       amount
+//       createdAt
+//       status
+//       user {
+//           id
+//           kyc
+//           membership
+//           name
+//           pw_id
+//       }
+//     }
+//     advanceHajipurprojectDocument {
+//       id
+//       amount
+//       createdAt
+//       status
+//       user {
+//           id
+//           kyc
+//           membership
+//           name
+//           pw_id
+//       }
+//     }
+//     basicAgraprojectDocument {
+//       id
+//       amount
+//       createdAt
+//       status
+//       user {
+//           id
+//           kyc
+//           membership
+//           name
+//           pw_id
+//       }
+//     }
+//     advanceAgraprojectDocument {
+//       id
+//       amount
+//       createdAt
+//       status
+//       user {
+//           id
+//           kyc
+//           membership
+//           name
+//           pw_id
+//       }
+//     }
+//     selfAgraInvestmentDocument {
+//       id
+//       amount
+//       createdAt
+//       status
+//       user {
+//         id
+//         kyc
+//         membership
+//         name
+//         pw_id
+//       }
+//     }
+//     selfHajipurInvestmentDocument {
+//       amount
+//       createdAt
+//       id
+//       status
+//       user {
+//         id
+//         kyc
+//         membership
+//         name
+//         pw_id
+//       }
+//     }
+
+//   }
+// }
+// `);
 
 export const TRANSACTION_TO_WALLET = gql(`
 mutation TransactionToWallet($agencyCode: String!, $type: String!,  $amount: Int!, $category: String!, $metaData: [JSONObject!]!) {
