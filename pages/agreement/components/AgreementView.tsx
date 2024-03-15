@@ -25,7 +25,7 @@ function AgreementView() {
   const user = useAppSelector((state) => state.user?.data);
   const { loading, data, error } = useQuery(AGREEMENT_DATA, {
     variables: {
-      PWID: user?.pw_id
+      PWID: 'PW671946'
     }
   });
   const [acceptedTerms, setAcceptedTerms] = useState(false);
