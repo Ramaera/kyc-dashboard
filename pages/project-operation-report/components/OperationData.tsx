@@ -39,8 +39,8 @@ const OperationData = () => {
           </Button>
         </Box>
         <Box>
-          {/* <DataTable /> */}
-          <StockTable />
+          <DataTable />
+          {/* <StockTable /> */}
         </Box>
         <Divider />
 
