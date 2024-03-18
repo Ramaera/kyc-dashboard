@@ -76,7 +76,7 @@ const UserTable = () => {
 
   // KyC Rewar Amount
   const kycRewardAmountPerKyc =
-    getAgencyPayment?.data?.AgencyPayment?.kycRewardAmount;
+    getAgencyPayment?.data?.AgencyPayment?.kycRewardAmount || 200;
 
   //total amount of each agency
   const totalKycIncome = getAgencyPayment?.data?.AgencyPayment?.kycAmount;
