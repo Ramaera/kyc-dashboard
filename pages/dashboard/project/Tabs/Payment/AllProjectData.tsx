@@ -64,6 +64,28 @@ export const AllBankDetails = {
       key: 'IFSC CODE ',
       info: 'SBIN0005222'
     }
+  ],
+  ReverseSpiceBankDetails: [
+    {
+      key: 'Company Name',
+      info: 'RAMAERA INDUSTRIES LTD.'
+    },
+    {
+      key: 'Bank Name',
+      info: 'HDFC BANK '
+    },
+    {
+      key: 'Branch',
+      info: 'HAJIPUR BIHAR'
+    },
+    {
+      key: 'A/C No.',
+      info: '50200078200870'
+    },
+    {
+      key: 'IFSC CODE ',
+      info: 'HDFC0000088'
+    }
   ]
 };
 
@@ -215,6 +237,58 @@ export const AllProjectDetails = {
     {
       key: 'Phase 3 ',
       info: '2000000'
+    }
+  ],
+  ReverseSpiceProjectDetails: [
+    3000000,
+    0,
+    {
+      key: 'Your Enrollment Amount is ',
+      info: '0'
+    },
+    {
+      key: 'Your No. of profit persons',
+      info: '0'
+    },
+    {
+      key: 'Required Fund',
+      info: 'Rs 30 Lakh.'
+    },
+    {
+      key: 'Required No. of Share Holder',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Per Share Holder Required Fund',
+      info: 'Minimum 5000 to multiple'
+    },
+    {
+      key: 'No. of share allotment',
+      info: 'Rs 5000/Share'
+    },
+    {
+      key: 'Net Profit Sharing',
+      info: '55%'
+    },
+    {
+      key: 'Total Enrolled Share',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Total Enrolled',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Till Raised Fund',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Remain Funding',
+      info: 'Announced Soon'
+    },
+    {
+      key: 'Upcoming Enroll',
+      info: 'Announced Soon'
     }
   ]
 };

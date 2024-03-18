@@ -11,12 +11,6 @@ import {
   Button,
   Grid,
   LinearProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   linearProgressClasses,
   styled,
@@ -27,13 +21,14 @@ import {
 } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { AllBankDetails, AllProjectDetails } from './AllProjectData';
+import { AllProjectDetails } from './AllProjectData';
 import { useSelector } from 'react-redux';
 
-import Image from 'next/image';
-import variables from '@/config/variables';
 import DocumentRow from './Components/DocumentRow';
 import EnrolledAmount from './Components/EnrolledAmount';
+import ProjectDetails from './Components/ProjectDetails';
+import FundingBar from './Components/FundingBar';
+import BankDetails from './Components/BankDetails';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -124,8 +119,6 @@ const InfoTab = ({ title }) => {
   const risedFundPer =
     title.toLowerCase() === 'hajipur' || title.toLowerCase() === 'agra'
       ? 100
-      : title.toLowerCase() === 'hyderabad'
-      ? diff * 100
       : diff * 100;
 
   const validateSubmit = (imgUrl) => {
@@ -301,7 +294,8 @@ const InfoTab = ({ title }) => {
             indicatorColor="primary"
           >
             {tabs.map((tab) =>
-              tab.title.toLowerCase() === 'hyderabad' ? (
+              tab.title.toLowerCase() === 'hyderabad' ||
+              tab.title.toLowerCase() === 'reversespice' ? (
                 tab.label === 'Basic Info' && (
                   <Tab key={tab.value} label={tab.label} value={tab.value} />
                 )
@@ -318,231 +312,31 @@ const InfoTab = ({ title }) => {
             <>
               <div>
                 <>
-                  <Box
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}
-                  >
-                    <Button
-                      variant="outlined"
-                      onClick={() =>
-                        setHidden({ ...isHidden, project: !isHidden.project })
-                      }
-                    >
-                      <Typography
-                        variant="h4"
-                        sx={{
-                          [theme.breakpoints.down('sm')]: {
-                            fontSize: 12
-                          }
-                        }}
-                      >
-                        Project Details
-                      </Typography>
-                    </Button>
+                  <ProjectDetails
+                    isHidden={isHidden}
+                    setHidden={setHidden}
+                    title={title}
+                    phaseData={phaseData}
+                    projectAmount={projectAmount}
+                    projectTitle={projectTitle}
+                    isEnrolled={isEnrolled}
+                  />
 
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        [theme.breakpoints.down('sm')]: {
-                          fontSize: 12,
-                          textAlign: 'right'
-                        }
-                      }}
-                    >
-                      Enrollment Status :{' '}
-                      <span style={{ color: isEnrolled ? 'green' : 'red' }}>
-                        {isEnrolled ? 'Enrolled' : 'Not Enrolled'}
-                      </span>{' '}
-                    </Typography>
-                  </Box>
-                  {isHidden.project && (
-                    <>
-                      {title === 'Hajipur' && (
-                        <a
-                          href="https://kyc.ramaera.com/Docs/Spice_Project.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Image
-                            style={{ transform: 'scale(0.75)' }}
-                            src="/images/pdf.png"
-                            alt="pdf"
-                            height={60}
-                            width={60}
-                          />
-                        </a>
-                      )}
-                      <TableContainer component={Paper} sx={{ mt: 2 }}>
-                        <Table sx={{ minWidth: 100 }} aria-label="simple table">
-                          <TableBody>
-                            {AllProjectDetails[projectTitle].map((row) => {
-                              if (!row.key) {
-                                return;
-                              }
-                              return (
-                                <TableRow
-                                  key={row.key}
-                                  sx={{
-                                    '&:last-child td, &:last-child th': {
-                                      border: 0
-                                    }
-                                  }}
-                                >
-                                  <TableCell component="th" scope="row">
-                                    {row.key}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    {row.key === 'Till Raised Fund'
-                                      ? projectAmount
-                                      : row.key === 'Remain Funding'
-                                      ? AllProjectDetails[projectTitle][0] -
-                                        projectAmount
-                                      : row.key === 'Total Enrolled'
-                                      ? title.toLowerCase() === 'hyderabad'
-                                        ? projectAmount / 5000
-                                        : row.info
-                                      : row.key === 'Upcoming Enroll'
-                                      ? title.toLowerCase() === 'hyderabad'
-                                        ? (AllProjectDetails[projectTitle][0] -
-                                            projectAmount) /
-                                          5000
-                                        : row.info
-                                      : row.info}
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            })}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-
-                      {title.toLowerCase() === 'hyderabad' && (
-                        <TableContainer component={Paper} sx={{ mt: 2 }}>
-                          <Table
-                            sx={{ minWidth: 100 }}
-                            aria-label="simple table"
-                          >
-                            <TableBody>
-                              {phaseData['Phase1'].map((row) => (
-                                <TableRow>
-                                  <TableCell>{row.key}</TableCell>
-                                  <TableCell>{row.info}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      )}
-                    </>
-                  )}
-
-                  <Box sx={{ flexGrow: 1, my: 2 }}>
-                    <Typography variant="h6" mb={2} textTransform={'uppercase'}>
-                      Total Funding Completed :{' '}
-                      {`₹ ${
-                        title.toLowerCase() === 'hajipur'
-                          ? '20000000 / ₹20000000'
-                          : title.toLowerCase() === 'agra'
-                          ? `${projectAmount} / ₹3300000`
-                          : `${projectAmount}/ ₹15000000`
-                      } `}
-                    </Typography>
-                    <BorderLinearProgress
-                      variant="determinate"
-                      value={risedFundPer}
-                    />
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      style={{
-                        display: 'flex',
-                        position: 'absolute',
-                        marginTop: '-20px',
-                        marginLeft: '50px',
-                        fontWeight: 'bold',
-                        color: 'white'
-                      }}
-                    >{`${Math.round(risedFundPer)}%`}</Typography>
-                  </Box>
+                  <FundingBar
+                    risedFundPer={risedFundPer}
+                    projectAmount={projectAmount}
+                    projectTitle={projectTitle}
+                    title={title}
+                  />
                 </>
-                {enrollNow && (
-                  <>
-                    <Button
-                      style={{ marginRight: 20 }}
-                      variant={showBankDetails ? 'contained' : 'outlined'}
-                      onClick={() => {
-                        btnShowBankDetails();
-                      }}
-                    >
-                      <Typography variant="h4">Bank Details</Typography>
-                    </Button>
-
-                    {title.toLowerCase() === 'hyderabad' && (
-                      <Button
-                        variant={showUPIDetails ? 'contained' : 'outlined'}
-                        onClick={() => {
-                          btnShowUPIDetails();
-                        }}
-                      >
-                        <Typography variant="h4">UPI</Typography>
-                      </Button>
-                    )}
-                    <br />
-                  </>
-                )}
-                {showBankDetails && enrollNow && (
-                  <TableContainer component={Paper} sx={{ mt: 2 }}>
-                    <Table sx={{ minWidth: 100 }} aria-label="simple table">
-                      <TableBody>
-                        {AllBankDetails[title + 'BankDetails'].map(
-                          (bankData) => {
-                            return (
-                              <TableRow
-                                key={bankData.key}
-                                sx={{
-                                  '&:last-child td, &:last-child th': {
-                                    border: 0
-                                  }
-                                }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {bankData.key}
-                                </TableCell>
-                                <TableCell align="right">
-                                  {bankData.info}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          }
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                )}
-
-                {showUPIDetails &&
-                  enrollNow &&
-                  title.toLowerCase() === 'hyderabad' && (
-                    <TableContainer component={Paper} sx={{ mt: 2 }}>
-                      <Table sx={{ minWidth: 100 }} aria-label="simple table">
-                        <TableBody>
-                          <img
-                            style={{
-                              width: '250px',
-                              borderRadius: '20px',
-                              padding: '10px'
-                            }}
-                            src="/images/hyderabad_upi.png"
-                          />
-                          <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
-                            OR
-                          </Typography>
-                          <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
-                            <a href="#">UPI ID : ramaeraindustries@sbi</a>
-                          </Typography>
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
+                <BankDetails
+                  showBankDetails={showBankDetails}
+                  showUPIDetails={showUPIDetails}
+                  btnShowBankDetails={btnShowBankDetails}
+                  btnShowUPIDetails={btnShowUPIDetails}
+                  title={title}
+                  enrollNow={enrollNow}
+                />
                 {proofImage ? (
                   <img
                     src={
