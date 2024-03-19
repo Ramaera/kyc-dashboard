@@ -73,7 +73,7 @@ function DashboardTasks() {
         <title>Agency Income</title>
       </Head>
       <PageTitleWrapper>
-        {/* <PageHeader />
+        <PageHeader />
         <Box
           display="flex"
           alignItems={{ xs: 'stretch', md: 'center' }}
@@ -142,14 +142,14 @@ function DashboardTasks() {
               </Button>
             </Link>
           </Box>
-        </Box> */}
+        </Box>
         {/* // todo place filters here */}
-        <Box>This Page is Under Maintenance</Box>
+        {/* <Box>This Page is Under Maintenance</Box> */}
       </PageTitleWrapper>
-      {/* <Container maxWidth={false}>
+      <Container maxWidth={false}>
         <UserTable />
       </Container>
-      <Footer /> */}
+      <Footer />
     </ProtectedSSRoute>
   );
 }

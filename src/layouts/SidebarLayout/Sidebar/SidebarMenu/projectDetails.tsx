@@ -13,5 +13,9 @@ export const projectData = [
     projectName: 'My Mart My Brand Hyper Market Hyderabad (Phase 1)',
     // projectImage: HajipurSpice,
     navigateTo: 'hyderabad'
+  },
+  {
+    projectName: 'Hajipur Funding Replacement ',
+    navigateTo: 'FundingReplacement'
   }
 ];

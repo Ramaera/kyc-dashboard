@@ -48,7 +48,7 @@ const CustomTable = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((document, index) => (
+        {data?.map((document, index) => (
           <TableRow hover key={document?.id} sx={{ cursor: 'pointer' }}>
             <TableCell>
               <Typography

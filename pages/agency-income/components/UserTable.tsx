@@ -76,7 +76,7 @@ const UserTable = () => {
 
   // KyC Rewar Amount
   const kycRewardAmountPerKyc =
-    getAgencyPayment?.data?.AgencyPayment?.kycRewardAmount;
+    getAgencyPayment?.data?.AgencyPayment?.kycRewardAmount || 200;
 
   //total amount of each agency
   const totalKycIncome = getAgencyPayment?.data?.AgencyPayment?.kycAmount;
@@ -90,34 +90,45 @@ const UserTable = () => {
     getAgencyPayment?.data?.AgencyPayment?.selfAgencyAgraPaymentAmount;
   const totalSelfHajipurIncome =
     getAgencyPayment?.data?.AgencyPayment?.selfAgencyHajipurPaymentAmount;
+  const totalHyderabadIncome =
+    getAgencyPayment?.data?.AgencyPayment?.hyderabadProjectAmount;
+  const totalSelfHyderabadIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgencyHyderabadPaymentAmount;
 
   //kyc
 
-  const kycBasicIncome =
-    getAgencyPayment?.data?.AgencyPayment?.BasicKycApprovedUser;
-  const kycAdvanceIncome =
-    getAgencyPayment?.data?.AgencyPayment?.AdvanceKycApprovedUser;
-  const kycIncomeData = [];
-  kycBasicIncome?.map((user) => kycIncomeData.push(user));
-  kycAdvanceIncome?.map((user) => kycIncomeData.push(user));
+  // const kycBasicIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.BasicKycApprovedUser;
+  // const kycAdvanceIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.AdvanceKycApprovedUser;
+  const kycIncomeData = getAgencyPayment?.data?.AgencyPayment?.KycApprovedUser;
+  // kycBasicIncome?.map((user) => kycIncomeData.push(user));
+  // kycAdvanceIncome?.map((user) => kycIncomeData.push(user));
 
+  console.log('kycIncomeData', kycIncomeData);
   // Hajipur
-  const basicHajipurIncome =
-    getAgencyPayment?.data?.AgencyPayment?.basicHajipurprojectDocument;
-  const advanceHajipurIncome =
-    getAgencyPayment?.data?.AgencyPayment?.advanceHajipurprojectDocument;
-  const hajipurIncomeData = [];
-  basicHajipurIncome?.map((user) => hajipurIncomeData.push(user));
-  advanceHajipurIncome?.map((user) => hajipurIncomeData.push(user));
-  //Agra
-  const basicAgraIncome =
-    getAgencyPayment?.data?.AgencyPayment?.basicAgraprojectDocument;
-  const advanceAgraIncome =
-    getAgencyPayment?.data?.AgencyPayment?.advanceAgraprojectDocument;
-  const agraIncomeData = [];
-  basicAgraIncome?.map((user) => agraIncomeData.push(user));
-  advanceAgraIncome?.map((user) => agraIncomeData.push(user));
+  // const basicHajipurIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.basicHajipurprojectDocument;
+  // const advanceHajipurIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.advanceHajipurprojectDocument;
+  const hajipurIncomeData =
+    getAgencyPayment?.data?.AgencyPayment?.HajipurprojectDocument;
+  // basicHajipurIncome?.map((user) => hajipurIncomeData.push(user));
+  // advanceHajipurIncome?.map((user) => hajipurIncomeData.push(user));
 
+  //Agra
+  // const basicAgraIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.basicAgraprojectDocument;
+  // const advanceAgraIncome =
+  //   getAgencyPayment?.data?.AgencyPayment?.advanceAgraprojectDocument;
+  const agraIncomeData =
+    getAgencyPayment?.data?.AgencyPayment?.AgraprojectDocument;
+  // basicAgraIncome?.map((user) => agraIncomeData.push(user));
+  // advanceAgraIncome?.map((user) => agraIncomeData.push(user));
+
+  // hyderabad
+  const hyderabadIncomeData =
+    getAgencyPayment?.data?.AgencyPayment?.HyderabadprojectDocument;
   // Self Hajipur
   const selfHajipurIncome =
     getAgencyPayment?.data?.AgencyPayment?.selfHajipurInvestmentDocument;
@@ -129,6 +140,12 @@ const UserTable = () => {
     getAgencyPayment?.data?.AgencyPayment?.selfAgraInvestmentDocument;
   const selfAgraIncomeData = [];
   selfAgraIncome?.map((user) => selfAgraIncomeData.push(user));
+
+  // Self Hyderabad
+  const selfHyderabadIncome =
+    getAgencyPayment?.data?.AgencyPayment?.selfAgraInvestmentDocument;
+  const selfHyderabadIncomeData = [];
+  selfHyderabadIncome?.map((user) => selfHyderabadIncomeData.push(user));
 
   const showButtonDate = new Date('2024-01-01'); //YYYY-MM-DD
   const hideButtonDate = new Date('2024-02-01'); //YYYY-MM-DD
@@ -167,9 +184,13 @@ const UserTable = () => {
       ? document?.amount * 0.01
       : currentSelectedButton.includes('agra')
       ? document?.amount * 0.1
+      : currentSelectedButton.includes('hyderabad')
+      ? document?.amount * 0.1
       : currentSelectedButton.includes('selfHajipur')
       ? document?.amount * 0.01
       : currentSelectedButton.includes('selfAgra')
+      ? document?.amount * 0.1
+      : currentSelectedButton.includes('selfHyderabad')
       ? document?.amount * 0.1
       : '';
 
@@ -319,7 +340,11 @@ const UserTable = () => {
                 setCurrentSelectedButton('kyc');
               }}
               variant="contained"
-              sx={{ mt: 2, mb: 2, width: '180px' }}
+              sx={{
+                mt: 2,
+                mb: 2,
+                width: '220px'
+              }}
             >
               KYC : ₹{totalKycIncome | 0}
             </LoadingButton>
@@ -329,7 +354,7 @@ const UserTable = () => {
                 setCurrentSelectedButton('hajipur');
               }}
               variant="contained"
-              sx={{ mt: 2, mb: 2, width: '180px' }}
+              sx={{ mt: 2, mb: 2, width: '220px' }}
             >
               HAJIPUR : ₹{totalHajipurIncome | 0}
             </LoadingButton>
@@ -339,9 +364,20 @@ const UserTable = () => {
                 setCurrentSelectedButton('agra');
               }}
               variant="contained"
-              sx={{ mt: 2, mb: 2, width: '180px' }}
+              sx={{ mt: 2, mb: 2, width: '220px' }}
             >
               AGRA : ₹{totalAgraIncome | 0}
+            </LoadingButton>
+
+            <LoadingButton
+              onClick={() => {
+                setActive(true);
+                setCurrentSelectedButton('hyderabad');
+              }}
+              variant="contained"
+              sx={{ mt: 2, mb: 2, width: '220px' }}
+            >
+              Hyderabad : ₹{totalHyderabadIncome | 0}
             </LoadingButton>
 
             <LoadingButton
@@ -350,7 +386,7 @@ const UserTable = () => {
                 setCurrentSelectedButton('selfHajipur');
               }}
               variant="contained"
-              sx={{ mt: 2, mb: 2, width: '180px' }}
+              sx={{ mt: 2, mb: 2, width: '220px' }}
             >
               SELF HAJIPUR : ₹{totalSelfHajipurIncome | 0}
             </LoadingButton>
@@ -361,9 +397,20 @@ const UserTable = () => {
                 setCurrentSelectedButton('selfAgra');
               }}
               variant="contained"
-              sx={{ mt: 2, mb: 2, width: '180px' }}
+              sx={{ mt: 2, mb: 2, width: '220px' }}
             >
               SELF AGRA : ₹{totalSelfAgraIncome | 0}
+            </LoadingButton>
+
+            <LoadingButton
+              onClick={() => {
+                setActive(true);
+                setCurrentSelectedButton('selfHyderabad');
+              }}
+              variant="contained"
+              sx={{ mt: 2, mb: 2, width: '220px' }}
+            >
+              SELF HYDERABAD : ₹{totalSelfHyderabadIncome | 0}
             </LoadingButton>
           </Table>
           {active && (
@@ -394,7 +441,7 @@ const UserTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {kycIncomeData.map((user, index) => {
+                    {kycIncomeData?.map((user, index) => {
                       return (
                         <TableRow
                           hover
@@ -561,6 +608,16 @@ const UserTable = () => {
                   handleTransferToWallet={handleTransferToWallet}
                 />
               )}
+              {currentSelectedButton.includes('hyderabad') && (
+                <CustomTable
+                  projectName="hyderabad"
+                  data={hyderabadIncomeData}
+                  walletTransferShowButton={walletTransferShowButton}
+                  isLoading={isLoading}
+                  isDisable={isDisable}
+                  handleTransferToWallet={handleTransferToWallet}
+                />
+              )}
 
               {currentSelectedButton.includes('selfHajipur') && (
                 <CustomTable
@@ -577,6 +634,17 @@ const UserTable = () => {
                 <CustomTable
                   projectName="selfAgra"
                   data={selfAgraIncomeData}
+                  walletTransferShowButton={walletTransferShowButton}
+                  isLoading={isLoading}
+                  isDisable={isDisable}
+                  handleTransferToWallet={handleTransferToWallet}
+                />
+              )}
+
+              {currentSelectedButton.includes('selfHyderabad') && (
+                <CustomTable
+                  projectName="selfHyderabad"
+                  data={selfHyderabadIncomeData}
                   walletTransferShowButton={walletTransferShowButton}
                   isLoading={isLoading}
                   isDisable={isDisable}
