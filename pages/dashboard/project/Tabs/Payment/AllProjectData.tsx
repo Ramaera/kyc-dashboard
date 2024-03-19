@@ -65,7 +65,7 @@ export const AllBankDetails = {
       info: 'SBIN0005222'
     }
   ],
-  ReverseSpiceBankDetails: [
+  FundingReplacementBankDetails: [
     {
       key: 'Company Name',
       info: 'RAMAERA INDUSTRIES LTD.'
@@ -239,7 +239,7 @@ export const AllProjectDetails = {
       info: '2000000'
     }
   ],
-  ReverseSpiceProjectDetails: [
+  FundingReplacementProjectDetails: [
     3000000,
     0,
     {
@@ -256,15 +256,15 @@ export const AllProjectDetails = {
     },
     {
       key: 'Required No. of Share Holder',
-      info: 'Announced Soon'
+      info: '1200'
     },
     {
       key: 'Per Share Holder Required Fund',
-      info: 'Minimum 5000 to multiple'
+      info: 'Minimum 2500 to multiple'
     },
     {
       key: 'No. of share allotment',
-      info: 'Rs 5000/Share'
+      info: 'Rs 200/Share'
     },
     {
       key: 'Net Profit Sharing',

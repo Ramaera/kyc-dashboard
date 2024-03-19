@@ -15,7 +15,7 @@ export const projectData = [
     navigateTo: 'hyderabad'
   },
   {
-    projectName: 'Reverse Hajipur Spice Project',
-    navigateTo: 'reverseSpice'
+    projectName: 'Hajipur Funding Replacement ',
+    navigateTo: 'FundingReplacement'
   }
 ];

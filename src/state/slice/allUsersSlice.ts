@@ -8,6 +8,7 @@ const initialState = {
   totalHajipurAmount: 0,
   totalAgraAmount: 0,
   totalHyderabadAmount: 0,
+  totalFundingReplacementAmount: 0,
   totalNumbers: {
     totalSubscribers: 0,
     totalAgraSubscribers: 0,
@@ -44,6 +45,9 @@ export const allUSersSlice = createSlice({
     },
     setTotalHyderabadAmount: (state, action) => {
       state.totalHyderabadAmount = action.payload;
+    },
+    setTotalReverseSpiceAmount: (state, action) => {
+      state.totalFundingReplacementAmount = action.payload;
     },
     setNumbers: (state, action) => {
       state.totalNumbers = action.payload;

@@ -70,7 +70,6 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
-
   const phaseData = {
     Phase1: [
       {
@@ -418,7 +417,7 @@ const InfoTab = ({ title }) => {
                       />
                     </Button>
                   </Grid>
-                  {!user.isKycAgent && (
+                  {!user.isKycAgent && title.toLowerCase() === 'hyderabad' && (
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required

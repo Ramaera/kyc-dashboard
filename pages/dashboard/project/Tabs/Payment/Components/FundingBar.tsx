@@ -26,7 +26,8 @@ const FundingBar = ({ risedFundPer, projectAmount, projectTitle, title }) => {
           {`₹ ${
             title.toLowerCase() === 'hajipur'
               ? '20000000 / ₹20000000'
-              : `${projectAmount} / ${AllProjectDetails[projectTitle][0]}`
+              : projectAmount &&
+                `${projectAmount} / ${AllProjectDetails[projectTitle][0]}`
           } `}
         </Typography>
         <BorderLinearProgress variant="determinate" value={risedFundPer} />
