@@ -33,16 +33,17 @@ const BankDetails = ({
             <Typography variant="h4">Bank Details</Typography>
           </Button>
 
-          {title.toLowerCase() === 'hyderabad' && (
-            <Button
-              variant={showUPIDetails ? 'contained' : 'outlined'}
-              onClick={() => {
-                btnShowUPIDetails();
-              }}
-            >
-              <Typography variant="h4">UPI</Typography>
-            </Button>
-          )}
+          {title.toLowerCase() === 'hyderabad' ||
+            (title.toLowerCase() === 'fundingreplacement' && (
+              <Button
+                variant={showUPIDetails ? 'contained' : 'outlined'}
+                onClick={() => {
+                  btnShowUPIDetails();
+                }}
+              >
+                <Typography variant="h4">UPI</Typography>
+              </Button>
+            ))}
           <br />
         </>
       )}
@@ -94,6 +95,30 @@ const BankDetails = ({
           </Table>
         </TableContainer>
       )}
+      {showUPIDetails &&
+        enrollNow &&
+        title.toLowerCase() === 'fundingreplacement' && (
+          <TableContainer component={Paper} sx={{ mt: 2 }}>
+            <Table sx={{ minWidth: 100 }} aria-label="simple table">
+              <TableBody>
+                <img
+                  style={{
+                    width: '250px',
+                    borderRadius: '20px',
+                    padding: '10px'
+                  }}
+                  src="/images/hajipurReplacement_UPI.jpeg"
+                />
+                <Typography variant="body1" sx={{ my: 2, pl: 2 }}>
+                  OR
+                </Typography>
+                <Typography variant="h4" sx={{ my: 2, pl: 2 }}>
+                  <a href="#">UPI ID : ramaerabihar.pay@hdfcbank</a>
+                </Typography>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
     </>
   );
 };
