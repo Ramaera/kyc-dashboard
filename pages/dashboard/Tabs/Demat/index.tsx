@@ -1,6 +1,7 @@
 import {
   CREATEDOCUMENT,
   UPDATEDOCUMENT,
+  UPDATEUSERDEMAT,
   UPDATEUSERDETAILS
 } from '@/apollo/queries/auth';
 import documentsConfig from '@/config/documentsConfig';
@@ -386,7 +387,8 @@ const DematTab = () => {
   const [isSubmitButtonEnalbed, setSubmitButtonEnabled] = useState(false);
   const [createDocument] = useMutation(CREATEDOCUMENT);
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
-  const [updatedetails] = useMutation(UPDATEUSERDETAILS);
+  const [updatedetails] = useMutation(UPDATEUSERDEMAT);
+
   const [additionalDocuments, setAdditionalDocuments] = useState(false);
 
   const validateSubmit = (imgUrl) => {

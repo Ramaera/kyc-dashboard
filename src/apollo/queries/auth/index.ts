@@ -99,6 +99,21 @@ mutation updateUser(
 }
 `);
 
+export const UPDATEUSERDEMAT = gql(`
+mutation updateUser(
+  
+  $demat_account: String!
+  
+) {
+  updateUser(
+    data: {
+      demat_account: $demat_account
+    }
+  ) {
+    demat_account
+  }
+}
+`);
 export const CREATEDOCUMENT =
   gql(`mutation createDocument($title: String!, $url: String!,$referralAgencyCode:String) {
   createDocument(data: { title: $title, url: $url, referralAgencyCode:$referralAgencyCode}) {
