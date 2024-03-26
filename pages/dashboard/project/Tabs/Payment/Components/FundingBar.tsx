@@ -18,6 +18,8 @@ const FundingBar = ({ risedFundPer, projectAmount, projectTitle, title }) => {
     }
   }));
 
+  console.log('title', projectAmount);
+
   return (
     <>
       <Box sx={{ flexGrow: 1, my: 2 }}>

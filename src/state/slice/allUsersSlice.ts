@@ -7,7 +7,9 @@ const initialState = {
   allAgencyList: [],
   totalHajipurAmount: 0,
   totalAgraAmount: 0,
+
   totalHyderabadAmount: 0,
+
   totalFundingReplacementAmount: 0,
   totalNumbers: {
     totalSubscribers: 0,
@@ -15,7 +17,8 @@ const initialState = {
     totalBasicSubscribers: 0,
     totalAdvanceSubscribers: 0,
     totalHajipurSubscribers: 0,
-    totalHyderabadSubscribers: 0
+    totalHyderabadSubscribers: 0,
+    totalFundingReplacementSubscribers: 0
   },
 
   isData: false
@@ -68,6 +71,7 @@ export const {
   setAllAgencyList,
   setTotalAgraAmount,
   setTotalHyderabadAmount,
+  setTotalReverseSpiceAmount,
   setAllKycHandlerList
 } = allUSersSlice.actions;
 

@@ -225,6 +225,7 @@ query{
     ProjectAgraAmountReceived
     ProjectHajipurAmountReceived
     ProjectHyderabadAmountReceived
+    ProjectFundingReplacementAmountReceived
     
   }
 }

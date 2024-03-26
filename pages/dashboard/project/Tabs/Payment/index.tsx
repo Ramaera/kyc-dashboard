@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
+import axios from 'axios';
 import { useMutation } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -70,6 +71,9 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
+
+  console.log('amount', projectAmount);
+  console.log('amountFromProject', amountFromProject);
   const phaseData = {
     Phase1: [
       {
@@ -203,6 +207,9 @@ const InfoTab = ({ title }) => {
             updateUser(paymentDocument.id, imgUrl, paymentReferralCode)
           )
         );
+        await axios.post(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
+          text: `Payment Prof Updated in Project ${title}`
+        });
       } else {
         await createDocument({
           variables: {
@@ -212,8 +219,14 @@ const InfoTab = ({ title }) => {
             referralAgencyCode: paymentReferralCode
           }
         });
+
+        await axios.post(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
+          text: `Payment Proff Uploadedd in Project ${title}`
+        });
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
     setLoading(false);
     setSubmitButtonEnabled(false);
   };
@@ -370,6 +383,10 @@ const InfoTab = ({ title }) => {
                   <Button
                     variant="contained"
                     sx={{ mb: 2 }}
+                    disabled={
+                      projectTitle.includes('Hajipur') ||
+                      projectTitle.includes('Agra')
+                    }
                     onClick={() => setEnrollNow(true)}
                   >
                     Enroll Now
@@ -383,6 +400,10 @@ const InfoTab = ({ title }) => {
                     <Button
                       variant="contained"
                       component="label"
+                      disabled={
+                        projectTitle.includes('Hajipur') ||
+                        projectTitle.includes('Agra')
+                      }
                       style={{
                         cursor: paymentDocument
                           ? paymentDocument.status === 'APPROVED'

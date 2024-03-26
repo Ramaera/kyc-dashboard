@@ -10,7 +10,8 @@ import {
   setNumbers,
   setTotalAgraAmount,
   setTotalHajipurAmount,
-  setTotalHyderabadAmount
+  setTotalHyderabadAmount,
+  setTotalReverseSpiceAmount
 } from '@/state/slice/allUsersSlice';
 import { setAllNumberShareHolder } from '@/state/slice/allShareHolderSlice';
 import { setAgencyCode, setOrUpdateUser } from '@/state/slice/userSlice';
@@ -45,6 +46,12 @@ const RamaeraRouter = ({ children }) => {
       setTotalHyderabadAmount(
         allProjectAmounts?.data?.getProjectsPayment
           .ProjectHyderabadAmountReceived
+      )
+    );
+    dispatch(
+      setTotalReverseSpiceAmount(
+        allProjectAmounts?.data?.getProjectsPayment
+          .ProjectFundingReplacementAmountReceived
       )
     );
   }
