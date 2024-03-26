@@ -114,7 +114,6 @@ const InfoTab = ({ title }) => {
   }));
 
   const diff = projectAmount / AllProjectDetails[projectTitle][0];
-  // console.log('', AllProjectDetails[projectTitle]);
   const risedFundPer =
     title.toLowerCase() === 'hajipur' || title.toLowerCase() === 'agra'
       ? 100
@@ -222,10 +221,12 @@ const InfoTab = ({ title }) => {
   useEffect(() => {
     setPaymentDocument(null);
     setEnrolled(false);
-
     setPaymentReferralCode(null);
     setProofImage(null);
     setEnrollNow(false);
+    if (projectTitle.includes('Hajipur') || projectTitle.includes('Agra')) {
+      setSubmitButtonEnabled(false);
+    }
     if (user && user?.documents && user?.documents?.length > 0) {
       user?.documents?.find((document: DocumentType) => {
         if (
@@ -279,6 +280,8 @@ const InfoTab = ({ title }) => {
     setBankDetails(false);
     setUPIDetails(true);
   };
+
+  console.log('proj', projectTitle);
 
   return (
     <>

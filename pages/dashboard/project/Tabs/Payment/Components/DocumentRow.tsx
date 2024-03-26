@@ -230,6 +230,9 @@ const DocumentRow = ({
             </span>
           </Box>
           <Button
+            disabled={
+              projectTitle.includes('Hajipur') || projectTitle.includes('Agra')
+            }
             style={{
               cursor: documents[i]
                 ? documents[i].status === 'APPROVED'
@@ -351,7 +354,11 @@ const DocumentRow = ({
         {moreRow <= 10 && (
           <LoadingButton
             variant="contained"
-            disabled={images.length !== moreRow}
+            disabled={
+              images.length !== moreRow ||
+              projectTitle.includes('Hajipur') ||
+              projectTitle.includes('Agra')
+            }
             onClick={() => {
               setMoreRow(moreRow + 1);
             }}
@@ -370,7 +377,9 @@ const DocumentRow = ({
         <LoadingButton
           sx={{ marginLeft: 1 }}
           loading={isLoading}
-          // disabled={!isValidToClick()}
+          disabled={
+            projectTitle.includes('Hajipur') || projectTitle.includes('Agra')
+          }
           variant="contained"
           onClick={() => {
             handleDocumentUpload();
