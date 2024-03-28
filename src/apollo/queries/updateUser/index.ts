@@ -201,6 +201,17 @@ query($referralCode:String!){
   }
 }`);
 
+export const CHECK_AGENCY_EXPIRY = gql(`
+query FindAgency($AgencyCode:String!) {
+  findAgency(AgencyCode:$AgencyCode) {
+      agencyCode
+      createdAt
+      id
+      agencyExpiryDate
+  }
+}
+`)
+
 export const GET_NUMBERS = gql(`
 query{
   getAllUsersCount{
@@ -230,3 +241,5 @@ query{
   }
 }
 `);
+
+

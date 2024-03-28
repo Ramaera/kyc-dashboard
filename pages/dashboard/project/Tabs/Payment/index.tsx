@@ -5,7 +5,7 @@ import { setOrUpdateUser } from '@/state/slice/userSlice';
 import DocumentType from '@/state/types/document';
 import handleImageUpload from '@/utils/upload';
 import axios from 'axios';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -30,6 +30,8 @@ import EnrolledAmount from './Components/EnrolledAmount';
 import ProjectDetails from './Components/ProjectDetails';
 import FundingBar from './Components/FundingBar';
 import BankDetails from './Components/BankDetails';
+import { CHECK_AGENCY_EXPIRY } from '@/apollo/queries/updateUser';
+import { useDebounce } from 'usehooks-ts';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -64,6 +66,9 @@ const InfoTab = ({ title }) => {
   const [updateDocument] = useMutation(UPDATEDOCUMENT);
   const [isHidden, setHidden] = useState({ project: false });
   const [isEnrolled, setEnrolled] = useState(false);
+  const [isVerifyAgencyCalled, setIsVerifyAgencyCalled] = useState(false);
+  const [refCodeErrorMessage, setRefCodeErrorMessage] = useState('');
+
   let projectTitle = title + 'ProjectDetails';
   var investmentAmount = 0;
   const amountFromProject = `total${title}Amount`;
@@ -71,6 +76,54 @@ const InfoTab = ({ title }) => {
   const projectAmount = useSelector(
     (state: any) => state.allUsers[amountFromProject]
   );
+
+  const debouncedReferral = useDebounce<string>(paymentReferralCode, 400);
+
+  const [
+    checkAgencyExpiry,
+    { loading: loadingExpiry, error: errorExpiry, data: dataExpiry }
+  ] = useLazyQuery(CHECK_AGENCY_EXPIRY, {
+    variables: { AgencyCode: debouncedReferral }
+  });
+
+  useEffect(() => {
+    console.log(
+      'here debounce',
+      debouncedReferral,
+      'asd',
+      debouncedReferral.length
+    );
+
+    if (debouncedReferral.length > 0) {
+      console.log('here 2', debouncedReferral);
+      checkAgencyExpiry();
+      setIsVerifyAgencyCalled((s) => !s);
+    } else {
+      setRefCodeErrorMessage('');
+    }
+  }, [debouncedReferral.length]);
+
+  useEffect(() => {
+    console.log('here dataExpiry', loadingExpiry, errorExpiry, dataExpiry);
+    if (debouncedReferral.length == 0) {
+      setRefCodeErrorMessage('');
+    } else if (errorExpiry) {
+      setRefCodeErrorMessage(errorExpiry?.message);
+    } else if (
+      dataExpiry &&
+      dataExpiry.findAgency &&
+      dataExpiry.findAgency.agencyExpiryDate
+    ) {
+      const expiryDate = new Date(dataExpiry.findAgency.agencyExpiryDate);
+      const currentDate = new Date();
+
+      if (expiryDate < currentDate) {
+        setRefCodeErrorMessage('Your agency code is expired.');
+      }
+    } else {
+      setRefCodeErrorMessage('');
+    }
+  }, [isVerifyAgencyCalled, dataExpiry, errorExpiry]);
 
   console.log('amount', projectAmount);
   console.log('amountFromProject', amountFromProject);
@@ -461,6 +514,7 @@ const InfoTab = ({ title }) => {
                           setPaymentReferralCode(e.target.value);
                         }}
                       />
+                      <div>{refCodeErrorMessage}</div>
                     </Grid>
                   )}
                   <Grid item xs={2}>
@@ -468,7 +522,12 @@ const InfoTab = ({ title }) => {
                       loading={isLoading}
                       fullWidth
                       variant="contained"
-                      disabled={!isSubmitButtonEnalbed}
+                      disabled={
+                        !(
+                          // isSubmitButtonEnalbed ||
+                          (refCodeErrorMessage.length === 0)
+                        )
+                      }
                       onClick={() => {
                         handlePaymentSubmit();
                       }}

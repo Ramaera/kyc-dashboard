@@ -1,5 +1,5 @@
 import { SIGNUP } from '@/apollo/queries/auth';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
@@ -27,7 +27,7 @@ import * as React from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 // import { GET_ALL_AGENCY } from '@/apollo/queries/updateUser';
 import { CHECK_REFERRAL_CODE } from '@/apollo/queries/updateUser';
-
+import { CHECK_AGENCY_EXPIRY } from '@/apollo/queries/updateUser';
 export default function SignupCard() {
   const router = useRouter();
   const [signup] = useMutation(SIGNUP);
@@ -46,17 +46,35 @@ export default function SignupCard() {
   const [isLoading, setLoading] = React.useState(false);
   const [agentName, setAgentName] = React.useState('');
   const [userName, setUserName] = React.useState('');
+  const [isVerifyAgencyCalled, setIsVerifyAgencyCalled] = React.useState(false);
 
-  const [checkAgency, { loading, error, data }] = useLazyQuery(
-    CHECK_REFERRAL_CODE,
-    {
-      variables: { referralCode: debouncedReferral }
-    }
-  );
+  // console.log('debouncedReferral', debouncedReferral);
 
-  if (error) {
-    toast.error(error?.message);
-  }
+  const [
+    checkAgencyExpiry,
+    { loading: loadingExpiry, error: errorExpiry, data: dataExpiry }
+  ] = useLazyQuery(CHECK_AGENCY_EXPIRY, {
+    variables: { AgencyCode: debouncedReferral }
+  });
+
+  // if (errorExpiry) {
+  //   toast.error(errorExpiry?.message);
+  // }
+
+  // console.log('checkAgencyExpiry', dataExpiry?.findAgency?.agencyExpiryDate);
+
+  const [
+    checkAgency,
+    { loading: loadingAgency, error: errorAgency, data: dataAgency }
+  ] = useLazyQuery(CHECK_REFERRAL_CODE, {
+    variables: { referralCode: debouncedReferral }
+  });
+
+  // console.log('checkAgency', dataAgency);
+
+  // if (errorExpiry) {
+  //   toast.error(errorExpiry?.message);
+  // }
 
   const checkPWID = (text: any) => {
     const postData = {
@@ -150,23 +168,39 @@ export default function SignupCard() {
     setOpen(false);
   };
 
-  /*   React.useEffect(() => {
-    setAllAgents(data.AllKycAgency);
-  }, [data]); */
-
-  const verifyAgency = async () => {
+  const verifyAgency = () => {
     setDebouncedReferral(referral);
-    await checkAgency();
+    console.log('calling');
+    checkAgencyExpiry();
+    console.log('called');
+    setIsVerifyAgencyCalled((s) => !s);
+    checkAgency();
   };
+
   React.useEffect(() => {
-    if (data?.verifyReferralId?.name) {
-      setAgentName(data?.verifyReferralId?.name);
+    if (
+      dataExpiry &&
+      dataExpiry.findAgency &&
+      dataExpiry.findAgency.agencyExpiryDate
+    ) {
+      const expiryDate = new Date(dataExpiry.findAgency.agencyExpiryDate);
+      const currentDate = new Date();
+
+      if (expiryDate < currentDate) {
+        toast.error('Your agency code is expired.');
+      }
+    }
+  }, [isVerifyAgencyCalled, dataExpiry]);
+
+  React.useEffect(() => {
+    if (dataAgency?.verifyReferralId?.name) {
+      setAgentName(dataAgency?.verifyReferralId?.name);
       setAgentVerified(true);
     } else {
       setAgentName('');
       setAgentVerified(false);
     }
-  }, [data]);
+  }, [dataAgency]);
 
   // React.useEffect(() => {
   //   if (error?.message) {
@@ -211,6 +245,7 @@ export default function SignupCard() {
               setPWId(e.target.value);
               checkPWID(e.target.value);
             }}
+
             // InputProps={{
             //   endAdornment: (
             //     <LoadingButton
@@ -269,7 +304,7 @@ export default function SignupCard() {
                   onClick={() => {
                     verifyAgency();
                   }}
-                  disabled={!referral || loading}
+                  disabled={!referral || loadingAgency} // Updated from {!referral || loading} to {!referral || loadingAgency}
                   variant="contained"
                 >
                   Verify
