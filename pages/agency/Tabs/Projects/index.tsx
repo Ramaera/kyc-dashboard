@@ -637,6 +637,14 @@ const InfoTab = ({ to }) => {
     {
       id: 'agra_',
       name: 'Agra'
+    },
+    {
+      id: 'hyderabad_',
+      name: 'Hyderabad'
+    },
+    {
+      id: 'fundingreplacement_',
+      name: 'Funding Replacement Hajipur'
     }
   ];
   useEffect(() => {

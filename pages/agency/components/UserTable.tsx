@@ -98,6 +98,24 @@ const numberOfProjectsEnrolledIn = (docs) => {
   ) {
     numberOfProjects += 1;
   }
+  if (
+    docs.find(
+      (doc) =>
+        doc.title.includes('hyderabad') &&
+        doc.status === variables.status.APPROVED
+    )
+  ) {
+    numberOfProjects += 1;
+  }
+  if (
+    docs.find(
+      (doc) =>
+        doc.title.includes('fundingreplacement') &&
+        doc.status === variables.status.APPROVED
+    )
+  ) {
+    numberOfProjects += 1;
+  }
 
   return numberOfProjects;
 };
@@ -457,6 +475,7 @@ const UserTable = () => {
             </TableHead>
             <TableBody>
               {paginatedUsers.map((user, index) => {
+                const serialNumber = page * limit + index + 1;
                 return (
                   <Link href={'agency/' + user?.id}>
                     <TableRow hover key={user?.id} sx={{ cursor: 'pointer' }}>
@@ -480,7 +499,7 @@ const UserTable = () => {
                           noWrap
                           width={30}
                         >
-                          {index + 1}
+                          {serialNumber}
                         </Typography>
                       </TableCell>
                       <TableCell

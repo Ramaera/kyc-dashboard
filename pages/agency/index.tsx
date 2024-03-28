@@ -27,9 +27,9 @@ function DashboardTasks() {
   });
   // const SetALLUSERS useSelector((state) => state.allUsers.allTheUsers)
   // console.log(useSelector((state) => state.allUsers.allTheUsers));
-  useEffect(() => {
-    refetch();
-  }, [foundUser]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [foundUser]);
   if (loading) {
     return <Loading />;
   }
