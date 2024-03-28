@@ -207,8 +207,14 @@ const InfoTab = ({ title }) => {
             updateUser(paymentDocument.id, imgUrl, paymentReferralCode)
           )
         );
-        await axios.post(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
-          text: `Payment Prof Updated in Project ${title}`
+        await fetch(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: JSON.stringify({
+            text: `Payment Proff Updated in Project :  ${title}  By Susbscriber : ${user.name}/n PWID : ${user.pw_id}`
+          })
         });
       } else {
         await createDocument({
@@ -219,9 +225,14 @@ const InfoTab = ({ title }) => {
             referralAgencyCode: paymentReferralCode
           }
         });
-
-        await axios.post(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
-          text: `Payment Proff Uploadedd in Project ${title}`
+        await fetch(process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: JSON.stringify({
+            text: `Payment Proff Uploaded in Project :  ${title}  By Susbscriber : ${user.name}/n PWID : ${user.pw_id}`
+          })
         });
       }
     } catch (err) {
