@@ -26,6 +26,7 @@ import {
   useTheme
 } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
@@ -157,6 +158,7 @@ const applyPagination = (
   return users.slice(page * limit, page * limit + limit);
 };
 const UserTable = () => {
+  const router = useRouter();
   let persistedFilters = useSelector(
     (state: any) => state.filters.agencyUsersFilters
   );
@@ -287,7 +289,15 @@ const UserTable = () => {
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
+    router.push(`?page=${newPage}`);
   };
+
+  useEffect(() => {
+    const { page } = router.query;
+    if (page) {
+      setPage(parseInt(page as string, 10));
+    }
+  }, []);
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
